@@ -1,3 +1,6 @@
+// API Configuration
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8003"
+
 // Navigation and configuration constants
 export const NAV_ITEMS = [
   { label: "Philosophy", href: "/philosophy" },

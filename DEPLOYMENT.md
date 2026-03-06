@@ -49,13 +49,26 @@ git push origin main
 
 ## Environment Variables
 
-Required environment variables (if any):
+Required environment variables:
 \`\`\`
-DATABASE_URL=your_database_url
-API_KEY=your_api_key
+# FloatingAI Backend Connection (Required)
+NEXT_PUBLIC_API_URL=http://localhost:8003    # L3 API URL (development)
+NEXT_PUBLIC_SITE_URL=http://localhost:3010   # Frontend URL
+
+# Production values
+# NEXT_PUBLIC_API_URL=https://api.rctlabs.co  # Production L3 API
+# NEXT_PUBLIC_SITE_URL=https://rctlabs.co     # Production frontend
 \`\`\`
 
 Add these in Vercel Settings → Environment Variables
+
+### Backend Dependency
+
+The FloatingAI assistant requires the L3 API backend to be running:
+- **Development**: `http://localhost:8003` (start with `bash start-l3-llm.sh`)
+- **Production**: Deploy L3 API as a separate service
+- **Endpoints used**: `POST /rctlabs/assistant/chat`, `GET /health`
+- **CORS**: Backend must allow the frontend origin
 
 ## Performance Optimization
 

@@ -51,6 +51,16 @@ This is a Next.js 16 application built with modern technologies:
 - Navigation between posts
 - Category filtering and search
 
+### FloatingAI Assistant (Backend-Connected)
+- Real-time chat powered by L3 API backend (55+ knowledge base topics)
+- LLM fallback via Ollama multi-model chain (llama3.2:3b → 1b → mistral:7b)
+- Source indicators: ✓ KB, 🤖 LLM, 🔗 Hybrid, ⚡ Cache, ⚠️ Fallback
+- Conversation history (last 6 messages) with context awareness
+- Suggested follow-up questions from backend
+- Feedback buttons (thumbs up/down)
+- Quick-start scenarios for common questions
+- Expand/minimize mode
+
 ### Pages Included
 - **Home**: Hero section with CTA and feature overview
 - **About**: Company mission, values, timeline, and team
@@ -92,7 +102,19 @@ npm start
 
 ### Development
 
-The application runs on `http://localhost:3000`.
+The application runs on `http://localhost:3010` (to avoid conflicts with Enterprise-refactor frontend).
+
+**To use FloatingAI with the backend:**
+```bash
+# Terminal 1: Start L3 API backend
+cd ../rct/Enterprise-refactor
+bash start-l3-llm.sh
+
+# Terminal 2: Start rctlabs-v0 frontend
+cd rctlabs-v0
+npm install --legacy-peer-deps
+npx next dev --port 3010
+```
 
 ### Adding Blog Posts
 
@@ -115,7 +137,21 @@ readTime: 5
 ## Configuration
 
 ### Environment Variables
-No environment variables required for basic functionality.
+
+Create a `.env.local` file in the project root:
+
+```env
+# Required for FloatingAI backend connection
+NEXT_PUBLIC_API_URL=http://localhost:8003
+
+# Site URL
+NEXT_PUBLIC_SITE_URL=http://localhost:3010
+```
+
+| Variable | Description | Default |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | L3 API backend URL | `http://localhost:8003` |
+| `NEXT_PUBLIC_SITE_URL` | Frontend URL | `http://localhost:3000` |
 
 ### SEO
 SEO metadata is configured in `lib/seo.ts` with:
@@ -148,6 +184,8 @@ Common redirects are configured in `next.config.mjs`:
 - **next-mdx-remote**: MDX rendering for Next.js
 - **Lucide React**: Icon library
 - **Recharts**: Data visualization library
+- **Framer Motion**: Animation library
+- **L3 API Backend**: FloatingAI chat backend (FastAPI, port 8003)
 
 ## Deployment
 

@@ -34,23 +34,23 @@ export default function AboutPage() {
   const values = [
     {
       icon: Target,
-      title: "Mission-Driven",
-      description: "Every decision aligns with our mission to revolutionize human-AI interaction",
+      title: "Constitutional AI",
+      description: "Every output verified through multi-LLM consensus with ED25519 cryptographic signatures and 0.3% hallucination rate",
     },
     {
       icon: Lightbulb,
-      title: "Innovation",
-      description: "We push boundaries and explore new frontiers in intent-driven AI",
+      title: "Architecture-First",
+      description: "10-Layer system with 6 Kernel RFCs, 7 Genome System, and 41 production algorithms across 9 tiers",
     },
     {
       icon: Users,
-      title: "Community",
-      description: "We believe in the power of collaboration and open science",
+      title: "Regional Sovereignty",
+      description: "8 language-region markets with PDPA, APPI, PIPA, PIPL compliance and data locality",
     },
     {
       icon: Zap,
-      title: "Impact",
-      description: "Our work creates meaningful change in how AI serves humanity",
+      title: "Enterprise-Grade",
+      description: "99.98% uptime SLA, 33 Docker containers, 57 Kubernetes resources, and 2,210 tests passing",
     },
   ]
 
@@ -66,7 +66,7 @@ export default function AboutPage() {
               About RCT Labs
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto text-balance">
-              Pioneering intent-driven AI through rigorous research, open protocols, and collaborative innovation.
+              Building the Constitutional AI Operating System — 10-Layer architecture, 41 algorithms, and absolute data sovereignty.
             </p>
           </div>
         </div>
@@ -77,24 +77,24 @@ export default function AboutPage() {
         <div className="space-y-6">
           <h2 className="text-4xl font-bold text-foreground">Our Mission</h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            We are committed to revolutionizing how humans and AI interact by creating systems that genuinely understand
-            and align with human intent. Our work bridges the gap between human values and AI capabilities.
+            We are committed to building AI systems that are constitutionally sound — where every output is verified through
+            multi-LLM consensus, cryptographically signed, and fully auditable. Our 10-Layer architecture ensures trust at every level.
           </p>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Through rigorous research, open protocols, and community collaboration, we're building the Intent Operating
-            System—a fundamental shift in how AI systems operate.
+            Through the JITNA Protocol (RFC-001 v2.0), SignedAI consensus, and 41 production algorithms, we're building the
+            Constitutional AI Operating System — a fundamental shift in how AI systems operate with 0.3% hallucination rate.
           </p>
         </div>
 
         <div className="space-y-6">
           <h2 className="text-4xl font-bold text-foreground">Our Vision</h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            A future where AI systems transparently understand and respect human intent, amplifying human capability
-            while preserving human agency and values.
+            A future where every AI decision is verifiable, every output is signed, and every interaction respects
+            regional compliance and data sovereignty across 8 markets.
           </p>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            We envision a world where intent-driven design becomes the standard for AI development, ensuring alignment
-            between human goals and AI objectives.
+            We envision enterprise AI infrastructure with 99.98% uptime, 3.74x cost efficiency, and Constitutional AI
+            guardrails that make hallucination-free AI the standard, not the exception.
           </p>
         </div>
       </section>
@@ -161,17 +161,19 @@ export default function AboutPage() {
 
           <div className="space-y-8 max-w-3xl mx-auto">
             {[
-              { year: "2023", event: "RCT Labs founded with focus on intent-driven AI" },
-              { year: "2024", event: "Published foundational research on F=(D^I)×A formula" },
-              { year: "2024", event: "Launched RCT-7 process and JITNA language" },
-              { year: "2025", event: "Released open protocol for community adoption" },
+              { year: "v1.0", event: "RCT Ecosystem founded — 7 Genome System, FDIA Protocol, Kernel v1.0" },
+              { year: "v2.0", event: "RCTDB v2.0 — 8D universal memory schema, 36 algorithms, OS Primitives" },
+              { year: "v2.2", event: "Regional Language Adapter — 8 markets, JITNA Protocol RFC-001 v2.0" },
+              { year: "v2.3", event: "Control Plane + Enterprise Hardening — ED25519, JWT RS256, RBAC" },
+              { year: "v2.4", event: "Analysearch Intent Engine — 41 production algorithms, 2,210 tests" },
+              { year: "v2.5", event: "Infrastructure Layer — Docker, Kubernetes, API Gateway, Monitoring" },
             ].map((item, i) => (
               <div key={i} className="flex gap-6">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-semibold">
-                    {i + 1}
+                  <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-mono text-xs">
+                    {item.year}
                   </div>
-                  {i < 3 && <div className="w-0.5 h-16 bg-border mt-4" />}
+                  {i < 5 && <div className="w-0.5 h-16 bg-border mt-4" />}
                 </div>
                 <div className="pt-2">
                   <p className="text-sm font-semibold text-accent mb-1">{item.year}</p>

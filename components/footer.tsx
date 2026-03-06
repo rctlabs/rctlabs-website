@@ -12,8 +12,12 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1 space-y-4">
             <div className="text-lg font-bold text-foreground tracking-tight">RCT Labs</div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Enterprise AI Infrastructure for intent-driven intelligence.
+              Constitutional AI Operating System for the Intelligence Age.
             </p>
+            <div className="flex items-center gap-2 pt-1">
+              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-0.5 rounded">v2.5.0</span>
+              <span className="text-xs font-mono text-emerald-400">2,210 tests passing</span>
+            </div>
             <div className="flex gap-3 pt-2">
               <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                 <Github className="w-4 h-4" />
@@ -42,6 +46,12 @@ export function Footer() {
               </Link>
               <Link href="/platform#studio" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
                 Specialist Studio
+              </Link>
+              <Link href="/platform#infrastructure" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                Infrastructure
+              </Link>
+              <Link href="/platform#regional" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                Regional Language
               </Link>
             </div>
           </div>
@@ -103,9 +113,15 @@ export function Footer() {
           <p className="text-xs text-muted-foreground">
             © {currentYear} RCT Labs. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground font-mono">
-            Designed by The Architect
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs text-muted-foreground font-mono">
+              Designed by The Architect
+            </p>
+            <span className="text-xs text-muted-foreground">|</span>
+            <p className="text-xs text-muted-foreground font-mono">
+              99.98% Uptime SLA
+            </p>
+          </div>
         </div>
       </div>
     </footer>

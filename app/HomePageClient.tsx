@@ -5,7 +5,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { FloatingAI } from "@/components/floating-ai"
 import { FDIAEquation } from "@/components/fdia-equation"
-import { ArrowRight, BookOpen, Users, Lightbulb, Github, Zap, Shield, Database, Cpu, FileCode } from "lucide-react"
+import { ArrowRight, BookOpen, Users, Lightbulb, Github, Zap, Shield, Database, Cpu, FileCode, Activity, Globe, Layers, Lock, Terminal, GitBranch, CheckCircle, Server, Container, Network } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
@@ -35,7 +35,7 @@ export default function HomePage() {
                 The Operating System for Intent-Driven Intelligence
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance leading-relaxed">
-                Redefining AI architecture with Kernel-level consensus, zero-cost scaling, and absolute sovereignty.
+                Constitutional AI Operating System — 10-Layer architecture, multi-LLM consensus, and absolute data sovereignty.
               </p>
             </div>
 
@@ -61,10 +61,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl px-4 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {[
-              { label: "Unit Tests Passed", value: "395/395", icon: Shield },
-              { label: "Kernel Architecture", value: "Tier-9", icon: Cpu },
-              { label: "Accuracy Rate", value: "96.1%", icon: Database },
-              { label: "Audit Coverage", value: "100%", icon: FileCode },
+              { label: "Tests Passing", value: "2,210/2,210", icon: Shield },
+              { label: "Architecture Layers", value: "10-Layer", icon: Layers },
+              { label: "Hallucination Rate", value: "0.3%", icon: Activity },
+              { label: "Uptime SLA", value: "99.98%", icon: Server },
             ].map((stat, i) => (
               <div 
                 key={i} 
@@ -150,7 +150,7 @@ export default function HomePage() {
               <div>
                 <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition">SignedAI</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Multi-tier consensus verification system. S/4/6/8 tiers ensure truth through AI voting mechanisms.
+                  Multi-LLM attestation with 0.3% hallucination rate. GPT-4 + Claude 3.5 + Gemini Pro consensus verification.
                 </p>
               </div>
               <div className="flex items-center text-xs text-accent opacity-0 group-hover:opacity-100 transition">
@@ -169,7 +169,7 @@ export default function HomePage() {
               <div>
                 <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition">RCTDB</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  3-layer memory system: Vector, Graph, and SQL unified.
+                  8-dimensional universal memory schema with infinite scalability. Registry, Vault, and Governance zones.
                 </p>
               </div>
             </Link>
@@ -183,9 +183,9 @@ export default function HomePage() {
                 <FileCode className="w-6 h-6 text-accent" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition">JITNA Language</h3>
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition">JITNA Protocol</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Intent specification: I/D/Delta/A/R/M structure.
+                  RFC-001 v2.0 — The "HTTP of Agentic AI" with wire schema, signing & replay.
                 </p>
               </div>
               <code className="block text-xs font-mono bg-secondary/50 p-2 rounded text-muted-foreground">
@@ -208,6 +208,100 @@ export default function HomePage() {
                 </p>
               </div>
             </Link>
+
+            {/* 41 Algorithms */}
+            <Link
+              href="/platform"
+              className="group bg-card border border-border rounded-lg p-6 hover:border-accent/50 transition-all duration-300 space-y-4"
+            >
+              <div className="flex items-start justify-between">
+                <div className="p-3 rounded-lg bg-accent/10">
+                  <GitBranch className="w-6 h-6 text-accent" />
+                </div>
+                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">41 Algos</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition">Production Algorithms</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Tier 1-9 complete. Foundation, Intelligence, and Consciousness layers battle-tested.
+                </p>
+              </div>
+            </Link>
+
+            {/* Regional Language */}
+            <Link
+              href="/solutions"
+              className="group bg-card border border-border rounded-lg p-6 hover:border-accent/50 transition-all duration-300 space-y-4"
+            >
+              <div className="flex items-start justify-between">
+                <div className="p-3 rounded-lg bg-accent/10">
+                  <Globe className="w-6 h-6 text-accent" />
+                </div>
+                <span className="text-xs font-mono text-success bg-success/10 px-2 py-1 rounded">8 Markets</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition">Regional Language Adapter</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  JP, KR, CN, TW, TH, VN, ID, US — with PDPA, APPI, PIPA, PIPL compliance.
+                </p>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ========== PERFORMANCE METRICS ========== */}
+      <section className="border-y border-border bg-card/30">
+        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
+          <div className="space-y-10">
+            <div className="text-center space-y-3 max-w-2xl mx-auto">
+              <p className="text-sm font-mono text-accent uppercase tracking-wider">Performance</p>
+              <h2 className="text-foreground">Enterprise-Grade Metrics</h2>
+              <p className="text-muted-foreground">Verified benchmarks from RCT Ecosystem v2.5.0</p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[
+                { label: "Hallucination Rate", value: "0.3%", sub: "vs industry 12-15%", highlight: true },
+                { label: "Context Compression", value: "74%", sub: "lossless, 3.74x savings", highlight: false },
+                { label: "Response Latency", value: "0.07-1.5s", sub: "vs industry 2-5s", highlight: false },
+                { label: "Cost Efficiency", value: "3.74x", sub: "reduction vs baseline", highlight: true },
+              ].map((metric, i) => (
+                <div
+                  key={i}
+                  className={`bg-card border rounded-lg p-5 text-center space-y-2 ${
+                    metric.highlight ? "border-accent/30" : "border-border"
+                  }`}
+                >
+                  <div className="text-2xl md:text-3xl font-mono font-bold text-foreground">{metric.value}</div>
+                  <p className="text-sm font-medium text-foreground">{metric.label}</p>
+                  <p className="text-xs text-muted-foreground">{metric.sub}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { icon: Server, label: "Infrastructure", items: ["48+ Microservices", "33 Docker Containers", "Kubernetes (57 resources)"] },
+                { icon: Lock, label: "Security", items: ["ED25519 Signed Execution", "JWT RS256 + RBAC", "Constitutional AI Guardrails"] },
+                { icon: Terminal, label: "Developer Experience", items: ["OpenAPI 3.1.0 (14 endpoints)", "6 Kernel RFCs", "13 Universal Adapters"] },
+              ].map((col, i) => (
+                <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <col.icon className="w-4 h-4 text-accent" />
+                    <span className="text-sm font-semibold text-foreground">{col.label}</span>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {col.items.map((item, j) => (
+                      <li key={j} className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <CheckCircle className="w-3 h-3 text-success shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -259,9 +353,9 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { badge: "Mathematics", title: "Intent Optimization in Neural Networks", authors: "RCT Research Team", date: "2025" },
-              { badge: "Ethics", title: "Ethical Frameworks for Intent-Driven AI", authors: "RCT Research Team", date: "2025" },
-              { badge: "Systems", title: "Scalable Intent Operating Systems", authors: "RCT Research Team", date: "2025" },
+              { badge: "v2.5.0", title: "Infrastructure Layer: Docker, K8s, API Gateway & Monitoring", authors: "RCT Core Team", date: "Mar 2026" },
+              { badge: "v2.3.1", title: "Enterprise Hardening: Security, Validation & Resilience", authors: "RCT Core Team", date: "Mar 2026" },
+              { badge: "v2.2.0", title: "Multi-Language & Regional LLM — 8 Markets Active", authors: "RCT Core Team", date: "Feb 2026" },
             ].map((paper, i) => (
               <Link
                 key={i}

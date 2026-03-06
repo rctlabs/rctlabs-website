@@ -145,7 +145,7 @@ export function FDIAEquation() {
       y: 0,
       scale: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 120,
         damping: 12,
       },
@@ -160,7 +160,7 @@ export function FDIAEquation() {
       transition: {
         duration: 4,
         repeat: Infinity,
-        ease: "easeInOut",
+        ease: "easeInOut" as const,
       },
     },
   }

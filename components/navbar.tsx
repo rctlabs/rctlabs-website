@@ -34,6 +34,7 @@ export function Navbar() {
 
   const links = [
     { href: "/platform", label: "Platform" },
+    { href: "/platform#infrastructure", label: "Infrastructure" },
     { href: "/solutions", label: "Solutions" },
     { href: "/research", label: "Research" },
     { href: "/docs", label: "Docs" },

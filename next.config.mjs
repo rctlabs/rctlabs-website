@@ -1,8 +1,6 @@
 // next.config.mjs
-import { defineConfig } from 'next';
-
-export default defineConfig({
-  // ... existing config ...
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -12,5 +10,6 @@ export default defineConfig({
   images: {
     unoptimized: true,
   },
-  // ... rest of code here ...
-});
+};
+
+export default nextConfig;

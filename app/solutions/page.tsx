@@ -17,7 +17,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Solutions - RCT Labs",
-  description: "AI infrastructure solutions for Enterprise, Developers, and SMEs. Intent-driven, secure, and scalable.",
+  description: "RCT Ecosystem v2.5.0 solutions for Enterprise, Developers, and SMEs. 10-Layer architecture, 0.3% hallucination, 99.98% uptime.",
 }
 
 export default function SolutionsPage() {
@@ -33,7 +33,7 @@ export default function SolutionsPage() {
             <p className="text-sm font-mono text-accent uppercase tracking-wider">Solutions</p>
             <h1 className="text-foreground">Built for Your Scale</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              From startups to enterprises, RCT provides the AI infrastructure you need to build, deploy, and scale.
+              From startups to enterprises, RCT Ecosystem v2.5.0 provides Constitutional AI infrastructure with 0.3% hallucination rate, 99.98% uptime, and 8 regional markets.
             </p>
           </div>
         </div>
@@ -55,10 +55,10 @@ export default function SolutionsPage() {
             </p>
             <ul className="space-y-3">
               {[
-                { icon: Shield, text: "SOC 2 Type II compliant infrastructure" },
-                { icon: Lock, text: "On-premise or private cloud deployment" },
-                { icon: Users, text: "Dedicated support and SLAs" },
-                { icon: Zap, text: "SignedAI verification for all outputs" },
+                { icon: Shield, text: "0.3% hallucination rate with SignedAI multi-LLM consensus" },
+                { icon: Lock, text: "ED25519 signed execution + JWT RS256 + RBAC" },
+                { icon: Users, text: "99.98% uptime SLA with dedicated support" },
+                { icon: Zap, text: "33 Docker containers + 57 Kubernetes resources" },
               ].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
                   <item.icon className="w-4 h-4 text-accent shrink-0" />
@@ -74,12 +74,12 @@ export default function SolutionsPage() {
             <h3 className="text-lg font-semibold text-foreground">Enterprise Features</h3>
             <div className="space-y-4">
               {[
-                "Custom model training and fine-tuning",
-                "Private RCTDB instances",
-                "Multi-region deployment",
-                "Advanced analytics dashboard",
-                "Priority API access",
-                "Custom integration support",
+                "10-Layer architecture with Enterprise Hardening (Layer 10)",
+                "RCTDB v2.0 — 8D universal memory with 74% compression",
+                "8 regional markets with compliance (PDPA, APPI, PIPA, PIPL)",
+                "Prometheus + Grafana real-time monitoring",
+                "OpenAPI 3.1.0 with 14 endpoints",
+                "13 Universal Adapters (Home Assistant, Terraform, n8n, etc.)",
               ].map((feature, i) => (
                 <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
                   <CheckCircle className="w-4 h-4 text-success shrink-0" />
@@ -103,14 +103,17 @@ const client = new RCT({
   apiKey: process.env.RCT_API_KEY
 });
 
-const result = await client.query({
-  intent: "analyze",
-  data: documentData,
-  verify: true  // SignedAI verification
+// JITNA Protocol: I/D/Delta/A/R/M
+const result = await client.execute({
+  I: "analyze",
+  D: documentData,
+  A: "summarize",
+  verify: true  // SignedAI consensus
 });
 
 console.log(result.signature);
-// { tier: "S-4", verified: true }`}
+// { algo: "ED25519", verified: true,
+//   consensus: ["GPT-4", "Claude", "Gemini"] }`}
               </pre>
             </div>
             <div className="order-1 lg:order-2 space-y-6">
@@ -126,10 +129,10 @@ console.log(result.signature);
               </p>
               <ul className="space-y-3">
                 {[
-                  "TypeScript/JavaScript SDK",
-                  "REST and GraphQL APIs",
-                  "Comprehensive documentation",
-                  "Open-source examples",
+                  "TypeScript SDK + OpenAPI 3.1.0 (14 endpoints)",
+                  "JITNA Protocol RFC-001 v2.0 wire schema",
+                  "6 Kernel RFCs + comprehensive docs",
+                  "41 production algorithms across 9 tiers",
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
                     <CheckCircle className="w-4 h-4 text-accent shrink-0" />
@@ -191,7 +194,7 @@ console.log(result.signature);
               </div>
               <div className="pt-4 border-t border-border">
                 <p className="text-sm text-muted-foreground">
-                  Up to 97% cost reduction through intelligent caching and intent reuse.
+                  3.74x cost reduction through RCTDB compression and intelligent caching.
                 </p>
               </div>
             </div>

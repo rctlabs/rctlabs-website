@@ -109,6 +109,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
                   excerpt={post.excerpt}
                   slug={post.slug}
                   readTime={post.readTime}
+                  tags={post.tags ?? []}
                 />
               ))}
             </div>
