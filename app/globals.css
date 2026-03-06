@@ -1,0 +1,419 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ==========================================================================
+   RCT LABS ENTERPRISE DESIGN SYSTEM
+   Theme: "Scientific Dark Mode" - Obsidian Black + Electric Blue
+   Reference: OpenAI, Anthropic, Vercel, Stripe
+   ========================================================================== */
+
+:root {
+  /* LIGHT MODE - Clean Paper aesthetic for documentation */
+  /* Background: Off-white paper #f5f5f7 */
+  --background: oklch(0.97 0.002 240);
+  --foreground: oklch(0.13 0.02 260);
+  
+  /* Card: Slightly elevated white */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.13 0.02 260);
+  
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.02 260);
+
+  /* Primary: Obsidian Black #0a0a0a */
+  --primary: oklch(0.13 0.005 260);
+  --primary-foreground: oklch(0.98 0 0);
+
+  /* Secondary: Muted gray for subtle elements */
+  --secondary: oklch(0.96 0.002 260);
+  --secondary-foreground: oklch(0.2 0.01 260);
+
+  /* Muted: Light gray backgrounds */
+  --muted: oklch(0.96 0.002 260);
+  --muted-foreground: oklch(0.45 0.01 260);
+
+  /* Accent: Electric Blue #3B82F6 - Intelligence indicator */
+  --accent: oklch(0.62 0.19 250);
+  --accent-foreground: oklch(1 0 0);
+
+  /* Semantic colors */
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(1 0 0);
+  
+  /* Success: Verified green for SignedAI */
+  --success: oklch(0.62 0.17 145);
+  --success-foreground: oklch(1 0 0);
+  
+  /* Warning: Amber for uncertain states */
+  --warning: oklch(0.75 0.15 75);
+  --warning-foreground: oklch(0.2 0.02 75);
+
+  /* Borders: Thin 1px borders for structure */
+  --border: oklch(0.92 0.005 260);
+  --input: oklch(0.96 0.002 260);
+  --ring: oklch(0.62 0.19 250);
+
+  /* Chart colors - Scientific palette */
+  --chart-1: oklch(0.62 0.19 250);
+  --chart-2: oklch(0.62 0.17 145);
+  --chart-3: oklch(0.75 0.15 75);
+  --chart-4: oklch(0.65 0.15 320);
+  --chart-5: oklch(0.55 0.12 200);
+
+  --radius: 0.5rem;
+  
+  /* Sidebar */
+  --sidebar: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(0.13 0.02 260);
+  --sidebar-primary: oklch(0.13 0.005 260);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.62 0.19 250);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.92 0.005 260);
+  --sidebar-ring: oklch(0.62 0.19 250);
+}
+
+/* DARK MODE - Scientific Dark Mode (Primary Theme) */
+.dark {
+  /* Background: Obsidian Black #050505 */
+  --background: oklch(0.08 0.005 260);
+  --foreground: oklch(0.93 0.005 260);
+  
+  /* Card: Elevated dark surface #0f0f0f */
+  --card: oklch(0.12 0.005 260);
+  --card-foreground: oklch(0.93 0.005 260);
+  
+  --popover: oklch(0.10 0.005 260);
+  --popover-foreground: oklch(0.93 0.005 260);
+
+  /* Primary: White on dark */
+  --primary: oklch(0.98 0 0);
+  --primary-foreground: oklch(0.08 0.005 260);
+
+  /* Secondary: Dark elevated surface */
+  --secondary: oklch(0.15 0.005 260);
+  --secondary-foreground: oklch(0.85 0.005 260);
+
+  /* Muted: Subdued text and backgrounds */
+  --muted: oklch(0.18 0.005 260);
+  --muted-foreground: oklch(0.55 0.01 260);
+
+  /* Accent: Electric Blue - The signature intelligence color */
+  --accent: oklch(0.65 0.2 250);
+  --accent-foreground: oklch(0.08 0.005 260);
+
+  /* Semantic */
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  
+  --success: oklch(0.65 0.18 145);
+  --success-foreground: oklch(0.1 0.02 145);
+  
+  --warning: oklch(0.78 0.16 75);
+  --warning-foreground: oklch(0.15 0.02 75);
+
+  /* Borders: Subtle structural lines #262626 */
+  --border: oklch(0.22 0.005 260);
+  --input: oklch(0.15 0.005 260);
+  --ring: oklch(0.65 0.2 250);
+
+  /* Charts */
+  --chart-1: oklch(0.65 0.2 250);
+  --chart-2: oklch(0.65 0.18 145);
+  --chart-3: oklch(0.78 0.16 75);
+  --chart-4: oklch(0.68 0.16 320);
+  --chart-5: oklch(0.58 0.14 200);
+  
+  /* Sidebar */
+  --sidebar: oklch(0.10 0.005 260);
+  --sidebar-foreground: oklch(0.93 0.005 260);
+  --sidebar-primary: oklch(0.65 0.2 250);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.65 0.2 250);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.22 0.005 260);
+  --sidebar-ring: oklch(0.65 0.2 250);
+}
+
+@theme inline {
+  /* Typography: Inter for headings, JetBrains Mono for technical */
+  --font-sans: "Inter", "Geist", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Geist Mono", monospace;
+  
+  /* Color System */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  
+  /* Radius - Slightly reduced for precision */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Enterprise Typography System */
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold leading-snug;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl font-semibold leading-snug;
+  }
+
+  /* Technical/Code text styling */
+  code, .font-mono {
+    font-family: var(--font-mono);
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+
+  /* Focus states for accessibility */
+  a {
+    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm;
+  }
+
+  button {
+    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm;
+  }
+
+  input, textarea, select {
+    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+}
+
+/* Added prefers-color-scheme media query for system preference detection */
+@media (prefers-color-scheme: dark) {
+  @supports (color: oklch(0 0 0)) {
+    :root {
+      color-scheme: dark;
+    }
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  @supports (color: oklch(0 0 0)) {
+    :root {
+      color-scheme: light;
+    }
+  }
+}
+
+/* Improved reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   ENTERPRISE ANIMATION SYSTEM
+   Style: Cinematic, Elegant, Engineering-first
+   ========================================================================== */
+
+/* Cinematic equation reveal animation */
+@keyframes equation-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Subtle breathing effect after reveal */
+@keyframes equation-breathe {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.15));
+  }
+  50% {
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.25));
+  }
+}
+
+/* Drifting grid background animation */
+@keyframes grid-drift {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(40px, 40px);
+  }
+}
+
+/* Glow pulse for Electric Blue accent */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
+  }
+}
+
+/* Counter animation for stats */
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in up for sections */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation classes */
+.animate-equation-reveal {
+  animation: equation-reveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-equation-breathe {
+  animation: equation-breathe 4s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.animate-grid-drift {
+  animation: grid-drift 20s linear infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Equation formula styling */
+.equation-formula {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Drifting grid background */
+.grid-background {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.dark .grid-background {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.06) 1px, transparent 1px);
+}
+
+/* Glassmorphism for navbar and floating elements */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass {
+  background: rgba(8, 8, 12, 0.8);
+}
+
+/* Thin border utility for Bento Grid */
+.border-thin {
+  border-width: 1px;
+  border-color: var(--border);
+}
+
+/* Electric blue glow effect */
+.glow-blue {
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
+}
+
+.dark .glow-blue {
+  filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.4));
+}
+
+/* Success glow for verified states */
+.glow-green {
+  filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.3));
+}

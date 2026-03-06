@@ -1,0 +1,10 @@
+.git
+.gitignore
+.eslintrc.json
+.prettierrc
+README.md
+node_modules
+npm-debug.log
+.env.local
+.env.*.local
+.DS_Store

@@ -1,0 +1,179 @@
+"use client"
+
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import Link from "next/link"
+import { ArrowLeft, ArrowRight, Code2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { JITNAPlayground } from "@/components/jitna-playground"
+
+export default function JITNAPage() {
+  return (
+    <main className="min-h-screen bg-background">
+      <Navbar />
+
+      {/* Breadcrumb */}
+      <section className="mx-auto max-w-7xl px-4 py-8 flex items-center gap-2 text-sm text-muted-foreground">
+        <Link href="/philosophy" className="hover:text-foreground transition flex items-center gap-2">
+          <ArrowLeft className="w-4 h-4" /> Philosophy
+        </Link>
+        <span>/</span>
+        <span className="text-foreground font-semibold">JITNA Language</span>
+      </section>
+
+      {/* Hero */}
+      <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground text-balance leading-tight">
+              JITNA Language
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl">
+              Just-In-Time Natural Action language for precise intent specification
+            </p>
+          </div>
+
+          {/* Code Example */}
+          <div className="bg-card border border-border rounded-lg p-8 font-mono text-sm mt-12">
+            <div className="flex items-start gap-4">
+              <Code2 className="w-6 h-6 text-accent mt-2 flex-shrink-0" />
+              <div className="space-y-2 overflow-x-auto w-full">
+                <div className="text-muted-foreground">{`INTENT: Optimize resource allocation`}</div>
+                <div className="text-accent">{`CONTEXT: Budget constraints, team capacity`}</div>
+                <div className="text-secondary">{`PRIORITY: Cost efficiency > Team satisfaction`}</div>
+                <div className="text-muted-foreground">{`ACTION: Allocate resources using Pareto optimization`}</div>
+                <div className="text-accent">{`VALIDATE: Cost savings > 15% AND satisfaction > 4/5`}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Key Features */}
+      <section className="mx-auto max-w-7xl px-4 py-24">
+        <h2 className="text-4xl font-bold text-foreground mb-12">Core Components</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {[
+            {
+              title: "Natural Language Foundation",
+              description:
+                "Written in plain English that both humans and machines can understand. No arcane syntax or cryptic notation.",
+            },
+            {
+              title: "Structured Intent",
+              description:
+                "Clear sections for intent, context, priorities, and validation. Every element serves a purpose in specification.",
+            },
+            {
+              title: "Composability",
+              description:
+                "Combine simple intent statements into complex, hierarchical specifications. Modular and reusable by design.",
+            },
+            {
+              title: "Verifiability",
+              description:
+                "Every JITNA statement includes validation criteria. Actions can be measured against original intent.",
+            },
+          ].map((feature, i) => (
+            <div key={i} className="bg-card border border-border rounded-lg p-8 space-y-3">
+              <h3 className="text-xl font-semibold text-foreground">{feature.title}</h3>
+              <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-24">
+        <JITNAPlayground />
+      </section>
+
+      {/* Example Specifications */}
+      <section className="mx-auto max-w-7xl px-4 py-24 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg">
+        <div className="space-y-8">
+          <h2 className="text-4xl font-bold text-foreground">Example Specifications</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              {
+                title: "Recommendation System",
+                content: `INTENT: Provide personalized product recommendations
+CONTEXT: User browsing history, purchase patterns
+PRIORITY: Relevance > Diversity > Profitability
+ACTION: Generate top 5 recommendations
+VALIDATE: CTR > baseline AND diversity score > 0.7`,
+              },
+              {
+                title: "Content Moderation",
+                content: `INTENT: Maintain community safety while preserving expression
+CONTEXT: User reports, content policies, community norms
+PRIORITY: Prevent harm > Minimize false positives
+ACTION: Flag or remove violating content
+VALIDATE: False positive rate < 5% AND incident response < 2h`,
+              },
+            ].map((example, i) => (
+              <div key={i} className="bg-background rounded-lg p-6 border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-4">{example.title}</h3>
+                <pre className="text-xs text-muted-foreground leading-relaxed font-mono whitespace-pre-wrap break-words">
+                  {example.content}
+                </pre>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits */}
+      <section className="mx-auto max-w-7xl px-4 py-24">
+        <h2 className="text-4xl font-bold text-foreground mb-12">Why JITNA?</h2>
+        <div className="space-y-6">
+          {[
+            {
+              title: "Bridge the Semantic Gap",
+              description:
+                "Close the distance between human intent and machine execution. JITNA ensures nothing is lost in translation.",
+            },
+            {
+              title: "Enable Accountability",
+              description:
+                "Explicit validation criteria create measurable outcomes. We can prove whether systems are truly aligned with intent.",
+            },
+            {
+              title: "Facilitate Collaboration",
+              description:
+                "Humans and AI collaborate using the same language. Engineers, managers, and stakeholders all speak JITNA.",
+            },
+            {
+              title: "Reduce Errors and Bias",
+              description:
+                "By making intent explicit, we can identify and correct misalignments before they compound into systemic problems.",
+            },
+          ].map((benefit, i) => (
+            <div key={i} className="border-l-4 border-accent pl-6 space-y-2">
+              <h3 className="text-xl font-semibold text-foreground">{benefit.title}</h3>
+              <p className="text-muted-foreground leading-relaxed">{benefit.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Next Concept */}
+      <section className="mx-auto max-w-7xl px-4 py-24">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+          <div className="space-y-4 flex-1">
+            <p className="text-sm text-accent font-semibold uppercase tracking-wide">Final Concept</p>
+            <h2 className="text-3xl font-bold text-foreground">Intent OS</h2>
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              Discover the future operating system built entirely on intent-driven principles.
+            </p>
+            <Button asChild className="mt-4">
+              <Link href="/philosophy/intent-os" className="gap-2">
+                Explore Intent OS <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}

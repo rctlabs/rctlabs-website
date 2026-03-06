@@ -1,0 +1,225 @@
+import { Metadata } from "next"
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { 
+  Building2, 
+  Code2, 
+  Briefcase,
+  ArrowRight, 
+  CheckCircle,
+  Shield,
+  Zap,
+  Lock,
+  Users
+} from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Solutions - RCT Labs",
+  description: "AI infrastructure solutions for Enterprise, Developers, and SMEs. Intent-driven, secure, and scalable.",
+}
+
+export default function SolutionsPage() {
+  return (
+    <main className="min-h-screen bg-background dark">
+      <Navbar />
+
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border">
+        <div className="absolute inset-0 grid-background opacity-30" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-24 md:py-32">
+          <div className="max-w-3xl space-y-6">
+            <p className="text-sm font-mono text-accent uppercase tracking-wider">Solutions</p>
+            <h1 className="text-foreground">Built for Your Scale</h1>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              From startups to enterprises, RCT provides the AI infrastructure you need to build, deploy, and scale.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Enterprise */}
+      <section className="mx-auto max-w-6xl px-4 py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-lg bg-accent/10">
+                <Building2 className="w-6 h-6 text-accent" />
+              </div>
+              <span className="text-xs font-mono text-accent">Enterprise</span>
+            </div>
+            <h2 className="text-foreground">For Enterprise</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Deploy AI with confidence. Full audit trails, compliance frameworks, and enterprise-grade security.
+            </p>
+            <ul className="space-y-3">
+              {[
+                { icon: Shield, text: "SOC 2 Type II compliant infrastructure" },
+                { icon: Lock, text: "On-premise or private cloud deployment" },
+                { icon: Users, text: "Dedicated support and SLAs" },
+                { icon: Zap, text: "SignedAI verification for all outputs" },
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <item.icon className="w-4 h-4 text-accent shrink-0" />
+                  {item.text}
+                </li>
+              ))}
+            </ul>
+            <Button asChild>
+              <Link href="/contact">Contact Enterprise Sales</Link>
+            </Button>
+          </div>
+          <div className="bg-card border border-border rounded-lg p-8 space-y-6">
+            <h3 className="text-lg font-semibold text-foreground">Enterprise Features</h3>
+            <div className="space-y-4">
+              {[
+                "Custom model training and fine-tuning",
+                "Private RCTDB instances",
+                "Multi-region deployment",
+                "Advanced analytics dashboard",
+                "Priority API access",
+                "Custom integration support",
+              ].map((feature, i) => (
+                <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <CheckCircle className="w-4 h-4 text-success shrink-0" />
+                  {feature}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Developers */}
+      <section className="border-y border-border bg-card/30">
+        <div className="mx-auto max-w-6xl px-4 py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="order-2 lg:order-1 bg-card border border-border rounded-lg p-6">
+              <pre className="text-xs font-mono text-muted-foreground overflow-x-auto">
+{`import { RCT } from '@rctlabs/sdk';
+
+const client = new RCT({
+  apiKey: process.env.RCT_API_KEY
+});
+
+const result = await client.query({
+  intent: "analyze",
+  data: documentData,
+  verify: true  // SignedAI verification
+});
+
+console.log(result.signature);
+// { tier: "S-4", verified: true }`}
+              </pre>
+            </div>
+            <div className="order-1 lg:order-2 space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-lg bg-accent/10">
+                  <Code2 className="w-6 h-6 text-accent" />
+                </div>
+                <span className="text-xs font-mono text-accent">Developers</span>
+              </div>
+              <h2 className="text-foreground">For Developers</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                Build intent-driven applications with our SDK. TypeScript-first, fully typed, and designed for modern workflows.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  "TypeScript/JavaScript SDK",
+                  "REST and GraphQL APIs",
+                  "Comprehensive documentation",
+                  "Open-source examples",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-accent shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Button variant="outline" asChild>
+                <Link href="/docs">View Documentation</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SMEs */}
+      <section className="mx-auto max-w-6xl px-4 py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-lg bg-accent/10">
+                <Briefcase className="w-6 h-6 text-accent" />
+              </div>
+              <span className="text-xs font-mono text-accent">SMEs</span>
+            </div>
+            <h2 className="text-foreground">For SMEs</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Enterprise-grade AI without enterprise costs. Pay only for what you use with our Loop Intent Memory system.
+            </p>
+            <ul className="space-y-3">
+              {[
+                "Usage-based pricing",
+                "No minimum commitments",
+                "Self-serve onboarding",
+                "Community support",
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <Zap className="w-4 h-4 text-accent shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <Button asChild className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Link href="/docs">
+                Start Free <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+          </div>
+          <div className="bg-card border border-border rounded-lg p-8 space-y-6">
+            <h3 className="text-lg font-semibold text-foreground">Cost Savings</h3>
+            <div className="space-y-4">
+              <div className="flex items-baseline justify-between">
+                <span className="text-muted-foreground">Traditional AI APIs</span>
+                <span className="text-xl font-mono text-muted-foreground line-through">$0.12/query</span>
+              </div>
+              <div className="flex items-baseline justify-between">
+                <span className="text-foreground font-semibold">With Loop Intent Memory</span>
+                <span className="text-2xl font-mono text-success">$0.003/query</span>
+              </div>
+              <div className="pt-4 border-t border-border">
+                <p className="text-sm text-muted-foreground">
+                  Up to 97% cost reduction through intelligent caching and intent reuse.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-6xl px-4 py-24">
+        <div className="bg-card border border-border rounded-lg p-12 text-center space-y-6">
+          <h2 className="text-foreground">Find Your Solution</h2>
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Not sure which plan is right for you? Talk to our team and we will help you find the perfect fit.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Link href="/contact">
+                Contact Us <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/docs">View Documentation</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}

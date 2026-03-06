@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {
+      "userAgent": "*",
+      "allow": "/",
+      "disallow": ["/api/", "/admin/"]
+    }
+  ],
+  "sitemap": "https://rctlabs.co/sitemap.xml"
+}
