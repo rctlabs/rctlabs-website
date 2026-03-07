@@ -1,0 +1,61 @@
+# rctlabs-v0 (Frontend) Rules
+
+## 1. Project Architecture & Stack
+
+- โปรเจกต์นี้เป็น Next.js 14 (App Router) แบบ Monorepo (Turborepo + pnpm)
+- ใช้ TypeScript อย่างเคร่งครัด (Strict Mode) **ห้ามใช้ `any` เด็ดขาด**
+- หากไม่แน่ใจ Type ให้ใช้ `unknown` หรือสร้าง Interface/Type ให้ชัดเจน
+- Styling ใช้ Tailwind CSS ร่วมกับ shadcn/ui และห้ามเขียน CSS แยกไฟล์ถ้าไม่จำเป็น
+
+## 2. v0.dev Integration (การจัดการโค้ดที่มาจาก v0)
+
+- โค้ดที่ได้มาจาก Branch `v0/*` มักจะเป็นโค้ดร่าง (Draft)
+- **เสมอ:** แยก Components ให้เป็นสัดส่วน (Atomic Design)
+- **เสมอ:** แยก Logic ออกจาก UI (ใช้ Custom Hooks)
+- **เสมอ:** ตรวจสอบและแก้ปัญหา Accessibility (a11y) และ Responsive Design ที่ v0 อาจจะทำมาไม่สมบูรณ์
+
+## 3. API Communication (เชื่อมต่อกับ RCT Backend)
+
+- ห้าม Hardcode Mock Data ไว้ใน Production Component
+- การเรียก API ไปหา RCT Kernel (Python) ให้ใช้ Custom Fetcher หรือ SWR/React Query
+- ระวังเรื่อง CORS (Backend อนุญาต `localhost:3010` และ `127.0.0.1:3010`)
+- **Port อ้างอิง:**
+  - Backend หลักมักรันที่ 3000-3004
+  - L3 API (FloatingAI) รันที่ Port 8003
+  - Frontend (rctlabs-v0) รันที่ Port 3010
+
+## 4. Vercel Deployment Safety
+
+- **ห้าม** เขียนโค้ดที่มี Warning จาก ESLint (อิงตาม eslint-config-next@14)
+- **ห้าม** มี Unescaped entities ใน JSX (เช่น ใช้ `&apos;` แทน `'`, `&quot;` แทน `"`)
+- โค้ดที่เขียนเสร็จต้องรับประกันว่าจะไม่ทำให้ Vercel Build step พัง
+- ตรวจสอบ Environment Variables ว่ามี fallback (เช่น `process.env.NEXT_PUBLIC_API_URL || "http://localhost:8003"`)
+
+## 5. Component Standards
+
+- ใช้ Atomic Design pattern: Atoms → Molecules → Organisms → Templates → Pages
+- แยก Business Logic ออกไปเป็น Custom Hooks
+- ทุก Component ต้องมี proper TypeScript interfaces สำหรับ Props
+- ใช้ React Server Components (RSC) เมื่อเป็นไปได้
+- Client Components ต้องมี `"use client"` directive ชัดเจน
+
+## 6. State Management
+
+- ใช้ React Hooks (useState, useEffect, useContext) สำหรับ local state
+- ใช้ SWR หรือ React Query สำหรับ server state
+- ห้ามใช้ Redux ถ้าไม่จำเป็นจริงๆ
+- Loading states และ Error states ต้องมีทุก Component ที่ fetch data
+
+## 7. Accessibility & UX
+
+- ทุก interactive element ต้องมี proper ARIA labels
+- รองรับ keyboard navigation
+- Color contrast ต้องผ่าน WCAG AA standard
+- Responsive design สำหรับ mobile, tablet, desktop (sm:, md:, lg:, xl:, 2xl:)
+
+## 8. Performance
+
+- ใช้ Next.js Image component สำหรับรูปภาพ
+- Lazy load components ที่ไม่จำเป็นต้องแสดงทันที
+- Optimize bundle size ด้วย dynamic imports
+- ใช้ React.memo() สำหรับ expensive components

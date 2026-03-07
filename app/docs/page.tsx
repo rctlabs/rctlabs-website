@@ -22,7 +22,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Documentation - RCT Labs",
-  description: "RCT Ecosystem v2.6.1 documentation — Architecture, APIs, RFCs, and deployment guides.",
+  description: "RCT Ecosystem v2.6.2 documentation — Architecture, APIs, RFCs, and deployment guides.",
 }
 
 export default function DocsPage() {
