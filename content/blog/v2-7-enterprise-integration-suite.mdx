@@ -1,0 +1,71 @@
+---
+title: "v2.7.0: Slack Gateway & Notion Auto-Sync — Enterprise Integration Suite"
+author: "Ittirit Saengow"
+date: "2026-03-11"
+category: "release"
+excerpt: "RCT Ecosystem v2.7.0 introduces the Slack Gateway with 2-Chat Architecture and Notion Auto-Sync for real-time AI collaboration and automated documentation."
+tags: ["Release", "Slack", "Notion", "Enterprise", "v2.7.0"]
+readTime: 5
+---
+
+# v2.7.0: Enterprise Integration Suite
+
+RCT Ecosystem v2.7.0 marks a major milestone — bringing the Constitutional AI Operating System directly into your team's workflow through **Slack Gateway** and **Notion Auto-Sync**.
+
+## Slack Gateway: 2-Chat Architecture
+
+The new Slack Gateway (port 8030) connects your Slack workspace to the full RCT Ecosystem through a dual-channel architecture:
+
+- **Research Channels** (`#project-research`) — Powered by Analysearch Intent with Mirror Mode for deep analysis
+- **Execution Channels** (`#project-execution`) — Powered by Kernel 9 Tiers with JITNA Protocol for code generation
+
+### Key Features
+
+- `/rct new <project>` — Creates paired research + execution channels
+- **Block Kit UI** — Consensus buttons, real-time progress bars, approval workflows
+- **Dynamic Routing** — Automatically routes messages to the correct AI service
+- **Context Sync** — Maintains conversation context across channels via RCTDB v2.0
+
+## Notion Auto-Sync
+
+9 synchronized Notion databases serve as the enterprise knowledge base:
+
+1. Core Philosophy & Equations
+2. Seven Genome System
+3. System Architecture Wiki
+4. Creator Profile
+5. Services Registry (52 microservices)
+6. Frontend Components (50 components)
+7. TODO/FIXME Tracker (322 items)
+8. ADRs & Core Concepts (20 ADRs)
+9. Dashboard v3.0
+
+All pages maintain bilingual TH/EN content with automated version tracking.
+
+## Test Results
+
+- **2,310 kernel tests** passing (2,210 baseline + 100 new)
+- **866 microservice tests** passing
+- **63 Slack Gateway tests** — router, channel manager, integration
+- **37 Auto-Sync tests** — page sync, version tracking, bilingual content
+- **Total: 3,176 tests** across the ecosystem
+
+## Getting Started
+
+```bash
+# Start the Slack Gateway
+cd rct_platform/microservices/slack-gateway
+cp .env.example .env  # Add your Slack credentials
+uvicorn app.main:app --host 0.0.0.0 --port 8030
+
+# Or via Docker Compose
+docker-compose up -d slack-gateway
+```
+
+Configure your Slack App at [api.slack.com/apps](https://api.slack.com/apps) with the webhook URLs, and you're ready to collaborate with AI directly from Slack.
+
+## What's Next
+
+- Socket Mode support for easier local development
+- Custom AI Skills triggered from Slack commands
+- Automated benchmark reporting in Notion dashboards

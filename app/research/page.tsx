@@ -117,7 +117,7 @@ export default function ResearchPage() {
       <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
         <div className="space-y-8 text-center max-w-4xl mx-auto">
           <p className="text-sm font-mono text-accent uppercase tracking-wider">Research & Releases</p>
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground text-balance leading-tight">RCT Ecosystem v2.5.0</h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-foreground text-balance leading-tight">RCT Ecosystem v2.7.0</h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto text-balance">
             Version history, architecture papers, and technical specifications for the Constitutional AI Operating System
           </p>
@@ -167,7 +167,7 @@ export default function ResearchPage() {
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {[
-            { label: "Tests Passing", value: "2,210" },
+            { label: "Tests Passing", value: "3,176" },
             { label: "Production Algorithms", value: "41" },
             { label: "Architecture Layers", value: "10" },
             { label: "Regional Markets", value: "8" },

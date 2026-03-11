@@ -28,7 +28,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Platform - RCT Labs",
-  description: "RCT Ecosystem v2.5.0 — 10-Layer Constitutional AI Operating System with 41 algorithms, 2210 tests, and 99.98% uptime.",
+  description: "RCT Ecosystem v2.7.0 — 10-Layer Constitutional AI Operating System with 41 algorithms, 3176 tests, and 99.98% uptime.",
 }
 
 export default function PlatformPage() {
@@ -42,9 +42,9 @@ export default function PlatformPage() {
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-24 md:py-32">
           <div className="max-w-3xl space-y-6">
             <p className="text-sm font-mono text-accent uppercase tracking-wider">Platform</p>
-            <h1 className="text-foreground">RCT Ecosystem v2.5.0</h1>
+            <h1 className="text-foreground">RCT Ecosystem v2.7.0</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Constitutional AI Operating System — 10-Layer architecture, 41 production algorithms, 2,210 tests passing, and 99.98% uptime SLA.
+              Constitutional AI Operating System — 10-Layer architecture, 41 production algorithms, 3,176 tests passing, and 99.98% uptime SLA.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button asChild className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground">
@@ -76,7 +76,7 @@ export default function PlatformPage() {
               { layer: "Layer 10", name: "Enterprise Hardening", desc: "Security (JWT RS256, RBAC), Validation, Performance, Resilience, LLM Intelligence", icon: Shield, badge: "NEW v2.3.1" },
               { layer: "Layer 9", name: "Control Plane", desc: "JITNA Wire Schema, ED25519 Signed Execution, Deterministic Replay Engine", icon: Key, badge: "v2.3.0" },
               { layer: "Layer 8", name: "Regional Language Adapter", desc: "8 language-region pairs (JP, KR, CN, TW, TH, VN, ID, US) with compliance", icon: Globe, badge: "8 Markets" },
-              { layer: "Layer 7", name: "Universal Adapters", desc: "Home Assistant, Rotki, Blender, Terraform, n8n, Obsidian, FFmpeg + more", icon: Network, badge: "13 Adapters" },
+              { layer: "Layer 7", name: "Universal Adapters", desc: "Slack Gateway, Notion Auto-Sync, Home Assistant, Rotki, Blender, Terraform, n8n + more", icon: Network, badge: "NEW v2.7.0" },
               { layer: "Layer 6", name: "JITNA Protocol", desc: "RFC-001 v2.0 — AI-to-AI communication with PROPOSE→COUNTER→ACCEPT/REJECT", icon: Workflow, badge: "RFC-001" },
               { layer: "Layer 5", name: "SignedAI", desc: "Multi-LLM attestation: GPT-4 + Claude 3.5 + Gemini Pro consensus", icon: CheckCircle, badge: "0.3% Halluc." },
               { layer: "Layer 4", name: "RCTDB v2.0", desc: "8-dimensional universal memory: Registry, Vault, and Governance zones", icon: Database, badge: "8D Memory" },
@@ -263,6 +263,59 @@ export default function PlatformPage() {
                 <p className="text-xs text-muted-foreground">{item.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Enterprise Integrations (v2.7.0) */}
+      <section id="integrations" className="mx-auto max-w-6xl px-4 py-24">
+        <div className="space-y-12">
+          <div className="max-w-2xl space-y-4">
+            <p className="text-sm font-mono text-accent uppercase tracking-wider">v2.7.0 — Enterprise Integration Suite</p>
+            <h2 className="text-foreground">Slack Gateway & Notion Auto-Sync</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Real-time AI collaboration through 2-Chat Architecture and automated knowledge synchronization.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-card border border-border rounded-lg p-6 space-y-4 hover:border-accent/50 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-lg bg-accent/10">
+                  <Activity className="w-6 h-6 text-accent" />
+                </div>
+                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">NEW v2.7.0</span>
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Slack Gateway</h3>
+              <p className="text-sm text-muted-foreground">2-Chat Architecture — Research channels powered by Analysearch Intent, Execution channels powered by Kernel 9 Tiers with JITNA Protocol.</p>
+              <ul className="space-y-2">
+                {["Dynamic message routing", "Block Kit UI (Consensus, Progress, Approval)", "Slash commands: /rct new, list, status", "Real-time progress tracking"].map((f, i) => (
+                  <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <CheckCircle className="w-3 h-3 text-accent shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-6 space-y-4 hover:border-accent/50 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-lg bg-accent/10">
+                  <Database className="w-6 h-6 text-accent" />
+                </div>
+                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">NEW v2.7.0</span>
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Notion Auto-Sync</h3>
+              <p className="text-sm text-muted-foreground">Automated documentation synchronization — 9 Notion databases, bilingual TH/EN, version tracking, and deployment status dashboards.</p>
+              <ul className="space-y-2">
+                {["9-database wiki architecture", "Bilingual TH/EN auto-translation", "Version tracking with CHANGELOG sync", "Deploy status dashboard v3.0"].map((f, i) => (
+                  <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <CheckCircle className="w-3 h-3 text-accent shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>

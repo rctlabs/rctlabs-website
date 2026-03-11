@@ -50,7 +50,7 @@ export default function AboutPage() {
     {
       icon: Zap,
       title: "Enterprise-Grade",
-      description: "99.98% uptime SLA, 33 Docker containers, 57 Kubernetes resources, and 2,210 tests passing",
+      description: "99.98% uptime SLA, 33 Docker containers, 57 Kubernetes resources, and 3,176 tests passing",
     },
   ]
 
@@ -167,13 +167,14 @@ export default function AboutPage() {
               { year: "v2.3", event: "Control Plane + Enterprise Hardening — ED25519, JWT RS256, RBAC" },
               { year: "v2.4", event: "Analysearch Intent Engine — 41 production algorithms, 2,210 tests" },
               { year: "v2.5", event: "Infrastructure Layer — Docker, Kubernetes, API Gateway, Monitoring" },
+              { year: "v2.7", event: "Enterprise Integration Suite — Slack Gateway, Notion Auto-Sync, 3,176 tests" },
             ].map((item, i) => (
               <div key={i} className="flex gap-6">
                 <div className="flex flex-col items-center">
                   <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-mono text-xs">
                     {item.year}
                   </div>
-                  {i < 5 && <div className="w-0.5 h-16 bg-border mt-4" />}
+                  {i < 6 && <div className="w-0.5 h-16 bg-border mt-4" />}
                 </div>
                 <div className="pt-2">
                   <p className="text-sm font-semibold text-accent mb-1">{item.year}</p>
