@@ -1,13 +1,19 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import { useState, useEffect } from "react"
 import { Menu, X, Command } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { getLocaleFromPathname } from "@/lib/i18n"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname) || 'en'
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -33,12 +39,12 @@ export function Navbar() {
   }, [isOpen])
 
   const links = [
-    { href: "/platform", label: "Platform" },
-    { href: "/platform#infrastructure", label: "Infrastructure" },
-    { href: "/solutions", label: "Solutions" },
-    { href: "/research", label: "Research" },
-    { href: "/docs", label: "Docs" },
-    { href: "/about", label: "About" },
+    { href: `/${locale}/platform`, label: locale === 'th' ? "แพลตฟอร์ม" : "Platform" },
+    { href: `/${locale}/platform#infrastructure`, label: locale === 'th' ? "โครงสร้างพื้นฐาน" : "Infrastructure" },
+    { href: `/${locale}/solutions`, label: locale === 'th' ? "โซลูชัน" : "Solutions" },
+    { href: `/${locale}/research`, label: locale === 'th' ? "งานวิจัย" : "Research" },
+    { href: `/${locale}/docs`, label: locale === 'th' ? "เอกสาร" : "Docs" },
+    { href: `/${locale}/about`, label: locale === 'th' ? "เกี่ยวกับเรา" : "About" },
   ]
 
   return (
@@ -52,11 +58,13 @@ export function Navbar() {
       <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link
-          href="/"
-          className="flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+          href={`/${locale}`}
+          className="flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
         >
-          <div className="text-xl font-bold tracking-tight text-foreground">RCT</div>
-          <span className="text-sm font-medium text-muted-foreground">Labs</span>
+          <div className="text-xl font-bold tracking-tight text-foreground flex items-center gap-1.5">
+            <span>RCT</span>
+            <span className="text-sm font-medium text-muted-foreground">Labs</span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
@@ -80,9 +88,12 @@ export function Navbar() {
             <span>K</span>
           </button>
           
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+          
           {/* Primary CTA */}
           <Button asChild size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-            <Link href="/docs">Initialize</Link>
+            <Link href={`/${locale}/docs`}>{locale === 'th' ? 'เริ่มต้นใช้งาน' : 'Initialize'}</Link>
           </Button>
         </div>
 
@@ -116,9 +127,13 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <div className="pt-3 mt-2 border-t border-border">
+          <div className="pt-3 mt-2 border-t border-border space-y-2">
+            <div className="flex items-center justify-between px-3 py-2">
+              <span className="text-sm text-muted-foreground">{locale === 'th' ? 'ภาษา' : 'Language'}</span>
+              <LanguageSwitcher />
+            </div>
             <Button asChild className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="sm">
-              <Link href="/docs" onClick={() => setIsOpen(false)}>Initialize</Link>
+              <Link href={`/${locale}/docs`} onClick={() => setIsOpen(false)}>{locale === 'th' ? 'เริ่มต้นใช้งาน' : 'Initialize'}</Link>
             </Button>
           </div>
         </div>

@@ -1,56 +1,82 @@
 import type { Metadata } from "next"
-import { createPageMetadata } from "@/lib/seo"
+import { createBilingualMetadata, type Locale } from "@/lib/seo-bilingual"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Users, Lightbulb, Target, Zap } from "lucide-react"
+import { headers } from "next/headers"
+import { loadTranslations } from "@/lib/i18n"
 
-export const metadata: Metadata = createPageMetadata(
-  "About RCT Labs",
-  "Learn about RCT Labs - our mission, values, team, and approach to intent-driven AI research.",
-  "/about",
-)
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers()
+  const locale = (headersList.get("x-locale") || "en") as Locale
 
-export default function AboutPage() {
-  const teamMembers = [
-    {
-      name: "Dr. Sarah Chen",
-      role: "Co-Founder & CEO",
-      bio: "Leading RCT Labs with 15 years of AI research expertise",
-    },
-    {
-      name: "Prof. James Wilson",
-      role: "Chief Research Officer",
-      bio: "Advancing intent-driven AI through rigorous research",
-    },
-    {
-      name: "Dr. Alex Patel",
-      role: "VP of Engineering",
-      bio: "Building scalable systems for AI operations",
-    },
-  ]
+  return createBilingualMetadata(
+    locale,
+    "About RCT Labs",
+    "เกี่ยวกับ RCT Labs",
+    "Learn about RCT Labs - our mission, values, team, and approach to intent-driven AI research.",
+    "เรียนรู้เกี่ยวกับ RCT Labs - พันธกิจ ค่านิยม ทีมงาน และแนวทางการวิจัย AI ที่ขับเคลื่อนด้วยเจตนา",
+    "/about",
+    ["AI research", "intent-driven AI", "Thailand AI", "Constitutional AI"]
+  )
+}
+
+export default async function AboutPage() {
+  const headersList = await headers()
+  const locale = (headersList.get("x-locale") || "en") as Locale
+  const t = await loadTranslations(locale)
+
+  const a = (key: string) => {
+    const about = (t as Record<string, unknown>)?.about as Record<string, string> | undefined
+    return about?.[key] || key
+  }
 
   const values = [
     {
       icon: Target,
-      title: "Constitutional AI",
-      description: "Every output verified through multi-LLM consensus with ED25519 cryptographic signatures and 0.3% hallucination rate",
+      title: a("value_constitutional_title"),
+      description: a("value_constitutional_desc"),
     },
     {
       icon: Lightbulb,
-      title: "Architecture-First",
-      description: "10-Layer system with 6 Kernel RFCs, 7 Genome System, and 41 production algorithms across 9 tiers",
+      title: a("value_architecture_title"),
+      description: a("value_architecture_desc"),
     },
     {
       icon: Users,
-      title: "Regional Sovereignty",
-      description: "8 language-region markets with PDPA, APPI, PIPA, PIPL compliance and data locality",
+      title: a("value_regional_title"),
+      description: a("value_regional_desc"),
     },
     {
       icon: Zap,
-      title: "Enterprise-Grade",
-      description: "99.98% uptime SLA, 33 Docker containers, 57 Kubernetes resources, and 3,176 tests passing",
+      title: a("value_enterprise_title"),
+      description: a("value_enterprise_desc"),
+    },
+  ]
+
+  const teamMembers = [
+    {
+      name: locale === 'th' ? "ดร. ซาร่า เฉิน" : "Dr. Sarah Chen",
+      role: locale === 'th' ? "ผู้ร่วมก่อตั้งและ CEO" : "Co-Founder & CEO",
+      bio: locale === 'th' 
+        ? "ผู้นำ RCT Labs ด้วยประสบการณ์วิจัย AI 15 ปี"
+        : "Leading RCT Labs with 15 years of AI research expertise",
+    },
+    {
+      name: locale === 'th' ? "ศ. เจมส์ วิลสัน" : "Prof. James Wilson",
+      role: locale === 'th' ? "Chief Research Officer" : "Chief Research Officer",
+      bio: locale === 'th'
+        ? "พัฒนา AI ที่ขับเคลื่อนด้วยเจตนาผ่านการวิจัยอย่างเข้มงวด"
+        : "Advancing intent-driven AI through rigorous research",
+    },
+    {
+      name: locale === 'th' ? "ดร. อเล็กซ์ พาเทล" : "Dr. Alex Patel",
+      role: locale === 'th' ? "VP of Engineering" : "VP of Engineering",
+      bio: locale === 'th'
+        ? "สร้างระบบที่สามารถขยายได้สำหรับการดำเนินงาน AI"
+        : "Building scalable systems for AI operations",
     },
   ]
 
@@ -63,10 +89,10 @@ export default function AboutPage() {
         <div className="space-y-8 text-center max-w-4xl mx-auto">
           <div className="space-y-4">
             <h1 className="text-5xl md:text-6xl font-bold text-foreground text-balance leading-tight">
-              About RCT Labs
+              {a("title")}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto text-balance">
-              Building the Constitutional AI Operating System — 10-Layer architecture, 41 algorithms, and absolute data sovereignty.
+              {a("subtitle")}
             </p>
           </div>
         </div>
@@ -75,26 +101,22 @@ export default function AboutPage() {
       {/* Mission & Vision */}
       <section className="mx-auto max-w-7xl px-4 py-24 grid grid-cols-1 md:grid-cols-2 gap-16">
         <div className="space-y-6">
-          <h2 className="text-4xl font-bold text-foreground">Our Mission</h2>
+          <h2 className="text-4xl font-bold text-foreground">{a("mission_title")}</h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            We are committed to building AI systems that are constitutionally sound — where every output is verified through
-            multi-LLM consensus, cryptographically signed, and fully auditable. Our 10-Layer architecture ensures trust at every level.
+            {a("mission_p1")}
           </p>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Through the JITNA Protocol (RFC-001 v2.0), SignedAI consensus, and 41 production algorithms, we're building the
-            Constitutional AI Operating System — a fundamental shift in how AI systems operate with 0.3% hallucination rate.
+            {a("mission_p2")}
           </p>
         </div>
 
         <div className="space-y-6">
-          <h2 className="text-4xl font-bold text-foreground">Our Vision</h2>
+          <h2 className="text-4xl font-bold text-foreground">{a("vision_title")}</h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            A future where every AI decision is verifiable, every output is signed, and every interaction respects
-            regional compliance and data sovereignty across 8 markets.
+            {a("vision_p1")}
           </p>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            We envision enterprise AI infrastructure with 99.98% uptime, 3.74x cost efficiency, and Constitutional AI
-            guardrails that make hallucination-free AI the standard, not the exception.
+            {a("vision_p2")}
           </p>
         </div>
       </section>
@@ -103,9 +125,9 @@ export default function AboutPage() {
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold text-foreground">Our Core Values</h2>
+            <h2 className="text-4xl font-bold text-foreground">{a("values_title")}</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              These principles guide every decision we make at RCT Labs
+              {locale === 'th' ? 'หลักการเหล่านี้เป็นแนวทางในทุกการตัดสินใจของเราที่ RCT Labs' : 'These principles guide every decision we make at RCT Labs'}
             </p>
           </div>
 
@@ -128,9 +150,9 @@ export default function AboutPage() {
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold text-foreground">Leadership Team</h2>
+            <h2 className="text-4xl font-bold text-foreground">{a("team_title")}</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Experienced researchers and builders united by a shared vision
+              {a("team_subtitle")}
             </p>
           </div>
 
@@ -155,8 +177,8 @@ export default function AboutPage() {
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold text-foreground">Our Journey</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Key milestones in RCT Labs' evolution</p>
+            <h2 className="text-4xl font-bold text-foreground">{a("journey_title")}</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{a("journey_subtitle")}</p>
           </div>
 
           <div className="space-y-8 max-w-3xl mx-auto">
@@ -189,16 +211,16 @@ export default function AboutPage() {
       {/* CTA Section */}
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="bg-gradient-to-r from-accent/10 to-secondary/10 rounded-lg p-12 md:p-16 text-center space-y-6">
-          <h2 className="text-4xl font-bold text-foreground">Join Our Mission</h2>
+          <h2 className="text-4xl font-bold text-foreground">{a("cta_title")}</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            We're always looking for talented researchers, engineers, and builders to help shape the future of AI.
+            {a("cta_subtitle")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild>
-              <Link href="/company/careers">View Careers</Link>
+              <Link href="/company/careers">{locale === 'th' ? 'ดูตำแหน่งงาน' : 'View Careers'}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link href="/contact">Get in Touch</Link>
+              <Link href="/contact">{locale === 'th' ? 'ติดต่อเรา' : 'Get in Touch'}</Link>
             </Button>
           </div>
         </div>

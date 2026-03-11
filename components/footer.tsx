@@ -1,8 +1,27 @@
+"use client"
+
 import Link from "next/link"
-import { Github, Twitter, Linkedin, Mail } from "lucide-react"
+import { Github, Twitter, Linkedin } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { getLocaleFromPathname } from "@/lib/i18n"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname) || 'en'
+
+  const t = {
+    tagline: locale === 'th' 
+      ? 'ระบบปฏิบัติการ AI แบบรัฐธรรมนูญสำหรับยุคปัญญาประดิษฐ์'
+      : 'Constitutional AI Operating System for the Intelligence Age',
+    copyright: locale === 'th'
+      ? `© ${currentYear} RCT Labs สงวนลิขสิทธิ์`
+      : `© ${currentYear} RCT Labs. All rights reserved.`,
+    designedBy: locale === 'th' ? 'ออกแบบโดย The Architect' : 'Designed by The Architect',
+    uptime: '99.98% Uptime SLA',
+    version: 'v2.7.0',
+    testsPassingLabel: locale === 'th' ? 'การทดสอบผ่าน' : 'tests passing',
+  }
 
   return (
     <footer className="border-t border-border bg-card/50 mt-16 py-12">
@@ -12,20 +31,20 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1 space-y-4">
             <div className="text-lg font-bold text-foreground tracking-tight">RCT Labs</div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Constitutional AI Operating System for the Intelligence Age.
+              {t.tagline}
             </p>
             <div className="flex items-center gap-2 pt-1">
-              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-0.5 rounded">v2.5.0</span>
-              <span className="text-xs font-mono text-emerald-400">2,210 tests passing</span>
+              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-0.5 rounded">{t.version}</span>
+              <span className="text-xs font-mono text-emerald-400">3,176 {t.testsPassingLabel}</span>
             </div>
             <div className="flex gap-3 pt-2">
-              <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link href="https://github.com/rctlabs" className="text-muted-foreground hover:text-foreground transition-colors" target="_blank" rel="noopener noreferrer">
                 <Github className="w-4 h-4" />
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link href="https://twitter.com/rctlabs" className="text-muted-foreground hover:text-foreground transition-colors" target="_blank" rel="noopener noreferrer">
                 <Twitter className="w-4 h-4" />
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link href="https://linkedin.com/company/rctlabs" className="text-muted-foreground hover:text-foreground transition-colors" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="w-4 h-4" />
               </Link>
             </div>
@@ -33,40 +52,40 @@ export function Footer() {
 
           {/* Platform */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 text-foreground">Platform</h4>
+            <h4 className="text-sm font-semibold mb-4 text-foreground">{locale === 'th' ? 'แพลตฟอร์ม' : 'Platform'}</h4>
             <div className="space-y-2.5">
-              <Link href="/platform" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Overview
+              <Link href={`/${locale}/platform`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'ภาพรวม' : 'Overview'}
               </Link>
-              <Link href="/platform#signedai" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+              <Link href={`/${locale}/platform#signedai`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
                 SignedAI
               </Link>
-              <Link href="/platform#rctdb" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+              <Link href={`/${locale}/platform#rctdb`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
                 RCTDB
               </Link>
-              <Link href="/platform#studio" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+              <Link href={`/${locale}/platform#studio`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
                 Specialist Studio
               </Link>
-              <Link href="/platform#infrastructure" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Infrastructure
+              <Link href={`/${locale}/platform#infrastructure`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'โครงสร้างพื้นฐาน' : 'Infrastructure'}
               </Link>
-              <Link href="/platform#regional" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Regional Language
+              <Link href={`/${locale}/platform#regional`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'ภาษาท้องถิ่น' : 'Regional Language'}
               </Link>
             </div>
           </div>
 
           {/* Solutions */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 text-foreground">Solutions</h4>
+            <h4 className="text-sm font-semibold mb-4 text-foreground">{locale === 'th' ? 'โซลูชัน' : 'Solutions'}</h4>
             <div className="space-y-2.5">
-              <Link href="/solutions" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Enterprise
+              <Link href={`/${locale}/solutions`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'องค์กร' : 'Enterprise'}
               </Link>
-              <Link href="/solutions" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Developers
+              <Link href={`/${locale}/solutions`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'นักพัฒนา' : 'Developers'}
               </Link>
-              <Link href="/solutions" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+              <Link href={`/${locale}/solutions`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
                 SMEs
               </Link>
             </div>
@@ -74,35 +93,35 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 text-foreground">Resources</h4>
+            <h4 className="text-sm font-semibold mb-4 text-foreground">{locale === 'th' ? 'ทรัพยากร' : 'Resources'}</h4>
             <div className="space-y-2.5">
-              <Link href="/docs" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Documentation
+              <Link href={`/${locale}/docs`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'เอกสาร' : 'Documentation'}
               </Link>
-              <Link href="/research" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Research
+              <Link href={`/${locale}/research`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'งานวิจัย' : 'Research'}
               </Link>
-              <Link href="/blog" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Blog
+              <Link href={`/${locale}/blog`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'บล็อก' : 'Blog'}
               </Link>
-              <Link href="/about" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                About
+              <Link href={`/${locale}/about`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'เกี่ยวกับเรา' : 'About'}
               </Link>
             </div>
           </div>
 
           {/* Legal */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 text-foreground">Legal</h4>
+            <h4 className="text-sm font-semibold mb-4 text-foreground">{locale === 'th' ? 'กฎหมาย' : 'Legal'}</h4>
             <div className="space-y-2.5">
-              <Link href="/privacy" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Privacy
+              <Link href={`/${locale}/privacy`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'ความเป็นส่วนตัว' : 'Privacy'}
               </Link>
-              <Link href="/terms" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Terms
+              <Link href={`/${locale}/terms`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'ข้อกำหนด' : 'Terms'}
               </Link>
-              <Link href="/contact" className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
-                Contact
+              <Link href={`/${locale}/contact`} className="text-xs text-muted-foreground hover:text-foreground transition-colors block">
+                {locale === 'th' ? 'ติดต่อเรา' : 'Contact'}
               </Link>
             </div>
           </div>
@@ -111,15 +130,15 @@ export function Footer() {
         {/* Bottom Section */}
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © {currentYear} RCT Labs. All rights reserved.
+            {t.copyright}
           </p>
           <div className="flex items-center gap-4">
             <p className="text-xs text-muted-foreground font-mono">
-              Designed by The Architect
+              {t.designedBy}
             </p>
             <span className="text-xs text-muted-foreground">|</span>
             <p className="text-xs text-muted-foreground font-mono">
-              99.98% Uptime SLA
+              {t.uptime}
             </p>
           </div>
         </div>
