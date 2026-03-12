@@ -28,6 +28,7 @@ import {
   Workflow,
   Brain
 } from "lucide-react"
+import { TenLayerArchitecture } from "@/components/ten-layer-architecture"
 
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers()
@@ -122,6 +123,11 @@ export default async function PlatformPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Interactive 10-Layer Architecture Visualization */}
+      <section id="architecture-viz" className="mx-auto max-w-6xl px-4 py-24 border-y border-border bg-card/30">
+        <TenLayerArchitecture locale={locale} />
       </section>
 
       {/* 10-Layer Architecture */}
