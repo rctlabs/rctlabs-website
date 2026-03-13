@@ -34,9 +34,31 @@ interface ChatMessage {
   topic?: string | null
   suggestions?: string[]
   feedback?: "up" | "down" | null
-  source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback"
+  source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch"
   model_used?: string
   tokens_used?: number
+  metadata?: {
+    intent?: string
+    keywords?: string[]
+    confidence?: number
+    crystallized?: string
+    iterations?: number
+  }
+}
+
+type AnalysisMode = "chat" | "analyze" | "mirror"
+
+interface AnalysisResult {
+  status: string
+  analysis?: {
+    intent: string
+    keywords: string[]
+    confidence: number
+    crystallized?: string
+    iterations?: number
+  }
+  source: string
+  error?: string
 }
 
 /* ------------------------------------------------------------------ */
@@ -64,6 +86,10 @@ export function FloatingAI() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  
+  // Analysis mode state
+  const [analysisMode, setAnalysisMode] = useState<AnalysisMode>("chat")
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null)
 
   /* Auto-scroll on new messages */
   useEffect(() => {
@@ -159,7 +185,7 @@ export function FloatingAI() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    sendMessage(input)
+    handleAnalysisSubmit(input)
   }
 
   function handleSuggestion(text: string) {
@@ -179,7 +205,122 @@ export function FloatingAI() {
   function handleClearChat() {
     setMessages([])
     setShowScenarios(true)
+    setAnalysisResult(null)
   }
+
+  // Analysis function
+  const runAnalysis = useCallback(
+    async (text: string, mode: AnalysisMode) => {
+      if (!text.trim() || loading) return
+
+      const userMsg: ChatMessage = {
+        id: Date.now().toString(),
+        role: "user",
+        content: text.trim(),
+        timestamp: new Date(),
+      }
+      setMessages((prev) => [...prev, userMsg])
+      setInput("")
+      setLoading(true)
+      setShowScenarios(false)
+
+      try {
+        const endpoint = mode === "mirror" 
+          ? `${API_URL}/rctlabs/assistant/mirror?max_iterations=3`
+          : `${API_URL}/rctlabs/assistant/analyze`
+        
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: text.trim(),
+            mode: mode === "mirror" ? "mirror" : "deep",
+            query_type: "general",
+            complexity: "high",
+            session_id: SESSION_ID,
+          }),
+        })
+
+        if (!res.ok) throw new Error("API error")
+
+        const data = await res.json()
+        setAnalysisResult(data)
+
+        // Format analysis result for display
+        const analysis = data.analysis || {}
+        const formattedContent = formatAnalysisResult(analysis)
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: (Date.now() + 1).toString(),
+            role: "assistant",
+            content: formattedContent,
+            timestamp: new Date(),
+            verified: data.status === "success",
+            source: data.source || "analysearch",
+            metadata: {
+              intent: analysis.intent,
+              keywords: analysis.keywords,
+              confidence: analysis.confidence,
+              crystallized: analysis.crystallized,
+              iterations: analysis.iterations,
+            },
+          },
+        ])
+      } catch {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: (Date.now() + 1).toString(),
+            role: "assistant",
+            content: "ขออภัย — ไม่สามารถวิเคราะห์คำถามได้ในขณะนี้",
+            timestamp: new Date(),
+            verified: false,
+            source: "fallback",
+          },
+        ])
+      } finally {
+        setLoading(false)
+      }
+    },
+    [loading]
+  )
+
+  // Format analysis result
+  const formatAnalysisResult = (analysis: Record<string, unknown>): string => {
+    const lines: string[] = []
+    
+    if (analysis.intent) {
+      lines.push(`**Intent Detected:** ${analysis.intent}`)
+    }
+    if (analysis.confidence) {
+      lines.push(`**Confidence:** ${((analysis.confidence as number) * 100).toFixed(1)}%`)
+    }
+    if (analysis.keywords && Array.isArray(analysis.keywords)) {
+      lines.push(`**Keywords:** ${(analysis.keywords as string[]).join(", ")}`)
+    }
+    if (analysis.crystallized) {
+      lines.push(`\n**Crystallized:** ${analysis.crystallized}`)
+    }
+    if (analysis.iterations) {
+      lines.push(`**Mirror Iterations:** ${analysis.iterations}`)
+    }
+    
+    return lines.join("\n") || "No analysis data available"
+  }
+
+  // Handle analysis mode submission
+  const handleAnalysisSubmit = useCallback(
+    (text: string) => {
+      if (analysisMode === "chat") {
+        sendMessage(text)
+      } else {
+        runAnalysis(text, analysisMode)
+      }
+    },
+    [analysisMode, sendMessage, runAnalysis]
+  )
 
   /* ---------------------------------------------------------------- */
   /* Source indicator helper                                           */
@@ -304,6 +445,48 @@ export function FloatingAI() {
                   <X className="w-5 h-5" />
                 </button>
               </div>
+            </div>
+
+            {/* ---------- Analysis Mode Selector ---------- */}
+            <div className="flex items-center gap-1 px-3 py-2 border-b border-border bg-card/50">
+              <button
+                onClick={() => setAnalysisMode("chat")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  analysisMode === "chat"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                <span>💬</span>
+                <span>Chat</span>
+              </button>
+              <button
+                onClick={() => setAnalysisMode("analyze")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  analysisMode === "analyze"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                <span>🔍</span>
+                <span>Analyze</span>
+              </button>
+              <button
+                onClick={() => setAnalysisMode("mirror")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  analysisMode === "mirror"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                <span>🪞</span>
+                <span>Mirror</span>
+              </button>
+              {analysisMode !== "chat" && (
+                <span className="ml-auto text-[10px] text-muted-foreground">
+                  {analysisMode === "mirror" ? "Iterative refinement" : "Deep intent analysis"}
+                </span>
+              )}
             </div>
 
             {/* ---------- Messages Area ---------- */}
