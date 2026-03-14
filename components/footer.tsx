@@ -19,7 +19,7 @@ export function Footer() {
       : `© ${currentYear} RCT Labs. All rights reserved.`,
     designedBy: locale === 'th' ? 'ออกแบบโดย The Architect' : 'Designed by The Architect',
     uptime: '99.98% Uptime SLA',
-    version: 'v3.3.1',
+    version: 'v3.4.0',
     testsPassingLabel: locale === 'th' ? 'การทดสอบผ่าน' : 'tests passing',
   }
 
@@ -35,7 +35,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2 pt-1">
               <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-0.5 rounded">{t.version}</span>
-              <span className="text-xs font-mono text-emerald-400">3,695 {t.testsPassingLabel}</span>
+              <span className="text-xs font-mono text-emerald-400">3,765 {t.testsPassingLabel}</span>
             </div>
             <div className="flex gap-3 pt-2">
               <Link href="https://github.com/rctlabs" className="text-muted-foreground hover:text-foreground transition-colors" target="_blank" rel="noopener noreferrer">

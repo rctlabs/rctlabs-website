@@ -38,8 +38,8 @@ export async function generateMetadata(): Promise<Metadata> {
     locale,
     "Platform - RCT Labs",
     "แพลตฟอร์ม - RCT Labs",
-    "RCT Ecosystem v3.3.1 — 10-Layer Constitutional AI Operating System with 41 algorithms, 3,695 tests, and 99.98% uptime.",
-    "RCT Ecosystem v3.3.1 — Constitutional AI Operating System สถาปัตยกรรม 10 ชั้นพร้อมอัลกอริทึม 41 ตัว, ทดสอบ 3,695 ข้อ และ uptime 99.98%",
+    "RCT Ecosystem v3.4.0 — 10-Layer Constitutional AI Operating System with 41 algorithms, 3,765 tests, and 99.98% uptime.",
+    "RCT Ecosystem v3.4.0 — Constitutional AI Operating System สถาปัตยกรรม 10 ชั้นพร้อมอัลกอริทึม 41 ตัว, ทดสอบ 3,765 ข้อ และ uptime 99.98%",
     "/platform",
     ["AI platform", "Constitutional AI", "intent-driven AI", "enterprise AI", "แพลตฟอร์ม AI", "AI ระดับองค์กร"]
   )
@@ -59,7 +59,7 @@ export default async function PlatformPage() {
     { layer: "Layer 10", name: p("layer_10_name"), desc: p("layer_10_desc"), icon: Shield, badge: "NEW v2.3.1" },
     { layer: "Layer 9", name: p("layer_9_name"), desc: p("layer_9_desc"), icon: Key, badge: "v2.3.0" },
     { layer: "Layer 8", name: p("layer_8_name"), desc: p("layer_8_desc"), icon: Globe, badge: "8 Markets" },
-    { layer: "Layer 7", name: p("layer_7_name"), desc: p("layer_7_desc"), icon: Network, badge: "NEW v3.3.1" },
+    { layer: "Layer 7", name: p("layer_7_name"), desc: p("layer_7_desc"), icon: Network, badge: "NEW v3.4.0" },
     { layer: "Layer 6", name: p("layer_6_name"), desc: p("layer_6_desc"), icon: Workflow, badge: "RFC-001" },
     { layer: "Layer 5", name: p("layer_5_name"), desc: p("layer_5_desc"), icon: CheckCircle, badge: "0.3% Halluc." },
     { layer: "Layer 4", name: p("layer_4_name"), desc: p("layer_4_desc"), icon: Database, badge: "8D Memory" },
@@ -73,7 +73,7 @@ export default async function PlatformPage() {
     { icon: Server, title: p("infra_k8s"), desc: p("infra_k8s_desc"), stat: "57 Resources" },
     { icon: Network, title: p("infra_gateway"), desc: p("infra_gateway_desc"), stat: "10 Routes" },
     { icon: Activity, title: p("infra_monitoring"), desc: p("infra_monitoring_desc"), stat: "Real-time" },
-    { icon: Shield, title: p("infra_test"), desc: p("infra_test_desc"), stat: "2,210 Tests" },
+    { icon: Shield, title: p("infra_test"), desc: p("infra_test_desc"), stat: "3,765 Tests" },
     { icon: FileCode, title: p("infra_docs"), desc: p("infra_docs_desc"), stat: "14 Endpoints" },
   ]
 
@@ -82,7 +82,7 @@ export default async function PlatformPage() {
     { metric: p("metric_compression"), rct: "74% lossless", industry: "30-40%", improvement: "185% better" },
     { metric: p("metric_latency"), rct: "0.07-1.5s", industry: "2-5s", improvement: "70% faster" },
     { metric: p("metric_uptime"), rct: "99.98%", industry: "99.5%", improvement: "Enterprise-grade" },
-    { metric: p("metric_coverage"), rct: "100% (2,210/2,210)", industry: "70-80%", improvement: "Tier-1 quality" },
+    { metric: p("metric_coverage"), rct: "100% (3,765/3,765)", industry: "70-80%", improvement: "Tier-1 quality" },
     { metric: p("metric_cost"), rct: "3.74x reduction", industry: "1x baseline", improvement: "274% savings" },
   ]
 
@@ -307,11 +307,11 @@ export default async function PlatformPage() {
         </div>
       </section>
 
-      {/* Enterprise Integrations (v3.3.1) */}}
+      {/* Enterprise Integrations (v3.4.0) */}}
       <section id="integrations" className="mx-auto max-w-6xl px-4 py-24">
         <div className="space-y-12">
           <div className="max-w-2xl space-y-4">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">v3.3.1 — {locale === 'th' ? 'ชุดการรวมระบบองค์กร' : 'Enterprise Integration Suite'}</p>
+            <p className="text-sm font-mono text-accent uppercase tracking-wider">v3.4.0 — {locale === 'th' ? 'ชุดการรวมระบบองค์กร' : 'Enterprise Integration Suite'}</p>
             <h2 className="text-foreground">{p("integrations_title")}</h2>
             <p className="text-muted-foreground leading-relaxed">
               {p("integrations_desc")}
@@ -324,7 +324,7 @@ export default async function PlatformPage() {
                 <div className="p-3 rounded-lg bg-accent/10">
                   <Activity className="w-6 h-6 text-accent" />
                 </div>
-                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">NEW v3.3.1</span>
+                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">NEW v3.4.0</span>
               </div>
               <h3 className="text-lg font-semibold text-foreground">{p("slack_title")}</h3>
               <p className="text-sm text-muted-foreground">{p("slack_desc")}</p>
@@ -343,7 +343,7 @@ export default async function PlatformPage() {
                 <div className="p-3 rounded-lg bg-accent/10">
                   <Database className="w-6 h-6 text-accent" />
                 </div>
-                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">NEW v3.3.1</span>
+                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">NEW v3.4.0</span>
               </div>
               <h3 className="text-lg font-semibold text-foreground">{p("notion_title")}</h3>
               <p className="text-sm text-muted-foreground">{p("notion_desc")}</p>

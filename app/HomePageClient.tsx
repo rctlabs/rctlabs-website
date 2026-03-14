@@ -83,7 +83,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl px-4 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {[
-              { label: h("trust_tests"), value: "2,210/2,210", icon: Shield },
+              { label: h("trust_tests"), value: "3,765/3,765", icon: Shield },
               { label: h("trust_layers"), value: "10-Layer", icon: Layers },
               { label: h("trust_hallucination"), value: "0.3%", icon: Activity },
               { label: h("trust_uptime"), value: "99.98%", icon: Server },
@@ -279,7 +279,7 @@ export default function HomePage() {
             <div className="text-center space-y-3 max-w-2xl mx-auto">
               <p className="text-sm font-mono text-accent uppercase tracking-wider">{locale === 'th' ? 'ประสิทธิภาพ' : 'Performance'}</p>
               <h2 className="text-foreground">{h("performance_title")}</h2>
-              <p className="text-muted-foreground">{locale === 'th' ? 'ตัวเลขที่ได้รับการยืนยันจาก RCT Ecosystem v3.3.1' : 'Verified benchmarks from RCT Ecosystem v3.3.1'}</p>
+              <p className="text-muted-foreground">{locale === 'th' ? 'ตัวเลขที่ได้รับการยืนยันจาก RCT Ecosystem v3.4.0' : 'Verified benchmarks from RCT Ecosystem v3.4.0'}</p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
