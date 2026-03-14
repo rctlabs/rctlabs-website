@@ -22,7 +22,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Documentation - RCT Labs",
-  description: "RCT Ecosystem v2.7.0 documentation — Architecture, APIs, RFCs, and deployment guides.",
+  description: "RCT Ecosystem v3.3.1 documentation — Architecture, APIs, RFCs, and deployment guides.",
 }
 
 export default function DocsPage() {
@@ -36,12 +36,12 @@ export default function DocsPage() {
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-24 md:py-32">
           <div className="max-w-3xl space-y-6">
             <p className="text-sm font-mono text-accent uppercase tracking-wider">Documentation</p>
-            <h1 className="text-foreground">RCT Ecosystem v2.7.0</h1>
+            <h1 className="text-foreground">RCT Ecosystem v3.3.1</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Complete technical documentation for the Constitutional AI Operating System. Architecture, APIs, RFCs, and deployment guides.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">v2.7.0</span>
+              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">v3.3.1</span>
               <span className="text-xs font-mono text-muted-foreground">2,210 tests passing</span>
               <span className="text-xs font-mono text-muted-foreground">•</span>
               <span className="text-xs font-mono text-muted-foreground">10-Layer Architecture</span>

@@ -190,13 +190,14 @@ export default async function AboutPage() {
               { year: "v2.4", event: "Analysearch Intent Engine — 41 production algorithms, 2,210 tests" },
               { year: "v2.5", event: "Infrastructure Layer — Docker, Kubernetes, API Gateway, Monitoring" },
               { year: "v2.7", event: "Enterprise Integration Suite — Slack Gateway, Notion Auto-Sync, 3,176 tests" },
+              { year: "v3.3", event: "ArtentAI Engine, Farmer Pipeline, Discord Bot — 3,695 tests" },
             ].map((item, i) => (
               <div key={i} className="flex gap-6">
                 <div className="flex flex-col items-center">
                   <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-mono text-xs">
                     {item.year}
                   </div>
-                  {i < 6 && <div className="w-0.5 h-16 bg-border mt-4" />}
+                  {i < 7 && <div className="w-0.5 h-16 bg-border mt-4" />}
                 </div>
                 <div className="pt-2">
                   <p className="text-sm font-semibold text-accent mb-1">{item.year}</p>

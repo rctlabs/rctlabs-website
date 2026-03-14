@@ -17,7 +17,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Solutions - RCT Labs",
-  description: "RCT Ecosystem v2.7.0 solutions for Enterprise, Developers, and SMEs. 10-Layer architecture, 0.3% hallucination, 99.98% uptime.",
+  description: "RCT Ecosystem v3.3.1 solutions for Enterprise, Developers, and SMEs. 10-Layer architecture, 0.3% hallucination, 99.98% uptime.",
 }
 
 export default function SolutionsPage() {
@@ -33,7 +33,7 @@ export default function SolutionsPage() {
             <p className="text-sm font-mono text-accent uppercase tracking-wider">Solutions</p>
             <h1 className="text-foreground">Built for Your Scale</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              From startups to enterprises, RCT Ecosystem v2.7.0 provides Constitutional AI infrastructure with 0.3% hallucination rate, 99.98% uptime, and 8 regional markets.
+              From startups to enterprises, RCT Ecosystem v3.3.1 provides Constitutional AI infrastructure with 0.3% hallucination rate, 99.98% uptime, and 8 regional markets.
             </p>
           </div>
         </div>

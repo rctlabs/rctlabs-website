@@ -62,7 +62,7 @@ const layers: Layer[] = [
     descriptionTh: "L3 API microservice สำหรับ AI สนทนาพร้อมการรับรู้บริบทแบบ real-time และการผสานรวม knowledge base",
     icon: "MessageCircle",
     color: "from-green-500 to-teal-500",
-    badge: "NEW v2.7.0",
+    badge: "NEW v3.3.1",
     features: ["Conversational AI", "KB Integration", "Context Awareness", "Multi-LLM"],
     featuresTh: ["Conversational AI", "KB Integration", "Context Awareness", "Multi-LLM"]
   },
