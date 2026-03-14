@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { FloatingAIComingSoon } from "@/components/floating-ai-coming-soon"
+import { FloatingAI } from "@/components/floating-ai"
 import { FDIAEquation } from "@/components/fdia-equation"
 import { ArrowRight, BookOpen, Users, Lightbulb, Github, Zap, Shield, Database, Cpu, FileCode, Activity, Globe, Layers, Lock, Terminal, GitBranch, CheckCircle, Server, Container, Network } from "lucide-react"
 import Link from "next/link"
@@ -426,7 +426,7 @@ export default function HomePage() {
       <Footer />
       
       {/* Floating AI Assistant */}
-      <FloatingAIComingSoon />
+      <FloatingAI />
     </main>
   )
 }
