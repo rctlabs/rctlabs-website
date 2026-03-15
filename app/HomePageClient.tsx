@@ -279,7 +279,7 @@ export default function HomePage() {
             <div className="text-center space-y-3 max-w-2xl mx-auto">
               <p className="text-sm font-mono text-accent uppercase tracking-wider">{locale === 'th' ? 'ประสิทธิภาพ' : 'Performance'}</p>
               <h2 className="text-foreground">{h("performance_title")}</h2>
-              <p className="text-muted-foreground">{locale === 'th' ? 'ตัวเลขที่ได้รับการยืนยันจาก RCT Ecosystem v3.4.0' : 'Verified benchmarks from RCT Ecosystem v3.4.0'}</p>
+              <p className="text-muted-foreground">{locale === 'th' ? 'ตัวเลขที่ได้รับการยืนยันจาก RCT Ecosystem v3.7.0' : 'Verified benchmarks from RCT Ecosystem v3.7.0'}</p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">

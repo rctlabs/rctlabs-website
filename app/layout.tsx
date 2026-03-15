@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter, JetBrains_Mono, Noto_Sans_Thai } from "next/font/google"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
+import { FloatingAI } from "@/components/floating-ai"
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -134,6 +135,7 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansThai.variable} font-sans antialiased`}>
         {children}
+        <FloatingAI />
       </body>
     </html>
   )
