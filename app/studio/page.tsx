@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { FlaskConical, Play, GitCompare, Beaker, Database, BarChart3, ChevronRight, Cpu, BookOpen } from "lucide-react"
+import { FlaskConical, Play, GitCompare, Beaker, Database, BarChart3, ChevronRight, Cpu, BookOpen, Brain, Settings } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
@@ -37,6 +37,8 @@ const NAV_ITEMS = [
   { href: "/studio/experiments", label: "Experiments", icon: Beaker },
   { href: "/studio/datasets", label: "Datasets", icon: Database },
   { href: "/studio/algorithms", label: "Algorithms", icon: BookOpen },
+  { href: "/studio/memory", label: "Memory", icon: Brain },
+  { href: "/studio/settings", label: "Settings", icon: Settings },
 ]
 
 const CATEGORY_COLORS: Record<string, string> = {
