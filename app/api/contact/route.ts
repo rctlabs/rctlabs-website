@@ -1,24 +1,20 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { getSupabaseAdmin } from "@/lib/supabase"
 
-// Basic validation schema
-const validateContactForm = (data: any) => {
+const validateContactForm = (data: Record<string, unknown>) => {
   const errors: Record<string, string> = {}
 
-  if (!data.name || data.name.trim().length < 2) {
+  if (!data.name || typeof data.name !== "string" || data.name.trim().length < 2)
     errors.name = "Name must be at least 2 characters"
-  }
 
-  if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+  if (!data.email || typeof data.email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
     errors.email = "Please provide a valid email address"
-  }
 
-  if (!data.subject || data.subject.trim().length < 5) {
+  if (!data.subject || typeof data.subject !== "string" || data.subject.trim().length < 5)
     errors.subject = "Subject must be at least 5 characters"
-  }
 
-  if (!data.message || data.message.trim().length < 10) {
+  if (!data.message || typeof data.message !== "string" || data.message.trim().length < 10)
     errors.message = "Message must be at least 10 characters"
-  }
 
   return { isValid: Object.keys(errors).length === 0, errors }
 }
@@ -26,28 +22,39 @@ const validateContactForm = (data: any) => {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-
-    // Validate form data
     const { isValid, errors } = validateContactForm(body)
 
     if (!isValid) {
       return NextResponse.json({ success: false, errors }, { status: 400 })
     }
 
-    // Here you would typically:
-    // 1. Send an email using a service like Resend, SendGrid, etc.
-    // 2. Save to a database
-    // 3. Trigger a webhook or notification
+    const { name, email, subject, message, locale = "en", context = "contact" } = body
 
-    // For now, we'll simulate successful submission
-    console.log("Contact form submission:", body)
+    try {
+      const supabase = getSupabaseAdmin()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any).from("contacts").insert({
+        name: String(name).trim(),
+        email: String(email).trim().toLowerCase(),
+        subject: String(subject).trim(),
+        message: String(message).trim(),
+        locale,
+        context,
+        submitted_at: new Date().toISOString(),
+      })
+      if (error) {
+        console.error("Supabase contact insert error:", error.message)
+      }
+    } catch (dbErr) {
+      console.error("Supabase unavailable:", dbErr)
+    }
 
     return NextResponse.json(
-      { success: true, message: "Thank you for reaching out. We'll get back to you soon!" },
-      { status: 200 },
+      { success: true, message: "Thank you for reaching out. We'll get back to you within 1 business day!" },
+      { status: 200 }
     )
   } catch (error) {
     console.error("Contact form error:", error)
-    return NextResponse.json({ success: false, message: "An error occurred. Please try again." }, { status: 500 })
+    return NextResponse.json({ success: false, error: "An error occurred. Please try again." }, { status: 500 })
   }
 }

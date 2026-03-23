@@ -19,7 +19,7 @@ export function getOrganizationSchema(locale: Locale) {
       jobTitle: 'The Architect',
     },
     sameAs: [
-      'https://github.com/rctlabs',
+      'https://github.com/rct-ecosystem',
       'https://twitter.com/rctlabs',
       'https://linkedin.com/company/rctlabs',
       'https://discord.gg/rctlabs',

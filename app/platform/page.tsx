@@ -38,14 +38,18 @@ export async function generateMetadata(): Promise<Metadata> {
     locale,
     "Platform - RCT Labs",
     "แพลตฟอร์ม - RCT Labs",
-    "RCT Ecosystem v3.7.0 — 10-Layer Constitutional AI Operating System with 41 algorithms, 3,765 tests, and 99.98% uptime.",
-    "RCT Ecosystem v3.7.0 — Constitutional AI Operating System สถาปัตยกรรม 10 ชั้นพร้อมอัลกอริทึม 41 ตัว, ทดสอบ 3,765 ข้อ และ uptime 99.98%",
+    // Lengthened meta descriptions for SEO (150-160 chars)
+    "RCT Ecosystem v3.7.0 — 10-Layer Constitutional AI OS with 41 algorithms, 3,765 tests, 99.98% uptime, and enterprise-grade security, compliance, and performance.",
+    "RCT Ecosystem v3.7.0 — Constitutional AI Operating System สถาปัตยกรรม 10 ชั้น, อัลกอริทึม 41 ตัว, ทดสอบ 3,765 ข้อ, uptime 99.98%, ความปลอดภัยและ compliance ระดับองค์กร",
     "/platform",
     ["AI platform", "Constitutional AI", "intent-driven AI", "enterprise AI", "แพลตฟอร์ม AI", "AI ระดับองค์กร"]
   )
 }
 
 export default async function PlatformPage() {
+  // --- SoftwareApplication Schema for SEO ---
+  // This schema is injected as a <script type="application/ld+json"> block for rich results
+  // Uses getSoftwareApplicationSchema from @/lib/seo-bilingual
   const headersList = await headers()
   const locale = (headersList.get("x-locale") || "en") as Locale
   const t = await loadTranslations(locale)
@@ -97,9 +101,13 @@ export default async function PlatformPage() {
     { lang: "อินโดนีเซีย", region: "ID", model: "Qwen 2.5 7B", compliance: "—" },
   ]
 
+  const schema = getSoftwareApplicationSchema(locale as Locale)
+
   return (
-    <main className="min-h-screen bg-background dark">
-      <Navbar />
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <main className="min-h-screen bg-background dark">
+        <Navbar />
 
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
@@ -307,7 +315,7 @@ export default async function PlatformPage() {
         </div>
       </section>
 
-      {/* Enterprise Integrations (v3.7.0) */}}
+      {/* Enterprise Integrations (v3.7.0) */}
       <section id="integrations" className="mx-auto max-w-6xl px-4 py-24">
         <div className="space-y-12">
           <div className="max-w-2xl space-y-4">
@@ -464,5 +472,6 @@ export default async function PlatformPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

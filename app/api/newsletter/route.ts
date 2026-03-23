@@ -1,27 +1,44 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { getSupabaseAdmin } from "@/lib/supabase"
 
-const validateEmail = (email: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return emailRegex.test(email)
-}
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { email } = body
+    const { email, locale = "en", source = "footer" } = body
 
-    if (!email || !validateEmail(email)) {
+    // Validate email input — reject obviously invalid formats
+    if (!email || typeof email !== "string" || !emailRegex.test(email.trim())) {
       return NextResponse.json({ success: false, error: "Please provide a valid email address" }, { status: 400 })
     }
 
-    // Here you would typically:
-    // 1. Add email to your mailing list (Mailchimp, ConvertKit, etc.)
-    // 2. Save to database
-    // 3. Send confirmation email
+    const sanitizedEmail = email.trim().toLowerCase()
 
-    console.log("Newsletter signup:", email)
+    // Supabase insert into waitlist table
+    // If env vars are missing (e.g. local dev), skip DB and still return success
+    try {
+      const supabase = getSupabaseAdmin()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any).from("waitlist").upsert(
+        { email: sanitizedEmail, locale, source, subscribed_at: new Date().toISOString() },
+        { onConflict: "email", ignoreDuplicates: true }
+      )
+      if (error) {
+        // Duplicate email (already subscribed) is not a failure
+        if (error.code !== "23505") {
+          console.error("Supabase newsletter insert error:", error.message)
+        }
+      }
+    } catch (dbErr) {
+      // DB unavailable — log but do not surface to user
+      console.error("Supabase unavailable:", dbErr)
+    }
 
-    return NextResponse.json({ success: true, message: "Successfully subscribed to our newsletter!" }, { status: 200 })
+    return NextResponse.json(
+      { success: true, message: "Successfully subscribed! We'll keep you updated." },
+      { status: 200 }
+    )
   } catch (error) {
     console.error("Newsletter signup error:", error)
     return NextResponse.json({ success: false, error: "An error occurred. Please try again." }, { status: 500 })

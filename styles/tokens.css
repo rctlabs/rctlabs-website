@@ -1,0 +1,189 @@
+/*
+ * RCT Ecosystem Design Tokens
+ * Centralized design system variables for colors, typography, spacing
+ * Supports light/dark themes with WCAG 2.1 AA compliant contrast ratios
+ * Source: manus-frontend-design/client/src/styles/tokens.css
+ */
+
+:root {
+  /* ═══ Brand Colors ═══ */
+  --rct-gold: #D4A853;
+  --rct-gold-light: #E8C97A;
+  --rct-gold-dark: #C49A48;
+  
+  --rct-sage: #7B9E87;
+  --rct-sage-light: #A3C4AE;
+  --rct-sage-dark: #6A8D76;
+  
+  --rct-terracotta: #C4745B;
+  --rct-terracotta-light: #D98F75;
+  --rct-terracotta-dark: #B36550;
+  
+  --rct-blue: #89B4C8;
+  --rct-blue-light: #A8C9D9;
+  --rct-blue-dark: #7AA3B7;
+  
+  --rct-purple: #B8A9C9;
+  --rct-purple-light: #CFC4D9;
+  --rct-purple-dark: #A798B8;
+  
+  /* ═══ Neutrals - Light Mode ═══ */
+  --rct-bg-primary: #FAF6F0;
+  --rct-bg-secondary: #F0EBE3;
+  --rct-bg-tertiary: #FFFFFF;
+  --rct-bg-elevated: #FFFFFF;
+  
+  --rct-text-primary: #1A1A1A;
+  --rct-text-secondary: #4A4A4A;
+  --rct-text-muted: #6B6B6B;
+  --rct-text-disabled: #999999;
+  
+  --rct-border-primary: #E8E3DC;
+  --rct-border-secondary: #D4D0C8;
+  --rct-border-focus: #D4A853;
+  
+  /* ═══ Typography ═══ */
+  --rct-font-display: 'Plus Jakarta Sans', 'Kanit', system-ui, sans-serif;
+  --rct-font-body: 'Inter', 'Kanit', system-ui, sans-serif;
+  --rct-font-thai: 'Kanit', 'Noto Sans Thai', sans-serif;
+  --rct-font-mono: 'Space Mono', 'Kanit', monospace;
+  
+  /* Font Sizes */
+  --rct-text-2xs: 0.625rem;   /* 10px */
+  --rct-text-xs: 0.75rem;     /* 12px */
+  --rct-text-nav: 0.8125rem;  /* 13px */
+  --rct-text-sm: 0.875rem;    /* 14px */
+  --rct-text-base: 1rem;      /* 16px */
+  --rct-text-lg: 1.125rem;    /* 18px */
+  --rct-text-xl: 1.25rem;     /* 20px */
+  --rct-text-2xl: 1.5rem;     /* 24px */
+  --rct-text-3xl: 1.875rem;   /* 30px */
+  --rct-text-4xl: 2.25rem;    /* 36px */
+  
+  /* Line Heights */
+  --rct-leading-tight: 1.25;
+  --rct-leading-normal: 1.5;
+  --rct-leading-relaxed: 1.75;
+  
+  /* Font Weights */
+  --rct-weight-normal: 400;
+  --rct-weight-medium: 500;
+  --rct-weight-semibold: 600;
+  --rct-weight-bold: 700;
+  
+  /* ═══ Spacing Scale ═══ */
+  --rct-space-0: 0;
+  --rct-space-1: 0.25rem;   /* 4px */
+  --rct-space-2: 0.5rem;    /* 8px */
+  --rct-space-3: 0.75rem;   /* 12px */
+  --rct-space-4: 1rem;      /* 16px */
+  --rct-space-5: 1.25rem;   /* 20px */
+  --rct-space-6: 1.5rem;    /* 24px */
+  --rct-space-8: 2rem;      /* 32px */
+  --rct-space-10: 2.5rem;   /* 40px */
+  --rct-space-12: 3rem;     /* 48px */
+  --rct-space-16: 4rem;     /* 64px */
+  --rct-space-20: 5rem;     /* 80px */
+  
+  /* ═══ Layout ═══ */
+  --rct-container-max: 1200px;
+  --rct-navbar-height: 64px;
+  --rct-section-py: clamp(3rem, 8vw, 5rem);
+  
+  /* ═══ Border Radius ═══ */
+  --rct-radius-sm: 0.5rem;   /* 8px */
+  --rct-radius-md: 0.75rem;  /* 12px */
+  --rct-radius-lg: 1rem;     /* 16px */
+  --rct-radius-xl: 1.5rem;   /* 24px */
+  --rct-radius-full: 9999px;
+  
+  /* ═══ Shadows ═══ */
+  --rct-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --rct-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.06);
+  --rct-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.08);
+  --rct-shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.1);
+  
+  /* ═══ Transitions ═══ */
+  --rct-transition-fast: 150ms ease;
+  --rct-transition-base: 200ms ease;
+  --rct-transition-slow: 300ms ease;
+  --rct-transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* ═══ Z-Index Scale ═══ */
+  --rct-z-base: 0;
+  --rct-z-dropdown: 10;
+  --rct-z-sticky: 20;
+  --rct-z-fixed: 30;
+  --rct-z-modal-backdrop: 40;
+  --rct-z-modal: 50;
+  --rct-z-popover: 60;
+  --rct-z-tooltip: 70;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK MODE OVERRIDES
+   Dual selector: supports both ThemeContext (data-theme) and next-themes (.dark)
+   WCAG 2.1 AA Compliant Contrast Ratios
+   ═══════════════════════════════════════════════════════════════ */
+
+[data-theme="dark"],
+.dark {
+  /* Neutrals - Dark Mode */
+  --rct-bg-primary: #1A1A1A;
+  --rct-bg-secondary: #151515;
+  --rct-bg-tertiary: #222222;
+  --rct-bg-elevated: #2A2A2A;
+  
+  --rct-text-primary: #E8E3DC;
+  --rct-text-secondary: #AAAAAA;  /* Contrast 5.2:1 ✅ */
+  --rct-text-muted: #888888;      /* Contrast 4.6:1 ✅ */
+  --rct-text-disabled: #555555;
+  
+  --rct-border-primary: #2A2A2A;
+  --rct-border-secondary: #333333;
+  --rct-border-focus: #E0B96A;
+  
+  /* Shadows - Dark Mode */
+  --rct-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --rct-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --rct-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
+  --rct-shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+
+.rct-text-primary  { color: var(--rct-text-primary); }
+.rct-text-secondary { color: var(--rct-text-secondary); }
+.rct-text-muted    { color: var(--rct-text-muted); }
+.rct-bg-primary    { background-color: var(--rct-bg-primary); }
+.rct-bg-secondary  { background-color: var(--rct-bg-secondary); }
+.rct-border-primary { border-color: var(--rct-border-primary); }
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  button:active,
+  [role="button"]:active {
+    transition-duration: 50ms !important;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (forced-colors: active) {
+  :root {
+    --rct-gold: ButtonText;
+    --rct-border-focus: Highlight;
+  }
+}

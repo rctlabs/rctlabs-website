@@ -3,14 +3,48 @@ import type { NextRequest } from 'next/server'
 import { locales, detectLocale } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 
+/* ─── Simple sliding-window rate limiter for /api/* ────────── */
+const rateMap = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT = 20
+const WINDOW_MS = 60_000
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateMap.get(ip)
+  if (!entry || now > entry.resetAt) {
+    rateMap.set(ip, { count: 1, resetAt: now + WINDOW_MS })
+    return true
+  }
+  if (entry.count >= RATE_LIMIT) return false
+  entry.count++
+  return true
+}
+
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
-  // Skip middleware for static files, API routes, and internal Next.js paths
+  // Rate-limit API routes
+  if (pathname.startsWith('/api')) {
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+      request.headers.get('x-real-ip') ??
+      'unknown'
+    if (!checkRateLimit(ip)) {
+      return new NextResponse(JSON.stringify({ error: 'Too many requests' }), {
+        status: 429,
+        headers: {
+          'Content-Type': 'application/json',
+          'Retry-After': '60',
+        },
+      })
+    }
+    return NextResponse.next()
+  }
+
+  // Skip middleware for static files and internal Next.js paths
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/_vercel') ||
-    pathname.startsWith('/api') ||
     pathname.includes('.')
   ) {
     return NextResponse.next()
@@ -42,6 +76,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next|_vercel|.*\\..*).*)',
+    '/api/:path*',
+    '/((?!_next|_vercel|.*\\..*).*)',
   ],
 }

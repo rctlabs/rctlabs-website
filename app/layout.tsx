@@ -1,25 +1,60 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono, Noto_Sans_Thai } from "next/font/google"
+import { Inter, JetBrains_Mono, Noto_Sans_Thai, Space_Grotesk, Plus_Jakarta_Sans, Space_Mono, Kanit } from "next/font/google"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
 import { FloatingAI } from "@/components/floating-ai"
+import { AppProviders } from "@/components/app-providers"
+import { Toaster } from "sonner"
 
+/* Display: Space Grotesk (headings) */
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+})
+
+/* Display alt: Plus Jakarta Sans (section headings) */
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-display-alt",
+  display: "swap",
+})
+
+/* Body: Inter */
 const inter = Inter({ 
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 })
 
-const jetbrainsMono = JetBrains_Mono({
+/* Mono: Space Mono */
+const spaceMono = Space_Mono({
   subsets: ["latin"],
+  weight: ["400", "700"],
   variable: "--font-mono",
   display: "swap",
 })
 
+/* Backward-compat mono */
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono-alt",
+  display: "swap",
+})
+
+/* Thai: Kanit (matches Space Grotesk geometric style) */
+const kanit = Kanit({
+  subsets: ["thai", "latin"],
+  weight: ["200", "400", "500", "600", "700"],
+  variable: "--font-thai",
+  display: "swap",
+})
+
+/* Thai fallback: Noto Sans Thai */
 const notoSansThai = Noto_Sans_Thai({
   subsets: ["thai"],
-  variable: "--font-thai",
+  variable: "--font-thai-fallback",
   display: "swap",
 })
 
@@ -109,10 +144,10 @@ export default async function RootLayout({
   const websiteSchema = getWebSiteSchema(locale)
 
   return (
-    <html lang={locale} suppressHydrationWarning className="dark">
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-        <meta name="color-scheme" content="dark light" />
+        <meta name="color-scheme" content="light dark" />
         <link rel="canonical" href={`https://rctlabs.co/${locale}`} />
         {/* Hreflang tags for bilingual SEO */}
         <link rel="alternate" hrefLang="en" href="https://rctlabs.co/en" />
@@ -122,7 +157,8 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://rctlabs.co" />
-        
+        {/* Preload font for performance */}
+        <link rel="preload" as="font" href="/fonts/space-grotesk.woff2" type="font/woff2" crossOrigin="anonymous" />
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
@@ -133,9 +169,14 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansThai.variable} font-sans antialiased`}>
-        {children}
-        <FloatingAI />
+      <body className={`${spaceGrotesk.variable} ${plusJakartaSans.variable} ${inter.variable} ${spaceMono.variable} ${jetbrainsMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
+        {/* Skip to content for accessibility */}
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded">Skip to content</a>
+        <AppProviders initialLocale={locale as "en" | "th"}>
+          {children}
+          <FloatingAI />
+          <Toaster richColors position="bottom-right" />
+        </AppProviders>
       </body>
     </html>
   )
