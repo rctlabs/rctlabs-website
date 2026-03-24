@@ -1,0 +1,220 @@
+"use client"
+
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { motion } from "framer-motion"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { getLocaleFromPathname } from "@/lib/i18n"
+import { ArrowRight, Zap } from "lucide-react"
+import SectionHeading from "@/components/section-heading"
+import AnalysearchDemo from "@/components/demos/analysearch-demo"
+import OptimizedImage from "@/components/ui/optimized-image"
+
+const PIXEL_ALGO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-algorithm-gears.webp"
+
+const tiers = {
+  en: [
+    { tier: "Tier 1", name: "Foundation", algos: "ALGO-01 to ALGO-04", desc: "Core processing primitives: intent parsing, data normalization, token optimization, and basic routing.", color: "#89B4C8" },
+    { tier: "Tier 2", name: "Analysis", algos: "ALGO-05 to ALGO-08", desc: "Sentiment analysis, entity extraction, context classification, and self-evolving pattern recognition.", color: "#7B9E87" },
+    { tier: "Tier 3", name: "Reasoning", algos: "ALGO-09 to ALGO-14", desc: "Chain-of-thought, tree-of-thought, reflexion agent, and hybrid multi-path reasoning approaches.", color: "#D4A853" },
+    { tier: "Tier 4", name: "Orchestration", algos: "ALGO-15 to ALGO-18", desc: "Multi-LLM coordination — dynamic selection and routing across GPT-4, Claude, Gemini, and custom models.", color: "#C4745B" },
+    { tier: "Tier 5", name: "Verification", algos: "ALGO-19 to ALGO-22", desc: "SignedAI consensus, hallucination detection, fact-checking, and output quality scoring.", color: "#B8A9C9" },
+    { tier: "Tier 6", name: "Memory", algos: "ALGO-23 to ALGO-26", desc: "RCTDB v2.0 integration: delta compression, semantic indexing, context retrieval, cross-session continuity.", color: "#89B4C8" },
+    { tier: "Tier 7", name: "Adaptation", algos: "ALGO-27 to ALGO-32", desc: "Adaptive learning that personalizes responses, optimizes performance, and evolves strategies from feedback.", color: "#7B9E87" },
+    { tier: "Tier 8", name: "Synthesis", algos: "ALGO-33 to ALGO-36", desc: "Cross-disciplinary synthesis combining knowledge from multiple domains to generate novel insights.", color: "#D4A853" },
+    { tier: "Tier 9", name: "Autonomy", algos: "ALGO-37 to ALGO-41", desc: "Planning Depth Expander, Constraint Satisfaction Solver, Genesis Engine, ITSR, and The Crystallizer.", color: "#C4745B" },
+  ],
+  th: [
+    { tier: "Tier 1", name: "Foundation", algos: "ALGO-01 ถึง ALGO-04", desc: "Primitives การประมวลผลหลัก: Intent Parsing, Data Normalization, Token Optimization และ Basic Routing", color: "#89B4C8" },
+    { tier: "Tier 2", name: "Analysis", algos: "ALGO-05 ถึง ALGO-08", desc: "Sentiment Analysis, Entity Extraction, Context Classification และ Self-Evolving Pattern Recognition", color: "#7B9E87" },
+    { tier: "Tier 3", name: "Reasoning", algos: "ALGO-09 ถึง ALGO-14", desc: "Chain-of-Thought, Tree-of-Thought, Reflexion Agent และ Hybrid Multi-Path Reasoning", color: "#D4A853" },
+    { tier: "Tier 4", name: "Orchestration", algos: "ALGO-15 ถึง ALGO-18", desc: "การประสาน Multi-LLM — Dynamic Selection และ Routing ข้าม GPT-4, Claude, Gemini", color: "#C4745B" },
+    { tier: "Tier 5", name: "Verification", algos: "ALGO-19 ถึง ALGO-22", desc: "SignedAI Consensus, Hallucination Detection, Fact-Checking และ Output Quality Scoring", color: "#B8A9C9" },
+    { tier: "Tier 6", name: "Memory", algos: "ALGO-23 ถึง ALGO-26", desc: "RCTDB v2.0: Delta Compression, Semantic Indexing, Context Retrieval และ Cross-Session Continuity", color: "#89B4C8" },
+    { tier: "Tier 7", name: "Adaptation", algos: "ALGO-27 ถึง ALGO-32", desc: "การเรียนรู้แบบปรับตัวที่ Personalize Responses และพัฒนากลยุทธ์ตาม Feedback Loops", color: "#7B9E87" },
+    { tier: "Tier 8", name: "Synthesis", algos: "ALGO-33 ถึง ALGO-36", desc: "Synthesis ข้ามสาขาวิชาที่รวมความรู้จากหลายโดเมน สร้าง Insights ใหม่", color: "#D4A853" },
+    { tier: "Tier 9", name: "Autonomy", algos: "ALGO-37 ถึง ALGO-41", desc: "Planning Depth Expander, Constraint Solver, Genesis Engine, ITSR และ The Crystallizer", color: "#C4745B" },
+  ],
+}
+
+const analysearchModes = [
+  { mode: "Quick", descEn: "Instant responses for straightforward queries", descTh: "คำตอบทันทีสำหรับคำถามตรงไปตรงมา", color: "#89B4C8" },
+  { mode: "Standard", descEn: "Balanced analysis with multi-source validation", descTh: "การวิเคราะห์ที่สมดุลพร้อมการตรวจสอบจากหลายแหล่ง", color: "#7B9E87" },
+  { mode: "Deep", descEn: "Thorough cross-domain synthesis and research-grade output", descTh: "Synthesis ข้ามโดเมนอย่างละเอียดและผลลัพธ์ระดับงานวิจัย", color: "#D4A853" },
+  { mode: "Mirror", descEn: "Reflective self-evaluation for maximum accuracy", descTh: "การประเมินตัวเองแบบ Reflective เพื่อความแม่นยำสูงสุด", color: "#C4745B" },
+]
+
+export default function AlgorithmsPage() {
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname)
+  const isTh = locale === "th"
+  const localTiers = isTh ? tiers.th : tiers.en
+
+  return (
+    <main className="min-h-screen bg-background" id="main-content">
+      <Navbar />
+
+      {/* Hero */}
+      <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
+        <div className="max-w-3xl mx-auto space-y-5">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-amber/10 border border-warm-amber/30 text-warm-amber text-sm font-medium">
+            <Zap className="w-4 h-4" /> {isTh ? "อัลกอริทึม" : "Algorithms"}
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground">41 Algorithms & Analysearch</h1>
+          <p className="text-lg text-muted-foreground">
+            {isTh
+              ? "41 อัลกอริทึมเฉพาะที่ขับเคลื่อน Cognitive Engine พร้อม Analysearch — Hybrid Methodology ที่ผสาน Analysis และ Research"
+              : "41 proprietary algorithms powering the cognitive engine, plus Analysearch — a hybrid methodology combining analysis and research."}
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-6 md:pb-10">
+        <div className="rounded-[28px] border border-warm-light-gray bg-linear-to-br from-white via-warm-cream to-[#F3EBDD] p-6 shadow-[0_16px_60px_rgba(0,0,0,0.07)] dark:border-white/10 dark:from-dark-950 dark:via-dark-900 dark:to-[#17130f]">
+          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div>
+              <SectionHeading
+                tag={isTh ? "Interactive System" : "Interactive System"}
+                tagColor="terracotta"
+                title={isTh ? "Analysearch Intent Engine" : "Analysearch Intent Engine"}
+                italicWord="Intent"
+                description={isTh ? "ดึง interaction จริงจาก Manus เข้ามาให้ผู้ใช้ทดลองโหมด Quick, Standard, Deep และ Mirror ได้โดยตรง พร้อมลำดับการประมวลผลและผลลัพธ์จำลอง" : "A direct Manus-style interactive layer for testing Quick, Standard, Deep, and Mirror processing with visible execution stages and simulated outputs."}
+                pixelIcon={PIXEL_ALGO}
+              />
+              <div className="grid gap-3 sm:grid-cols-3">
+                {[
+                  { label: isTh ? "4 โหมด" : "4 Modes", value: isTh ? "Analysearch" : "Analysearch" },
+                  { label: isTh ? "ความลึก" : "Depth", value: isTh ? "Adaptive" : "Adaptive" },
+                  { label: isTh ? "ผลลัพธ์" : "Output", value: isTh ? "Traceable" : "Traceable" },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-2xl border border-white/70 bg-white/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <div className="text-xs uppercase tracking-wider text-warm-muted">{item.label}</div>
+                    <div className="mt-1 text-lg font-bold text-warm-charcoal dark:text-warm-light-gray">{item.value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="relative mx-auto w-full max-w-md">
+              <div className="absolute inset-0 rounded-[28px] bg-[radial-gradient(circle_at_top,rgba(212,168,83,0.24),transparent_55%)]" aria-hidden="true" />
+              <div className="relative rounded-[28px] border border-warm-light-gray/80 bg-white/85 p-5 dark:border-white/10 dark:bg-dark-900/80">
+                <div className="absolute right-4 top-4 h-14 w-14 opacity-80">
+                  <OptimizedImage src={PIXEL_ALGO} alt="" pixelated containerClassName="h-full w-full" objectFit="contain" width={56} height={56} />
+                </div>
+                <div className="pr-16">
+                  <div className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-warm-terracotta">{isTh ? "Pixel Accent" : "Pixel Accent"}</div>
+                  <h3 className="text-xl font-bold text-foreground">{isTh ? "41 algorithms, one intent surface" : "41 algorithms, one intent surface"}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {isTh ? "หน้า algorithms จะไม่หยุดที่ tier cards อีกต่อไป แต่แสดงพฤติกรรมของระบบจริงผ่าน interaction, execution stages และ visual language แบบเดียวกับ Manus" : "The algorithms page now moves beyond static tier cards and shows runtime behavior through interaction, execution stages, and the same visual language used in Manus."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Overview */}
+      <section className="bg-muted/30 py-16">
+        <div className="mx-auto max-w-3xl px-4 space-y-4 text-muted-foreground text-base leading-relaxed">
+          <h2 className="text-2xl font-bold text-foreground">{isTh ? "สถาปัตยกรรม 9 ระดับ" : "The 9-Tier Architecture"}</h2>
+          <p>{isTh
+            ? "RCT Ecosystem จัดอัลกอริทึมเฉพาะ 41 ตัวเป็น 9 ระดับความสามารถ แต่ละระดับสร้างบนความสามารถของระดับก่อนหน้า ทำให้เกิด Dynamic Routing — ระบบเลือกชุดอัลกอริทึมที่เหมาะสมโดยอัตโนมัติ"
+            : "41 proprietary algorithms organized into 9 capability tiers, each building upon the previous. This hierarchical design enables dynamic routing — the system automatically selects optimal algorithms based on task complexity."}</p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-16 md:py-20">
+        <div className="mb-8 max-w-4xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-warm-amber/30 bg-warm-amber/10 px-4 py-1.5 text-sm font-medium text-warm-amber">
+            <Zap className="h-4 w-4" /> {isTh ? "Live Interaction" : "Live Interaction"}
+          </span>
+          <h2 className="mt-5 text-2xl font-bold text-foreground sm:text-3xl">
+            {isTh ? "ทดลอง Analysearch แบบโต้ตอบ" : "Try Analysearch Interactively"}
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm text-muted-foreground sm:text-base">
+            {isTh ? "ผู้ใช้สามารถสลับโหมด วิเคราะห์ query ตัวอย่าง และเห็น execution trace ที่แตกต่างกันตามความลึกของ reasoning ได้ทันที เหมือนต้นฉบับ Manus" : "Users can switch modes, test example queries, and inspect how execution traces change with reasoning depth, closely matching the Manus interaction model."}
+          </p>
+        </div>
+        <AnalysearchDemo language={isTh ? "th" : "en"} />
+      </section>
+
+      {/* 9 Tiers */}
+      <section className="mx-auto max-w-4xl px-4 py-20">
+        <div className="space-y-3">
+          {localTiers.map((t, i) => (
+            <motion.div key={t.tier} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.04 }}
+              className="p-4 rounded-xl border border-border bg-card">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-warm-amber/10 text-warm-amber">{t.tier}</span>
+                <span className="font-semibold text-sm text-foreground">{t.name}</span>
+                <span className="text-xs text-muted-foreground">({t.algos})</span>
+              </div>
+              <p className="text-xs leading-relaxed text-muted-foreground">{t.desc}</p>
+              <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
+                <div className="h-full rounded-full" style={{ backgroundColor: t.color, width: `${15 + i * 9.5}%` }} />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Analysearch */}
+      <section className="bg-muted/30 py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="text-2xl font-bold text-foreground text-center mb-4">Analysearch</h2>
+          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-10">
+            {isTh
+              ? "Hybrid Methodology ที่ผสานการวิเคราะห์เชิงลึกกับ Synthesis ระดับงานวิจัย ทำงานใน 4 โหมด"
+              : "A hybrid methodology that seamlessly combines analytical processing with research-grade synthesis across 4 distinct modes."}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {analysearchModes.map((m, i) => (
+              <motion.div key={m.mode} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="p-5 rounded-2xl border border-border bg-card text-center">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold mx-auto mb-3" style={{ backgroundColor: `${m.color}15`, color: m.color }}>{i + 1}</div>
+                <h3 className="font-bold text-sm text-foreground mb-2">{m.mode}</h3>
+                <p className="text-xs text-muted-foreground">{isTh ? m.descTh : m.descEn}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related */}
+      <section className="mx-auto max-w-5xl px-4 py-20">
+        <h2 className="text-2xl font-bold text-foreground text-center mb-8">{isTh ? "หัวข้อที่เกี่ยวข้อง" : "Related Topics"}</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { href: "/architecture", icon: "🏗️", label: isTh ? "สถาปัตยกรรม 10 ชั้น" : "10-Layer Architecture", desc: isTh ? "อัลกอริทึมอยู่ตรงไหนใน Cognitive Stack" : "Where algorithms fit in the cognitive stack" },
+            { href: "/fdia", icon: "📐", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "รากฐานทางคณิตศาสตร์ของ Reasoning Tier" : "Mathematical foundation of the reasoning tier" },
+            { href: "/benchmark", icon: "📊", label: isTh ? "เกณฑ์มาตรฐาน" : "Benchmarks", desc: isTh ? "เมตริกประสิทธิภาพของ 41 อัลกอริทึม" : "Performance metrics for all 41 algorithms" },
+          ].map((link) => (
+            <Link key={link.href} href={link.href} className="block p-4 rounded-xl border border-border bg-card hover:border-warm-amber/50 transition-all">
+              <span className="text-2xl mb-2 block">{link.icon}</span>
+              <span className="font-semibold text-sm block mb-1 text-foreground">{link.label}</span>
+              <span className="text-xs text-muted-foreground">{link.desc}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-muted/30 py-20">
+        <div className="mx-auto max-w-3xl px-4 text-center space-y-6">
+          <h2 className="text-3xl font-bold text-foreground">{isTh ? "สนใจ 41 Algorithms?" : "Explore Our 41 Algorithms"}</h2>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
+              {isTh ? "ขอ Demo" : "Request Demo"} <ArrowRight size={16} />
+            </Link>
+            <Link href="/docs" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
+              {isTh ? "อ่าน Docs" : "Read Docs"}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}

@@ -106,7 +106,7 @@ export function RCT7FlowDiagram() {
       </div>
 
       {/* Process Description */}
-      <div className="bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg p-6 space-y-3">
+      <div className="bg-linear-to-r from-accent/5 to-secondary/5 rounded-lg p-6 space-y-3">
         <h4 className="font-semibold text-foreground">The Cyclical Nature</h4>
         <p className="text-muted-foreground text-sm">
           RCT-7 is not linear—it's cyclical. After execution, feedback loops back to the Recognize phase, allowing

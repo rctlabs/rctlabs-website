@@ -22,7 +22,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Documentation - RCT Labs",
-  description: "RCT Ecosystem v2.7.0 documentation — Architecture, APIs, RFCs, and deployment guides.",
+  description: "RCT Ecosystem v3.7.0 documentation — Architecture, APIs, RFCs, and deployment guides.",
 }
 
 export default function DocsPage() {
@@ -36,13 +36,13 @@ export default function DocsPage() {
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-24 md:py-32">
           <div className="max-w-3xl space-y-6">
             <p className="text-sm font-mono text-accent uppercase tracking-wider">Documentation</p>
-            <h1 className="text-foreground">RCT Ecosystem v2.7.0</h1>
+            <h1 className="text-foreground">RCT Ecosystem v3.7.0</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Complete technical documentation for the Constitutional AI Operating System. Architecture, APIs, RFCs, and deployment guides.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">v2.7.0</span>
-              <span className="text-xs font-mono text-muted-foreground">2,210 tests passing</span>
+              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">v3.7.0</span>
+              <span className="text-xs font-mono text-muted-foreground">3,765 tests passing</span>
               <span className="text-xs font-mono text-muted-foreground">•</span>
               <span className="text-xs font-mono text-muted-foreground">10-Layer Architecture</span>
             </div>
@@ -205,7 +205,7 @@ export default function DocsPage() {
               { title: "Kubernetes", desc: "57 resources: HPA, PDB, NetworkPolicy, ArgoCD GitOps, Backup CronJobs.", stat: "57 resources" },
               { title: "API Gateway", desc: "Bun + Hono TypeScript gateway: JWT RS256 auth, RBAC, rate limiting, 10 routes.", stat: "10 routes" },
               { title: "Monitoring", desc: "Prometheus scrape configs + Grafana dashboards: health, RPS, latency, errors.", stat: "Real-time" },
-              { title: "Testing", desc: "Locust + k6 load testing, OWASP security, Chaos (9 scenarios), E2E (7 flows).", stat: "2,210 tests" },
+              { title: "Testing", desc: "Locust + k6 load testing, OWASP security, Chaos (9 scenarios), E2E (7 flows).", stat: "3,765 tests" },
               { title: "Documentation", desc: "C4 Architecture diagrams, Deployment Guide, Runbooks, OpenAPI spec.", stat: "14 endpoints" },
             ].map((item, i) => (
               <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-2">

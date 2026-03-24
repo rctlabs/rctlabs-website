@@ -24,7 +24,22 @@ export const baseKeywords: Record<Locale, string[]> = {
     "PDPA AI",
     "production algorithms",
     "41 algorithms",
-    "99.98% uptime"
+    "99.98% uptime",
+    "reduce AI hallucination",
+    "AI governance framework",
+    "constitutional AI platform",
+    "enterprise AI governance",
+    "AI quality control",
+    "multi-model AI orchestration",
+    "AI cost optimization",
+    "AI memory system",
+    "FDIA equation",
+    "reverse component thinking",
+    "AI for enterprise Thailand",
+    "low hallucination AI",
+    "AI audit trail",
+    "signed AI verification",
+    "sovereign AI infrastructure"
   ],
   th: [
     "ปัญญาประดิษฐ์แบบรัฐธรรมนูญ",
@@ -46,7 +61,13 @@ export const baseKeywords: Record<Locale, string[]> = {
     "PDPA",
     "AI ประเทศไทย",
     "41 อัลกอริทึม",
-    "10 ชั้นสถาปัตยกรรม"
+    "10 ชั้นสถาปัตยกรรม",
+    "ลด AI Hallucination",
+    "สมการ FDIA",
+    "AI สำหรับองค์กรไทย",
+    "ระบบ AI อัจฉริยะ",
+    "AI กำกับดูแล",
+    "ระบบ AI ธุรกิจไทย"
   ]
 }
 
@@ -88,7 +109,7 @@ export const createBilingualMetadata = (
       type: "website",
       images: [
         {
-          url: "https://rctlabs.co/og-image.png",
+          url: "https://rctlabs.co/opengraph-image",
           width: 1200,
           height: 630,
           alt: title,
@@ -99,7 +120,7 @@ export const createBilingualMetadata = (
       card: "summary_large_image",
       title: `${title} | RCT Labs`,
       description,
-      images: ["https://rctlabs.co/og-image.png"],
+      images: ["https://rctlabs.co/opengraph-image"],
       creator: "@rctlabs",
       site: "@rctlabs"
     },
@@ -154,50 +175,5 @@ export const getFAQSchema = (
   }
 }
 
-export const getSoftwareApplicationSchema = (locale: Locale) => {
-  const name = locale === "th" 
-    ? "RCT Ecosystem - ระบบปฏิบัติการ AI แบบรัฐธรรมนูญ"
-    : "RCT Ecosystem - Constitutional AI Operating System"
-  
-  const description = locale === "th"
-    ? "ระบบปฏิบัติการ AI แบบรัฐธรรมนูญพร้อมสถาปัตยกรรม 10 ชั้น 41 อัลกอริทึม และ Multi-LLM Consensus"
-    : "Constitutional AI Operating System with 10-layer architecture, 41 algorithms, and Multi-LLM Consensus"
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name,
-    description,
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      ratingCount: "2210",
-      bestRating: "5",
-    },
-    featureList: [
-      "10-Layer Architecture",
-      "41 Production Algorithms",
-      "Multi-LLM Consensus",
-      "SignedAI Verification",
-      "RCTDB v2.0",
-      "JITNA Protocol",
-      "99.98% Uptime SLA",
-      "Bilingual Support (EN/TH)"
-    ].join(", "),
-    softwareVersion: "2.7.0",
-    releaseNotes: "https://rctlabs.co/changelog",
-    url: "https://rctlabs.co",
-    author: {
-      "@type": "Organization",
-      name: "RCT Labs",
-      url: "https://rctlabs.co"
-    }
-  }
-}
+// SoftwareApplicationSchema — use getSoftwareApplicationSchema from lib/schema.ts (single source of truth)
+export { getSoftwareApplicationSchema } from './schema'

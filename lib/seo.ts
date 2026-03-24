@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "RCT Labs",
   description: "Revolutionizing human-AI interaction through intent-driven design.",
   url: "https://rctlabs.co",
-  ogImage: "https://rctlabs.co/og-image.png",
+  ogImage: "https://rctlabs.co/opengraph-image",
   links: {
     twitter: "https://twitter.com/rctlabs",
     github: "https://github.com/rctlabs",

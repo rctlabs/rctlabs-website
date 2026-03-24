@@ -59,3 +59,18 @@
 - Lazy load components ที่ไม่จำเป็นต้องแสดงทันที
 - Optimize bundle size ด้วย dynamic imports
 - ใช้ React.memo() สำหรับ expensive components
+
+## 9. UI Migration Rules (Vite React -> Next.js App Router)
+
+- Any component imported from the reference design that uses `useState`, `useEffect`, `useRef`, `onClick`, or `framer-motion` MUST have `"use client"` as the absolute first line of the file
+- STRICTLY REPLACE all routing imports from `react-router-dom` or `wouter`
+- Replace `<Link to="...">` with Next.js `<Link href="...">` from `next/link`
+- Replace `useNavigate()` with `useRouter()` from `next/navigation`
+- Replace `useLocation()` with `usePathname()` from `next/navigation`
+- For the initial 100% visual clone, standard `<img>` tags may be kept temporarily to avoid layout shifts from premature `next/image` conversion
+- NEVER modify, delete, or alter any existing data-fetching logic, state management, or API calls that connect `rctlabs-v0` to the backend ecosystem
+- Preserve ALL Tailwind classes exactly as they appear in the reference design; do not optimize or rewrite class structures during visual migration
+- Thai typography must use `Kanit` as the primary Thai font, with `Space Grotesk` + `Kanit` for display and `Inter` + `Kanit` for body text
+- NEVER introduce `Plus Jakarta Sans` into migrated UI foundations or display stacks
+- Use CSS variables and tokens from `app/globals.css` and `styles/tokens.css`; do not hardcode visual values when an existing token is available
+- Before finishing any migration slice, verify Thai rendering, dark mode, responsive behavior, and backend integration still work

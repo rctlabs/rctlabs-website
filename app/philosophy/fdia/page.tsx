@@ -2,12 +2,11 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { useLanguage } from "@/components/language-provider"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FDIACalculator } from "@/components/fdia-calculator"
-import { usePathname } from "next/navigation"
-import { getLocaleFromPathname } from "@/lib/i18n"
 
 const translations = {
   en: {
@@ -65,9 +64,8 @@ const translations = {
 }
 
 export default function FDIAPage() {
-  const pathname = usePathname()
-  const locale = getLocaleFromPathname(pathname) || 'en'
-  const t = translations[locale as keyof typeof translations] || translations.en
+  const { language } = useLanguage()
+  const t = translations[language] || translations.en
 
   const components = [
     { letter: "D", title: t.d_title, description: t.d_desc, details: t.d_details },
@@ -81,7 +79,7 @@ export default function FDIAPage() {
 
       {/* Breadcrumb */}
       <section className="mx-auto max-w-7xl px-4 py-8 flex items-center gap-2 text-sm text-muted-foreground">
-        <Link href={`/${locale}/philosophy`} className="hover:text-foreground transition flex items-center gap-2">
+        <Link href={`/${language}/philosophy`} className="hover:text-foreground transition flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" /> {t.breadcrumb}
         </Link>
         <span>/</span>
@@ -170,7 +168,7 @@ export default function FDIAPage() {
             <h2 className="text-3xl font-bold text-foreground">{t.next_concept}</h2>
             <p className="text-muted-foreground text-lg leading-relaxed">{t.next_desc}</p>
             <Button asChild className="mt-4">
-              <Link href={`/${locale}/philosophy/rct-7`} className="gap-2">
+              <Link href={`/${language}/philosophy/rct-7`} className="gap-2">
                 {t.next_cta} <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>

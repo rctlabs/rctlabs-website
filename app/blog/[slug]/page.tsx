@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getBlogPostBySlug, getAllBlogPosts } from "@/lib/blog"
-import { createPageMetadata } from "@/lib/seo"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -25,10 +25,22 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const post = getBlogPostBySlug(slug)
 
   if (!post) {
-    return createPageMetadata("Post Not Found", "The blog post you're looking for doesn't exist.", "/blog")
+    return createBilingualMetadata("en", "Post Not Found", "ไม่พบบทความ", "The blog post you're looking for doesn't exist.", "ไม่พบบทความที่คุณกำลังค้นหา", "/blog")
   }
 
-  return createPageMetadata(post.title, post.excerpt, `/blog/${slug}`)
+  const metaDescription = post.excerpt && post.excerpt.length < 150
+    ? `${post.excerpt} Read the full article for practical strategies, examples, and best practices from RCT Labs.`
+    : post.excerpt
+
+  return createBilingualMetadata(
+    "en",
+    post.title,
+    post.title,
+    metaDescription || post.title,
+    metaDescription || post.title,
+    `/blog/${slug}`,
+    ["AI blog", "RCT Labs article"]
+  )
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -44,8 +56,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
 
+  // --- BlogPosting Schema for SEO ---
+  // This schema is injected as a <script type="application/ld+json"> block for rich results
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.excerpt && post.excerpt.length < 150
+      ? `${post.excerpt} Read the full article for practical strategies, examples, and best practices from RCT Labs.`
+      : post.excerpt,
+    "url": `https://rctlabs.co/blog/${slug}`,
+    "datePublished": post.date,
+    "author": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "RCT Labs",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://rctlabs.co/logo.png"
+      }
+    }
+  }
+
   return (
     <main className="min-h-screen bg-background">
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <Navbar />
 
       {/* Article */}
@@ -119,7 +157,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Author Section */}
         <div className="border-t border-border mt-12 pt-12">
           <div className="flex gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-accent/20 to-secondary/20 rounded-full flex-shrink-0 flex items-center justify-center">
+            <div className="w-16 h-16 bg-linear-to-br from-accent/20 to-secondary/20 rounded-full shrink-0 flex items-center justify-center">
               <User className="w-8 h-8 text-accent/40" />
             </div>
             <div>

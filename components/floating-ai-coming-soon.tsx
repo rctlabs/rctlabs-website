@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -14,32 +15,29 @@ import {
   Globe,
   Shield,
 } from "lucide-react"
-import { usePathname } from "next/navigation"
-import { getLocaleFromPathname } from "@/lib/i18n"
 
 export function FloatingAIComingSoon() {
   const [isOpen, setIsOpen] = useState(false)
   const [email, setEmail] = useState("")
   const [subscribed, setSubscribed] = useState(false)
-  const pathname = usePathname()
-  const locale = getLocaleFromPathname(pathname) || 'en'
+  const { language } = useLanguage()
 
   const t = {
-    title: locale === 'th' ? 'ผู้ช่วย FloatingAI' : 'FloatingAI Assistant',
-    comingSoon: locale === 'th' ? 'เร็วๆ นี้' : 'Coming Soon',
-    message: locale === 'th' 
+    title: language === 'th' ? 'ผู้ช่วย FloatingAI' : 'FloatingAI Assistant',
+    comingSoon: language === 'th' ? 'เร็วๆ นี้' : 'Coming Soon',
+    message: language === 'th' 
       ? 'ผู้ช่วย AI ของเรากำลังอยู่ระหว่างการพัฒนา เรากำลังสร้างสิ่งที่น่าทึ่งด้วยฐานความรู้กว่า 55 หัวข้อที่ครอบคลุมอัลกอริทึมทั้ง 41 รายการ'
       : 'Our AI assistant is currently under development. We\'re building something amazing with 55+ knowledge base topics covering all 41 algorithms.',
-    featuresTitle: locale === 'th' ? 'สิ่งที่คาดหวังได้:' : 'What to Expect:',
-    feature1: locale === 'th' ? 'การตอบสนองแบบ Multi-LLM consensus' : 'Multi-LLM consensus responses',
-    feature2: locale === 'th' ? 'ฐานความรู้กว่า 55 หัวข้อ' : '55+ knowledge base topics',
-    feature3: locale === 'th' ? 'การตรวจจับเจตนาแบบเรียลไทม์' : 'Real-time intent detection',
-    feature4: locale === 'th' ? 'รองรับสองภาษา (EN/TH)' : 'Bilingual support (EN/TH)',
-    notifyMe: locale === 'th' ? 'แจ้งเตือนเมื่อพร้อมใช้งาน' : 'Notify me when ready',
-    emailPlaceholder: locale === 'th' ? 'อีเมลของคุณ' : 'your@email.com',
-    subscribe: locale === 'th' ? 'สมัครรับข่าวสาร' : 'Subscribe',
-    subscribed: locale === 'th' ? 'ขอบคุณ! เราจะแจ้งให้คุณทราบเมื่อพร้อม' : 'Thanks! We\'ll notify you when ready.',
-    close: locale === 'th' ? 'ปิด' : 'Close',
+    featuresTitle: language === 'th' ? 'สิ่งที่คาดหวังได้:' : 'What to Expect:',
+    feature1: language === 'th' ? 'การตอบสนองแบบ Multi-LLM consensus' : 'Multi-LLM consensus responses',
+    feature2: language === 'th' ? 'ฐานความรู้กว่า 55 หัวข้อ' : '55+ knowledge base topics',
+    feature3: language === 'th' ? 'การตรวจจับเจตนาแบบเรียลไทม์' : 'Real-time intent detection',
+    feature4: language === 'th' ? 'รองรับสองภาษา (EN/TH)' : 'Bilingual support (EN/TH)',
+    notifyMe: language === 'th' ? 'แจ้งเตือนเมื่อพร้อมใช้งาน' : 'Notify me when ready',
+    emailPlaceholder: language === 'th' ? 'อีเมลของคุณ' : 'your@email.com',
+    subscribe: language === 'th' ? 'สมัครรับข่าวสาร' : 'Subscribe',
+    subscribed: language === 'th' ? 'ขอบคุณ! เราจะแจ้งให้คุณทราบเมื่อพร้อม' : 'Thanks! We\'ll notify you when ready.',
+    close: language === 'th' ? 'ปิด' : 'Close',
   }
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -165,7 +163,7 @@ export function FloatingAIComingSoon() {
               {/* Footer */}
               <div className="px-6 py-3 bg-card/50 border-t border-border">
                 <p className="text-xs text-muted-foreground text-center">
-                  {locale === 'th' 
+                  {language === 'th' 
                     ? 'กำลังพัฒนาด้วย 10-Layer Architecture และ Multi-LLM Consensus'
                     : 'Powered by 10-Layer Architecture & Multi-LLM Consensus'}
                 </p>

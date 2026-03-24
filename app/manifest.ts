@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Revolutionizing human-AI interaction through intent-driven design.",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#6366F1",
+    background_color: "#FAF6F0",
+    theme_color: "#D4A853",
     orientation: "portrait-primary",
     icons: [
       {
