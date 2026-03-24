@@ -23,7 +23,7 @@ function checkRateLimit(ip: string): boolean {
 /* ─── Internal routes blocked in production ──────────────── */
 const INTERNAL_PREFIXES = ['/admin', '/owner', '/monitor', '/analytics', '/test-console', '/websocket']
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
   // Block internal/admin routes in production (no auth system yet)
