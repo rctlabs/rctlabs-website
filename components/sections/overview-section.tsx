@@ -7,6 +7,7 @@ import { useLanguage } from "@/components/language-provider"
 import { LazyEcosystemOverview } from "@/components/diagrams/lazy-diagram-wrapper"
 import SectionHeading from "@/components/section-heading"
 import OptimizedImage from "@/components/ui/optimized-image"
+import { useMounted } from "@/hooks/use-mounted"
 
 const PIXEL_ARCH = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-architecture-layers_33ca737f.png"
 
@@ -41,7 +42,8 @@ const features = {
 export default function OverviewSection() {
   const { language } = useLanguage()
   const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
+  const mounted = useMounted()
+  const isDark = mounted && resolvedTheme === "dark"
   const cards = features[language as keyof typeof features] || features.en
 
   return (
@@ -66,8 +68,8 @@ export default function OverviewSection() {
               <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.12),transparent_42%)]" />
               </div>
-              <div className="absolute top-4 right-4 w-12 h-12 opacity-50 transition-all duration-300 pointer-events-none group-hover:-translate-y-0.5 group-hover:opacity-80">
-                <OptimizedImage src={pixelIcons[index]} alt="" pixelated containerClassName="w-full h-full" objectFit="contain" width={48} height={48} />
+              <div className="absolute top-4 right-4 w-12 h-12 opacity-55 transition-all duration-200 pointer-events-none group-hover:opacity-90">
+                <OptimizedImage src={pixelIcons[index]} alt="" pixelated showErrorFallback={false} containerClassName="w-full h-full" objectFit="contain" width={48} height={48} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
               </div>
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110" style={{ backgroundColor: isDark ? feature.darkBg : feature.bg }}>
                 <feature.icon size={24} style={{ color: feature.color }} />

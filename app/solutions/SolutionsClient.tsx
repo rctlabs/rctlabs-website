@@ -5,10 +5,17 @@ import { Footer } from "@/components/footer"
 import { useLanguage } from "@/components/language-provider"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
   ArrowRight, Shield, Brain, GitBranch, AlertTriangle, Target, Zap, CheckCircle,
   Building2, Code2, Briefcase, Lock, Users
 } from "lucide-react"
+import OptimizedImage from "@/components/ui/optimized-image"
+import { getLocaleFromPathname } from "@/lib/i18n"
+
+const PIXEL_SHIELD = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-shield-icon-MfxsPeu6XRAKST8C3hCmf9.webp"
+const PIXEL_BRAIN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-brain-icon-YV3hZvbAaJBXWEMr6T2Tnc.webp"
+const PIXEL_ROUTING = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-network-icon-8aUM6KhHFxaYJMNCWLXw5c.webp"
 
 const solutions = [
   {
@@ -30,6 +37,7 @@ const solutions = [
       { en: "Cryptographic Audit Trails", th: "Cryptographic Audit Trails" },
       { en: "Real-time Hallucination Detection", th: "Real-time Hallucination Detection" },
     ],
+    accentSrc: PIXEL_SHIELD,
   },
   {
     id: "memory",
@@ -50,6 +58,7 @@ const solutions = [
       { en: "8-Dimensional Schema", th: "8-Dimensional Schema" },
       { en: "Persistent Cross-Session Memory", th: "Persistent Cross-Session Memory" },
     ],
+    accentSrc: PIXEL_BRAIN,
   },
   {
     id: "routing",
@@ -70,6 +79,7 @@ const solutions = [
       { en: "Dynamic Model Selection", th: "Dynamic Model Selection" },
       { en: "Cost-Optimized Routing", th: "Cost-Optimized Routing" },
     ],
+    accentSrc: PIXEL_ROUTING,
   },
 ]
 
@@ -82,26 +92,86 @@ const problems = [
 
 export default function SolutionsPage() {
   const { language } = useLanguage()
+  const pathname = usePathname()
   const isTh = language === "th"
+  const locale = getLocaleFromPathname(pathname) || language
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const localHref = (href: string) => `${localePrefix}${href}`
+
+  const proofPoints = [
+    { value: "0.3%", labelEn: "Hallucination", labelTh: "Hallucination", color: "#C4745B" },
+    { value: "99.7%", labelEn: "Verified Accuracy", labelTh: "ความแม่นยำที่ตรวจสอบได้", color: "#7B9E87" },
+    { value: "8", labelEn: "LLMs in Consensus", labelTh: "LLMs ในฉันทามติ", color: "#D4A853" },
+  ]
 
   return (
     <main className="min-h-screen bg-background" id="main-content">
       <Navbar />
 
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
-        <div className="max-w-3xl mx-auto space-y-5">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-terracotta/10 border border-warm-terracotta/30 text-warm-terracotta text-sm font-medium">
-            🛡️ {isTh ? "โซลูชัน" : "Solutions"}
-          </span>
-          <h1 className="text-5xl font-bold text-foreground">
-            {isTh ? "โซลูชัน AI สำหรับองค์กร" : "Enterprise AI Solutions"}
-          </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            {isTh
-              ? "จาก Startups ถึง Enterprise — RCT Ecosystem ให้ Constitutional AI Infrastructure พร้อม 0.3% Hallucination Rate, 99.98% Uptime"
-              : "From startups to enterprises — RCT Ecosystem provides Constitutional AI infrastructure with 0.3% hallucination rate and 99.98% uptime."}
-          </p>
+      <section className="relative overflow-hidden border-b border-border bg-[radial-gradient(circle_at_top,rgba(212,168,83,0.10),transparent_42%)]">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 md:grid-cols-[minmax(0,1.2fr)_minmax(320px,420px)] md:py-28">
+          <div className="space-y-6">
+            <span className="inline-flex items-center gap-2 rounded-full border border-warm-terracotta/30 bg-warm-terracotta/10 px-4 py-1.5 text-sm font-medium text-warm-terracotta">
+              🛡️ {isTh ? "โซลูชัน" : "Solutions"}
+            </span>
+            <div className="space-y-4">
+              <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
+                {isTh ? "โซลูชัน AI สำหรับองค์กรที่ต้องการความเชื่อถือได้จริง" : "Enterprise AI Solutions Built for Verifiable Outcomes"}
+              </h1>
+              <p className="max-w-3xl text-lg leading-relaxed text-muted-foreground">
+                {isTh
+                  ? "RCT Ecosystem แก้ pain point ที่ Prompt Engineering แก้ไม่ได้: hallucination, intent drift, memory loss และ single-model bottlenecks ด้วย constitutional AI infrastructure ที่ตรวจสอบย้อนหลังได้"
+                  : "RCT Ecosystem solves the architectural failures prompt engineering cannot: hallucination, intent drift, context loss, and single-model bottlenecks through constitutional AI infrastructure with auditability built in."}
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {proofPoints.map((point) => (
+                <div key={point.labelEn} className="rounded-2xl border border-border bg-card/80 p-4 shadow-sm">
+                  <div className="text-2xl font-bold" style={{ color: point.color }}>{point.value}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{isTh ? point.labelTh : point.labelEn}</div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link href={localHref("/contact")} className="inline-flex items-center justify-center gap-2 rounded-xl bg-warm-amber px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#C49A48]">
+                {isTh ? "คุยกับทีมงาน" : "Talk to the Team"}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href={localHref("/pricing")} className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {isTh ? "ดูราคา" : "View Pricing"}
+              </Link>
+            </div>
+          </div>
+          <div className="relative rounded-[28px] border border-border bg-card p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+            <div className="pointer-events-none absolute right-5 top-5 h-12 w-12 opacity-60">
+              <OptimizedImage src={PIXEL_SHIELD} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={48} height={48} />
+            </div>
+            <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">
+              {isTh ? "Deployment Snapshot" : "Deployment Snapshot"}
+            </div>
+            <div className="space-y-5">
+              {[
+                {
+                  title: isTh ? "Verification Layer" : "Verification Layer",
+                  body: isTh ? "SignedAI consensus พร้อม audit trail ระดับ cryptographic" : "SignedAI consensus with cryptographic audit trails.",
+                },
+                {
+                  title: isTh ? "Memory Layer" : "Memory Layer",
+                  body: isTh ? "RCTDB v2.0 ทำ persistent context ข้าม session และข้าม workflow" : "RCTDB v2.0 preserves context across sessions and workflows.",
+                },
+                {
+                  title: isTh ? "Routing Layer" : "Routing Layer",
+                  body: isTh ? "9-tier orchestration เพื่อเลือก model, algorithm และ policy ที่เหมาะกับ intent" : "9-tier orchestration selects the right model, algorithm, and policy for each intent.",
+                },
+              ].map((item) => (
+                <div key={item.title} className="rounded-2xl border border-border bg-background/70 p-4">
+                  <div className="text-sm font-semibold text-foreground">{item.title}</div>
+                  <div className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.body}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -150,11 +220,14 @@ export default function SolutionsPage() {
                       </div>
                     ))}
                   </div>
-                  <Link href={sol.href} className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3" style={{ color: sol.color }}>
+                  <Link href={localHref(sol.href)} className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3" style={{ color: sol.color }}>
                     {isTh ? "เรียนรู้เพิ่มเติม" : "Learn More"} <ArrowRight size={16} />
                   </Link>
                 </div>
-                <div className="lg:col-span-2 p-6 sm:p-8 flex flex-col justify-center bg-muted/30">
+                <div className="relative flex flex-col justify-center bg-muted/30 p-6 sm:p-8 lg:col-span-2">
+                  <div className="pointer-events-none absolute right-5 top-5 h-12 w-12 opacity-55">
+                    <OptimizedImage src={sol.accentSrc} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={48} height={48} />
+                  </div>
                   <div className="space-y-6">
                     {sol.stats.map((stat, j) => (
                       <div key={j} className="text-center">
@@ -191,7 +264,7 @@ export default function SolutionsPage() {
                 <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground"><item.icon className="w-4 h-4 text-warm-amber shrink-0" />{item.t}</li>
               ))}
             </ul>
-            <Link href="/contact" className="inline-flex items-center px-5 py-2.5 rounded-lg bg-warm-amber text-white text-sm font-medium hover:bg-[#C49A48] transition-colors">
+            <Link href={localHref("/contact")} className="inline-flex items-center px-5 py-2.5 rounded-lg bg-warm-amber text-white text-sm font-medium hover:bg-[#C49A48] transition-colors">
               {isTh ? "ติดต่อฝ่ายขาย" : "Contact Sales"}
             </Link>
           </div>
@@ -232,7 +305,7 @@ const result = await client.execute({
                 <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground"><CheckCircle className="w-4 h-4 text-warm-amber shrink-0" />{item}</li>
               ))}
             </ul>
-            <Link href="/docs" className="inline-flex items-center px-5 py-2.5 rounded-lg border border-border text-foreground text-sm font-medium hover:bg-muted transition-colors">
+            <Link href={localHref("/docs")} className="inline-flex items-center px-5 py-2.5 rounded-lg border border-border text-foreground text-sm font-medium hover:bg-muted transition-colors">
               {isTh ? "อ่านเอกสาร" : "View Documentation"}
             </Link>
           </div>
@@ -247,7 +320,7 @@ const result = await client.execute({
             </div>
             <h2 className="text-2xl font-bold text-foreground">{isTh ? "สำหรับ SMEs" : "For SMEs"}</h2>
             <p className="text-muted-foreground">{isTh ? "Enterprise-grade AI ในราคาที่เข้าถึงได้ — 3.74x cost reduction ผ่าน RCTDB compression" : "Enterprise-grade AI without enterprise costs — 3.74x cost reduction through RCTDB compression."}</p>
-            <Link href="/pricing" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-warm-amber text-white text-sm font-medium hover:bg-[#C49A48] transition-colors">
+            <Link href={localHref("/pricing")} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-warm-amber text-white text-sm font-medium hover:bg-[#C49A48] transition-colors">
               {isTh ? "ดูราคา" : "View Pricing"} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -274,10 +347,10 @@ const result = await client.execute({
           <h2 className="text-3xl font-bold text-foreground">{isTh ? "ค้นหาโซลูชันของคุณ" : "Find Your Solution"}</h2>
           <p className="text-muted-foreground">{isTh ? "ไม่แน่ใจว่าแผนใดเหมาะกับคุณ? ติดต่อทีมงาน" : "Not sure which plan is right? Talk to our team."}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
+            <Link href={localHref("/contact")} className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
               {isTh ? "ติดต่อเรา" : "Contact Us"} <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link href="/docs" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
+            <Link href={localHref("/docs")} className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
               {isTh ? "อ่านเอกสาร" : "View Documentation"}
             </Link>
           </div>

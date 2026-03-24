@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getBlogPostBySlug, getAllBlogPosts } from "@/lib/blog"
-import { createPageMetadata } from "@/lib/seo"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -25,15 +25,22 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const post = getBlogPostBySlug(slug)
 
   if (!post) {
-    return createPageMetadata("Post Not Found", "The blog post you're looking for doesn't exist.", "/blog")
+    return createBilingualMetadata("en", "Post Not Found", "ไม่พบบทความ", "The blog post you're looking for doesn't exist.", "ไม่พบบทความที่คุณกำลังค้นหา", "/blog")
   }
 
-  // Lengthen meta description for SEO (150-160 chars)
   const metaDescription = post.excerpt && post.excerpt.length < 150
     ? `${post.excerpt} Read the full article for practical strategies, examples, and best practices from RCT Labs.`
     : post.excerpt
 
-  return createPageMetadata(post.title, metaDescription, `/blog/${slug}`)
+  return createBilingualMetadata(
+    "en",
+    post.title,
+    post.title,
+    metaDescription || post.title,
+    metaDescription || post.title,
+    `/blog/${slug}`,
+    ["AI blog", "RCT Labs article"]
+  )
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -58,7 +65,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     "description": post.excerpt && post.excerpt.length < 150
       ? `${post.excerpt} Read the full article for practical strategies, examples, and best practices from RCT Labs.`
       : post.excerpt,
-    "url": `https://rctlabs.ai/blog/${slug}`,
+    "url": `https://rctlabs.co/blog/${slug}`,
     "datePublished": post.date,
     "author": {
       "@type": "Person",
@@ -69,7 +76,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       "name": "RCT Labs",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://rctlabs.ai/logo.png"
+        "url": "https://rctlabs.co/logo.png"
       }
     }
   }

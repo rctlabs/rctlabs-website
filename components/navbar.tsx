@@ -17,6 +17,7 @@ import SearchModal, { useSearchModal } from "@/components/search/search-modal"
 import { UserProfileMenu } from "@/components/user-profile-menu"
 import { NotificationBell } from "@/components/notification-bell"
 import { KeyboardShortcutsDialog } from "@/components/keyboard-shortcuts-dialog"
+import { useMounted } from "@/hooks/use-mounted"
 
 const SEARCH_DATA = [
   { title: "Solutions Overview",           description: "AI solutions for enterprise",                      href: "/solutions",                              category: "Solutions" },
@@ -128,6 +129,7 @@ const navLabels: Record<string, { en: string; th: string }> = {
 export function Navbar() {
   const { language, toggleLanguage, t } = useLanguage()
   const { theme, setTheme } = useTheme()
+  const mounted = useMounted()
   const pathname = usePathname()
 
   const [scrolled, setScrolled]         = useState(false)
@@ -137,7 +139,7 @@ export function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { isOpen: searchOpen, open: openSearch, close: closeSearch } = useSearchModal()
 
-  const isDark = theme === "dark"
+  const isDark = (mounted ? theme : "light") === "dark"
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)

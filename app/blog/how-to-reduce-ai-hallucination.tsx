@@ -17,18 +17,22 @@ export default function HallucinationArticlePage() {
     "description": th
       ? "คู่มือทีละขั้นตอนสำหรับการลด AI Hallucination ใน LLMs ด้วยสมการ FDIA และ memory พร้อมกลยุทธ์ ประเมินความเสี่ยง และการทดสอบต่อเนื่อง"
       : "Step-by-step guide to reducing AI hallucination in production LLMs using the FDIA equation and memory. Practical strategies, risk assessment, and continuous testing.",
-    "url": "https://rctlabs.ai/blog/how-to-reduce-ai-hallucination",
+    "url": "https://rctlabs.co/blog/how-to-reduce-ai-hallucination",
+    "datePublished": "2026-02-15",
+    "dateModified": "2026-03-10",
+    "image": "https://rctlabs.co/opengraph-image",
+    "inLanguage": th ? "th" : "en",
     "author": {
       "@type": "Organization",
       "name": "RCT Labs",
-      "url": "https://rctlabs.ai"
+      "url": "https://rctlabs.co"
     },
     "publisher": {
       "@type": "Organization",
       "name": "RCT Labs",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://rctlabs.ai/logo.png"
+        "url": "https://rctlabs.co/logo.png"
       }
     }
   };

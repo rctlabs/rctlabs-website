@@ -116,8 +116,8 @@ export default function HomePage() {
               { stat: "10", label: language === "en" ? "Architecture Layers" : "ชั้นสถาปัตยกรรม", color: "#89B4C8" },
             ].map((item, index) => (
               <div key={item.label} className="group relative overflow-hidden rounded-xl border border-border bg-card p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
-                <div className="pointer-events-none absolute right-3 top-3 h-9 w-9 opacity-40 transition-opacity duration-300 group-hover:opacity-80">
-                  <OptimizedImage src={PIXEL_STAT_ICONS[index]} alt="" pixelated containerClassName="h-full w-full" objectFit="contain" width={36} height={36} />
+                <div className="pointer-events-none absolute right-3 top-3 h-9 w-9 opacity-50 transition-opacity duration-200 group-hover:opacity-90">
+                  <OptimizedImage src={PIXEL_STAT_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={36} height={36} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
                 </div>
                 <div className="mb-1 text-3xl font-bold" style={{ color: item.color }}>
                   {item.stat}

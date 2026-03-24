@@ -6,6 +6,7 @@ import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
 import VersionTimelineGraph from "@/components/diagrams/version-timeline-graph"
 import SectionHeading from "@/components/section-heading"
+import { useMounted } from "@/hooks/use-mounted"
 
 const PIXEL_ROCKET = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-rocket-icon-oSMB9StjMFt3Nvu8bxaJcw.webp"
 
@@ -35,7 +36,8 @@ const statusLabelsData = {
 export default function RoadmapSection() {
   const { resolvedTheme } = useTheme()
   const { language } = useLanguage()
-  const isDark = resolvedTheme === "dark"
+  const mounted = useMounted()
+  const isDark = mounted && resolvedTheme === "dark"
   const roadmap = roadmapData[language as keyof typeof roadmapData] || roadmapData.en
   const statusLabels = statusLabelsData[language as keyof typeof statusLabelsData] || statusLabelsData.en
 

@@ -11,13 +11,15 @@ import Link from "next/link"
 import { useLanguage } from "@/components/language-provider"
 import { useTheme } from "next-themes"
 import { toast } from "sonner"
+import { useMounted } from "@/hooks/use-mounted"
 
 const LOGO_PNG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
 
 export function Footer() {
   const { language, t } = useLanguage()
   const { theme } = useTheme()
-  const isDark = theme === "dark"
+  const mounted = useMounted()
+  const isDark = (mounted ? theme : "light") === "dark"
   const isTh = language === "th"
 
   const [email, setEmail] = useState("")

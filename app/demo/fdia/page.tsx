@@ -206,10 +206,10 @@ export default function FDIADemoPage() {
     "description": isEn
       ? "Interactive FDIA equation demo: Calculate and visualize AI hallucination risk in real time."
       : "เดโมสมการ FDIA แบบอินเทอร์แอคทีฟ: คำนวณและดูความเสี่ยง AI Hallucination แบบเรียลไทม์",
-    "url": "https://rctlabs.ai/demo/fdia",
+    "url": "https://rctlabs.co/demo/fdia",
     "applicationCategory": "CalculatorApplication",
     "operatingSystem": "Cross-platform",
-    "publisher": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.ai" }
+    "publisher": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.co" }
   }
 
   return (

@@ -10,6 +10,7 @@ import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
 import Image from "next/image"
+import { useMounted } from "@/hooks/use-mounted"
 
 interface SectionHeadingProps {
   tag?: string
@@ -34,8 +35,9 @@ export default function SectionHeading({
   label,
 }: SectionHeadingProps) {
   const { resolvedTheme } = useTheme()
+  const mounted = useMounted()
   const { language } = useLanguage()
-  const isDark = resolvedTheme === "dark"
+  const isDark = mounted && resolvedTheme === "dark"
   const isThai = language === "th"
   const displayTag = tag || label
 

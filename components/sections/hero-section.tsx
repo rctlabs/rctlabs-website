@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
+import { motion, useInView, useReducedMotion } from "framer-motion"
 import { ArrowRight, Layers, Brain, Dna, ArrowDown, Zap } from "lucide-react"
 import Link from "next/link"
 import { useRef } from "react"
@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import { LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
 import OptimizedImage from "@/components/ui/optimized-image"
+import { useMounted } from "@/hooks/use-mounted"
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
 const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
@@ -19,12 +20,14 @@ const PIXEL_ARCH = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtm
 export default function HeroSection() {
   const { language, t } = useLanguage()
   const { resolvedTheme } = useTheme()
+  const mounted = useMounted()
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname) || language
   const localePrefix = locale === "th" ? "/th" : "/en"
   const heroRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(heroRef, { margin: "-100px" })
-  const isDark = resolvedTheme === "dark"
+  const prefersReducedMotion = useReducedMotion()
+  const isDark = mounted && resolvedTheme === "dark"
 
   const scrollTo = (id: string) => {
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth" })
@@ -72,16 +75,8 @@ export default function HeroSection() {
         />
       </div>
 
-      <motion.div
-        animate={isInView ? { scale: [1, 1.1, 1], opacity: [0.06, 0.1, 0.06] } : { scale: 1, opacity: 0.06 }}
-        transition={{ duration: 8, repeat: isInView ? Infinity : 0, ease: "easeInOut" }}
-        className="absolute top-20 -left-40 w-125 h-125 rounded-full bg-warm-amber blur-[120px]"
-      />
-      <motion.div
-        animate={isInView ? { scale: [1, 1.15, 1], opacity: [0.04, 0.08, 0.04] } : { scale: 1, opacity: 0.04 }}
-        transition={{ duration: 10, repeat: isInView ? Infinity : 0, ease: "easeInOut", delay: 2 }}
-        className="absolute bottom-20 -right-40 w-100 h-100 rounded-full bg-warm-sage blur-[100px]"
-      />
+      <div className="absolute top-20 -left-40 h-125 w-125 rounded-full bg-warm-amber opacity-8 blur-[120px]" />
+      <div className="absolute bottom-20 -right-40 h-100 w-100 rounded-full bg-warm-sage opacity-6 blur-[100px]" />
 
       <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 w-full">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -112,8 +107,8 @@ export default function HeroSection() {
                   { label: language === "en" ? "Intent-Centric" : "Intent-Centric", icon: PIXEL_BRAIN },
                   { label: language === "en" ? "10 Layers" : "10 Layers", icon: PIXEL_ARCH },
                 ].map((item) => (
-                  <div key={item.label} className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs ${isDark ? "border-border bg-card/70 text-warm-muted" : "border-warm-light-gray bg-white/70 text-warm-secondary"}`}>
-                    <OptimizedImage src={item.icon} alt="" pixelated containerClassName="h-4 w-4" objectFit="contain" width={16} height={16} />
+                  <div key={item.label} className={`group inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors ${isDark ? "border-border bg-card/70 text-warm-muted hover:bg-card" : "border-warm-light-gray bg-white/70 text-warm-secondary hover:bg-white"}`}>
+                    <OptimizedImage src={item.icon} alt="" pixelated showErrorFallback={false} containerClassName="h-4 w-4" objectFit="contain" width={16} height={16} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
                     {item.label}
                   </div>
                 ))}
@@ -170,11 +165,11 @@ export default function HeroSection() {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative"
+            className="group relative"
           >
-            <div className="relative rounded-[28px] border border-border bg-white/70 dark:bg-card/70 backdrop-blur-md p-4 sm:p-6 shadow-[0_30px_80px_rgba(0,0,0,0.12)]">
+            <div className="relative rounded-[28px] border border-border bg-white/82 p-4 shadow-[0_20px_48px_rgba(0,0,0,0.10)] sm:p-6 dark:bg-card/82 sm:backdrop-blur-sm">
               <div className="pointer-events-none absolute right-5 top-5 h-10 w-10 opacity-55">
-                <OptimizedImage src={PIXEL_BRAIN} alt="" pixelated containerClassName="h-full w-full" objectFit="contain" width={40} height={40} />
+                <OptimizedImage src={PIXEL_BRAIN} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={40} height={40} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
               </div>
               <div className="mb-4 text-right text-sm text-muted-foreground">
                 {language === "en" ? "Use ← → or click nodes" : "ใช้ ← → หรือคลิกที่ node"}
@@ -184,7 +179,7 @@ export default function HeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.72, duration: 0.45 }}
-                className={`absolute bottom-4 left-4 right-4 backdrop-blur-sm rounded-xl p-4 border z-10 ${
+                className={`absolute bottom-4 left-4 right-4 rounded-xl border p-4 z-10 ${
                   isDark ? "bg-card/92 border-border" : "bg-white/92 border-warm-light-gray"
                 }`}
               >
@@ -196,7 +191,7 @@ export default function HeroSection() {
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-warm-sage animate-pulse" />
+                    <div className="h-2 w-2 rounded-full bg-warm-sage" />
                     <span className="text-xs font-medium text-warm-sage">Active</span>
                   </div>
                 </div>
@@ -204,8 +199,8 @@ export default function HeroSection() {
             </div>
 
             <motion.div
-              animate={isInView ? { y: [0, -8, 0] } : { y: 0 }}
-              transition={{ duration: 3, repeat: isInView ? Infinity : 0, ease: "easeInOut" }}
+              animate={prefersReducedMotion || !isInView ? { y: 0 } : { y: [0, -4, 0] }}
+              transition={{ duration: 5, repeat: prefersReducedMotion || !isInView ? 0 : Infinity, ease: "easeInOut" }}
               className={`absolute -top-2 -right-2 sm:-top-4 sm:-right-4 rounded-xl px-4 py-2.5 shadow-lg border ${
                 isDark ? "bg-card border-border" : "bg-white border-warm-light-gray"
               }`}
@@ -215,8 +210,8 @@ export default function HeroSection() {
             </motion.div>
 
             <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              animate={prefersReducedMotion || !isInView ? { y: 0 } : { y: [0, 3, 0] }}
+              transition={{ duration: 6, repeat: prefersReducedMotion || !isInView ? 0 : Infinity, ease: "easeInOut", delay: 1 }}
               className={`absolute -bottom-3 -left-3 rounded-xl px-3 py-2 shadow-lg border ${
                 isDark ? "bg-card border-border" : "bg-white border-warm-light-gray"
               }`}
@@ -233,7 +228,7 @@ export default function HeroSection() {
             className={`flex flex-col items-center gap-2 transition-colors group ${isDark ? "text-warm-subtle hover:text-warm-pale" : "text-warm-gray hover:text-warm-charcoal"}`}
           >
             <span className="text-xs font-medium uppercase tracking-widest">{language === "en" ? "Scroll to explore" : "เลื่อนเพื่อสำรวจ"}</span>
-            <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
+            <motion.div animate={prefersReducedMotion ? { y: 0 } : { y: [0, 4, 0] }} transition={{ duration: 2.4, repeat: prefersReducedMotion ? 0 : Infinity, ease: "easeInOut" }}>
               <ArrowDown className="w-4 h-4" />
             </motion.div>
           </button>

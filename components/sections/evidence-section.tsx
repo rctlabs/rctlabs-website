@@ -6,6 +6,7 @@ import { BookOpen, ExternalLink, FlaskConical, BarChart3, Shield } from "lucide-
 import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
 import Image from "next/image"
+import { useMounted } from "@/hooks/use-mounted"
 
 const evidenceCards = [
   {
@@ -104,7 +105,8 @@ const fadeUp = {
 
 export default function EvidenceSection() {
   const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
+  const mounted = useMounted()
+  const isDark = mounted && resolvedTheme === "dark"
   const { language } = useLanguage()
   const isTh = language === "th"
   const scrollRef = useRef<HTMLDivElement>(null)

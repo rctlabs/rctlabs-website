@@ -7,6 +7,7 @@ import { useLanguage } from "@/components/language-provider"
 import PerformanceRadarChart from "@/components/diagrams/performance-radar-chart"
 import SectionHeading from "@/components/section-heading"
 import OptimizedImage from "@/components/ui/optimized-image"
+import { useMounted } from "@/hooks/use-mounted"
 
 const PIXEL_METRICS = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-network-icon-8aUM6KhHFxaYJMNCWLXw5c.webp"
 
@@ -66,7 +67,8 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
 export default function MetricsSection() {
   const { resolvedTheme } = useTheme()
   const { language } = useLanguage()
-  const isDark = resolvedTheme === "dark"
+  const mounted = useMounted()
+  const isDark = mounted && resolvedTheme === "dark"
   const highlights = highlightsData[language as keyof typeof highlightsData] || highlightsData.en
 
   return (
@@ -87,7 +89,7 @@ export default function MetricsSection() {
               <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(123,158,135,0.12),transparent_46%)]" />
               </div>
-              <OptimizedImage src={PIXEL_ICONS[index]} alt="" pixelated containerClassName="mx-auto mb-1 h-8 w-8" objectFit="contain" width={32} height={32} />
+              <OptimizedImage src={PIXEL_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="mx-auto mb-1 h-8 w-8" objectFit="contain" width={32} height={32} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
               <div className={`text-3xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}><AnimatedCounter target={highlight.value} suffix={highlight.suffix} /></div>
               <div className="mt-1 text-sm font-semibold text-warm-amber">{highlight.label}</div>
               <div className={`mt-0.5 text-xs sm:text-sm ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{highlight.desc}</div>

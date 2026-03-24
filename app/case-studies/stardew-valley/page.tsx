@@ -105,8 +105,8 @@ export default function StardewValleyCaseStudyPage() {
     "description": isEn
       ? "How RCT Labs AI memory and FDIA equation transformed Stardew Valley NPCs into autonomous AI agents. 28 NPCs, sub-1ms decision latency."
       : "กรณีศึกษา: การเปลี่ยน NPC ใน Stardew Valley ให้เป็น AI Agents อัตโนมัติด้วย FDIA Equation และ JITNA Protocol",
-    "url": "https://rctlabs.ai/case-studies/stardew-valley",
-    "creator": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.ai" },
+    "url": "https://rctlabs.co/case-studies/stardew-valley",
+    "creator": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.co" },
     "keywords": ["AI memory", "FDIA", "Stardew Valley", "case study", "RCT Labs", "game AI"]
   }
 

@@ -122,9 +122,6 @@ export default function FDIAFlowchart() {
   return (
     <div ref={containerRef} className="w-full" role="application" aria-label="FDIA Equation Flowchart">
       <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">{announcement}</div>
-      <div className="mb-2 text-center">
-        <span className="text-2xs text-warm-muted dark:text-warm-subtle">{isEn ? "Use ← → or click nodes" : "ใช้ ← → หรือคลิก nodes"}</span>
-      </div>
       <div className="relative overflow-hidden rounded-2xl border border-warm-light-gray bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)]" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         <svg viewBox={`0 0 ${svgW} ${svgH}`} className="h-auto w-full" style={{ minHeight: "280px" }}>
           <defs>
@@ -180,7 +177,7 @@ export default function FDIAFlowchart() {
             const highlighted = isActive || isHovered
             return (
               <g key={node.id} onClick={() => setActiveNode(activeNode === node.id ? null : node.id)} onMouseEnter={() => setHoveredNode(node.id)} onMouseLeave={() => setHoveredNode(null)} className="cursor-pointer" style={{ filter: highlighted ? `url(#glow-${node.id})` : "none" }}>
-                {isActive && <circle cx={node.x} cy={node.y} r={nodeR + 6} fill="none" stroke={node.color} strokeWidth="2" strokeDasharray="4 3" opacity="0.5"><animateTransform attributeName="transform" type="rotate" from={`0 ${node.x} ${node.y}`} to={`360 ${node.x} ${node.y}`} dur="12s" repeatCount="indefinite" /></circle>}
+                {isActive && <circle cx={node.x} cy={node.y} r={nodeR + 6} fill="none" stroke={node.color} strokeWidth="2" strokeDasharray="4 3" opacity="0.5" />}
                 <circle cx={node.x} cy={node.y} r={nodeR} fill={highlighted ? node.bg : node.bgLight} stroke={node.color} strokeWidth={highlighted ? 2.5 : 1.5} style={{ transition: "all 0.3s ease" }} />
                 <text x={node.x} y={node.y - 6} textAnchor="middle" dominantBaseline="middle" fill={node.color} fontFamily="var(--font-mono)" fontSize="28" fontWeight="700">{node.letter}</text>
                 <text x={node.x} y={node.y + 18} textAnchor="middle" dominantBaseline="middle" fill={node.color} fontFamily="var(--font-sans)" fontSize="11" fontWeight="500">{isEn ? node.label : node.labelTh}</text>

@@ -10,6 +10,7 @@ import Image from "next/image"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
 import SectionHeading from "@/components/section-heading"
+import { useMounted } from "@/hooks/use-mounted"
 
 const PIXEL_BRAIN =
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-brain-icon-YV3hZvbAaJBXWEMr6T2Tnc.webp"
@@ -78,7 +79,8 @@ function InfographicAccordion({
 
 export default function FDIASection() {
   const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
+  const mounted = useMounted()
+  const isDark = mounted && resolvedTheme === "dark"
   const { language } = useLanguage()
 
   const [dataVal, setDataVal] = useState(85)

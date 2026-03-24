@@ -5,6 +5,7 @@ import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
 import { motion } from "framer-motion"
 import OptimizedImage from "@/components/ui/optimized-image"
+import { useMounted } from "@/hooks/use-mounted"
 
 const pixelAccentMap: Record<string, string> = {
   "10-Layer Architecture": "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-architecture-layers_33ca737f.png",
@@ -38,7 +39,8 @@ export default function SectionPreviewCard({
   delay = 0,
 }: SectionPreviewCardProps) {
   const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === "dark"
+  const mounted = useMounted()
+  const isDark = mounted && resolvedTheme === "dark"
   const { language } = useLanguage()
   const accentSrc = pixelAccentMap[title]
 
@@ -59,11 +61,11 @@ export default function SectionPreviewCard({
         }`}
       >
         <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(212,168,83,0.14),_transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.14),transparent_40%)]" />
         </div>
         {accentSrc && (
-          <div className="pointer-events-none absolute right-4 top-4 h-12 w-12 opacity-45 transition-all duration-300 group-hover:translate-y-[-2px] group-hover:opacity-80">
-            <OptimizedImage src={accentSrc} alt="" pixelated containerClassName="h-full w-full" objectFit="contain" width={48} height={48} />
+          <div className="pointer-events-none absolute right-4 top-4 h-12 w-12 opacity-50 transition-all duration-200 group-hover:opacity-90">
+            <OptimizedImage src={accentSrc} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={48} height={48} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
           </div>
         )}
         <div

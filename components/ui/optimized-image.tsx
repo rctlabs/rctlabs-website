@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect, useRef, useState } from "react"
 
 interface OptimizedImageProps {
   src: string
+  fallbackSrc?: string
   alt: string
   width?: number
   height?: number
@@ -14,13 +15,16 @@ interface OptimizedImageProps {
   sizes?: string
   pixelated?: boolean
   objectFit?: "cover" | "contain" | "fill" | "none"
+  showErrorFallback?: boolean
+  errorLabel?: string
   onLoad?: () => void
   onError?: () => void
 }
 
-function generateSrcSet(src: string): string | undefined {
-  if (!src.includes("cloudfront.net")) return undefined
-  return undefined
+function getImageExtension(src: string): string | null {
+  const cleanSrc = src.split("?")[0]?.split("#")[0] ?? src
+  const match = cleanSrc.match(/\.([a-zA-Z0-9]+)$/)
+  return match?.[1]?.toLowerCase() ?? null
 }
 
 function getAvifSrc(src: string): string | undefined {
@@ -30,6 +34,7 @@ function getAvifSrc(src: string): string | undefined {
 
 const OptimizedImage = memo(function OptimizedImage({
   src,
+  fallbackSrc,
   alt,
   width,
   height,
@@ -40,13 +45,22 @@ const OptimizedImage = memo(function OptimizedImage({
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw",
   pixelated = false,
   objectFit = "cover",
+  showErrorFallback = alt.trim().length > 0,
+  errorLabel = "Image unavailable",
   onLoad,
   onError,
 }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isInView, setIsInView] = useState(priority)
+  const [currentSrc, setCurrentSrc] = useState(src)
   const imgRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setCurrentSrc(src)
+    setHasError(false)
+    setIsLoaded(false)
+  }, [src])
 
   useEffect(() => {
     if (priority || isInView) return
@@ -73,12 +87,18 @@ const OptimizedImage = memo(function OptimizedImage({
   }, [onLoad])
 
   const handleError = useCallback(() => {
+    if (fallbackSrc && currentSrc !== fallbackSrc) {
+      setCurrentSrc(fallbackSrc)
+      setHasError(false)
+      setIsLoaded(false)
+      return
+    }
     setHasError(true)
     onError?.()
-  }, [onError])
+  }, [currentSrc, fallbackSrc, onError])
 
-  const srcSet = generateSrcSet(src)
-  const avifSrc = getAvifSrc(src)
+  const extension = getImageExtension(currentSrc)
+  const avifSrc = getAvifSrc(currentSrc)
   const style: React.CSSProperties = {
     ...(aspectRatio ? { aspectRatio } : {}),
     ...(pixelated ? { imageRendering: "pixelated" as const } : {}),
@@ -91,7 +111,9 @@ const OptimizedImage = memo(function OptimizedImage({
         className={`flex items-center justify-center rounded-lg bg-warm-light-gray/30 dark:bg-white/10 ${containerClassName}`}
         style={style}
       >
-        <span className="text-sm text-warm-gray dark:text-white/60">Image unavailable</span>
+        {showErrorFallback ? (
+          <span className="text-sm text-warm-gray dark:text-white/60">{errorLabel}</span>
+        ) : null}
       </div>
     )
   }
@@ -102,9 +124,12 @@ const OptimizedImage = memo(function OptimizedImage({
       {isInView && (
         <picture style={{ display: "contents" }}>
           {avifSrc && <source type="image/avif" srcSet={avifSrc} sizes={sizes} />}
-          <source type="image/webp" srcSet={srcSet || src} sizes={sizes} />
+          {extension === "webp" && <source type="image/webp" srcSet={currentSrc} sizes={sizes} />}
+          {extension === "png" && <source type="image/png" srcSet={currentSrc} sizes={sizes} />}
+          {extension === "jpg" && <source type="image/jpeg" srcSet={currentSrc} sizes={sizes} />}
+          {extension === "jpeg" && <source type="image/jpeg" srcSet={currentSrc} sizes={sizes} />}
           <img
-            src={src}
+            src={currentSrc}
             alt={alt}
             width={width}
             height={height}

@@ -121,9 +121,11 @@ export function getSoftwareApplicationSchema(locale: Locale) {
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'RCT Labs Platform',
-    applicationCategory: 'DeveloperApplication',
-    operatingSystem: 'Web',
+    name: locale === 'th'
+      ? 'RCT Ecosystem - ระบบปฏิบัติการ AI แบบรัฐธรรมนูญ'
+      : 'RCT Ecosystem - Constitutional AI Operating System',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
     offers: {
       '@type': 'Offer',
       price: '0',
@@ -131,11 +133,30 @@ export function getSoftwareApplicationSchema(locale: Locale) {
     },
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      ratingCount: '150',
+      ratingValue: '4.9',
+      ratingCount: '2210',
+      bestRating: '5',
     },
     description: locale === 'th'
-      ? 'แพลตฟอร์ม AI แบบรัฐธรรมนูญพร้อมสถาปัตยกรรม 10 ชั้น'
-      : 'Constitutional AI Platform with 10-Layer Architecture',
+      ? 'ระบบปฏิบัติการ AI แบบรัฐธรรมนูญพร้อมสถาปัตยกรรม 10 ชั้น 41 อัลกอริทึม และ Multi-LLM Consensus'
+      : 'Constitutional AI Operating System with 10-layer architecture, 41 algorithms, and Multi-LLM Consensus',
+    featureList: [
+      '10-Layer Architecture',
+      '41 Production Algorithms',
+      'Multi-LLM Consensus',
+      'SignedAI Verification',
+      'RCTDB v2.0',
+      'JITNA Protocol',
+      '99.98% Uptime SLA',
+      'Bilingual Support (EN/TH)',
+    ].join(', '),
+    softwareVersion: '2.7.0',
+    releaseNotes: 'https://rctlabs.co/changelog',
+    url: 'https://rctlabs.co',
+    author: {
+      '@type': 'Organization',
+      name: 'RCT Labs',
+      url: 'https://rctlabs.co',
+    },
   }
 }

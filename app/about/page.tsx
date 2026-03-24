@@ -33,7 +33,7 @@ export default async function AboutPage() {
     "alternateName": "อิทธิฤทธิ์ แซ่โง้ว",
     "jobTitle": "Architect of Intent",
     "description": "Solo architect from Khlong Toei, Bangkok. Creator of RCT Labs, FDIA equation, and the 7 Genome System.",
-    "url": "https://rctlabs.ai/about",
+    "url": "https://rctlabs.co/about",
     "sameAs": [
       "https://github.com/rct-ecosystem",
       "https://www.linkedin.com/in/ittirit-saengow/"
@@ -41,7 +41,7 @@ export default async function AboutPage() {
     "affiliation": {
       "@type": "Organization",
       "name": "RCT Labs",
-      "url": "https://rctlabs.ai"
+      "url": "https://rctlabs.co"
     }
   }
 
@@ -49,8 +49,8 @@ export default async function AboutPage() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "RCT Labs",
-    "url": "https://rctlabs.ai",
-    "logo": "https://rctlabs.ai/logo.png",
+    "url": "https://rctlabs.co",
+    "logo": "https://rctlabs.co/logo.png",
     "founder": "Ittirit Saengow",
     "description": "Constitutional AI Operating System with 41 algorithms, 7 Genomes, and 0.3% hallucination rate, founded in Bangkok, Thailand.",
     "sameAs": [
