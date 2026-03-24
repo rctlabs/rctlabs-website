@@ -140,20 +140,20 @@ export function Footer() {
   return (
     <footer
       className={`border-t transition-colors duration-300 ${
-        isDark ? "bg-[#151515] border-[#2A2A2A]" : "bg-warm-sand border-warm-light-gray"
+        isDark ? "bg-dark-deep border-dark-border" : "bg-warm-sand border-warm-light-gray"
       }`}
       role="contentinfo"
     >
       <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Newsletter */}
-        <div className={`py-8 border-b ${isDark ? "border-[#2A2A2A]" : "border-warm-light-gray"}`}>
+        <div className={`py-8 border-b ${isDark ? "border-dark-border" : "border-warm-light-gray"}`}>
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
             <div className="flex-1 text-center md:text-left">
               <h3 className={`text-lg font-bold mb-1.5 ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
                 {isTh ? "รับข่าวสาร RCT Ecosystem" : "Stay Updated with RCT Ecosystem"}
               </h3>
-              <p className={`text-sm leading-relaxed ${isTh ? "subtitle-th" : ""} ${isDark ? "text-[#888]" : "text-warm-gray"}`}>
+              <p className={`text-sm leading-relaxed ${isTh ? "subtitle-th" : ""} ${isDark ? "text-warm-dim" : "text-warm-gray"}`}>
                 {isTh
                   ? "สมัครรับข่าวสารเกี่ยวกับ AI innovations, product updates, และ technical insights จาก RCT Ecosystem"
                   : "Subscribe for AI innovations, product updates, and technical insights from RCT Ecosystem."}
@@ -176,10 +176,10 @@ export function Footer() {
                           : "focus:ring-warm-sage/40"
                     } ${
                       isDark
-                        ? "bg-[#1E1E1E] border-[#333] text-warm-light-gray placeholder:text-[#555]"
-                        : "bg-white border-warm-light-gray text-warm-charcoal placeholder:text-[#aaa]"
+                        ? "bg-dark-surface border-dark-border-subtle text-warm-light-gray placeholder:text-warm-subtle"
+                        : "bg-white border-warm-light-gray text-warm-charcoal placeholder:text-warm-muted"
                     }`}
-                    aria-label={isTh ? "อีเมลสำหรับสมัครรับข่าวสาร" : "Email for newsletter"}
+                    aria-label={isTh ? "อีเมลสำหรับสมัครรับข่าวสาร" : "Email for newsletter subscription"}
                     aria-invalid={!!emailError}
                     aria-describedby={emailError ? "footer-email-error" : undefined}
                   />
@@ -200,7 +200,11 @@ export function Footer() {
                 <button
                   type="submit"
                   disabled={isSubmitting || !!emailError}
-                  className="px-5 py-2.5 rounded-xl bg-warm-sage text-white text-sm font-semibold hover:bg-[#6A8D76] transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0 whitespace-nowrap"
+                  className="px-5 py-2.5 rounded-xl bg-warm-sage text-white text-sm font-semibold hover:bg-warm-sage-hover transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0 whitespace-nowrap"
+                  style={{
+                    transitionProperty: "background-color, transform, box-shadow",
+                    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+                  }}
                 >
                   {isSubmitting ? (isTh ? "กำลังส่ง..." : "Sending...") : (isTh ? "สมัครรับ" : "Subscribe")}
                 </button>
@@ -223,16 +227,16 @@ export function Footer() {
               />
             </Link>
             <p className={`text-xs sm:text-sm leading-relaxed max-w-sm mt-2 text-center ${isTh ? "subtitle-th" : ""} ${
-              isDark ? "text-[#888]" : "text-[#4A4A4A]"
+              isDark ? "text-warm-dim" : "text-warm-secondary"
             }`}>
               {t("footer.tagline")}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
-                isDark ? "bg-[#1E3A25] text-warm-sage" : "tag-sage"
+              <span className={`text-2xs px-2 py-0.5 rounded-full font-medium ${
+                isDark ? "bg-dark-sage-bg text-warm-sage" : "tag-sage"
               }`}>v3.0</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
-                isDark ? "bg-[#3A2E15] text-warm-amber" : "tag-amber"
+              <span className={`text-2xs px-2 py-0.5 rounded-full font-medium ${
+                isDark ? "bg-dark-amber-bg text-warm-amber" : "tag-amber"
               }`}>
                 {isTh ? "กำลังพัฒนา" : "Active Development"}
               </span>
@@ -243,8 +247,8 @@ export function Footer() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 text-center sm:text-left">
             {Object.entries(footerLinks).map(([title, links]) => (
               <nav key={title} aria-label={title}>
-                <h4 className={`text-[11px] font-bold uppercase tracking-wider mb-2.5 ${
-                  isDark ? "text-[#CCC]" : "text-warm-charcoal"
+                <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2.5 ${
+                  isDark ? "text-warm-subdued" : "text-warm-charcoal"
                 }`}>
                   {title}
                 </h4>
@@ -257,7 +261,7 @@ export function Footer() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`text-xs sm:text-sm transition-colors ${
-                            isDark ? "text-[#777] hover:text-[#DDD]" : "text-[#4A4A4A] hover:text-warm-charcoal"
+                            isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
                           }`}
                         >
                           {link.label}
@@ -266,7 +270,7 @@ export function Footer() {
                         <Link
                           href={lh(link.href)}
                           className={`text-xs sm:text-sm transition-colors ${
-                            isDark ? "text-[#777] hover:text-[#DDD]" : "text-[#4A4A4A] hover:text-warm-charcoal"
+                            isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
                           }`}
                         >
                           {link.label}
@@ -282,7 +286,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className={`py-4 border-t flex flex-col items-center gap-3 ${
-          isDark ? "border-[#2A2A2A]" : "border-warm-light-gray"
+          isDark ? "border-dark-border" : "border-warm-light-gray"
         }`}>
           <div className="flex items-center gap-2">
             {socialLinks.map((link) => (
@@ -302,7 +306,7 @@ export function Footer() {
               </a>
             ))}
           </div>
-          <p className={`text-[11px] text-center ${isDark ? "text-[#555]" : "text-[#4A4A4A]"}`}>
+          <p className={`text-[11px] text-center ${isDark ? "text-[#555]" : "text-warm-secondary"}`}>
             &copy; {new Date().getFullYear()} RCT Ecosystem — Reverse Component Thinking.{" "}
             {t("footer.rights")}
           </p>

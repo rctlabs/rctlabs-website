@@ -63,7 +63,7 @@ export default function DeploymentsPage() {
       await fetch(`${ADMIN_API}/deployments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, deployed_by: "admin@rctlabs.com" }),
+        body: JSON.stringify({ ...form, deployed_by: "system" }),
       })
       setShowForm(false)
       setForm({ service: "", version: "", environment: "production", notes: "" })

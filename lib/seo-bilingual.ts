@@ -88,7 +88,7 @@ export const createBilingualMetadata = (
       type: "website",
       images: [
         {
-          url: "https://rctlabs.co/og-image.png",
+          url: "https://rctlabs.co/opengraph-image",
           width: 1200,
           height: 630,
           alt: title,
@@ -99,7 +99,7 @@ export const createBilingualMetadata = (
       card: "summary_large_image",
       title: `${title} | RCT Labs`,
       description,
-      images: ["https://rctlabs.co/og-image.png"],
+      images: ["https://rctlabs.co/opengraph-image"],
       creator: "@rctlabs",
       site: "@rctlabs"
     },

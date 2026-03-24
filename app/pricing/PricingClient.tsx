@@ -3,10 +3,9 @@
 import { motion } from "framer-motion"
 import { Check, X, Zap, Shield, Brain, ArrowRight, Sparkles } from "lucide-react"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
-import { getLocaleFromPathname } from "@/lib/i18n"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { useLanguage } from "@/components/language-provider"
 import Link from "next/link"
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
@@ -145,11 +144,10 @@ function CellValue({ value }: { value: boolean | string }) {
 
 /* ─── PAGE ──────────────────────────────────────────────────────────── */
 export default function PricingPage() {
-  const pathname = usePathname()
-  const locale = getLocaleFromPathname(pathname) || "en"
-  const isTh = locale === "th"
+  const { language } = useLanguage()
+  const isTh = language === "th"
 
-  const lh = (path: string) => `/${locale}${path}`
+  const lh = (path: string) => `/${language}${path}`
 
   return (
     <div className="min-h-screen bg-warm-cream dark:bg-[#0D0D0D] transition-colors duration-300">

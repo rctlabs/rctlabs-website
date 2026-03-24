@@ -54,7 +54,7 @@ export default function IncidentsPage() {
       await fetch(`${ADMIN_API}/incidents`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, created_by: "admin@rctlabs.com" }),
+        body: JSON.stringify({ ...form, created_by: "system" }),
       })
       setShowForm(false)
       setForm({ title: "", description: "", service: "", severity: "medium" })

@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
+import { useLanguage } from "@/components/language-provider"
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -15,7 +15,6 @@ import {
 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { getLocaleFromPathname } from "@/lib/i18n"
 
 /* ─── DATA ─── */
 const benchmarks = [
@@ -130,11 +129,10 @@ function AnimatedStat({ stat, isDark }: { stat: StatItem; isDark: boolean }) {
 type ChartView = "radar" | "bar"
 
 export default function BenchmarkPage() {
-  const pathname = usePathname()
+  const { language } = useLanguage()
   const { theme } = useTheme()
   const isDark = theme === "dark"
-  const locale = getLocaleFromPathname(pathname) ?? "en"
-  const isEn = locale === "en"
+  const isEn = language === "en"
   const [chartView, setChartView] = useState<ChartView>("radar")
 
   const chartBg = isDark ? "#1E1E1E" : "#FFFFFF"

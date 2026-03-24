@@ -10,9 +10,9 @@ export default function ResearchPage() {
   const papers = [
     {
       slug: "v250-infrastructure-layer",
-      title: "v2.5.0: Infrastructure Layer — Docker, Kubernetes, API Gateway & Monitoring",
+      title: "v2.5.0: Infrastructure Layer — Containerization, API Gateway & Monitoring",
       description:
-        "Phase 5-11 complete: 33 Docker containers, 57 Kubernetes resources, Bun+Hono API Gateway (JWT RS256, RBAC), Prometheus+Grafana monitoring, Locust/k6 load testing, OWASP security, Chaos & E2E scenarios.",
+        "Production-grade containerized infrastructure with API Gateway (authentication & RBAC), real-time monitoring, load testing, OWASP-compliant security, and chaos engineering scenarios.",
       category: "Infrastructure",
       badge: "v2.5.0",
       authors: "RCT Core Team",
@@ -34,7 +34,7 @@ export default function ResearchPage() {
       slug: "v231-enterprise-hardening",
       title: "v2.3.1: Enterprise Hardening — Security, Validation & Resilience",
       description:
-        "Layer 10 with 10 hardening modules: SecurityManager, InputValidator, XSSProtector, PathTraversalGuard, SchemaValidator, ConnectionPoolManager, CacheManager, CircuitBreaker, BulkheadPattern, RetryWithBackoff.",
+        "Layer 10 with comprehensive hardening: input validation, injection protection, schema validation, connection pooling, caching, circuit breakers, bulkhead isolation, and retry strategies.",
       category: "Security",
       badge: "v2.3.1",
       authors: "RCT Core Team",
@@ -43,9 +43,9 @@ export default function ResearchPage() {
     },
     {
       slug: "v230-control-plane",
-      title: "v2.3.0: Control Plane — JITNA Wire Schema, ED25519 Signing & Replay",
+      title: "v2.3.0: Control Plane — JITNA Wire Schema, Cryptographic Signing & Replay",
       description:
-        "Layer 9 with JITNAPacket (sequence numbering, expiry, Pydantic v2 validation), ED25519 signed execution (RFC 8032), and Deterministic Replay Engine (SHA-256 checkpoints, non-determinism detection).",
+        "Layer 9 with JITNA packet protocol (sequence numbering, expiry, schema validation), cryptographic signed execution (RFC 8032), and deterministic replay engine with integrity verification.",
       category: "Architecture",
       badge: "v2.3.0",
       authors: "RCT Core Team",
@@ -56,7 +56,7 @@ export default function ResearchPage() {
       slug: "v220-regional-language",
       title: "v2.2.0: Multi-Language & Regional LLM — 8 Markets Active",
       description:
-        "Regional Language Adapter with 8 language-region pairs (JP, KR, CN, TW, TH, VN, ID, US), LanguageDetector (Unicode script analysis), RegionalModelRouter (4-level resolution + LRU cache), and compliance (PDPA, APPI, PIPA, PIPL).",
+        "Regional language adapter supporting 8 language-region pairs across Asia-Pacific and US markets, with intelligent script detection, regional model routing, and full regulatory compliance (PDPA, APPI, PIPA, PIPL).",
       category: "Regional",
       badge: "v2.2.0",
       authors: "RCT Core Team",
@@ -67,7 +67,7 @@ export default function ResearchPage() {
       slug: "v215-os-primitives",
       title: "v2.1.5: OS Primitives — Kernel v1.4.0 with 6 RFCs",
       description:
-        "Process Model, Scheduler, IPC, Syscall Interface, Fault Isolation, and Resource Manager. 7 Genome System: Architect, ARTENT, JITNA, Codex, SignedAI, Vault-1010, RCT-7 with SHA256 proof-of-lineage.",
+        "Core OS primitives: process management, scheduling, inter-process communication, syscall interface, fault isolation, and resource management. 7 Genome System with cryptographic proof-of-lineage.",
       category: "Kernel",
       badge: "v2.1.5",
       authors: "RCT Core Team",
@@ -89,7 +89,7 @@ export default function ResearchPage() {
       slug: "rctdb-8d-memory",
       title: "RCTDB v2.0: 8-Dimensional Universal Memory Schema",
       description:
-        "Universal memory architecture with Registry (Identity & Discovery), Vault (Infinite Storage), and Governance (Rules & Evolution) zones. 74% lossless compression with pgvector HNSW + Apache AGE graph.",
+        "Universal memory architecture with Registry (Identity & Discovery), Vault (Infinite Storage), and Governance (Rules & Evolution) zones. 74% lossless compression with vector and graph storage.",
       category: "Database",
       badge: "Core",
       authors: "RCT Core Team",

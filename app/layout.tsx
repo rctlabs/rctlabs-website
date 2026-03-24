@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono, Noto_Sans_Thai, Space_Grotesk, Plus_Jakarta_Sans, Space_Mono, Kanit } from "next/font/google"
+import { Inter, JetBrains_Mono, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
 import { FloatingAI } from "@/components/floating-ai"
@@ -11,13 +11,6 @@ import { Toaster } from "sonner"
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
-  display: "swap",
-})
-
-/* Display alt: Plus Jakarta Sans (section headings) */
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-display-alt",
   display: "swap",
 })
 
@@ -59,6 +52,7 @@ const notoSansThai = Noto_Sans_Thai({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://rctlabs.co"),
   title: "RCT Labs - Intent Operating System",
   description:
     "Revolutionizing human-AI interaction through intent-driven design. Explore cutting-edge philosophy, research, and open protocols.",
@@ -94,7 +88,7 @@ export const metadata: Metadata = {
       "Constitutional AI Operating System — 10-Layer architecture, multi-LLM consensus, and absolute data sovereignty.",
     images: [
       {
-        url: "https://rctlabs.co/og-image.png",
+        url: "https://rctlabs.co/opengraph-image",
         width: 1200,
         height: 630,
         alt: "RCT Labs - Intent Operating System",
@@ -107,7 +101,7 @@ export const metadata: Metadata = {
     title: "RCT Labs - Intent Operating System",
     description: "Revolutionizing human-AI interaction through intent-driven design.",
     creator: "@RCTLabs",
-    images: ["https://rctlabs.co/og-image.png"],
+    images: ["https://rctlabs.co/opengraph-image"],
   },
   robots: {
     index: true,
@@ -169,7 +163,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} ${plusJakartaSans.variable} ${inter.variable} ${spaceMono.variable} ${jetbrainsMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${jetbrainsMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
         {/* Skip to content for accessibility */}
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded">Skip to content</a>
         <AppProviders initialLocale={locale as "en" | "th"}>

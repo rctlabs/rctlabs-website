@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { Globe } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,8 +15,9 @@ import { type Locale, getLocaleFromPathname, addLocaleToPathname, removeLocaleFr
 export function LanguageSwitcher() {
   const pathname = usePathname()
   const router = useRouter()
-  
-  const currentLocale = getLocaleFromPathname(pathname) || 'en'
+  const { language } = useLanguage()
+
+  const currentLocale = language
 
   const switchLocale = (newLocale: Locale) => {
     if (newLocale === currentLocale) return

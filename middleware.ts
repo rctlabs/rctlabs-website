@@ -20,8 +20,20 @@ function checkRateLimit(ip: string): boolean {
   return true
 }
 
+/* ─── Internal routes blocked in production ──────────────── */
+const INTERNAL_PREFIXES = ['/admin', '/owner', '/monitor', '/analytics', '/test-console', '/websocket']
+
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
+
+  // Block internal/admin routes in production (no auth system yet)
+  if (process.env.NODE_ENV === 'production' || process.env.BLOCK_INTERNAL_ROUTES === 'true') {
+    const stripped = pathname.replace(/^\/(en|th)/, '') // handle locale-prefixed paths
+    if (INTERNAL_PREFIXES.some((p) => stripped === p || stripped.startsWith(p + '/'))) {
+      const url = new URL('/not-found', request.url)
+      return NextResponse.rewrite(url)
+    }
+  }
 
   // Rate-limit API routes
   if (pathname.startsWith('/api')) {

@@ -2,10 +2,9 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { useLanguage } from "@/components/language-provider"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { getLocaleFromPathname } from "@/lib/i18n"
 import { FileText, ArrowRight, Tag, Clock, History } from "lucide-react"
 
 const whitepapers = [
@@ -86,9 +85,8 @@ const versionHistory = [
 ]
 
 export default function WhitepaperPage() {
-  const pathname = usePathname()
-  const locale = getLocaleFromPathname(pathname)
-  const isTh = locale === "th"
+  const { language } = useLanguage()
+  const isTh = language === "th"
 
   return (
     <>

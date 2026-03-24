@@ -1,9 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
-import { getLocaleFromPathname } from "@/lib/i18n"
+import { useLanguage } from "@/components/language-provider"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import {
@@ -170,11 +169,10 @@ const typeLabels = {
 }
 
 export default function ChangelogPage() {
-  const pathname = usePathname()
+  const { language } = useLanguage()
   const { theme } = useTheme()
   const isDark = theme === "dark"
-  const locale = getLocaleFromPathname(pathname) ?? "en"
-  const isEn = locale === "en"
+  const isEn = language === "en"
 
   return (
     <>
