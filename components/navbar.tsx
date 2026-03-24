@@ -7,13 +7,16 @@
  */
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Globe, ChevronDown, Moon, Sun, LogIn, UserPlus, Search } from "lucide-react"
+import { Menu, X, Globe, ChevronDown, Moon, Sun, Search } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { useTheme } from "next-themes"
 import Image from "next/image"
 import SearchModal, { useSearchModal } from "@/components/search/search-modal"
+import { UserProfileMenu } from "@/components/user-profile-menu"
+import { NotificationBell } from "@/components/notification-bell"
+import { KeyboardShortcutsDialog } from "@/components/keyboard-shortcuts-dialog"
 
 const SEARCH_DATA = [
   { title: "Solutions Overview",           description: "AI solutions for enterprise",                      href: "/solutions",                              category: "Solutions" },
@@ -356,24 +359,10 @@ export function Navbar() {
                 <span>{language === "en" ? "TH" : "EN"}</span>
               </button>
 
-              {/* Auth buttons */}
+              {/* Notification + Auth */}
               <div className="hidden md:flex items-center gap-2">
-                <Link
-                  href={localHref("/login")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${
-                    isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
-                  }`}
-                >
-                  <LogIn size={15} />
-                  <span>{language === "en" ? "Sign In" : "เข้าสู่ระบบ"}</span>
-                </Link>
-                <Link
-                  href={localHref("/early-access")}
-                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-warm-charcoal rounded-lg hover:bg-[#333] transition-all shadow-sm hover:shadow-md dark:bg-warm-amber dark:text-warm-charcoal dark:hover:bg-[#C49A48]"
-                >
-                  <UserPlus size={15} />
-                  <span>{language === "en" ? "Early Access" : "เข้าร่วมก่อนใคร"}</span>
-                </Link>
+                <NotificationBell />
+                <UserProfileMenu />
               </div>
 
               {/* Mobile toggle */}
@@ -475,23 +464,8 @@ export function Navbar() {
                 })}
 
                 {/* Mobile auth */}
-                <div className="pt-2 border-t border-warm-light-gray dark:border-[#333] flex gap-2">
-                  <Link
-                    href={localHref("/login")}
-                    onClick={handleRouteClick}
-                    className={`flex-1 text-center py-2.5 text-sm font-medium rounded-lg transition-all border ${
-                      isDark ? "text-white bg-white/5 border-[#333] hover:bg-white/10" : "text-warm-charcoal bg-warm-sand/50 border-warm-light-gray hover:bg-warm-sand"
-                    }`}
-                  >
-                    {language === "en" ? "Sign In" : "เข้าสู่ระบบ"}
-                  </Link>
-                  <Link
-                    href={localHref("/early-access")}
-                    onClick={handleRouteClick}
-                    className="flex-1 text-center py-2.5 text-sm font-medium text-white bg-warm-charcoal rounded-lg hover:bg-[#333] transition-all dark:bg-warm-amber dark:text-warm-charcoal dark:hover:bg-[#C49A48]"
-                  >
-                    {language === "en" ? "Early Access" : "เข้าร่วมก่อนใคร"}
-                  </Link>
+                <div className="pt-2 border-t border-warm-light-gray dark:border-[#333]">
+                  <UserProfileMenu />
                 </div>
               </div>
             </motion.div>
@@ -500,6 +474,7 @@ export function Navbar() {
       </nav>
 
       <SearchModal isOpen={searchOpen} onClose={closeSearch} searchData={SEARCH_DATA} />
+      <KeyboardShortcutsDialog onOpenSearch={openSearch} />
     </header>
   )
 }
