@@ -82,3 +82,39 @@ export const LazyEcosystemOverview = (props: Record<string, unknown>) => (
 export const LazyFDIAFlowchart = (props: Record<string, unknown>) => (
   <LazyDiagramWrapper importFunc={() => import("@/components/diagrams/fdia-flowchart")} componentProps={props} />
 )
+
+export const LazyFDIACalculatorPanel = (props: Record<string, unknown>) => (
+  <LazyDiagramWrapper
+    importFunc={() => import("@/components/sections/fdia-calculator-panel")}
+    componentProps={props}
+    rootMargin="120px"
+    preloadOnHover={false}
+    fallback={<div className="min-h-[360px] w-full animate-pulse rounded-xl border border-border bg-card/60" />}
+  />
+)
+
+export const LazyPerformanceRadarChart = (props: Record<string, unknown>) => (
+  <LazyDiagramWrapper
+    importFunc={() => import("@/components/diagrams/performance-radar-chart")}
+    componentProps={props}
+    preloadOnHover={false}
+  />
+)
+
+export const LazyInteractiveArchDiagram = (props: Record<string, unknown>) => (
+  <LazyDiagramWrapper
+    importFunc={() => import("@/components/diagrams/interactive-arch-diagram")}
+    componentProps={props}
+    rootMargin="120px"
+    preloadOnHover={false}
+  />
+)
+
+export const LazyInteractiveGenomeExplorer = (props: Record<string, unknown>) => (
+  <LazyDiagramWrapper
+    importFunc={() => import("@/components/diagrams/interactive-genome-explorer")}
+    componentProps={props}
+    rootMargin="120px"
+    preloadOnHover={false}
+  />
+)

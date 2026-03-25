@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { Brain, Dna, Layers, Shield, Target, Workflow } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
@@ -44,6 +44,7 @@ export default function OverviewSection() {
   const { resolvedTheme } = useTheme()
   const mounted = useMounted()
   const isDark = mounted && resolvedTheme === "dark"
+  const prefersReducedMotion = useReducedMotion()
   const cards = features[language as keyof typeof features] || features.en
 
   return (
@@ -58,20 +59,34 @@ export default function OverviewSection() {
           pixelIcon={PIXEL_ARCH}
         />
 
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="mb-8">
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={prefersReducedMotion ? undefined : { duration: 0.4 }}
+          className="mb-8"
+        >
           <LazyEcosystemOverview />
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {cards.map((feature, index) => (
-            <motion.div key={feature.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: index * 0.08 }} whileHover={{ y: -6 }} className={`group relative overflow-hidden p-6 rounded-2xl border transition-all duration-300 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]" : "bg-white border-warm-light-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]"}`}>
+            <motion.div
+              key={feature.title}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={prefersReducedMotion ? undefined : { duration: 0.35, delay: index * 0.04 }}
+              whileHover={prefersReducedMotion ? undefined : { y: -2 }}
+              className={`group relative overflow-hidden p-6 rounded-2xl border transition-[border-color,box-shadow,background-color,transform] duration-200 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.22)]" : "bg-white border-warm-light-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)]"}`}
+            >
               <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.12),transparent_42%)]" />
               </div>
               <div className="absolute top-4 right-4 w-12 h-12 opacity-55 transition-all duration-200 pointer-events-none group-hover:opacity-90">
                 <OptimizedImage src={pixelIcons[index]} alt="" pixelated showErrorFallback={false} containerClassName="w-full h-full" objectFit="contain" width={48} height={48} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
               </div>
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110" style={{ backgroundColor: isDark ? feature.darkBg : feature.bg }}>
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-105" style={{ backgroundColor: isDark ? feature.darkBg : feature.bg }}>
                 <feature.icon size={24} style={{ color: feature.color }} />
               </div>
               <h3 className={`mb-1.5 text-base font-bold sm:text-lg ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{feature.title}</h3>

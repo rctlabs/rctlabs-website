@@ -28,6 +28,7 @@ export default function HeroSection() {
   const isInView = useInView(heroRef, { margin: "-100px" })
   const prefersReducedMotion = useReducedMotion()
   const isDark = mounted && resolvedTheme === "dark"
+  const shouldAnimate = !prefersReducedMotion
 
   const scrollTo = (id: string) => {
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth" })
@@ -44,13 +45,13 @@ export default function HeroSection() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+      transition: { staggerChildren: 0.08, delayChildren: 0.04 },
     },
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.42 } },
   }
 
   return (
@@ -80,7 +81,12 @@ export default function HeroSection() {
 
       <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 w-full">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-8">
+          <motion.div
+            variants={shouldAnimate ? containerVariants : undefined}
+            initial={shouldAnimate ? "hidden" : undefined}
+            animate={shouldAnimate ? "visible" : undefined}
+            className="space-y-8"
+          >
             <motion.div
               variants={itemVariants}
               className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full backdrop-blur-sm border shadow-sm ${
@@ -89,7 +95,7 @@ export default function HeroSection() {
             >
               <OptimizedImage src={LOGO_MARK} alt="RCT Ecosystem Logo" containerClassName="w-5 h-5" objectFit="contain" priority width={20} height={20} />
               <span className={`text-xs font-medium ${isDark ? "text-warm-muted" : "text-warm-gray"}`}>{t("hero.badge")}</span>
-              <div className="w-1.5 h-1.5 rounded-full bg-warm-sage animate-pulse" />
+              <div className={`w-1.5 h-1.5 rounded-full bg-warm-sage ${shouldAnimate ? "animate-pulse" : ""}`} />
             </motion.div>
 
             <motion.div variants={itemVariants} className="space-y-4">
@@ -118,12 +124,12 @@ export default function HeroSection() {
             <motion.div variants={itemVariants} className="flex flex-wrap gap-3 justify-center lg:justify-start">
               <button
                 onClick={() => scrollTo("#overview")}
-                className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-xl transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 duration-300 ${
+                className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-xl transition-[background-color,box-shadow,transform] shadow-sm hover:shadow-lg duration-200 ${
                   isDark ? "text-dark-900 bg-warm-amber hover:bg-[#E0B96A]" : "text-white bg-warm-charcoal hover:bg-[#333333]"
                 }`}
               >
                 {t("hero.cta.explore")}
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={16} className={shouldAnimate ? "transition-transform group-hover:translate-x-1" : ""} />
               </button>
               <Link
                 href={`${localePrefix}/demo/fdia`}
@@ -138,13 +144,12 @@ export default function HeroSection() {
             </motion.div>
 
             <motion.div variants={itemVariants} className="flex flex-wrap gap-6 pt-8">
-              {stats.map((stat, index) => (
+              {stats.map((stat) => (
                 <motion.div
                   key={stat.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.6 + index * 0.1, duration: 0.4 }}
-                  whileHover={{ y: -3 }}
+                  initial={shouldAnimate ? { opacity: 0, scale: 0.96 } : false}
+                  animate={shouldAnimate ? { opacity: 1, scale: 1 } : undefined}
+                  transition={shouldAnimate ? { duration: 0.28 } : undefined}
                   className={`flex items-center gap-3 rounded-2xl px-3 py-2 transition-all duration-300 ${isDark ? "hover:bg-card/60" : "hover:bg-white/60"}`}
                 >
                   <div className={`w-10 h-10 rounded-xl backdrop-blur-sm border flex items-center justify-center shadow-sm ${
@@ -162,9 +167,9 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            initial={shouldAnimate ? { opacity: 0, x: 24 } : false}
+            animate={shouldAnimate ? { opacity: 1, x: 0 } : undefined}
+            transition={shouldAnimate ? { duration: 0.45, delay: 0.12 } : undefined}
             className="group relative"
           >
             <div className="relative rounded-[28px] border border-border bg-white/82 p-4 shadow-[0_20px_48px_rgba(0,0,0,0.10)] sm:p-6 dark:bg-card/82 sm:backdrop-blur-sm">
@@ -176,9 +181,9 @@ export default function HeroSection() {
               </div>
               <LazyFDIAFlowchart />
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.72, duration: 0.45 }}
+                initial={shouldAnimate ? { opacity: 0, y: 12 } : false}
+                animate={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
+                transition={shouldAnimate ? { delay: 0.28, duration: 0.3 } : undefined}
                 className={`absolute bottom-4 left-4 right-4 rounded-xl border p-4 z-10 ${
                   isDark ? "bg-card/92 border-border" : "bg-white/92 border-warm-light-gray"
                 }`}
@@ -222,7 +227,7 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="flex justify-center mt-8 lg:mt-10">
+        <motion.div initial={shouldAnimate ? { opacity: 0 } : false} animate={shouldAnimate ? { opacity: 1 } : undefined} transition={shouldAnimate ? { delay: 0.36 } : undefined} className="flex justify-center mt-8 lg:mt-10">
           <button
             onClick={() => scrollTo("#overview")}
             className={`flex flex-col items-center gap-2 transition-colors group ${isDark ? "text-warm-subtle hover:text-warm-pale" : "text-warm-gray hover:text-warm-charcoal"}`}

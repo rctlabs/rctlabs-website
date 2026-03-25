@@ -90,6 +90,26 @@ const funnelIntentMap: Record<string, FunnelIntentDefinition> = {
       th: "เราได้ตรวจสอบเอกสาร Whitepaper สาธารณะแล้ว และต้องการชุดเอกสารประเมินสำหรับองค์กร บันทึก architecture review และคำแนะนำขั้นถัดไป",
     },
   },
+  "launch:request-access": {
+    key: "launch:request-access",
+    context: "launch:request-access",
+    title: {
+      en: "Request early access",
+      th: "ขอสิทธิ์เข้าถึงล่วงหน้า",
+    },
+    description: {
+      en: "This contact came from the public launch navbar. Use this flow for teams requesting product access, launch briefings, or a guided evaluation path.",
+      th: "คำขอนี้มาจาก navbar ของเว็บ public launch ใช้สำหรับทีมที่ต้องการขอสิทธิ์เข้าถึง นัด brief การเปิดตัว หรือขอเส้นทางประเมินระบบแบบมีผู้ดูแล",
+    },
+    subject: {
+      en: "Request early access to RCT Labs",
+      th: "ขอสิทธิ์เข้าถึง RCT Labs ล่วงหน้า",
+    },
+    message: {
+      en: "We are reviewing the public RCT Labs launch materials and would like early access, an evaluation path, and the next recommended steps for our team.",
+      th: "เรากำลังตรวจสอบข้อมูล public launch ของ RCT Labs และต้องการขอสิทธิ์เข้าถึงล่วงหน้า แนวทางการประเมินระบบ และขั้นตอนถัดไปที่เหมาะกับทีมของเรา",
+    },
+  },
 }
 
 export function getFunnelIntent(language: Language, contextKey?: string | null) {

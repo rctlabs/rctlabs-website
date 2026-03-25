@@ -2,12 +2,12 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import { ArrowRight, Layers, Cpu, Brain, Shield, Rocket, Database, Network, Bot, AppWindow, RefreshCw } from "lucide-react"
-import InteractiveArchDiagram from "@/components/diagrams/interactive-arch-diagram"
+import { LazyInteractiveArchDiagram } from "@/components/diagrams/lazy-diagram-wrapper"
 
 const layers = {
   en: [
@@ -59,6 +59,7 @@ export default function ArchitecturePage() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const isTh = locale === "th"
+  const prefersReducedMotion = useReducedMotion()
 
   const localLayers = isTh ? layers.th : layers.en
   const localComparisons = isTh ? comparisons.th : comparisons.en
@@ -114,7 +115,7 @@ export default function ArchitecturePage() {
               : "Inspect the real microservice groups and tech stack inside each layer of the 10-layer RCT architecture."}
           </p>
         </div>
-        <InteractiveArchDiagram language={isTh ? "th" : "en"} />
+        <LazyInteractiveArchDiagram language={isTh ? "th" : "en"} />
       </section>
 
       {/* 10 Layers List */}
@@ -122,7 +123,7 @@ export default function ArchitecturePage() {
         <h2 className="text-2xl font-bold text-foreground text-center mb-10">{isTh ? "ภาพรวม 10 ชั้นทั้งหมด" : "All 10 Layers at a Glance"}</h2>
         <div className="space-y-3">
           {localLayers.map((l, i) => (
-            <motion.div key={l.num} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.04 }}
+            <motion.div key={l.num} initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.22, delay: i * 0.02 }}
               className="flex gap-4 p-4 rounded-xl border border-border bg-card">
               <div className="flex items-center gap-3 shrink-0">
                 <span className="text-sm font-bold px-3 py-1 rounded-lg bg-warm-sky/10 text-warm-sky whitespace-nowrap">{l.num}</span>

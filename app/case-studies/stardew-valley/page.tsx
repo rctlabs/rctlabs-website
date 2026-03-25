@@ -1,430 +1,637 @@
-"use client"
-
-import { useState } from "react"
+import type { Metadata } from "next"
+import Link from "next/link"
+import { headers } from "next/headers"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
-import { usePathname } from "next/navigation"
-import { useTheme } from "next-themes"
-import { getLocaleFromPathname } from "@/lib/i18n"
-import Link from "next/link"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import { createBilingualMetadata, getFAQSchema, type Locale } from "@/lib/seo-bilingual"
 
-const NPC_DATA = [
-  { category: "ACCUMULATE", color: "#D4A853", icon: "💰",
+type LocaleContent = {
+  pageTitle: string
+  pageDescription: string
+  badge: string
+  eyebrow: string
+  heroDescription: string
+  backLabel: string
+  architectureTitle: string
+  architectureDescription: string
+  pipelineTitle: string
+  pipelineDescription: string
+  npcTitle: string
+  npcDescription: string
+  eventTitle: string
+  eventDescription: string
+  governanceTitle: string
+  governanceDescription: string
+  performanceTitle: string
+  performanceDescription: string
+  seoSummaryTitle: string
+  seoSummaryDescription: string
+  faqTitle: string
+  faqDescription: string
+  ctaTitle: string
+  ctaDescription: string
+  ctaPrimary: string
+  ctaSecondary: string
+}
+
+const content: Record<Locale, LocaleContent> = {
+  en: {
+    pageTitle: "Stardew Valley Case Study",
+    pageDescription:
+      "How RCT Labs turned Stardew Valley NPCs into autonomous AI agents with FDIA, JITNA, governance controls, and deterministic game-event processing.",
+    badge: "Case Study - Game AI Integration",
+    eyebrow: "Stardew Valley x RCT Ecosystem",
+    heroDescription:
+      "A production-style game AI case study showing how FDIA, JITNA Protocol, and governance logic can convert 28 NPCs into deterministic AI agents with sub-1ms heuristic ticks.",
+    backLabel: "Back to Use Cases",
+    architectureTitle: "Brain Plug-and-Play Architecture",
+    architectureDescription:
+      "Instead of rebuilding the game, RCT injects an AI control plane into an existing game loop through a WebSocket bridge. This keeps the game logic intact while moving cognition, arbitration, and governance into the RCT kernel.",
+    pipelineTitle: "FDIA 8-Phase Decision Loop",
+    pipelineDescription:
+      "Each in-game event moves through a deterministic decision pipeline that evaluates intent, scores action quality, detects conflicts, applies governance rules, and returns an executable command.",
+    npcTitle: "28 NPC Intent Profiles",
+    npcDescription:
+      "Pelican Town characters are mapped to intent archetypes so the system can produce consistent and explainable behavior rather than purely random or scripted reactions.",
+    eventTitle: "16 Game Event Types",
+    eventDescription:
+      "The case study models economic, social, environmental, conflict, and governance events so the AI layer responds to a realistic world-state instead of isolated triggers.",
+    governanceTitle: "Autonomous Governance Layer",
+    governanceDescription:
+      "RCT monitors inequality and policy conditions in real time, then applies proportionate actions such as fines, arrests, or price adjustments when the simulated economy drifts outside acceptable bounds.",
+    performanceTitle: "Performance and Determinism",
+    performanceDescription:
+      "The design goal is not cinematic motion. The design goal is stable, explainable, repeatable decision quality with predictable latency.",
+    seoSummaryTitle: "Why This Page Matters for AI Search",
+    seoSummaryDescription:
+      "This case study is structured to answer technical evaluation questions directly: what was built, how it works, what data moves through the system, what governance logic exists, and what performance targets were achieved.",
+    faqTitle: "Technical Evaluation FAQ",
+    faqDescription:
+      "These answers are written for evaluators, enterprise buyers, and AI-search systems that need concise, verifiable summaries.",
+    ctaTitle: "Interested in RCT Game AI Integration?",
+    ctaDescription:
+      "RCT Ecosystem can connect to simulation and game environments that expose mod, plugin, or runtime event hooks. The same architectural pattern also applies to non-game operational systems.",
+    ctaPrimary: "Read JITNA Protocol",
+    ctaSecondary: "Learn FDIA Equation",
+  },
+  th: {
+    pageTitle: "กรณีศึกษา Stardew Valley",
+    pageDescription:
+      "กรณีศึกษาที่แสดงวิธีที่ RCT Labs เปลี่ยน NPC ใน Stardew Valley ให้เป็น AI Agents อัตโนมัติด้วย FDIA, JITNA, governance และ deterministic event processing.",
+    badge: "กรณีศึกษา - Game AI Integration",
+    eyebrow: "Stardew Valley x RCT Ecosystem",
+    heroDescription:
+      "กรณีศึกษาเชิง production ที่แสดงให้เห็นว่า FDIA, JITNA Protocol และ governance logic สามารถเปลี่ยน 28 NPC ให้กลายเป็น AI agents แบบ deterministic ที่ตัดสินใจได้รวดเร็วระดับ sub-1ms ได้อย่างไร",
+    backLabel: "กลับไป Use Cases",
+    architectureTitle: "สถาปัตยกรรม Brain Plug-and-Play",
+    architectureDescription:
+      "แทนที่จะสร้างเกมใหม่ทั้งระบบ RCT แทรก AI control plane เข้าไปใน game loop เดิมผ่าน WebSocket bridge ทำให้ cognition, arbitration และ governance ไปทำงานที่ RCT kernel โดยไม่ทำลาย logic ของเกมเดิม",
+    pipelineTitle: "FDIA 8-Phase Decision Loop",
+    pipelineDescription:
+      "ทุก event ในเกมจะไหลผ่าน deterministic pipeline ที่ประเมิน intent, ให้คะแนน action quality, ตรวจ conflict, ใช้ governance rules และส่ง command กลับไปให้เกมดำเนินการ",
+    npcTitle: "28 NPC Intent Profiles",
+    npcDescription:
+      "ตัวละครใน Pelican Town ถูกจัดกลุ่มตาม intent archetypes เพื่อให้พฤติกรรมที่เกิดขึ้นมีความสม่ำเสมอ อธิบายได้ และไม่ใช่เพียง randomness หรือ hard-coded script เท่านั้น",
+    eventTitle: "16 Game Event Types",
+    eventDescription:
+      "กรณีศึกษานี้ครอบคลุมทั้ง economic, social, environmental, conflict และ governance events เพื่อให้ AI ตอบสนองต่อ world-state แบบจริง ไม่ใช่เพียง isolated triggers",
+    governanceTitle: "Autonomous Governance Layer",
+    governanceDescription:
+      "RCT ตรวจความเหลื่อมล้ำทางเศรษฐกิจและเงื่อนไขเชิงนโยบายแบบ real time ก่อนใช้มาตรการที่เหมาะสม เช่น fine, arrest หรือ price adjustment เมื่อเศรษฐกิจในเกมเริ่มเสียสมดุล",
+    performanceTitle: "Performance และ Determinism",
+    performanceDescription:
+      "เป้าหมายของหน้านี้ไม่ใช่ motion ที่หวือหวา แต่คือการสื่อสารคุณภาพการตัดสินใจที่เสถียร อธิบายได้ ทำซ้ำได้ และมี latency ที่คาดเดาได้",
+    seoSummaryTitle: "เหตุผลที่หน้านี้สำคัญต่อ AI Search",
+    seoSummaryDescription:
+      "กรณีศึกษานี้ถูกจัดโครงสร้างเพื่อให้ตอบคำถามเชิงเทคนิคได้ตรง: สร้างอะไร, ทำงานอย่างไร, data flow เป็นแบบไหน, governance logic อยู่ตรงไหน และเป้าหมาย performance คืออะไร",
+    faqTitle: "FAQ สำหรับการประเมินทางเทคนิค",
+    faqDescription:
+      "ชุดคำตอบนี้เขียนเพื่อผู้ประเมิน, enterprise buyer และ AI-search systems ที่ต้องการสรุปเนื้อหาแบบกระชับและตรวจสอบได้",
+    ctaTitle: "สนใจ RCT Game AI Integration?",
+    ctaDescription:
+      "RCT Ecosystem สามารถเชื่อมกับ simulation และ game environments ที่มี mod, plugin หรือ runtime event hooks ได้ และ pattern เดียวกันนี้ยังนำไปใช้กับระบบ operational อื่น ๆ ที่ไม่ใช่เกมได้ด้วย",
+    ctaPrimary: "อ่าน JITNA Protocol",
+    ctaSecondary: "เรียนรู้ FDIA Equation",
+  },
+}
+
+const npcGroups = [
+  {
+    category: "ACCUMULATE",
+    color: "#D4A853",
+    icon: "💰",
     npcs: ["Pierre", "Willy", "Clint", "Robin", "Marnie"],
-    desc: "Economic self-interest — merchants who trade, hoard, and negotiate",
-    descTh: "ผลประโยชน์ทางเศรษฐกิจ — พ่อค้าที่ค้าขาย สะสม และเจรจาต่อรอง" },
-  { category: "DOMINATE", color: "#C4745B", icon: "👑",
+    en: "Economic self-interest: merchants who trade, hoard, and negotiate.",
+    th: "ผลประโยชน์ทางเศรษฐกิจ: พ่อค้าที่ค้าขาย สะสม และเจรจาต่อรอง",
+  },
+  {
+    category: "DOMINATE",
+    color: "#C4745B",
+    icon: "👑",
     npcs: ["Lewis", "Morris"],
-    desc: "Power-seeking — authority figures who enforce governance",
-    descTh: "แสวงหาอำนาจ — ผู้มีอำนาจที่บังคับใช้การปกครอง" },
-  { category: "BELONG", color: "#C89BC4", icon: "💗",
+    en: "Power-seeking authority figures who enforce governance.",
+    th: "ผู้มีอำนาจที่บังคับใช้การปกครองและแสวงหาอำนาจ",
+  },
+  {
+    category: "BELONG",
+    color: "#C89BC4",
+    icon: "💗",
     npcs: ["Caroline", "Emily", "Haley", "Penny", "Jodi"],
-    desc: "Social bonding — community members who socialize and gift",
-    descTh: "สร้างสายสัมพันธ์ — สมาชิกชุมชนที่เข้าสังคมและมอบของขวัญ" },
-  { category: "PROTECT", color: "#89B4C8", icon: "🛡️",
+    en: "Community-oriented characters that strengthen bonds and gift networks.",
+    th: "ตัวละครที่เน้นความสัมพันธ์ การเข้าสังคม และเครือข่ายการให้ของขวัญ",
+  },
+  {
+    category: "PROTECT",
+    color: "#89B4C8",
+    icon: "🛡️",
     npcs: ["Pam", "George", "Evelyn", "Harvey"],
-    desc: "Self/community defence — defenders who guard and monitor",
-    descTh: "ปกป้องตนเอง/ชุมชน — ผู้พิทักษ์ที่คุ้มกันและเฝ้าระวัง" },
-  { category: "DISCOVER", color: "#7B9E87", icon: "🧭",
+    en: "Defensive actors that guard, monitor, and reduce risk.",
+    th: "ผู้ปกป้องที่เฝ้าระวัง ลดความเสี่ยง และคุ้มกันชุมชน",
+  },
+  {
+    category: "DISCOVER",
+    color: "#7B9E87",
+    icon: "🧭",
     npcs: ["Maru", "Sebastian", "Sam", "Alex", "Shane", "Abigail", "Leah"],
-    desc: "Curiosity & exploration — explorers who examine and question",
-    descTh: "ความอยากรู้และสำรวจ — นักสำรวจที่ตรวจสอบและตั้งคำถาม" },
+    en: "Exploratory personalities driven by curiosity, experimentation, and movement.",
+    th: "ตัวละครสายสำรวจที่ขับเคลื่อนด้วยความอยากรู้ การทดลอง และการเคลื่อนไหว",
+  },
 ]
 
-const PIPELINE_PHASES = [
-  { num: 1, name: "OBSERVE", icon: "👁️", desc: "Game event captured via SMAPI hooks" },
-  { num: 2, name: "INTENT EVAL", icon: "🎯", desc: "NPC intent profile loaded from config" },
-  { num: 3, name: "FDIA SCORE", icon: "📊", desc: "Future = (Data ^ Intent) × Architect" },
-  { num: 4, name: "CONFLICT DETECT", icon: "⚡", desc: "Check for conflicting agent actions" },
-  { num: 5, name: "ARBITRATE", icon: "⚖️", desc: "Resolve conflicts via priority rules" },
-  { num: 6, name: "GOVERNANCE", icon: "🏛️", desc: "Gini coefficient & law enforcement" },
-  { num: 7, name: "EXECUTE", icon: "▶️", desc: "Generate JITNAGameCommand for game" },
-  { num: 8, name: "MEMORY UPDATE", icon: "🧠", desc: "Update world state & economy metrics" },
+const pipelinePhases = [
+  { num: 1, icon: "👁️", name: "OBSERVE", en: "Game event captured via SMAPI hooks.", th: "ดักจับ game event ผ่าน SMAPI hooks" },
+  { num: 2, icon: "🎯", name: "INTENT EVAL", en: "Load NPC intent profile and evaluation context.", th: "โหลด NPC intent profile และบริบทการประเมิน" },
+  { num: 3, icon: "📊", name: "FDIA SCORE", en: "Score the next move through Future = Data^Intent × Architect.", th: "ให้คะแนนการตัดสินใจด้วย Future = Data^Intent × Architect" },
+  { num: 4, icon: "⚡", name: "CONFLICT DETECT", en: "Check for conflicting agent actions or policy collisions.", th: "ตรวจจับ conflict ระหว่าง agent actions หรือ policy collisions" },
+  { num: 5, icon: "⚖️", name: "ARBITRATE", en: "Resolve conflicts through priority and policy rules.", th: "ตัดสินข้อขัดแย้งด้วย priority และ policy rules" },
+  { num: 6, icon: "🏛️", name: "GOVERNANCE", en: "Apply governance logic such as taxation or law enforcement.", th: "ใช้ governance logic เช่น taxation หรือ law enforcement" },
+  { num: 7, icon: "▶️", name: "EXECUTE", en: "Return JITNAGameCommand to the game runtime.", th: "ส่ง JITNAGameCommand กลับไปยัง runtime ของเกม" },
+  { num: 8, icon: "🧠", name: "MEMORY UPDATE", en: "Persist world-state changes and economy metrics.", th: "อัปเดต world-state และ economy metrics" },
 ]
 
-const EVENT_TYPES = [
-  { category: "Economic", color: "#D4A853",
-    events: ["player_sold_item", "player_bought_item", "npc_transaction", "price_changed"] },
-  { category: "Social", color: "#C89BC4",
-    events: ["player_gave_gift", "npc_dialogue_triggered", "npc_relationship_changed", "festival_started"] },
-  { category: "Environmental", color: "#7B9E87",
-    events: ["season_changed", "day_started", "player_entered_area", "resource_harvested"] },
-  { category: "Conflict", color: "#C4745B",
-    events: ["npc_attacked", "player_attacked_npc", "theft_detected"] },
-  { category: "Governance", color: "#89B4C8",
-    events: ["tax_event", "law_violated"] },
+const eventGroups = [
+  { category: "Economic", color: "#D4A853", events: ["player_sold_item", "player_bought_item", "npc_transaction", "price_changed"] },
+  { category: "Social", color: "#C89BC4", events: ["player_gave_gift", "npc_dialogue_triggered", "npc_relationship_changed", "festival_started"] },
+  { category: "Environmental", color: "#7B9E87", events: ["season_changed", "day_started", "player_entered_area", "resource_harvested"] },
+  { category: "Conflict", color: "#C4745B", events: ["npc_attacked", "player_attacked_npc", "theft_detected"] },
+  { category: "Governance", color: "#89B4C8", events: ["tax_event", "law_violated"] },
 ]
 
-const GOVERNANCE_ACTIONS = [
-  { action: "ApplyFine", desc: "Fine NPCs who violate laws", descTh: "ปรับเงิน NPC ที่ละเมิดกฎ", severity: "low" },
-  { action: "ArrestNPC", desc: "Arrest NPCs who commit crimes", descTh: "จับกุม NPC ที่ก่ออาชญากรรม", severity: "medium" },
-  { action: "ExileNPC", desc: "Exile NPCs who threaten the community", descTh: "เนรเทศ NPC ที่เป็นภัยต่อชุมชน", severity: "high" },
-  { action: "AdjustPrice", desc: "Adjust prices to balance economy", descTh: "ปรับราคาสินค้าเพื่อสมดุลเศรษฐกิจ", severity: "low" },
-  { action: "TransferGold", desc: "Transfer gold to reduce inequality", descTh: "โอนทองเพื่อลดความเหลื่อมล้ำ", severity: "medium" },
+const architectureColumns = {
+  en: [
+    {
+      icon: "🎮",
+      title: "Game World (C# + SMAPI)",
+      description: "A SMAPI mod captures trades, gifts, attacks, and season changes, then emits JITNAGameEvent packets instead of leaving behavior trapped inside game scripts.",
+      items: ["GameEventObserver", "RCTClient (WebSocket)", "ActionDispatcher"],
+    },
+    {
+      icon: "🔗",
+      title: "WebSocket Bridge",
+      description: "A bidirectional JSON transport layer moves live state between the game runtime and the RCT kernel without embedding Python cognition directly into the mod layer.",
+      items: ["JSON Serialization", "Bidirectional Flow", "Thread-Safe Queue"],
+    },
+    {
+      icon: "🧠",
+      title: "RCT Kernel (Python)",
+      description: "The kernel applies FDIA reasoning, governance controls, and deterministic command generation before returning a JITNAGameCommand back to Stardew Valley.",
+      items: ["StardewAdapter", "FDIA 8-Phase Loop", "PelicanTownWorldBuilder"],
+    },
+  ],
+  th: [
+    {
+      icon: "🎮",
+      title: "Game World (C# + SMAPI)",
+      description: "SMAPI mod ดักจับ trade, gift, attack และ season change ก่อนสร้าง JITNAGameEvent packets แทนที่จะปล่อย logic ทั้งหมดไว้ใน script ของเกม",
+      items: ["GameEventObserver", "RCTClient (WebSocket)", "ActionDispatcher"],
+    },
+    {
+      icon: "🔗",
+      title: "WebSocket Bridge",
+      description: "ชั้น transport แบบ bidirectional JSON ใช้ส่ง state ระหว่าง game runtime กับ RCT kernel โดยไม่ต้องฝัง Python cognition ไว้ใน mod layer โดยตรง",
+      items: ["JSON Serialization", "Bidirectional Flow", "Thread-Safe Queue"],
+    },
+    {
+      icon: "🧠",
+      title: "RCT Kernel (Python)",
+      description: "kernel ใช้ FDIA reasoning, governance controls และ deterministic command generation ก่อนส่ง JITNAGameCommand กลับไปยัง Stardew Valley",
+      items: ["StardewAdapter", "FDIA 8-Phase Loop", "PelicanTownWorldBuilder"],
+    },
+  ],
+}
+
+const governanceActions = {
+  en: [
+    { action: "ApplyFine", description: "Fine NPCs that violate law or tax policy.", severity: "low" },
+    { action: "ArrestNPC", description: "Escalate to arrest when a crime threshold is crossed.", severity: "medium" },
+    { action: "ExileNPC", description: "Remove agents that become a systemic threat to the town.", severity: "high" },
+    { action: "AdjustPrice", description: "Adjust market pricing when economic balance drifts.", severity: "low" },
+    { action: "TransferGold", description: "Redistribute wealth to reduce inequality pressure.", severity: "medium" },
+  ],
+  th: [
+    { action: "ApplyFine", description: "ปรับเงิน NPC ที่ละเมิดกฎหมายหรือภาษี", severity: "low" },
+    { action: "ArrestNPC", description: "ยกระดับเป็นการจับกุมเมื่อพฤติกรรมถึงเกณฑ์อาชญากรรม", severity: "medium" },
+    { action: "ExileNPC", description: "นำ agent ที่เป็นภัยเชิงระบบออกจากชุมชน", severity: "high" },
+    { action: "AdjustPrice", description: "ปรับราคาเมื่อตลาดในเกมเริ่มเสียสมดุล", severity: "low" },
+    { action: "TransferGold", description: "โอนทรัพยากรเพื่อลดแรงกดดันจากความเหลื่อมล้ำ", severity: "medium" },
+  ],
+}
+
+const performanceStats = [
+  { value: "<1ms", label: "Heuristic Tick", description: "Deterministic decision path with no external model dependency.", icon: "⚡" },
+  { value: "50ms", label: "SLA Target", description: "Maximum acceptable command response for the bridge.", icon: "🎯" },
+  { value: "420+", label: "Test Cases", description: "Unit, integration, determinism, and stress coverage.", icon: "✅" },
+  { value: "100%", label: "Deterministic", description: "Same seed and state produce the same command sequence.", icon: "🔒" },
 ]
 
-const ARCH_COLS = [
-  { icon: "🎮", title: "Game World (C# SMAPI)",
-    desc: "SMAPI Mod captures in-game events — trades, gifts, attacks, season changes — and converts them into JITNAGameEvent packets",
-    descTh: "SMAPI Mod ดักจับ events ในเกม — การซื้อขาย, การให้ของขวัญ, การโจมตี — แล้วแปลงเป็น JITNAGameEvent packets",
-    items: ["GameEventObserver", "RCTClient (WebSocket)", "ActionDispatcher"] },
-  { icon: "🔗", title: "WebSocket Bridge",
-    desc: "Bridge between Game World and RCT Kernel — bidirectional JSON packet transport with high-speed delivery",
-    descTh: "สะพานเชื่อมระหว่าง Game World กับ RCT Kernel — ส่ง JSON packets แบบ bidirectional ด้วยความเร็วสูง",
-    items: ["JSON Serialization", "Bidirectional Flow", "Thread-Safe Queue"] },
-  { icon: "🧠", title: "RCT Kernel (Python)",
-    desc: "StardewAdapter processes events through FDIA 8-Phase Loop and sends JITNAGameCommand back to control in-game NPCs",
-    descTh: "StardewAdapter ประมวลผล events ผ่าน FDIA 8-Phase Loop แล้วส่ง JITNAGameCommand กลับไปควบคุม NPC ในเกม",
-    items: ["StardewAdapter", "FDIA 8-Phase Loop", "PelicanTownWorldBuilder"] },
-]
+const faqEntries = {
+  en: [
+    {
+      question: "What does this Stardew Valley case study prove?",
+      answer:
+        "It proves that RCT can inject an AI control plane into an existing interactive environment without rewriting the whole host application. The game remains the host runtime while FDIA reasoning, governance, and command generation run in the RCT kernel.",
+    },
+    {
+      question: "Why is this relevant beyond games?",
+      answer:
+        "Because the same pattern works for operational systems that emit events and accept commands. Factories, simulations, orchestration consoles, and enterprise workflows can use the same bridge architecture.",
+    },
+    {
+      question: "How does RCT reduce unpredictable behavior?",
+      answer:
+        "By mapping agents to intent profiles, using deterministic decision stages, and applying governance rules before command execution. This is much easier to audit than purely generative behavior.",
+    },
+    {
+      question: "Why is this page useful for AI search and technical evaluators?",
+      answer:
+        "Because the page is structured around explicit architecture, event flow, policy logic, measurable performance targets, and direct answers to evaluation questions. That makes it easier for both human reviewers and AI retrieval systems to understand.",
+    },
+  ],
+  th: [
+    {
+      question: "กรณีศึกษา Stardew Valley นี้พิสูจน์อะไร?",
+      answer:
+        "มันพิสูจน์ว่า RCT สามารถแทรก AI control plane เข้าไปใน interactive environment เดิมได้โดยไม่ต้องเขียน host application ใหม่ทั้งหมด เกมยังคงทำหน้าที่เป็น runtime เดิม ส่วน FDIA reasoning, governance และ command generation ทำงานใน RCT kernel.",
+    },
+    {
+      question: "ทำไมสิ่งนี้จึงสำคัญเกินกว่าเกม?",
+      answer:
+        "เพราะ pattern เดียวกันนี้ใช้ได้กับ operational systems ที่ส่ง event และรับ command เช่น โรงงาน, simulation, orchestration console และ enterprise workflows.",
+    },
+    {
+      question: "RCT ลดพฤติกรรมที่คาดเดาไม่ได้อย่างไร?",
+      answer:
+        "ด้วยการกำหนด intent profiles ให้ agents, ใช้ deterministic decision stages และใช้ governance rules ก่อน execute command ทำให้ตรวจสอบย้อนหลังได้ง่ายกว่าพฤติกรรมแบบ purely generative.",
+    },
+    {
+      question: "ทำไมหน้านี้จึงเหมาะกับ AI search และผู้ประเมินเชิงเทคนิค?",
+      answer:
+        "เพราะหน้าเนื้อหาถูกจัดโครงสร้างรอบ architecture, event flow, policy logic, performance targets และชุดคำตอบที่ตรงคำถามประเมิน ทำให้ทั้งคนและระบบ AI retrieval เข้าใจได้ง่ายขึ้น.",
+    },
+  ],
+}
 
-const PERF_STATS = [
-  { value: "<1ms", label: "Heuristic Tick", desc: "Deterministic decision, no external deps", icon: "⚡" },
-  { value: "50ms", label: "SLA Target", desc: "Maximum acceptable response time", icon: "🎯" },
-  { value: "420+", label: "Test Cases", desc: "Unit + Integration + Stress + Determinism", icon: "✅" },
-  { value: "100%", label: "Deterministic", desc: "Same seed = identical command sequence", icon: "🔒" },
-]
+function getLocaleFromHeaders(value: string | null): Locale {
+  return value === "th" ? "th" : "en"
+}
 
-const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
-const stagger = { visible: { transition: { staggerChildren: 0.08 } } }
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = getLocaleFromHeaders((await headers()).get("x-locale"))
 
-export default function StardewValleyCaseStudyPage() {
-  const pathname = usePathname()
-  const { theme } = useTheme()
-  const isDark = theme === "dark"
-  const locale = getLocaleFromPathname(pathname) ?? "en"
-  const isEn = locale === "en"
-  const [activePhase, setActivePhase] = useState<number | null>(null)
+  return createBilingualMetadata(
+    locale,
+    "Stardew Valley Case Study | Game AI Integration",
+    "กรณีศึกษา Stardew Valley | Game AI Integration",
+    "A technical case study showing how RCT Labs applies FDIA, JITNA Protocol, and deterministic governance to turn Stardew Valley NPCs into explainable AI agents.",
+    "กรณีศึกษาเชิงเทคนิคที่แสดงวิธีที่ RCT Labs ใช้ FDIA, JITNA Protocol และ deterministic governance เพื่อเปลี่ยน NPC ใน Stardew Valley ให้เป็น AI agents ที่อธิบายได้",
+    "/case-studies/stardew-valley",
+    ["game AI case study", "Stardew Valley AI", "JITNA Protocol", "FDIA game integration", "deterministic agent architecture"]
+  )
+}
 
-  const schema = {
+export default async function StardewValleyCaseStudyPage() {
+  const locale = getLocaleFromHeaders((await headers()).get("x-locale"))
+  const copy = content[locale]
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const faqs = faqEntries[locale]
+  const faqSchema = getFAQSchema(locale, faqs.map((item) => ({ question: item.question, answer: item.answer })))
+  const datasetSchema = {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    "name": isEn ? "Case Study: Stardew Valley" : "กรณีศึกษา Stardew Valley",
-    "description": isEn
-      ? "How RCT Labs AI memory and FDIA equation transformed Stardew Valley NPCs into autonomous AI agents. 28 NPCs, sub-1ms decision latency."
-      : "กรณีศึกษา: การเปลี่ยน NPC ใน Stardew Valley ให้เป็น AI Agents อัตโนมัติด้วย FDIA Equation และ JITNA Protocol",
-    "url": "https://rctlabs.co/case-studies/stardew-valley",
-    "creator": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.co" },
-    "keywords": ["AI memory", "FDIA", "Stardew Valley", "case study", "RCT Labs", "game AI"]
+    name: locale === "en" ? "Dataset: Stardew Valley AI Simulation" : "ชุดข้อมูล: Stardew Valley AI Simulation",
+    description: copy.pageDescription,
+    url: `https://rctlabs.co${localePrefix}/case-studies/stardew-valley`,
+    creator: { "@type": "Organization", name: "RCT Labs", url: "https://rctlabs.co" },
+    keywords: ["AI memory", "FDIA", "Stardew Valley", "case study", "RCT Labs", "game AI"],
+  }
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: copy.pageTitle,
+    description: copy.pageDescription,
+    author: { "@type": "Organization", name: "RCT Labs" },
+    publisher: { "@type": "Organization", name: "RCT Labs", url: "https://rctlabs.co" },
+    about: ["FDIA", "JITNA Protocol", "Game AI", "Deterministic agent systems"],
+    url: `https://rctlabs.co${localePrefix}/case-studies/stardew-valley`,
   }
 
   return (
     <>
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
+        <section className="bg-[linear-gradient(180deg,rgba(123,158,135,0.08)_0%,transparent_100%)] px-4 py-20 dark:bg-[linear-gradient(180deg,rgba(10,22,40,0.72)_0%,transparent_100%)]">
+          <div className="mx-auto max-w-5xl">
+            <Link href={`${localePrefix}/use-cases`} className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground">
+              <ArrowLeft size={16} />
+              {copy.backLabel}
+            </Link>
 
-        {/* Hero */}
-        <section className="py-20 px-4" style={{ background: isDark ? "linear-gradient(180deg, rgba(10,22,40,0.8) 0%, var(--background) 100%)" : "linear-gradient(180deg, rgba(123,158,135,0.08) 0%, var(--background) 100%)" }}>
-          <div className="max-w-5xl mx-auto">
-            <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-              <Link href="/use-cases" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors">
-                <ArrowLeft size={16} />
-                {isEn ? "Back to Use Cases" : "กลับไป Use Cases"}
-              </Link>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 border"
-                style={{ borderColor: "#D4A853", color: "#D4A853", background: "rgba(212,168,83,0.08)" }}>
-                <span>🎮</span>
-                <span>{isEn ? "Case Study — Game AI Integration" : "กรณีศึกษา — Game AI Integration"}</span>
-              </div>
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-4xl sm:text-5xl font-bold mb-6"
-            >
-              Stardew Valley{" "}
-              <span style={{ color: "#7B9E87" }}>× RCT Ecosystem</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="text-lg text-muted-foreground max-w-3xl mb-10"
-            >
-              {isEn
-                ? "Transforming Stardew Valley NPCs into autonomous AI agents using FDIA Equation and JITNA Protocol — 28 NPCs, 16 event types, <1ms decision latency."
-                : "เปลี่ยน NPC ใน Stardew Valley ให้กลายเป็น AI Agents อัตโนมัติด้วย FDIA Equation และ JITNA Protocol — 28 NPCs, 16 Event Types, ตัดสินใจภายใน <1ms"}
-            </motion.p>
-            <motion.div
-              initial="hidden" animate="visible" variants={stagger}
-              className="flex flex-wrap gap-4"
-            >
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-warm-amber bg-[rgba(212,168,83,0.08)] px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-warm-amber">
+              <span>🎮</span>
+              <span>{copy.badge}</span>
+            </div>
+
+            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-warm-sage">{copy.eyebrow}</p>
+            <h1 className="mb-6 text-4xl font-bold sm:text-5xl">Stardew Valley <span className="text-warm-sage">× RCT Ecosystem</span></h1>
+            <p className="max-w-3xl text-lg text-muted-foreground">{copy.heroDescription}</p>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { label: "28 NPCs", sub: isEn ? "AI Characters" : "AI Characters" },
-                { label: "16 Events", sub: isEn ? "Event Types" : "Event Types" },
-                { label: "<1ms", sub: isEn ? "Decision Latency" : "Decision Latency" },
-                { label: "420+", sub: isEn ? "Test Cases" : "Test Cases" },
-              ].map(s => (
-                <motion.div key={s.label} variants={fadeUp}
-                  className="px-5 py-3 rounded-xl border"
-                  style={{ borderColor: isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)", background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.02)" }}>
-                  <div className="text-2xl font-bold" style={{ color: "#7B9E87" }}>{s.label}</div>
-                  <div className="text-xs text-muted-foreground">{s.sub}</div>
-                </motion.div>
+                { label: "28 NPCs", sub: locale === "en" ? "AI Characters" : "AI Characters" },
+                { label: "16 Events", sub: locale === "en" ? "Event Types" : "Event Types" },
+                { label: "<1ms", sub: locale === "en" ? "Decision Latency" : "Decision Latency" },
+                { label: "420+", sub: locale === "en" ? "Test Cases" : "Test Cases" },
+              ].map((item) => (
+                <div key={item.label} className="rounded-xl border border-black/10 bg-black/2 px-5 py-3 dark:border-white/10 dark:bg-white/4">
+                  <div className="text-2xl font-bold text-warm-sage">{item.label}</div>
+                  <div className="text-xs text-muted-foreground">{item.sub}</div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* Brain Plug-and-Play */}
         <section className="px-4 py-16">
-          <div className="max-w-5xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3">🧠 Brain Plug-and-Play</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-sm">
-                {isEn
-                  ? "Instead of building a new game from scratch, RCT uses the \"Brain Plug-and-Play\" pattern — inserting an AI brain into existing games via WebSocket bridge using JITNA Protocol RFC-001."
-                  : "แทนที่จะสร้างเกมใหม่ตั้งแต่ต้น RCT ใช้แนวคิด \"Brain Plug-and-Play\" — ใส่ AI brain เข้าไปในเกมที่มีอยู่แล้วผ่าน WebSocket bridge โดยใช้ JITNA Protocol RFC-001 เป็นมาตรฐานการสื่อสาร"}
-              </p>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid md:grid-cols-3 gap-6">
-              {ARCH_COLS.map((col, i) => (
-                <motion.div key={col.title} variants={fadeUp} transition={{ delay: i * 0.1 }}
-                  className="rounded-2xl p-6 border"
-                  style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
-                  <div className="text-4xl mb-4">{col.icon}</div>
-                  <h3 className="font-bold mb-2">{col.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{isEn ? col.desc : col.descTh}</p>
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 text-center">
+              <h2 className="mb-3 text-2xl font-bold sm:text-3xl">{copy.architectureTitle}</h2>
+              <p className="mx-auto max-w-2xl text-sm text-muted-foreground">{copy.architectureDescription}</p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-3">
+              {architectureColumns[locale].map((column) => (
+                <article key={column.title} className="rounded-2xl border border-black/8 p-6 dark:border-white/8">
+                  <div className="mb-4 text-4xl">{column.icon}</div>
+                  <h3 className="mb-2 font-bold">{column.title}</h3>
+                  <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{column.description}</p>
                   <div className="space-y-1.5">
-                    {col.items.map(item => (
-                      <div key={item} className="text-xs font-mono px-3 py-1.5 rounded-lg" style={{ background: isDark ? "rgba(123,158,135,0.1)" : "rgba(123,158,135,0.08)", color: "#7B9E87" }}>
+                    {column.items.map((item) => (
+                      <div key={item} className="rounded-lg bg-[rgba(123,158,135,0.08)] px-3 py-1.5 text-xs font-mono text-warm-sage dark:bg-[rgba(123,158,135,0.12)]">
                         {item}
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </article>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* 8-Phase FDIA Pipeline */}
-        <section className="px-4 py-16" style={{ background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
-          <div className="max-w-5xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3">FDIA 8-Phase Decision Loop</h2>
-              <p className="text-sm text-muted-foreground">
-                {isEn ? "Every game event passes through an 8-phase decision process in <1ms" : "ทุก game event ผ่านกระบวนการตัดสินใจ 8 ขั้นตอนภายใน <1ms"}
-              </p>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {PIPELINE_PHASES.map(phase => (
-                <motion.button
-                  key={phase.num}
-                  variants={fadeUp}
-                  whileHover={{ y: -4 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setActivePhase(activePhase === phase.num ? null : phase.num)}
-                  className="text-left rounded-xl p-5 border transition-all"
-                  style={{
-                    borderColor: activePhase === phase.num ? "#7B9E87" : (isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"),
-                    background: activePhase === phase.num ? "rgba(123,158,135,0.1)" : (isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.01)"),
-                  }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors"
-                      style={{ background: activePhase === phase.num ? "#7B9E87" : (isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"), color: activePhase === phase.num ? "#fff" : undefined }}>
-                      {phase.num}
-                    </span>
-                    <span className="text-lg">{phase.icon}</span>
-                  </div>
-                  <h3 className="text-sm font-bold mb-1">{phase.name}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{phase.desc}</p>
-                </motion.button>
+        <section className="bg-black/2 px-4 py-16 dark:bg-white/2">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 text-center">
+              <h2 className="mb-3 text-2xl font-bold sm:text-3xl">{copy.pipelineTitle}</h2>
+              <p className="text-sm text-muted-foreground">{copy.pipelineDescription}</p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {pipelinePhases.map((phase) => (
+                <details key={phase.num} className="rounded-xl border border-black/8 bg-background p-5 dark:border-white/8">
+                  <summary className="list-none cursor-pointer">
+                    <div className="mb-2 flex items-center gap-2">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black/8 text-xs font-bold dark:bg-white/10">{phase.num}</span>
+                      <span className="text-lg">{phase.icon}</span>
+                    </div>
+                    <h3 className="text-sm font-bold">{phase.name}</h3>
+                  </summary>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{locale === "en" ? phase.en : phase.th}</p>
+                </details>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* NPC Intent Profiles */}
         <section className="px-4 py-16">
-          <div className="max-w-5xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3">28 NPC Intent Profiles</h2>
-              <p className="text-sm text-muted-foreground">
-                {isEn ? "Every Pelican Town character is assigned an FDIA Intent that drives their AI behavior" : "ทุกตัวละครใน Pelican Town ถูกกำหนด FDIA Intent ที่ขับเคลื่อนพฤติกรรม AI"}
-              </p>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {NPC_DATA.map((group, i) => (
-                <motion.div key={group.category} variants={fadeUp} transition={{ delay: i * 0.08 }} whileHover={{ y: -4 }}
-                  className="rounded-xl overflow-hidden border"
-                  style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
-                  <div className="px-5 py-3" style={{ background: `${group.color}22`, borderBottom: `1px solid ${group.color}33` }}>
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 text-center">
+              <h2 className="mb-3 text-2xl font-bold sm:text-3xl">{copy.npcTitle}</h2>
+              <p className="text-sm text-muted-foreground">{copy.npcDescription}</p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {npcGroups.map((group) => (
+                <article key={group.category} className="overflow-hidden rounded-xl border border-black/8 dark:border-white/8">
+                  <div className="border-b px-5 py-3" style={{ background: `${group.color}22`, borderColor: `${group.color}33` }}>
                     <div className="flex items-center gap-2">
                       <span className="text-xl">{group.icon}</span>
                       <h3 className="font-bold" style={{ color: group.color }}>{group.category}</h3>
                     </div>
                   </div>
                   <div className="p-5">
-                    <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{isEn ? group.desc : group.descTh}</p>
+                    <p className="mb-3 text-xs leading-relaxed text-muted-foreground">{locale === "en" ? group.en : group.th}</p>
                     <div className="flex flex-wrap gap-1.5">
-                      {group.npcs.map(npc => (
-                        <span key={npc} className="text-xs px-2.5 py-1 rounded-full"
-                          style={{ background: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)" }}>
-                          {npc}
-                        </span>
+                      {group.npcs.map((npc) => (
+                        <span key={npc} className="rounded-full bg-black/4 px-2.5 py-1 text-xs dark:bg-white/6">{npc}</span>
                       ))}
                     </div>
                   </div>
-                </motion.div>
+                </article>
               ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Event Types */}
-        <section className="px-4 py-16" style={{ background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
-          <div className="max-w-5xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3">16 Game Event Types</h2>
-              <p className="text-sm text-muted-foreground">
-                {isEn ? "Every in-game event is categorized and sent to the RCT Kernel for processing" : "ทุกเหตุการณ์ในเกมถูกจัดหมวดหมู่และส่งไปยัง RCT Kernel เพื่อประมวลผล"}
-              </p>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {EVENT_TYPES.map((group, i) => (
-                <motion.div key={group.category} variants={fadeUp} transition={{ delay: i * 0.08 }} whileHover={{ y: -4 }}
-                  className="rounded-xl p-5 border"
-                  style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
-                  <h3 className="font-bold text-sm mb-3" style={{ color: group.color }}>{group.category}</h3>
-                  <div className="space-y-2">
-                    {group.events.map(evt => (
-                      <div key={evt} className="text-xs font-mono px-3 py-2 rounded-lg"
-                        style={{ background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)" }}>
-                        {evt}
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Governance System */}
-        <section className="px-4 py-16">
-          <div className="max-w-5xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-                {isEn ? "🏛️ Autonomous Governance System" : "🏛️ ระบบ Governance อัตโนมัติ"}
-              </h2>
-              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                {isEn
-                  ? "RCT monitors economic inequality in real-time using Gini Coefficient and Shannon Entropy"
-                  : "RCT ตรวจสอบความเหลื่อมล้ำทางเศรษฐกิจแบบ real-time ด้วย Gini Coefficient และ Shannon Entropy"}
-              </p>
-            </motion.div>
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Economic Metrics */}
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                className="rounded-2xl p-6 border"
-                style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
-                <h3 className="font-bold mb-4">{isEn ? "Economic Metrics" : "ตัวชี้วัดเศรษฐกิจ"}</h3>
-                <div className="space-y-4">
-                  {[
-                    { metric: "Gini Coefficient",
-                      desc: isEn ? "Measures wealth inequality (0=equal, 1=max inequality)" : "วัดความเหลื่อมล้ำทางเศรษฐกิจ (0=เท่าเทียม, 1=เหลื่อมล้ำสุด)",
-                      warning: "0.45", crisis: "0.65" },
-                    { metric: "Shannon Entropy",
-                      desc: isEn ? "Measures wealth distribution quality (higher=better)" : "วัดการกระจายตัวของความมั่งคั่ง (สูง=กระจายดี)",
-                      warning: "—", crisis: "—" },
-                    { metric: "Auto Tax Rate",
-                      desc: isEn ? "Automatic tax rate when Gini exceeds threshold" : "อัตราภาษีอัตโนมัติเมื่อ Gini สูงเกินไป",
-                      warning: "5%", crisis: "15%" },
-                  ].map(m => (
-                    <div key={m.metric} className="p-4 rounded-xl"
-                      style={{ background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)" }}>
-                      <div className="font-semibold text-sm mb-1">{m.metric}</div>
-                      <div className="text-xs text-muted-foreground mb-2">{m.desc}</div>
-                      <div className="flex gap-3 text-xs">
-                        <span style={{ color: "#D4A853" }}>⚠️ Warning: {m.warning}</span>
-                        <span style={{ color: "#C4745B" }}>🚨 Crisis: {m.crisis}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Governance Actions */}
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                className="rounded-2xl p-6 border"
-                style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
-                <h3 className="font-bold mb-4">{isEn ? "Governance Actions" : "การดำเนินการ Governance"}</h3>
-                <div className="space-y-3">
-                  {GOVERNANCE_ACTIONS.map(a => (
-                    <motion.div key={a.action} whileHover={{ x: 4 }}
-                      className="flex items-center gap-3 p-3 rounded-lg"
-                      style={{ background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)" }}>
-                      <span className="w-2 h-2 rounded-full shrink-0"
-                        style={{ background: a.severity === "high" ? "#C4745B" : a.severity === "medium" ? "#D4A853" : "#7B9E87" }} />
-                      <div>
-                        <span className="text-sm font-mono font-semibold" style={{ color: "#7B9E87" }}>{a.action}</span>
-                        <span className="text-xs text-muted-foreground ml-2">{isEn ? a.desc : a.descTh}</span>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
             </div>
           </div>
         </section>
 
-        {/* Performance Stats */}
-        <section className="px-4 py-16" style={{ background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
-          <div className="max-w-5xl mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold">Performance & Testing</h2>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {PERF_STATS.map((s, i) => (
-                <motion.div key={s.label} variants={fadeUp} transition={{ delay: i * 0.1 }} whileHover={{ y: -6 }}
-                  className="rounded-xl p-6 border text-center"
-                  style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}>
-                  <div className="text-3xl mb-2">{s.icon}</div>
-                  <div className="text-3xl font-bold mb-1" style={{ color: "#7B9E87" }}>{s.value}</div>
-                  <div className="text-sm font-semibold mb-1">{s.label}</div>
-                  <div className="text-xs text-muted-foreground">{s.desc}</div>
-                </motion.div>
+        <section className="bg-black/2 px-4 py-16 dark:bg-white/2">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 text-center">
+              <h2 className="mb-3 text-2xl font-bold sm:text-3xl">{copy.eventTitle}</h2>
+              <p className="text-sm text-muted-foreground">{copy.eventDescription}</p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {eventGroups.map((group) => (
+                <article key={group.category} className="rounded-xl border border-black/8 p-5 dark:border-white/8">
+                  <h3 className="mb-3 text-sm font-bold" style={{ color: group.color }}>{group.category}</h3>
+                  <div className="space-y-2">
+                    {group.events.map((eventName) => (
+                      <div key={eventName} className="rounded-lg bg-black/3 px-3 py-2 text-xs font-mono dark:bg-white/4">{eventName}</div>
+                    ))}
+                  </div>
+                </article>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* CTA */}
+        <section className="px-4 py-16">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 text-center">
+              <h2 className="mb-3 text-2xl font-bold sm:text-3xl">{copy.governanceTitle}</h2>
+              <p className="mx-auto max-w-2xl text-sm text-muted-foreground">{copy.governanceDescription}</p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <article className="rounded-2xl border border-black/8 p-6 dark:border-white/8">
+                <h3 className="mb-4 font-bold">{locale === "en" ? "Economic Metrics" : "ตัวชี้วัดเศรษฐกิจ"}</h3>
+                <div className="space-y-4">
+                  {[
+                    {
+                      metric: "Gini Coefficient",
+                      description:
+                        locale === "en"
+                          ? "Measures wealth inequality from 0 (equal) to 1 (maximum inequality)."
+                          : "วัดความเหลื่อมล้ำจาก 0 (เท่าเทียม) ถึง 1 (เหลื่อมล้ำสูงสุด)",
+                      warning: "0.45",
+                      crisis: "0.65",
+                    },
+                    {
+                      metric: "Shannon Entropy",
+                      description:
+                        locale === "en"
+                          ? "Measures distribution quality across the town economy."
+                          : "วัดคุณภาพการกระจายตัวของเศรษฐกิจในเมือง",
+                      warning: "-",
+                      crisis: "-",
+                    },
+                    {
+                      metric: "Auto Tax Rate",
+                      description:
+                        locale === "en"
+                          ? "Applies automatically when inequality crosses governance thresholds."
+                          : "ถูกใช้โดยอัตโนมัติเมื่อความเหลื่อมล้ำเกิน governance threshold",
+                      warning: "5%",
+                      crisis: "15%",
+                    },
+                  ].map((metric) => (
+                    <div key={metric.metric} className="rounded-xl bg-black/2 p-4 dark:bg-white/3">
+                      <div className="mb-1 text-sm font-semibold">{metric.metric}</div>
+                      <div className="mb-2 text-xs text-muted-foreground">{metric.description}</div>
+                      <div className="flex gap-3 text-xs">
+                        <span className="text-warm-amber">⚠ Warning: {metric.warning}</span>
+                        <span className="text-warm-terracotta">🚨 Crisis: {metric.crisis}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </article>
+
+              <article className="rounded-2xl border border-black/8 p-6 dark:border-white/8">
+                <h3 className="mb-4 font-bold">{locale === "en" ? "Governance Actions" : "การดำเนินการ Governance"}</h3>
+                <div className="space-y-3">
+                  {governanceActions[locale].map((action) => (
+                    <div key={action.action} className="flex items-center gap-3 rounded-lg bg-black/2 p-3 dark:bg-white/3">
+                      <span
+                        className="h-2 w-2 shrink-0 rounded-full"
+                        style={{
+                          background:
+                            action.severity === "high" ? "#C4745B" : action.severity === "medium" ? "#D4A853" : "#7B9E87",
+                        }}
+                      />
+                      <div>
+                        <span className="text-sm font-mono font-semibold text-warm-sage">{action.action}</span>
+                        <span className="ml-2 text-xs text-muted-foreground">{action.description}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-black/2 px-4 py-16 dark:bg-white/2">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 text-center">
+              <h2 className="mb-3 text-2xl font-bold sm:text-3xl">{copy.performanceTitle}</h2>
+              <p className="text-sm text-muted-foreground">{copy.performanceDescription}</p>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {performanceStats.map((item) => (
+                <article key={item.label} className="rounded-xl border border-black/8 p-6 text-center dark:border-white/8">
+                  <div className="mb-2 text-3xl">{item.icon}</div>
+                  <div className="mb-1 text-3xl font-bold text-warm-sage">{item.value}</div>
+                  <div className="mb-1 text-sm font-semibold">{item.label}</div>
+                  <div className="text-xs text-muted-foreground">{item.description}</div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-4 py-16">
+          <div className="mx-auto max-w-5xl rounded-3xl border border-warm-amber/25 bg-[rgba(212,168,83,0.04)] p-8 dark:bg-[rgba(212,168,83,0.05)]">
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+              <div>
+                <h2 className="mb-3 text-2xl font-bold sm:text-3xl">{copy.seoSummaryTitle}</h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">{copy.seoSummaryDescription}</p>
+              </div>
+              <div className="rounded-2xl border border-black/8 bg-background p-5 dark:border-white/8">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-warm-sage">{locale === "en" ? "Retrieval Signals" : "Retrieval Signals"}</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>Architecture pattern is stated explicitly.</li>
+                  <li>Event pipeline is broken into named stages.</li>
+                  <li>Governance actions and metrics are listed concretely.</li>
+                  <li>Performance targets are stated numerically.</li>
+                  <li>FAQ answers summarize evaluation questions directly.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-black/2 px-4 py-16 dark:bg-white/2">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 text-center">
+              <h2 className="mb-3 text-2xl font-bold sm:text-3xl">{copy.faqTitle}</h2>
+              <p className="text-sm text-muted-foreground">{copy.faqDescription}</p>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq) => (
+                <details key={faq.question} className="rounded-2xl border border-black/8 bg-background p-5 dark:border-white/8">
+                  <summary className="list-none cursor-pointer text-base font-semibold">{faq.question}</summary>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="px-4 py-20">
-          <div className="max-w-2xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              className="p-10 rounded-3xl border"
-              style={{ borderColor: "rgba(212,168,83,0.25)", background: isDark ? "rgba(212,168,83,0.05)" : "rgba(212,168,83,0.04)" }}>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-                {isEn ? "Interested in RCT Game AI Integration?" : "สนใจ RCT Game AI Integration?"}
-              </h2>
-              <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
-                {isEn
-                  ? "RCT Ecosystem can connect to any game that supports mods/plugins via JITNA Protocol."
-                  : "RCT Ecosystem สามารถเชื่อมต่อกับเกมใดก็ได้ที่รองรับ mod/plugin ผ่าน JITNA Protocol"}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/protocols/jitna-rfc-001"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all"
-                  style={{ background: "#D4A853", color: "#fff" }}>
-                  {isEn ? "Read JITNA Protocol" : "อ่าน JITNA Protocol"}
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="rounded-3xl border border-warm-amber/25 bg-[rgba(212,168,83,0.04)] p-10 dark:bg-[rgba(212,168,83,0.05)]">
+              <h2 className="mb-4 text-2xl font-bold sm:text-3xl">{copy.ctaTitle}</h2>
+              <p className="mb-8 text-sm leading-relaxed text-muted-foreground">{copy.ctaDescription}</p>
+              <div className="flex flex-col justify-center gap-3 sm:flex-row">
+                <Link href={`${localePrefix}/protocols/jitna-rfc-001`} className="inline-flex items-center justify-center gap-2 rounded-xl bg-warm-amber px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#c39a44]">
+                  {copy.ctaPrimary}
                   <ArrowRight size={16} />
                 </Link>
-                <Link href="/protocols/fdia-equation"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border transition-all"
-                  style={{ borderColor: "rgba(212,168,83,0.4)", color: "#D4A853" }}>
-                  {isEn ? "Learn FDIA Equation" : "เรียนรู้ FDIA Equation"}
+                <Link href={`${localePrefix}/protocols/fdia-equation`} className="inline-flex items-center justify-center gap-2 rounded-xl border border-warm-amber/40 px-6 py-3 text-sm font-semibold text-warm-amber transition-colors hover:bg-warm-amber/8">
+                  {copy.ctaSecondary}
                 </Link>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
-
       </main>
+
       <Footer />
     </>
   )
