@@ -7,6 +7,9 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { useLanguage } from "@/components/language-provider"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import { buildContactHref } from "@/lib/funnel"
+import { pricingCheckoutLinks } from "@/lib/payment-links"
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 
@@ -146,6 +149,8 @@ function CellValue({ value }: { value: boolean | string }) {
 export default function PricingPage() {
   const { language } = useLanguage()
   const isTh = language === "th"
+  const searchParams = useSearchParams()
+  const checkoutSuccess = searchParams.get("status") === "success"
 
   const lh = (path: string) => `/${language}${path}`
 
@@ -157,6 +162,13 @@ export default function PricingPage() {
       <section className="pt-28 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-300 mx-auto text-center">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.6 }}>
+            {checkoutSuccess ? (
+              <div className="mx-auto mb-6 max-w-2xl rounded-2xl border border-warm-sage/30 bg-warm-sage/10 px-5 py-4 text-sm text-warm-charcoal dark:text-warm-light-gray">
+                {isTh
+                  ? "ระบบได้รับสถานะการชำระเงินแล้ว ทีมงานจะติดต่อกลับเพื่อยืนยันขั้นตอนถัดไป"
+                  : "Your checkout status was received. The team will follow up with onboarding and the next steps."}
+              </div>
+            ) : null}
             <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-6 bg-[#D4A85318] text-warm-amber">
               <Zap size={12} />
               {isTh ? "แผนราคา" : "Pricing Plans"}
@@ -171,6 +183,17 @@ export default function PricingPage() {
                 ? "ทุกผลิตภัณฑ์ใน RCT Ecosystem ถูกออกแบบมาเพื่อตอบโจทย์ที่แตกต่างกัน — เลือกสิ่งที่ตรงกับความต้องการขององค์กรคุณ"
                 : "Each product in the RCT Ecosystem is designed for different needs — choose what aligns with your organization's goals."}
             </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <Link href={lh("/products")} className="rounded-xl border border-warm-light-gray bg-white px-4 py-3 text-sm font-medium text-warm-charcoal transition-colors hover:bg-warm-sand dark:border-[#2A2A2A] dark:bg-[#1E1E1E] dark:text-warm-light-gray dark:hover:bg-[#252525]">
+                {isTh ? "สำรวจผลิตภัณฑ์ทั้งหมด" : "Explore All Products"}
+              </Link>
+              <Link href={lh("/solutions")} className="rounded-xl border border-warm-light-gray bg-white px-4 py-3 text-sm font-medium text-warm-charcoal transition-colors hover:bg-warm-sand dark:border-[#2A2A2A] dark:bg-[#1E1E1E] dark:text-warm-light-gray dark:hover:bg-[#252525]">
+                {isTh ? "ดูโซลูชันตามปัญหา" : "Match Solutions to Problems"}
+              </Link>
+              <Link href={lh("/whitepaper")} className="rounded-xl border border-warm-light-gray bg-white px-4 py-3 text-sm font-medium text-warm-charcoal transition-colors hover:bg-warm-sand dark:border-[#2A2A2A] dark:bg-[#1E1E1E] dark:text-warm-light-gray dark:hover:bg-[#252525]">
+                {isTh ? "อ่าน Whitepaper ก่อนตัดสินใจ" : "Read the Whitepaper First"}
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -180,6 +203,9 @@ export default function PricingPage() {
         <div className="max-w-300 mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           {tiers.map((tier, i) => {
             const Icon = tier.icon
+            const paymentLink = pricingCheckoutLinks[tier.id as keyof typeof pricingCheckoutLinks]
+            const hasHostedCheckout = Boolean(paymentLink)
+            const contactHref = buildContactHref(language, `pricing:${tier.id}:sales`)
             return (
               <motion.div
                 key={tier.id}
@@ -260,16 +286,35 @@ export default function PricingPage() {
                   </ul>
 
                   {/* CTA */}
-                  <Link
-                    href={lh("/contact")}
-                    className={`w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
-                      tier.popular
-                        ? "bg-warm-amber text-white hover:bg-[#C49A48] shadow-md"
-                        : "bg-warm-sand dark:bg-[#2A2A2A] text-warm-charcoal dark:text-warm-light-gray hover:bg-warm-light-gray dark:hover:bg-[#333]"
-                    }`}
-                  >
-                    {isTh ? "ติดต่อเรา" : "Get Started"}
-                    <ArrowRight size={14} />
+                  {hasHostedCheckout ? (
+                    <a
+                      href={paymentLink}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className={`w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
+                        tier.popular
+                          ? "bg-warm-amber text-white hover:bg-[#C49A48] shadow-md"
+                          : "bg-warm-sand dark:bg-[#2A2A2A] text-warm-charcoal dark:text-warm-light-gray hover:bg-warm-light-gray dark:hover:bg-[#333]"
+                      }`}
+                    >
+                      {isTh ? "เริ่ม Checkout" : "Start Checkout"}
+                      <ArrowRight size={14} />
+                    </a>
+                  ) : (
+                    <Link
+                      href={contactHref}
+                      className={`w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
+                        tier.popular
+                          ? "bg-warm-amber text-white hover:bg-[#C49A48] shadow-md"
+                          : "bg-warm-sand dark:bg-[#2A2A2A] text-warm-charcoal dark:text-warm-light-gray hover:bg-warm-light-gray dark:hover:bg-[#333]"
+                      }`}
+                    >
+                      {isTh ? "ติดต่อฝ่ายขาย" : "Contact Sales"}
+                      <ArrowRight size={14} />
+                    </Link>
+                  )}
+                  <Link href={contactHref} className="mt-3 text-center text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
+                    {isTh ? "ขอใบเสนอราคาและนัดคุยกับทีม" : "Request a quote and talk to the team"}
                   </Link>
                 </div>
               </motion.div>
@@ -361,7 +406,7 @@ export default function PricingPage() {
               : "We can tailor solutions to your organization's specific needs — including on-premise deployment, custom SLAs, and dedicated support teams."}
           </p>
           <Link
-            href={lh("/contact")}
+            href={buildContactHref(language, "pricing:rctlabs:sales")}
             className="inline-flex items-center gap-2 bg-warm-amber text-white px-8 py-3.5 rounded-xl text-sm font-semibold hover:bg-[#C49A48] transition-colors shadow-md"
           >
             {isTh ? "พูดคุยกับทีมเรา" : "Talk to Our Team"}

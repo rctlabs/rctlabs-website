@@ -574,5 +574,64 @@
   background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px);
 }
 
-.pixel-glow      { filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor); }
+.pixel-glow { filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor); }
 .dark .pixel-glow { filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px currentColor); }
+
+*:focus-visible {
+  outline: none;
+  transition: box-shadow var(--focus-ring-transition), outline var(--focus-ring-transition);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: var(--focus-ring-width) solid currentColor;
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: 0 0 0 calc(var(--focus-ring-width) + var(--focus-ring-offset)) currentColor,
+              0 0 8px 2px currentColor;
+  transition: box-shadow var(--focus-ring-transition),
+              outline var(--focus-ring-transition),
+              transform var(--focus-ring-transition);
+}
+
+.diagram-svg,
+.diagram-container svg {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+svg { shape-rendering: geometricPrecision; }
+
+.diagram-node,
+.diagram-layer,
+.diagram-step {
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms cubic-bezier(0.4, 0, 0.2, 1), fill 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.diagram-node:not(:hover):not(:focus),
+.diagram-layer:not(:hover):not(:focus),
+.diagram-step:not(:hover):not(:focus) {
+  will-change: auto;
+}
+
+svg text { text-rendering: optimizeLegibility; }
+
+.floating-element {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.smooth-animation {
+  transition-property: transform, opacity;
+  transition-timing-function: var(--rct-ease-out);
+  will-change: transform, opacity;
+}

@@ -13,7 +13,9 @@ import FDIASection from "@/components/sections/fdia-section"
 import MetricsSection from "@/components/sections/metrics-section"
 import EvidenceSection from "@/components/sections/evidence-section"
 import RoadmapSection from "@/components/sections/roadmap-section"
+import ArchitectMascot from "@/components/architect-mascot"
 import SectionPreviewCard from "@/components/section-preview-card"
+import TechTooltip from "@/components/tech-tooltip"
 import OptimizedImage from "@/components/ui/optimized-image"
 
 const PIXEL_STAT_ICONS = [
@@ -82,7 +84,7 @@ export default function HomePage() {
   const { language } = useLanguage()
 
   return (
-    <main className="min-h-screen bg-background">
+    <main id="main-content" className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
 
@@ -100,14 +102,25 @@ export default function HomePage() {
           <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
             <p>
               {language === "en"
-                ? "RCT Ecosystem is the world's first Intent-Centric AI Operating System. It moves beyond prompt engineering by understanding the outcome you are trying to create, then assembling the optimal AI pipeline to produce it."
-                : "RCT Ecosystem คือระบบปฏิบัติการ AI ที่เน้น Intent เป็นแห่งแรกของโลก โดยก้าวข้าม prompt engineering ไปสู่การเข้าใจว่าคุณต้องการสร้างผลลัพธ์แบบใด แล้วประกอบ AI pipeline ที่เหมาะสมที่สุดขึ้นมา"}
+                ? <>
+                    RCT Ecosystem is the world&apos;s first <TechTooltip term="Constitutional AI" language="en">Intent-Centric AI Operating System</TechTooltip>. It moves beyond prompt engineering by understanding the outcome you are trying to create, then assembling the optimal AI pipeline to produce it.
+                  </>
+                : <>
+                    RCT Ecosystem คือระบบปฏิบัติการ AI ที่เน้น Intent เป็นแห่งแรกของโลก โดยก้าวข้าม prompt engineering ไปสู่การเข้าใจว่าคุณต้องการสร้างผลลัพธ์แบบใด แล้วประกอบ AI pipeline ที่เหมาะสมที่สุดขึ้นมา ภายใต้แนวคิด <TechTooltip term="Constitutional AI" language="th">Constitutional AI</TechTooltip>
+                  </>}
             </p>
             <p>
               {language === "en"
-                ? "Built on the FDIA Equation, a 10-Layer cognitive architecture, and 7 interlocking genomes, the system delivers enterprise-grade reliability with verified outputs, persistent memory, and orchestrated intelligence."
-                : "ระบบนี้สร้างบนสมการ FDIA, สถาปัตยกรรมเชิงปัญญา 10 ชั้น และ 7 genomes ที่ทำงานร่วมกัน เพื่อให้ได้ความน่าเชื่อถือระดับองค์กรผ่าน verified outputs, persistent memory และ orchestrated intelligence"}
+                ? <>
+                    Built on the <TechTooltip term="FDIA" language="en">FDIA Equation</TechTooltip>, a 10-Layer cognitive architecture, and <TechTooltip term="7 Genome" language="en">7 interlocking genomes</TechTooltip>, the system delivers enterprise-grade reliability with verified outputs, persistent memory via <TechTooltip term="RCTDB" language="en">RCTDB</TechTooltip>, and orchestrated intelligence through <TechTooltip term="JITNA" language="en">JITNA</TechTooltip>.
+                  </>
+                : <>
+                    ระบบนี้สร้างบนสมการ <TechTooltip term="FDIA" language="th">FDIA</TechTooltip>, สถาปัตยกรรมเชิงปัญญา 10 ชั้น และ <TechTooltip term="7 Genome" language="th">7 genomes</TechTooltip> ที่ทำงานร่วมกัน เพื่อให้ได้ความน่าเชื่อถือระดับองค์กรผ่าน verified outputs, persistent memory ด้วย <TechTooltip term="RCTDB" language="th">RCTDB</TechTooltip> และ orchestrated intelligence ผ่าน <TechTooltip term="JITNA" language="th">JITNA</TechTooltip>
+                  </>}
             </p>
+          </div>
+          <div className="mt-8">
+            <ArchitectMascot className="mx-auto max-w-3xl" />
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {[

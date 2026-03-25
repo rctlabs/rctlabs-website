@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import { getLocaleFromPathname } from "@/lib/i18n"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
 import { FileText, ArrowRight } from "lucide-react"
 import JITNAFlowchart from "@/components/diagrams/jitna-flowchart"
@@ -123,6 +124,11 @@ export default function JITNAPage() {
   const isDark = theme === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: isEn ? "Home" : "หน้าหลัก", url: `https://rctlabs.co/${locale}` },
+    { name: isEn ? "Protocols" : "โปรโตคอล", url: `https://rctlabs.co/${locale}/protocols` },
+    { name: "JITNA RFC-001", url: `https://rctlabs.co/${locale}/protocols/jitna-rfc-001` },
+  ])
 
   const bg = isDark ? "#141414" : "#ffffff"
   const bg2 = isDark ? "#0D0D0D" : "#FAF6F0"
@@ -133,6 +139,7 @@ export default function JITNAPage() {
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">

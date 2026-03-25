@@ -142,6 +142,17 @@ export default function SolutionsPage() {
                 {isTh ? "ดูราคา" : "View Pricing"}
               </Link>
             </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Link href={localHref("/products")} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {isTh ? "ดูผลิตภัณฑ์ที่เกี่ยวข้อง" : "Explore Related Products"}
+              </Link>
+              <Link href={localHref("/whitepaper")} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {isTh ? "อ่าน Whitepaper เชิงเทคนิค" : "Read Technical Whitepapers"}
+              </Link>
+              <Link href={localHref("/architecture")} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {isTh ? "ดูสถาปัตยกรรมทั้งหมด" : "See Full Architecture"}
+              </Link>
+            </div>
           </div>
           <div className="relative rounded-[28px] border border-border bg-card p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
             <div className="pointer-events-none absolute right-5 top-5 h-12 w-12 opacity-60">

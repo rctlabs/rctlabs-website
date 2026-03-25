@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getBreadcrumbSchema, getSoftwareApplicationSchema } from "@/lib/schema"
 import ChangelogClient from "./ChangelogClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -15,5 +16,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ChangelogPage() {
-  return <ChangelogClient />
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "https://rctlabs.co/en" },
+    { name: "Changelog", url: "https://rctlabs.co/en/changelog" },
+  ])
+
+  const softwareSchema = {
+    ...getSoftwareApplicationSchema("en"),
+    releaseNotes: "https://rctlabs.co/en/changelog",
+    softwareHelp: "https://rctlabs.co/en/docs",
+  }
+
+  return (
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
+      <ChangelogClient />
+    </>
+  )
 }
