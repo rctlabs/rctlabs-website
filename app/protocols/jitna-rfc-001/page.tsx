@@ -8,7 +8,6 @@ import { useTheme } from "next-themes"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
 import { FileText, ArrowRight } from "lucide-react"
-import { getBreadcrumbSchema } from "@/lib/schema"
 import JITNAFlowchart from "@/components/diagrams/jitna-flowchart"
 import SectionHeading from "@/components/section-heading"
 import OptimizedImage from "@/components/ui/optimized-image"
@@ -135,11 +134,6 @@ export default function JITNAPage() {
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
-        { name: "Home", url: "https://rctlabs.co" },
-        { name: isEn ? "Protocols" : "Protocols", url: "https://rctlabs.co/protocols" },
-        { name: "JITNA RFC-001", url: "https://rctlabs.co/protocols/jitna-rfc-001" },
-      ])) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 

@@ -8,7 +8,6 @@ import { useTheme } from "next-themes"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
 import { Brain, Eye, Heart, Lightbulb, Shield, Sparkles, Cpu, RefreshCw, ArrowRight } from "lucide-react"
-import { getBreadcrumbSchema } from "@/lib/schema"
 
 const genomes = [
   {
@@ -80,11 +79,6 @@ export default function RCT7MentalModelPage() {
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
-        { name: "Home", url: "https://rctlabs.co" },
-        { name: isEn ? "Protocols" : "Protocols", url: "https://rctlabs.co/protocols" },
-        { name: "RCT-7 Mental Model", url: "https://rctlabs.co/protocols/rct-7-mental-model" },
-      ])) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 

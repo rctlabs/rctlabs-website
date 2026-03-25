@@ -12,22 +12,42 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: "portrait-primary",
     icons: [
       {
-        src: "/icon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
-        purpose: "any",
-      },
-      {
-        src: "/icon-light-32x32.png",
-        sizes: "32x32",
+        src: "/icon-192x192.png",
+        sizes: "192x192",
         type: "image/png",
         purpose: "any",
       },
       {
-        src: "/apple-icon.png",
-        sizes: "180x180",
+        src: "/icon-512x512.png",
+        sizes: "512x512",
         type: "image/png",
         purpose: "any",
+      },
+      {
+        src: "/icon-maskable-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/icon-maskable-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+      },
+    ],
+    screenshots: [
+      {
+        src: "/screenshot-540x720.png",
+        sizes: "540x720",
+        type: "image/png",
+        form_factor: "narrow",
+      },
+      {
+        src: "/screenshot-1280x720.png",
+        sizes: "1280x720",
+        type: "image/png",
+        form_factor: "wide",
       },
     ],
   }

@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -20,10 +21,15 @@ import {
   ExternalLink
 } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "Documentation - RCT Labs",
-  description: "RCT Ecosystem v3.7.0 documentation — Architecture, APIs, RFCs, and deployment guides.",
-}
+export const metadata: Metadata = createBilingualMetadata(
+  "en",
+  "Documentation — RCT Labs Ecosystem v3.7.0",
+  "เอกสารประกอบ — RCT Labs Ecosystem v3.7.0",
+  "RCT Ecosystem documentation — 10-Layer Architecture, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema, and deployment guides for enterprise AI governance.",
+  "เอกสาร RCT Ecosystem — สถาปัตยกรรม 10 ชั้น, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema และคู่มือ Deploy สำหรับ AI Governance ระดับองค์กร",
+  "/docs",
+  ["RCT documentation", "AI architecture docs", "JITNA RFC", "API reference", "deployment guide"]
+)
 
 export default function DocsPage() {
   return (

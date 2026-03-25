@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react"
 import { MDXContent } from "@/components/mdx-content"
-import { getBreadcrumbSchema } from "@/lib/schema"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -82,16 +81,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     }
   }
 
-  const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co" },
-    { name: "Blog", url: "https://rctlabs.co/blog" },
-    { name: post.title, url: `https://rctlabs.co/blog/${slug}` },
-  ])
-
   return (
     <main className="min-h-screen bg-background">
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Navbar />
 
       {/* Article */}
