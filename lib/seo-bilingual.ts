@@ -82,10 +82,23 @@ export const createBilingualMetadata = (
 ): Metadata => {
   const title = locale === "th" ? titleTH : titleEN
   const description = locale === "th" ? descTH : descEN
+  const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION
+  const bingSiteVerification = process.env.BING_SITE_VERIFICATION
   const keywords = [
     ...baseKeywords[locale],
     ...(additionalKeywords || [])
   ]
+
+  const verification = googleSiteVerification || bingSiteVerification
+    ? {
+        google: googleSiteVerification,
+        other: bingSiteVerification
+          ? {
+              "msvalidate.01": bingSiteVerification,
+            }
+          : undefined,
+      }
+    : undefined
 
   return {
     title: `${title} | RCT Labs`,
@@ -135,9 +148,7 @@ export const createBilingualMetadata = (
         "max-snippet": -1,
       }
     },
-    verification: {
-      google: "your-google-verification-code",
-    }
+    verification,
   }
 }
 

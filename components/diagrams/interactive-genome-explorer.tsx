@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useMemo, useState } from "react"
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { ChevronRight } from "lucide-react"
 import { useTheme } from "next-themes"
 
@@ -47,43 +47,37 @@ const genomesData: Record<"en" | "th", GenomeItem[]> = {
 export default function InteractiveGenomeExplorer({ language = "en" }: { language?: "en" | "th" }) {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
+  const prefersReducedMotion = useReducedMotion()
   const genomes = useMemo(() => genomesData[language], [language])
   const [activeGenome, setActiveGenome] = useState<string>(genomes[0].id)
   const [focusedIndex, setFocusedIndex] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
   const activeData = genomes.find((genome) => genome.id === activeGenome) ?? genomes[0]
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!containerRef.current?.contains(document.activeElement)) return
-      switch (event.key) {
-        case "ArrowRight":
-        case "ArrowDown":
-          event.preventDefault()
-          setFocusedIndex((prev) => (prev + 1) % genomes.length)
-          break
-        case "ArrowLeft":
-        case "ArrowUp":
-          event.preventDefault()
-          setFocusedIndex((prev) => (prev - 1 + genomes.length) % genomes.length)
-          break
-        case "Enter":
-        case " ":
-          event.preventDefault()
-          setActiveGenome(genomes[focusedIndex].id)
-          break
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [focusedIndex, genomes])
 
   return (
     <div
-      ref={containerRef}
+      onKeyDown={(event) => {
+        switch (event.key) {
+          case "ArrowRight":
+          case "ArrowDown":
+            event.preventDefault()
+            setFocusedIndex((prev) => (prev + 1) % genomes.length)
+            break
+          case "ArrowLeft":
+          case "ArrowUp":
+            event.preventDefault()
+            setFocusedIndex((prev) => (prev - 1 + genomes.length) % genomes.length)
+            break
+          case "Enter":
+          case " ":
+            event.preventDefault()
+            setActiveGenome(genomes[focusedIndex].id)
+            break
+        }
+      }}
       className={`rounded-2xl border p-4 sm:p-5 ${isDark ? "bg-warm-charcoal border-border" : "bg-white border-warm-light-gray shadow-[0_8px_30px_rgba(0,0,0,0.06)]"}`}
       role="application"
       aria-label="Interactive genome explorer"
+      tabIndex={0}
     >
       <div className="mb-4 text-center">
         <h3 className={`text-sm font-semibold uppercase tracking-wider ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
@@ -106,9 +100,9 @@ export default function InteractiveGenomeExplorer({ language = "en" }: { languag
                 setFocusedIndex(index)
               }}
               onFocus={() => setFocusedIndex(index)}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className={`min-w-[92px] rounded-xl border px-3 py-3 text-center transition-all duration-300 ${
+              whileHover={prefersReducedMotion ? undefined : { y: -2 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+              className={`min-w-23 rounded-xl border px-3 py-3 text-center transition-all duration-300 ${
                 isActive
                   ? "shadow-md"
                   : isDark
@@ -132,10 +126,10 @@ export default function InteractiveGenomeExplorer({ language = "en" }: { languag
       <AnimatePresence mode="wait">
         <motion.div
           key={activeData.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.25 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+          animate={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          exit={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+          transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.2 }}
           className="rounded-2xl border p-4 sm:p-5"
           style={{ borderColor: `${activeData.color}45`, backgroundColor: isDark ? "rgba(255,255,255,0.02)" : `${activeData.color}08` }}
         >

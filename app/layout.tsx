@@ -1,11 +1,25 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
-import { FloatingAI } from "@/components/floating-ai"
 import { AppProviders } from "@/components/app-providers"
 import { Toaster } from "sonner"
+
+const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION
+const bingSiteVerification = process.env.BING_SITE_VERIFICATION
+
+const verification = googleSiteVerification || bingSiteVerification
+  ? {
+      google: googleSiteVerification,
+      other: bingSiteVerification
+        ? {
+            "msvalidate.01": bingSiteVerification,
+          }
+        : undefined,
+    }
+  : undefined
 
 /* Display: Space Grotesk (headings) */
 const spaceGrotesk = Space_Grotesk({
@@ -116,6 +130,7 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  verification,
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon-dark-32x32.png",
@@ -142,11 +157,6 @@ export default async function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="color-scheme" content="light dark" />
-        <link rel="canonical" href={`https://rctlabs.co/${locale}`} />
-        {/* Hreflang tags for bilingual SEO */}
-        <link rel="alternate" hrefLang="en" href="https://rctlabs.co/en" />
-        <link rel="alternate" hrefLang="th" href="https://rctlabs.co/th" />
-        <link rel="alternate" hrefLang="x-default" href="https://rctlabs.co/en" />
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -168,7 +178,7 @@ export default async function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded">Skip to content</a>
         <AppProviders initialLocale={locale as "en" | "th"}>
           {children}
-          <FloatingAI />
+          <Analytics />
           <Toaster richColors position="bottom-right" />
         </AppProviders>
       </body>

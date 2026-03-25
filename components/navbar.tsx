@@ -15,7 +15,6 @@ import { useTheme } from "next-themes"
 import Image from "next/image"
 import SearchModal, { useSearchModal } from "@/components/search/search-modal"
 import { UserProfileMenu } from "@/components/user-profile-menu"
-import { NotificationBell } from "@/components/notification-bell"
 import { KeyboardShortcutsDialog } from "@/components/keyboard-shortcuts-dialog"
 import { useMounted } from "@/hooks/use-mounted"
 
@@ -137,14 +136,35 @@ export function Navbar() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [expandedGroups, setExpandedGroups] = useState<string[]>(["solutions"])
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const scrollFrameRef = useRef<number | null>(null)
+  const lastScrolledRef = useRef(false)
   const { isOpen: searchOpen, open: openSearch, close: closeSearch } = useSearchModal()
 
   const isDark = (mounted ? theme : "light") === "dark"
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const updateScrolled = () => {
+      const nextScrolled = window.scrollY > 20
+      if (nextScrolled !== lastScrolledRef.current) {
+        lastScrolledRef.current = nextScrolled
+        setScrolled(nextScrolled)
+      }
+      scrollFrameRef.current = null
+    }
+
+    const onScroll = () => {
+      if (scrollFrameRef.current !== null) return
+      scrollFrameRef.current = window.requestAnimationFrame(updateScrolled)
+    }
+
+    updateScrolled()
     window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
+    return () => {
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current)
+      }
+      window.removeEventListener("scroll", onScroll)
+    }
   }, [])
 
   useEffect(() => {
@@ -203,11 +223,11 @@ export function Navbar() {
   return (
     <header role="banner">
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ${
           scrolled
             ? isDark
-              ? "bg-warm-charcoal/95 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.3)] border-b border-[#333]"
-              : "bg-white/92 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b border-warm-light-gray/60"
+              ? "bg-warm-charcoal/94 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.22)] border-b border-[#333]"
+              : "bg-white/90 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b border-warm-light-gray/60"
             : isOnDarkHero
               ? "bg-linear-to-b from-black/30 to-transparent"
               : "bg-transparent"
@@ -372,7 +392,6 @@ export function Navbar() {
 
               {/* Notification + Auth */}
               <div className="hidden md:flex items-center gap-2">
-                <NotificationBell />
                 <UserProfileMenu />
               </div>
 

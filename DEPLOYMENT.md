@@ -55,6 +55,15 @@ Required environment variables:
 NEXT_PUBLIC_API_URL=http://localhost:8003    # L3 API URL (development)
 NEXT_PUBLIC_SITE_URL=http://localhost:3010   # Frontend URL
 
+# Search verification (set only when ready)
+GOOGLE_SITE_VERIFICATION=...                 # Google Search Console HTML meta code
+BING_SITE_VERIFICATION=...                   # Bing Webmaster Tools msvalidate.01 code
+
+# Hosted checkout links (optional per tier)
+NEXT_PUBLIC_STRIPE_LINK_RCTLABS=...
+NEXT_PUBLIC_STRIPE_LINK_ARTENT_AI=...
+NEXT_PUBLIC_STRIPE_LINK_SIGNED_AI=...
+
 # Production values
 # NEXT_PUBLIC_API_URL=https://api.rctlabs.co  # Production L3 API
 # NEXT_PUBLIC_SITE_URL=https://rctlabs.co     # Production frontend
@@ -78,6 +87,34 @@ Current optimizations:
 - Preload critical resources
 - DNS prefetch control
 - Security headers enabled
+
+## Launch-Day Checklist
+
+### External Dashboard Checks
+- [ ] Vercel deployment is green on the production domain
+- [ ] Domain DNS resolves correctly for `rctlabs.co` and `www` (if used)
+- [ ] Google Search Console verification code is added in Vercel env and visible in page source
+- [ ] Bing Webmaster Tools verification code is added in Vercel env and visible in page source
+- [ ] Submit `https://rctlabs.co/sitemap.xml` to GSC and Bing
+- [ ] Confirm Vercel Analytics is receiving production pageview data
+
+### Trust / UX Checks
+- [ ] Navbar does not imply working user login before auth launch
+- [ ] Public pages do not expose placeholder notifications or fake account states
+- [ ] Contact CTAs route to real contact / access-request flows
+
+### Funnel QA
+- [ ] Pricing tier without hosted checkout falls back to contact flow with the correct context
+- [ ] Pricing tier with hosted checkout opens the intended Stripe Payment Link
+- [ ] Whitepaper form submits successfully to `/api/newsletter`
+- [ ] Contact form submits successfully to `/api/contact`
+- [ ] EN and TH routes preserve the intended funnel context and prefilled copy
+
+### Metadata / OG Checks
+- [ ] `https://rctlabs.co/opengraph-image` returns a valid image response
+- [ ] Homepage source contains canonical + hreflang tags for `/en` and `/th`
+- [ ] Open Graph title, description, and image are correct on the deployed site
+- [ ] Share preview is tested in at least one validator or messaging surface before announcement
 - Gzip compression enabled by default
 
 ## Monitoring

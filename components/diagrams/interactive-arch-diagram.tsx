@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react"
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import {
   ChevronDown,
   Server,
@@ -69,44 +69,38 @@ const colorMap: Record<number, { color: string; bg: string; darkBg: string }> = 
 export default function InteractiveArchDiagram({ language = "en" }: { language?: "en" | "th" }) {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
+  const prefersReducedMotion = useReducedMotion()
   const layers = layersData[language]
   const [expandedLayer, setExpandedLayer] = useState<number | null>(7)
   const [focusedIndex, setFocusedIndex] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!containerRef.current?.contains(document.activeElement)) return
-      switch (event.key) {
-        case "ArrowDown":
-          event.preventDefault()
-          setFocusedIndex((prev) => Math.min(prev + 1, layers.length - 1))
-          break
-        case "ArrowUp":
-          event.preventDefault()
-          setFocusedIndex((prev) => Math.max(prev - 1, 0))
-          break
-        case "Enter":
-        case " ":
-          event.preventDefault()
-          setExpandedLayer((prev) => (prev === layers[focusedIndex].id ? null : layers[focusedIndex].id))
-          break
-        case "Escape":
-          event.preventDefault()
-          setExpandedLayer(null)
-          break
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [focusedIndex, layers])
 
   return (
     <div
-      ref={containerRef}
+      onKeyDown={(event) => {
+        switch (event.key) {
+          case "ArrowDown":
+            event.preventDefault()
+            setFocusedIndex((prev) => Math.min(prev + 1, layers.length - 1))
+            break
+          case "ArrowUp":
+            event.preventDefault()
+            setFocusedIndex((prev) => Math.max(prev - 1, 0))
+            break
+          case "Enter":
+          case " ":
+            event.preventDefault()
+            setExpandedLayer((prev) => (prev === layers[focusedIndex].id ? null : layers[focusedIndex].id))
+            break
+          case "Escape":
+            event.preventDefault()
+            setExpandedLayer(null)
+            break
+        }
+      }}
       className={`rounded-2xl border p-4 sm:p-5 ${isDark ? "bg-warm-charcoal border-border" : "bg-white border-warm-light-gray shadow-[0_8px_30px_rgba(0,0,0,0.06)]"}`}
       role="application"
       aria-label="Interactive 10-layer architecture explorer"
+      tabIndex={0}
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div>
@@ -132,10 +126,10 @@ export default function InteractiveArchDiagram({ language = "en" }: { language?:
           return (
             <motion.div
               key={layer.id}
-              initial={{ opacity: 0, x: -16 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, x: -10 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-20px" }}
-              transition={{ duration: 0.3, delay: index * 0.04 }}
+              transition={prefersReducedMotion ? undefined : { duration: 0.2, delay: index * 0.015 }}
             >
               <button
                 type="button"
@@ -176,10 +170,10 @@ export default function InteractiveArchDiagram({ language = "en" }: { language?:
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
+                      initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
+                      animate={prefersReducedMotion ? { height: "auto", opacity: 1 } : { height: "auto", opacity: 1 }}
+                      exit={prefersReducedMotion ? { height: 0, opacity: 1 } : { height: 0, opacity: 0 }}
+                      transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.2 }}
                       className="overflow-hidden"
                     >
                       <div className="border-t border-white/20 px-3.5 pb-3.5 pt-2.5">

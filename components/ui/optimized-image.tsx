@@ -2,6 +2,35 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from "react"
 
+const imageObserverCallbacks = new WeakMap<Element, () => void>()
+let sharedImageObserver: IntersectionObserver | null = null
+
+function getSharedImageObserver() {
+  if (typeof window === "undefined") {
+    return null
+  }
+
+  if (!sharedImageObserver) {
+    sharedImageObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+
+          const callback = imageObserverCallbacks.get(entry.target)
+          if (callback) {
+            callback()
+            imageObserverCallbacks.delete(entry.target)
+          }
+          sharedImageObserver?.unobserve(entry.target)
+        })
+      },
+      { rootMargin: "200px 0px", threshold: 0.01 }
+    )
+  }
+
+  return sharedImageObserver
+}
+
 interface OptimizedImageProps {
   src: string
   fallbackSrc?: string
@@ -67,18 +96,16 @@ const OptimizedImage = memo(function OptimizedImage({
     const element = imgRef.current
     if (!element) return
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true)
-          observer.disconnect()
-        }
-      },
-      { rootMargin: "200px 0px", threshold: 0.01 }
-    )
+    const observer = getSharedImageObserver()
+    if (!observer) return
 
+    imageObserverCallbacks.set(element, () => setIsInView(true))
     observer.observe(element)
-    return () => observer.disconnect()
+
+    return () => {
+      imageObserverCallbacks.delete(element)
+      observer.unobserve(element)
+    }
   }, [priority, isInView])
 
   const handleLoad = useCallback(() => {
@@ -133,6 +160,7 @@ const OptimizedImage = memo(function OptimizedImage({
             alt={alt}
             width={width}
             height={height}
+            fetchPriority={priority ? "high" : "auto"}
             loading={priority ? "eager" : "lazy"}
             decoding="async"
             sizes={sizes}

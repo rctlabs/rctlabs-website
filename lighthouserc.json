@@ -1,0 +1,23 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "npm run start:host",
+      "startServerReadyPattern": "Ready",
+      "startServerReadyTimeout": 120000,
+      "numberOfRuns": 2,
+      "url": [
+        "http://127.0.0.1:3010/en",
+        "http://127.0.0.1:3010/th",
+        "http://127.0.0.1:3010/architecture",
+        "http://127.0.0.1:3010/case-studies/stardew-valley"
+      ],
+      "settings": {
+        "preset": "desktop",
+        "chromeFlags": "--headless=new --no-sandbox"
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
