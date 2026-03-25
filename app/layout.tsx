@@ -117,9 +117,9 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: "/icon.svg",
+    shortcut: "/icon-dark-32x32.png",
+    apple: "/apple-icon.png",
   },
   manifest: "/site.webmanifest",
     generator: 'v0.app'

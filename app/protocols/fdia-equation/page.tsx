@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import { getLocaleFromPathname } from "@/lib/i18n"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
 import { Compass, Database, Target, User, ArrowRight, FlaskConical } from "lucide-react"
 
@@ -115,9 +116,25 @@ export default function FDIAEquationPage() {
   const isDark = theme === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: isEn ? "Home" : "หน้าหลัก", url: `https://rctlabs.co/${locale}` },
+    { name: isEn ? "Protocols" : "โปรโตคอล", url: `https://rctlabs.co/${locale}/protocols` },
+    { name: isEn ? "FDIA Equation" : "สมการ FDIA", url: `https://rctlabs.co/${locale}/protocols/fdia-equation` },
+  ])
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: "FDIA Equation — Intent-Centric AI Decision Model",
+    description:
+      "F = (D^I) × A — the mathematical foundation for intent-centric AI where Future emerges from Data amplified by Intent and governed by the Architect.",
+    author: { "@type": "Organization", name: "RCT Ecosystem" },
+  }
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 

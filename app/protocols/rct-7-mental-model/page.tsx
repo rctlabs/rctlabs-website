@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import { getLocaleFromPathname } from "@/lib/i18n"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
 import { Brain, Eye, Heart, Lightbulb, Shield, Sparkles, Cpu, RefreshCw, ArrowRight } from "lucide-react"
 
@@ -68,6 +69,11 @@ export default function RCT7MentalModelPage() {
   const isDark = theme === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: isEn ? "Home" : "หน้าหลัก", url: `https://rctlabs.co/${locale}` },
+    { name: isEn ? "Protocols" : "โปรโตคอล", url: `https://rctlabs.co/${locale}/protocols` },
+    { name: "RCT-7 Mental Model", url: `https://rctlabs.co/${locale}/protocols/rct-7-mental-model` },
+  ])
 
   const bg = isDark ? "#141414" : "#ffffff"
   const bg2 = isDark ? "#1A1A1A" : "#FAF6F0"
@@ -78,6 +84,7 @@ export default function RCT7MentalModelPage() {
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">

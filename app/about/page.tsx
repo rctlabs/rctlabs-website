@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { createBilingualMetadata, type Locale } from "@/lib/seo-bilingual"
+import { getBreadcrumbSchema, getOrganizationSchema } from "@/lib/schema"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -44,23 +45,14 @@ export default async function AboutPage() {
       "url": "https://rctlabs.co"
     }
   }
-
-  const orgSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "RCT Labs",
-    "url": "https://rctlabs.co",
-    "logo": "https://rctlabs.co/logo.png",
-    "founder": "Ittirit Saengow",
-    "description": "Constitutional AI Operating System with 41 algorithms, 7 Genomes, and 0.3% hallucination rate, founded in Bangkok, Thailand.",
-    "sameAs": [
-      "https://github.com/rct-ecosystem",
-      "https://www.linkedin.com/company/rct-labs/"
-    ]
-  }
   const headersList = await headers()
   const locale = (headersList.get("x-locale") || "en") as Locale
   const isTh = locale === "th"
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: isTh ? "หน้าหลัก" : "Home", url: `https://rctlabs.co/${locale}` },
+    { name: isTh ? "เกี่ยวกับ" : "About", url: `https://rctlabs.co/${locale}/about` },
+  ])
+  const orgSchema = getOrganizationSchema(locale)
 
   const journeyPhases = [
     {
@@ -160,6 +152,7 @@ export default async function AboutPage() {
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
       <main className="min-h-screen bg-background" id="main-content">

@@ -157,6 +157,15 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
+  useEffect(() => {
+    const handleOpenSearch = () => {
+      openSearch()
+    }
+
+    window.addEventListener("rct-open-search", handleOpenSearch as EventListener)
+    return () => window.removeEventListener("rct-open-search", handleOpenSearch as EventListener)
+  }, [openSearch])
+
   // Close menus on route change
   useEffect(() => {
     setMobileOpen(false)

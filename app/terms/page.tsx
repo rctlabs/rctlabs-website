@@ -1,12 +1,19 @@
+import { Metadata } from "next"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-export const metadata = {
-  title: "Terms of Service - RCT Labs",
-  description: "Terms of Service for RCT Labs website and services",
-}
+export const metadata: Metadata = createBilingualMetadata(
+  "en",
+  "Terms of Service — RCT Labs",
+  "ข้อกำหนดการให้บริการ — RCT Labs",
+  "Terms of Service for RCT Labs website and services. Open-source components under Apache 2.0.",
+  "ข้อกำหนดการให้บริการของ RCT Labs เว็บไซต์และบริการ ส่วนประกอบ Open-source ภายใต้ Apache 2.0",
+  "/terms",
+  ["terms of service", "RCT Labs terms", "Apache 2.0", "open source license"]
+)
 
 export default function TermsPage() {
   const sections = [
@@ -56,9 +63,14 @@ export default function TermsPage() {
         "We reserve the right to modify these terms at any time. Continued use of the website following any such modifications constitutes your acceptance of the new terms.",
     },
     {
-      title: "10. Governing Law",
+      title: "10. Open-Source Components",
       content:
-        "These terms and conditions are governed by the laws of California, and you irrevocably submit to the jurisdiction of the courts located there.",
+        "The JITNA Protocol and core 41 algorithms are licensed under Apache 2.0. Enterprise features and managed services are subject to separate commercial licensing terms. See our pricing page for details.",
+    },
+    {
+      title: "11. Governing Law",
+      content:
+        "These terms and conditions are governed by the laws of the Kingdom of Thailand, and you irrevocably submit to the jurisdiction of the courts in Bangkok, Thailand.",
     },
   ]
 

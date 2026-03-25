@@ -126,6 +126,17 @@ export default function ProductsPage() {
                 {isTh ? "ดูแผนราคา" : "Explore Pricing"}
               </Link>
             </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Link href={localHref("/solutions")} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {isTh ? "เริ่มจากปัญหาที่ต้องการแก้" : "Start from Your Use Case"}
+              </Link>
+              <Link href={localHref("/whitepaper")} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {isTh ? "อ่าน Whitepaper" : "Read the Whitepaper"}
+              </Link>
+              <Link href={localHref("/architecture")} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+                {isTh ? "ดูสถาปัตยกรรมเบื้องหลัง" : "See the Architecture"}
+              </Link>
+            </div>
           </div>
           <div className="relative rounded-[28px] border border-border bg-card p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
             <div className="pointer-events-none absolute right-5 top-5 h-12 w-12 opacity-60">
@@ -256,6 +267,24 @@ export default function ProductsPage() {
             </Link>
             <Link href={localHref("/docs")} className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border hover:bg-muted text-foreground font-medium text-sm transition-colors">
               {isTh ? "อ่านเอกสาร" : "View Documentation"}
+            </Link>
+          </div>
+        </div>
+        <div className="mt-10 rounded-2xl border border-border bg-card p-6 sm:p-8">
+          <h2 className="text-2xl font-bold text-foreground">
+            {isTh ? "ถ้าไม่แน่ใจว่าจะเริ่มจากตัวไหน" : "If you are unsure where to start"}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            {isTh
+              ? "เลือก RCTLabs หากคุณต้องการ platform สำหรับทดสอบและ benchmark AI เลือก Artent AI หากโจทย์หลักคือ creative workflow และเลือก SignedAI หากคุณต้องการ verification, audit trail และการลด hallucination ในงานที่มีความเสี่ยงสูง"
+              : "Choose RCTLabs if you need a platform for testing and benchmarking AI systems. Choose Artent AI if your main challenge is creative workflow execution. Choose SignedAI if you need verification, audit trails, and hallucination reduction for high-risk AI outputs."}
+          </p>
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <Link href={localHref("/pricing")} className="inline-flex items-center justify-center rounded-xl bg-warm-amber px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#C49A48]">
+              {isTh ? "เปรียบเทียบแผนราคา" : "Compare Pricing Plans"}
+            </Link>
+            <Link href={localHref("/contact")} className="inline-flex items-center justify-center rounded-xl border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted">
+              {isTh ? "คุยกับทีมเพื่อเลือกผลิตภัณฑ์" : "Talk to the Team"}
             </Link>
           </div>
         </div>

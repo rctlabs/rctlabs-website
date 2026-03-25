@@ -1,6 +1,28 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getSupabaseAdmin } from "@/lib/supabase"
 
+interface ContactInsertPayload {
+  name: string
+  email: string
+  subject: string
+  message: string
+  locale: string
+  context: string
+  submitted_at: string
+}
+
+interface ContactInsertResult {
+  error: { message: string } | null
+}
+
+interface ContactsTableClient {
+  insert: (payload: ContactInsertPayload) => Promise<ContactInsertResult>
+}
+
+interface ContactSupabaseClient {
+  from: (table: "contacts") => ContactsTableClient
+}
+
 const validateContactForm = (data: Record<string, unknown>) => {
   const errors: Record<string, string> = {}
 
@@ -31,17 +53,17 @@ export async function POST(request: NextRequest) {
     const { name, email, subject, message, locale = "en", context = "contact" } = body
 
     try {
-      const supabase = getSupabaseAdmin()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error } = await (supabase as any).from("contacts").insert({
+      const supabase = getSupabaseAdmin() as unknown as ContactSupabaseClient
+      const payload: ContactInsertPayload = {
         name: String(name).trim(),
         email: String(email).trim().toLowerCase(),
         subject: String(subject).trim(),
         message: String(message).trim(),
-        locale,
-        context,
+        locale: String(locale),
+        context: String(context),
         submitted_at: new Date().toISOString(),
-      })
+      }
+      const { error } = await supabase.from("contacts").insert(payload)
       if (error) {
         console.error("Supabase contact insert error:", error.message)
       }

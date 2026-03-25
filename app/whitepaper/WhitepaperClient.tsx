@@ -2,7 +2,9 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import WhitepaperAccessForm from "@/components/whitepaper-access-form"
 import { useLanguage } from "@/components/language-provider"
+import { buildContactHref } from "@/lib/funnel"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { FileText, ArrowRight, Tag, Clock, History } from "lucide-react"
@@ -87,6 +89,7 @@ const versionHistory = [
 export default function WhitepaperPage() {
   const { language } = useLanguage()
   const isTh = language === "th"
+  const localePrefix = isTh ? "/th" : "/en"
 
   return (
     <>
@@ -101,6 +104,20 @@ export default function WhitepaperPage() {
               ? "เอกสารไวท์เปเปอร์เชิงเทคนิคของ RCT ครอบคลุมสถาปัตยกรรม โปรโตคอล FDIA และโมเดลความคิด RCT-7"
               : "In-depth technical whitepapers covering the RCT Ecosystem architecture, JITNA protocol, SignedAI verification, and RCT-7 cognitive framework."}
           </motion.p>
+          <div className="mb-10 grid gap-3 sm:grid-cols-3">
+            <Link href={`${localePrefix}/architecture`} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+              {isTh ? "ดูสถาปัตยกรรม 10 ชั้น" : "Explore 10-Layer Architecture"}
+            </Link>
+            <Link href={`${localePrefix}/protocols/jitna-rfc-001`} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+              {isTh ? "อ่าน JITNA RFC-001" : "Read JITNA RFC-001"}
+            </Link>
+            <Link href={buildContactHref(language, "whitepaper:evaluation-pack:request")} className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
+              {isTh ? "ขอเอกสารเพิ่มเติม" : "Request More Materials"}
+            </Link>
+          </div>
+
+          <WhitepaperAccessForm language={language} />
+
           <div className="space-y-6 mb-12">
             {whitepapers.map((paper, i) => (
               <motion.div key={paper.id} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>

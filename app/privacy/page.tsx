@@ -1,12 +1,19 @@
+import { Metadata } from "next"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-export const metadata = {
-  title: "Privacy Policy - RCT Labs",
-  description: "Privacy policy for RCT Labs website and services",
-}
+export const metadata: Metadata = createBilingualMetadata(
+  "en",
+  "Privacy Policy — RCT Labs",
+  "นโยบายความเป็นส่วนตัว — RCT Labs",
+  "Privacy policy for RCT Labs website and services. PDPA-compliant data handling for Thailand and international users.",
+  "นโยบายความเป็นส่วนตัวของ RCT Labs เว็บไซต์และบริการ สอดคล้องกับ PDPA สำหรับผู้ใช้ในประเทศไทยและต่างประเทศ",
+  "/privacy",
+  ["privacy policy", "PDPA", "data protection", "RCT Labs privacy"]
+)
 
 export default function PrivacyPage() {
   const sections = [
@@ -51,8 +58,13 @@ export default function PrivacyPage() {
         "We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on our website and updating the effective date below.",
     },
     {
-      title: "9. Contact Us",
-      content: "If you have questions or concerns about this Privacy Policy, please contact us at hello@rctlabs.co",
+      title: "9. PDPA Compliance (Thailand)",
+      content:
+        "For users in Thailand, RCT Labs complies with the Personal Data Protection Act (PDPA) B.E. 2562 (2019). We collect and process personal data only with your consent or when permitted by law. You have the right to access, rectify, erase, restrict processing, and port your data. To exercise these rights, contact our Data Protection Officer at privacy@rctlabs.co.",
+    },
+    {
+      title: "10. Contact Us",
+      content: "If you have questions or concerns about this Privacy Policy, please contact us at hello@rctlabs.co or privacy@rctlabs.co.",
     },
   ]
 

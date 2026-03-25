@@ -1,86 +1,38 @@
 "use client"
 
-import type React from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import ContactForm from "@/components/contact-form"
+import { useLanguage } from "@/components/language-provider"
+import { buildContactHref, getFunnelIntent } from "@/lib/funnel"
 import Link from "next/link"
-import { useState } from "react"
-import { Mail, MessageSquare, MapPin, AlertCircle, CheckCircle } from "lucide-react"
-
-interface FormErrors {
-  name?: string
-  email?: string
-  subject?: string
-  message?: string
-}
+import { Mail, MessageSquare, MapPin } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 
 export default function ContactPageClient() {
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [serverError, setServerError] = useState("")
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setErrors({})
-    setServerError("")
-    setLoading(true)
-
-    const formData = new FormData(e.currentTarget)
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      subject: formData.get("subject"),
-      message: formData.get("message"),
-    }
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-
-      const result = await response.json()
-
-      if (!response.ok) {
-        if (result.errors) {
-          setErrors(result.errors)
-        } else {
-          setServerError(result.message || "An error occurred. Please try again.")
-        }
-      } else {
-        setSubmitted(true)
-        e.currentTarget.reset()
-      }
-    } catch (error) {
-      setServerError("Failed to send message. Please try again.")
-      console.error("Form submission error:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { language } = useLanguage()
+  const isTh = language === "th"
+  const searchParams = useSearchParams()
+  const contextKey = searchParams.get("context")
+  const funnelIntent = getFunnelIntent(language, contextKey)
 
   const contactInfo = [
     {
       icon: Mail,
-      label: "Email",
+      label: isTh ? "อีเมล" : "Email",
       value: "hello@rctlabs.co",
       href: "mailto:hello@rctlabs.co",
     },
     {
       icon: MapPin,
-      label: "Location",
-      value: "San Francisco, CA",
+      label: isTh ? "ที่ตั้ง" : "Location",
+      value: isTh ? "Bangkok, Thailand" : "Bangkok, Thailand",
       href: "#",
     },
     {
       icon: MessageSquare,
-      label: "Discord",
-      value: "Join Community",
+      label: isTh ? "คอมมูนิตี้" : "Discord",
+      value: isTh ? "เข้าร่วมคอมมูนิตี้" : "Join Community",
       href: "https://discord.gg/rctlabs",
     },
   ]
@@ -92,10 +44,20 @@ export default function ContactPageClient() {
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
         <div className="space-y-6 text-center max-w-3xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground text-balance leading-tight">Get in Touch</h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-foreground text-balance leading-tight">
+            {isTh ? "ติดต่อเรา" : "Get in Touch"}
+          </h1>
           <p className="text-xl md:text-2xl text-muted-foreground">
-            Have questions about RCT Labs? Want to collaborate? We'd love to hear from you.
+            {isTh
+              ? "มีคำถามเกี่ยวกับ RCT Labs หรืออยากร่วมงานกับเรา? เรายินดีพูดคุยกับคุณ"
+              : "Have questions about RCT Labs? Want to collaborate? We'd love to hear from you."}
           </p>
+          {funnelIntent ? (
+            <div className="mx-auto max-w-2xl rounded-2xl border border-warm-amber/30 bg-warm-amber/10 px-5 py-4 text-left">
+              <div className="text-sm font-semibold text-foreground">{funnelIntent.title}</div>
+              <p className="mt-1 text-sm text-muted-foreground">{funnelIntent.description}</p>
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -121,121 +83,14 @@ export default function ContactPageClient() {
 
         {/* Form */}
         <div className="md:col-span-2">
-          {submitted ? (
-            <div className="text-center space-y-6 py-12">
-              <div className="flex justify-center">
-                <CheckCircle className="w-16 h-16 text-accent" />
-              </div>
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold text-foreground">Thank You!</h2>
-                <p className="text-lg text-muted-foreground">
-                  We've received your message and will get back to you soon.
-                </p>
-              </div>
-              <Button variant="outline" asChild onClick={() => setSubmitted(false)}>
-                <button>Send Another Message</button>
-              </Button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6 bg-card p-8 rounded-lg border border-border">
-              {serverError && (
-                <div className="flex gap-3 p-4 bg-destructive/10 border border-destructive/30 rounded-lg">
-                  <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-destructive">{serverError}</p>
-                </div>
-              )}
-
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                  Name
-                </label>
-                <Input
-                  id="name"
-                  name="name"
-                  required
-                  placeholder="Your name"
-                  className={errors.name ? "border-destructive" : ""}
-                  aria-invalid={!!errors.name}
-                  aria-describedby={errors.name ? "name-error" : undefined}
-                />
-                {errors.name && (
-                  <p id="name-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4" />
-                    {errors.name}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                  className={errors.email ? "border-destructive" : ""}
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                />
-                {errors.email && (
-                  <p id="email-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4" />
-                    {errors.email}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
-                  Subject
-                </label>
-                <Input
-                  id="subject"
-                  name="subject"
-                  required
-                  placeholder="What is this about?"
-                  className={errors.subject ? "border-destructive" : ""}
-                  aria-invalid={!!errors.subject}
-                  aria-describedby={errors.subject ? "subject-error" : undefined}
-                />
-                {errors.subject && (
-                  <p id="subject-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4" />
-                    {errors.subject}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                  Message
-                </label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  required
-                  placeholder="Tell us more..."
-                  rows={6}
-                  className={errors.message ? "border-destructive" : ""}
-                  aria-invalid={!!errors.message}
-                  aria-describedby={errors.message ? "message-error" : undefined}
-                />
-                {errors.message && (
-                  <p id="message-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4" />
-                    {errors.message}
-                  </p>
-                )}
-              </div>
-
-              <Button type="submit" size="lg" disabled={loading} className="w-full">
-                {loading ? "Sending..." : "Send Message"}
-              </Button>
-            </form>
-          )}
+          <ContactForm
+            language={language}
+            initialContext={funnelIntent?.context ?? "contact"}
+            initialValues={{
+              subject: funnelIntent?.subject ?? "",
+              message: funnelIntent?.message ?? "",
+            }}
+          />
         </div>
       </section>
 
@@ -243,22 +98,22 @@ export default function ContactPageClient() {
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center space-y-4">
-            <h3 className="text-xl font-semibold text-foreground">General Inquiries</h3>
-            <p className="text-muted-foreground">For general questions and information about RCT Labs</p>
+            <h3 className="text-xl font-semibold text-foreground">{isTh ? "สอบถามทั่วไป" : "General Inquiries"}</h3>
+            <p className="text-muted-foreground">{isTh ? "สำหรับคำถามทั่วไปและข้อมูลเกี่ยวกับ RCT Labs" : "For general questions and information about RCT Labs"}</p>
             <p className="text-sm font-medium text-accent">hello@rctlabs.co</p>
           </div>
           <div className="text-center space-y-4">
-            <h3 className="text-xl font-semibold text-foreground">Partnership</h3>
-            <p className="text-muted-foreground">Interested in collaborating or partnering with us</p>
-            <Link href="/company/partners" className="text-sm font-medium text-accent hover:underline">
-              Learn More →
+            <h3 className="text-xl font-semibold text-foreground">{isTh ? "พาร์ตเนอร์" : "Partnership"}</h3>
+            <p className="text-muted-foreground">{isTh ? "สนใจร่วมงานหรือเป็นพาร์ตเนอร์กับเรา" : "Interested in collaborating or partnering with us"}</p>
+            <Link href={buildContactHref(language, "pricing:rctlabs:sales")} className="text-sm font-medium text-accent hover:underline">
+              {isTh ? "ดูรายละเอียด →" : "Learn More →"}
             </Link>
           </div>
           <div className="text-center space-y-4">
-            <h3 className="text-xl font-semibold text-foreground">Careers</h3>
-            <p className="text-muted-foreground">Join our team and help shape the future of AI</p>
+            <h3 className="text-xl font-semibold text-foreground">{isTh ? "ร่วมงานกับเรา" : "Careers"}</h3>
+            <p className="text-muted-foreground">{isTh ? "ร่วมเป็นส่วนหนึ่งของทีมที่กำลังสร้างอนาคตของ AI" : "Join our team and help shape the future of AI"}</p>
             <Link href="/company/careers" className="text-sm font-medium text-accent hover:underline">
-              View Openings →
+              {isTh ? "ดูตำแหน่งงาน →" : "View Openings →"}
             </Link>
           </div>
         </div>

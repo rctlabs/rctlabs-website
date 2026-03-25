@@ -27,6 +27,51 @@
   --rct-purple-light: #CFC4D9;
   --rct-purple-dark: #A798B8;
   
+  --rct-amber-bg: rgba(212, 168, 83, 0.06);
+  --rct-sage-bg: rgba(123, 158, 135, 0.06);
+  --rct-terra-bg: rgba(196, 116, 91, 0.06);
+  --rct-blue-bg: rgba(137, 180, 200, 0.06);
+  --rct-purple-bg: rgba(184, 169, 201, 0.06);
+  
+  --rct-warm-secondary: #4A4A4A;
+  --rct-warm-muted: #999999;
+  --rct-warm-subtle: #666666;
+  --rct-warm-faint: #555555;
+  --rct-warm-placeholder: #AAAAAA;
+  --rct-warm-subdued: #CCCCCC;
+  --rct-warm-surface: #F5F3EF;
+  --rct-warm-tint: #F5EFE6;
+  --rct-warm-border-alt: #E5E1DA;
+  --rct-warm-dim: #888888;
+  --rct-warm-dim-alt: #777777;
+  --rct-warm-ghost: #BBBBBB;
+  --rct-warm-pale: #DDDDDD;
+  --rct-warm-warm-light: #D4D0C8;
+  --rct-warm-surface-alt: #F5F0E8;
+  --rct-warm-border-hard: #E8E0D4;
+  --rct-warm-taupe: #B0A898;
+  --rct-warm-bronze: #8B7355;
+  --rct-warm-amber-hover: #C49A48;
+  --rct-warm-amber-active: #C09843;
+  --rct-warm-amber-accent: #C5A572;
+  --rct-warm-sage-hover: #6A8D76;
+  --rct-warm-terra-hover: #B3634A;
+  
+  --rct-text-primary-light: #1A1A1A;
+  --rct-text-secondary-light: #4A4A4A;
+  --rct-text-muted-light: #5A5A5A;
+  --rct-link-color-light: #2563EB;
+  --rct-accent-amber-text-light: #9A7A3D;
+  --rct-accent-sage-text-light: #5A7A65;
+  --rct-accent-terracotta-text-light: #8B4A3A;
+  
+  --rct-tag-amber-bg: #FEF3C7;
+  --rct-tag-amber-text: #9A7A3D;
+  --rct-tag-sage-bg: #D1FAE5;
+  --rct-tag-sage-text: #5A7A65;
+  --rct-tag-terracotta-bg: #FEE2E2;
+  --rct-tag-terracotta-text: #8B4A3A;
+  
   /* ═══ Neutrals - Light Mode ═══ */
   --rct-bg-primary: #FAF6F0;
   --rct-bg-secondary: #F0EBE3;
@@ -47,13 +92,6 @@
   --rct-input-border: #D4D0C8;
   --rct-input-border-hover: #C4C0B8;
   --rct-input-placeholder: #999999;
-  
-  /* Brand Color Backgrounds - Light Mode */
-  --rct-amber-bg: rgba(212, 168, 83, 0.06);
-  --rct-sage-bg: rgba(123, 158, 135, 0.06);
-  --rct-terra-bg: rgba(196, 116, 91, 0.06);
-  --rct-blue-bg: rgba(137, 180, 200, 0.06);
-  --rct-purple-bg: rgba(184, 169, 201, 0.06);
   
   /* ═══ Typography ═══ */
   --rct-font-display: 'Space Grotesk', 'Kanit', system-ui, sans-serif;
@@ -164,6 +202,15 @@
   --rct-bg-tertiary: #222222;
   --rct-bg-elevated: #2A2A2A;
   
+  --rct-dark-900: #0D0D0D;
+  --rct-dark-800: #141414;
+  --rct-dark-950: #111111;
+  --rct-dark-deep: #151515;
+  --rct-dark-void: #161616;
+  --rct-dark-surface: #1E1E1E;
+  --rct-dark-raised: #222222;
+  --rct-dark-card: #252525;
+  
   --rct-text-primary: #E8E3DC;
   --rct-text-secondary: #AAAAAA;  /* Contrast 5.2:1 ✅ */
   --rct-text-muted: #888888;      /* Contrast 4.6:1 ✅ */
@@ -173,11 +220,17 @@
   --rct-border-secondary: #333333;
   --rct-border-focus: #E0B96A;
   
+  --rct-dark-border: #2A2A2A;
+  --rct-dark-border-subtle: #333333;
+  --rct-dark-border-hard: #3A3A3A;
+  
   /* Input – Dark Mode */
   --rct-input-bg: #1E1E1E;
   --rct-input-border: #333333;
   --rct-input-border-hover: #444444;
   --rct-input-placeholder: #666666;
+  
+  --rct-dark-input: #0F0F0F;
   
   /* Brand Color Backgrounds – Dark Mode */
   --rct-amber-bg: rgba(212, 168, 83, 0.08);
@@ -186,11 +239,27 @@
   --rct-blue-bg: rgba(137, 180, 200, 0.08);
   --rct-purple-bg: rgba(184, 169, 201, 0.08);
   
+  --rct-dark-amber-bg: #3A2E15;
+  --rct-dark-sage-bg: #1E3A25;
+  --rct-dark-terra-bg: #3A1E15;
+  
+  --rct-text-primary-dark: #FFFFFF;
+  --rct-text-secondary-dark: #CCCCCC;
+  --rct-text-muted-dark: #B3B3B3;
+  --rct-link-color-dark: #60A5FA;
+  --rct-accent-amber-text-dark: #E8C97A;
+  --rct-accent-sage-text-dark: #A3C4AE;
+  --rct-tag-amber-bg-dark: #3A2E15;
+  --rct-tag-amber-text-dark: #E8C97A;
+  --rct-tag-sage-bg-dark: #1E3A25;
+  --rct-tag-sage-text-dark: #A3C4AE;
+  --rct-tag-terracotta-bg-dark: #3A1E15;
+  --rct-tag-terracotta-text-dark: #E8A89A;
+  
   /* Shadows - Dark Mode */
   --rct-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --rct-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
   --rct-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
-  --rct-shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.6);
 }
 
 /* ═══════════════════════════════════════════════════════════════
