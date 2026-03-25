@@ -8,6 +8,7 @@ import { useTheme } from "next-themes"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
 import { Compass, Database, Target, User, ArrowRight, FlaskConical } from "lucide-react"
+import { getBreadcrumbSchema } from "@/lib/schema"
 
 const components = [
   {
@@ -118,6 +119,11 @@ export default function FDIAEquationPage() {
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
+        { name: "Home", url: "https://rctlabs.co" },
+        { name: isEn ? "Protocols" : "Protocols", url: "https://rctlabs.co/protocols" },
+        { name: "FDIA Equation", url: "https://rctlabs.co/protocols/fdia-equation" },
+      ])) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 

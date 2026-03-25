@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
 import { FloatingAI } from "@/components/floating-ai"
@@ -117,11 +118,11 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.png" }],
   },
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.webmanifest",
     generator: 'v0.app'
 }
 
@@ -151,8 +152,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://rctlabs.co" />
-        {/* Preload font for performance */}
-        <link rel="preload" as="font" href="/fonts/space-grotesk.woff2" type="font/woff2" crossOrigin="anonymous" />
+        {/* Fonts are loaded via next/font/google — no manual preload needed */}
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
@@ -170,6 +170,7 @@ export default async function RootLayout({
           {children}
           <FloatingAI />
           <Toaster richColors position="bottom-right" />
+          <Analytics />
         </AppProviders>
       </body>
     </html>
