@@ -26,8 +26,8 @@ export default async function EvaluationPage() {
   const isTh = locale === "th"
 
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
-    { name: "Evaluation", url: `https://rctlabs.co${localePrefix}/evaluation` },
+    { name: isTh ? "หน้าแรก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: isTh ? "ศูนย์กลางการประเมิน" : "Evaluation", url: `https://rctlabs.co${localePrefix}/evaluation` },
   ])
 
   const faqSchema = getFAQSchema([
@@ -90,8 +90,8 @@ export default async function EvaluationPage() {
       <Navbar />
       <section className="mx-auto max-w-6xl px-4 py-24 md:py-32">
         <div className="max-w-3xl">
-          <p className="text-sm font-semibold text-accent">{isTh ? "Buyer-side decision support" : "Buyer-side decision support"}</p>
-          <h1 className="mt-3 text-4xl md:text-5xl font-bold text-foreground">{isTh ? "Evaluation Hub" : "Evaluation Hub"}</h1>
+          <p className="text-sm font-semibold text-accent">{isTh ? "เครื่องมือช่วยตัดสินใจฝั่งผู้ซื้อ" : "Buyer-side decision support"}</p>
+          <h1 className="mt-3 text-4xl md:text-5xl font-bold text-foreground">{isTh ? "ศูนย์กลางการประเมิน" : "Evaluation Hub"}</h1>
           <p className="mt-4 text-lg text-muted-foreground">
             {isTh ? "พื้นที่กลางสำหรับหน้า comparison และ buyer evaluation path ของระบบ AI แบบ Ecosystem / OS" : "A central comparison and buyer-evaluation hub for enterprise AI systems presented as an ecosystem or operating system."}
           </p>
@@ -114,10 +114,10 @@ export default async function EvaluationPage() {
         <div className="mt-10 rounded-2xl border border-border bg-card p-8">
           <h2 className="text-2xl font-bold text-foreground">{isTh ? "เส้นทางการประเมินที่แนะนำ" : "Recommended evaluation path"}</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-4">
-            <Link href={`${localePrefix}/methodology`} className="rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50"><div className="font-semibold text-foreground">Methodology</div></Link>
-            <Link href={`${localePrefix}/benchmark-summary`} className="rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50"><div className="font-semibold text-foreground">Benchmark Summary</div></Link>
-            <Link href={`${localePrefix}/pricing`} className="rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50"><div className="font-semibold text-foreground">Pricing</div></Link>
-            <Link href={`${localePrefix}/contact`} className="rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50"><div className="font-semibold text-foreground">Contact</div></Link>
+            <Link href={`${localePrefix}/methodology`} className="rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50"><div className="font-semibold text-foreground">{isTh ? "วิธีวิทยา" : "Methodology"}</div></Link>
+            <Link href={`${localePrefix}/benchmark-summary`} className="rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50"><div className="font-semibold text-foreground">{isTh ? "สรุป Benchmark" : "Benchmark Summary"}</div></Link>
+            <Link href={`${localePrefix}/pricing`} className="rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50"><div className="font-semibold text-foreground">{isTh ? "ราคา" : "Pricing"}</div></Link>
+            <Link href={`${localePrefix}/contact`} className="rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50"><div className="font-semibold text-foreground">{isTh ? "ติดต่อทีมงาน" : "Contact"}</div></Link>
           </div>
         </div>
       </section>

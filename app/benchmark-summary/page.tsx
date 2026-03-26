@@ -27,8 +27,8 @@ export default async function BenchmarkSummaryPage() {
   const isTh = locale === "th"
 
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
-    { name: "Benchmark Summary", url: `https://rctlabs.co${localePrefix}/benchmark-summary` },
+    { name: isTh ? "หน้าแรก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: isTh ? "สรุป Benchmark" : "Benchmark Summary", url: `https://rctlabs.co${localePrefix}/benchmark-summary` },
   ])
 
   const faqSchema = getFAQSchema([
@@ -47,11 +47,11 @@ export default async function BenchmarkSummaryPage() {
   ])
 
   const stats = [
-    { label: isTh ? "Version baseline" : "Version baseline", value: SITE_VERSION },
-    { label: isTh ? "Verified tests" : "Verified tests", value: SITE_TEST_COUNT.toLocaleString() },
-    { label: isTh ? "Microservices" : "Microservices", value: String(SITE_MICROSERVICE_COUNT) },
-    { label: isTh ? "Uptime framing" : "Uptime framing", value: SITE_UPTIME },
-    { label: isTh ? "Hallucination framing" : "Hallucination framing", value: SITE_HALLUCINATION_RATE },
+    { label: isTh ? "Baseline เวอร์ชัน" : "Version baseline", value: SITE_VERSION },
+    { label: isTh ? "จำนวน tests ที่ยืนยันแล้ว" : "Verified tests", value: SITE_TEST_COUNT.toLocaleString() },
+    { label: isTh ? "จำนวน microservices" : "Microservices", value: String(SITE_MICROSERVICE_COUNT) },
+    { label: isTh ? "กรอบการอธิบาย uptime" : "Uptime framing", value: SITE_UPTIME },
+    { label: isTh ? "กรอบการอธิบาย hallucination" : "Hallucination framing", value: SITE_HALLUCINATION_RATE },
   ]
 
   return (
@@ -61,7 +61,7 @@ export default async function BenchmarkSummaryPage() {
       <Navbar />
       <section className="mx-auto max-w-6xl px-4 py-24 md:py-32">
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">{isTh ? "Benchmark Summary" : "Benchmark Summary"}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground">{isTh ? "สรุป Benchmark" : "Benchmark Summary"}</h1>
           <p className="mt-4 text-lg text-muted-foreground">
             {isTh ? "หน้าสรุป benchmark แบบ public-safe สำหรับช่วยตีความตัวเลขและ quality signals บนเว็บไซต์อย่างระมัดระวังมากขึ้น" : "A public-safe benchmark framing page for interpreting the site's performance and quality language more carefully."}
           </p>
@@ -78,13 +78,13 @@ export default async function BenchmarkSummaryPage() {
 
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           <div className="rounded-2xl border border-border bg-card p-6">
-            <h2 className="text-xl font-semibold text-foreground">{isTh ? "What this page does" : "What this page does"}</h2>
+            <h2 className="text-xl font-semibold text-foreground">{isTh ? "หน้านี้มีหน้าที่อะไร" : "What this page does"}</h2>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
               {isTh ? "อธิบาย baseline สาธารณะ วิธีมองตัวเลข และขอบเขตการใช้ benchmark language บนหน้า blog, research, pricing, และ changelog" : "It explains public baselines, how to interpret numbers, and how benchmark language is used across blog, research, pricing, and changelog surfaces."}
             </p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-6">
-            <h2 className="text-xl font-semibold text-foreground">{isTh ? "What this page does not do" : "What this page does not do"}</h2>
+            <h2 className="text-xl font-semibold text-foreground">{isTh ? "หน้านี้ไม่ได้ทำอะไร" : "What this page does not do"}</h2>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
               {isTh ? "ไม่ได้เปิดเผย benchmark dataset, internal evaluator configuration, proprietary implementation details หรือหลักฐานภายในเต็มรูปแบบบน public web" : "It does not disclose benchmark datasets, internal evaluator configuration, proprietary implementation details, or full internal evidence packs on the public web."}
             </p>
@@ -94,9 +94,9 @@ export default async function BenchmarkSummaryPage() {
         <div className="mt-10 rounded-2xl border border-border bg-card p-8">
           <h2 className="text-2xl font-bold text-foreground">{isTh ? "หน้าที่เกี่ยวข้อง" : "Related pages"}</h2>
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
-            <Link href={`${localePrefix}/research`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">Research</Link>
-            <Link href={`${localePrefix}/changelog`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">Changelog</Link>
-            <Link href={`${localePrefix}/methodology`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">Methodology</Link>
+            <Link href={`${localePrefix}/research`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "งานวิจัย" : "Research"}</Link>
+            <Link href={`${localePrefix}/changelog`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "บันทึกการเปลี่ยนแปลง" : "Changelog"}</Link>
+            <Link href={`${localePrefix}/methodology`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "วิธีวิทยา" : "Methodology"}</Link>
           </div>
         </div>
       </section>

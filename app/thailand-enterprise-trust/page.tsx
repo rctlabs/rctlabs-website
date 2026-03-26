@@ -23,21 +23,27 @@ export async function generateMetadata(): Promise<Metadata> {
 const sourceCards = [
   {
     name: "ETDA",
+    nameTh: "ETDA",
     href: "https://www.etda.or.th/en/",
     supportingHref: "https://www.etda.or.th/en/Our-Service/Standard.aspx",
     summary: "Electronic Transactions Development Agency pages describing digital trusted services, infrastructure, standards, and certification-oriented service areas.",
+    summaryTh: "แหล่งข้อมูลของ ETDA ที่แสดงบทบาทด้านบริการความน่าเชื่อถือดิจิทัล โครงสร้างพื้นฐาน มาตรฐาน และการรับรองที่เกี่ยวข้องกับระบบดิจิทัลของไทย",
   },
   {
     name: "depa",
+    nameTh: "depa",
     href: "https://www.depa.or.th/en/home",
     supportingHref: "https://www.depa.or.th/en/",
     summary: "Digital Economy Promotion Agency pages showing digital-economy promotion, service pathways, and visible AI transformation activity in Thailand.",
+    summaryTh: "แหล่งข้อมูลของ depa ที่สะท้อนบทบาทด้านการส่งเสริมเศรษฐกิจดิจิทัล ช่องทางบริการ และกิจกรรม AI transformation ที่เกิดขึ้นในไทย",
   },
   {
     name: "Bank of Thailand",
+    nameTh: "ธนาคารแห่งประเทศไทย",
     href: "https://www.bot.or.th/en/home.html",
     supportingHref: "https://www.bot.or.th/en/financial-innovation/financial-landscape.html",
     summary: "Bank of Thailand materials outlining financial innovation, digital economy transition, risk management, resiliency, and supervisory thinking relevant to high-trust AI adoption.",
+    summaryTh: "เอกสารจากธนาคารแห่งประเทศไทยที่อธิบายมุมมองด้านนวัตกรรมการเงิน การเปลี่ยนผ่านสู่เศรษฐกิจดิจิทัล การจัดการความเสี่ยง ความยืดหยุ่น และกรอบคิดเชิงกำกับที่เกี่ยวข้องกับการใช้ AI ในงานความเชื่อถือสูง",
   },
 ]
 
@@ -47,8 +53,8 @@ export default async function ThailandEnterpriseTrustPage() {
   const isTh = locale === "th"
 
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
-    { name: "Thailand Enterprise Trust Layer", url: `https://rctlabs.co${localePrefix}/thailand-enterprise-trust` },
+    { name: isTh ? "หน้าแรก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: isTh ? "ชั้นความน่าเชื่อถือสำหรับองค์กรไทย" : "Thailand Enterprise Trust Layer", url: `https://rctlabs.co${localePrefix}/thailand-enterprise-trust` },
   ])
 
   const faqSchema = getFAQSchema([
@@ -73,8 +79,8 @@ export default async function ThailandEnterpriseTrustPage() {
       <Navbar />
       <section className="mx-auto max-w-6xl px-4 py-24 md:py-32">
         <div className="max-w-4xl">
-          <p className="text-sm font-semibold text-accent">{isTh ? "Regional trust layer" : "Regional trust layer"}</p>
-          <h1 className="mt-3 text-4xl md:text-5xl font-bold text-foreground">{isTh ? "Thailand Enterprise Trust Layer" : "Thailand Enterprise Trust Layer"}</h1>
+          <p className="text-sm font-semibold text-accent">{isTh ? "ชั้นความน่าเชื่อถือระดับภูมิภาค" : "Regional trust layer"}</p>
+          <h1 className="mt-3 text-4xl md:text-5xl font-bold text-foreground">{isTh ? "ชั้นความน่าเชื่อถือสำหรับองค์กรไทย" : "Thailand Enterprise Trust Layer"}</h1>
           <p className="mt-4 text-lg text-muted-foreground">
             {isTh
               ? "หน้ากลางสำหรับอธิบายว่าการประเมิน AI ระดับองค์กรในไทยควรเชื่อมกับบริบทของหน่วยงานสาธารณะ มาตรฐานดิจิทัล การส่งเสริมเศรษฐกิจดิจิทัล และความคิดเชิงกำกับดูแลอย่างไร"
@@ -85,11 +91,11 @@ export default async function ThailandEnterpriseTrustPage() {
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {sourceCards.map((card) => (
             <div key={card.name} className="rounded-2xl border border-border bg-card p-6">
-              <h2 className="text-xl font-semibold text-foreground">{card.name}</h2>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">{card.summary}</p>
+              <h2 className="text-xl font-semibold text-foreground">{isTh ? card.nameTh : card.name}</h2>
+              <p className="mt-3 text-sm leading-7 text-muted-foreground">{isTh ? card.summaryTh : card.summary}</p>
               <div className="mt-4 flex flex-wrap gap-3 text-sm">
-                <a href={card.href} target="_blank" rel="noreferrer" className="font-medium text-accent hover:underline">{isTh ? "Official page" : "Official page"}</a>
-                <a href={card.supportingHref} target="_blank" rel="noreferrer" className="font-medium text-accent hover:underline">{isTh ? "Supporting source" : "Supporting source"}</a>
+                <a href={card.href} target="_blank" rel="noreferrer" className="font-medium text-accent hover:underline">{isTh ? "หน้าอย่างเป็นทางการ" : "Official page"}</a>
+                <a href={card.supportingHref} target="_blank" rel="noreferrer" className="font-medium text-accent hover:underline">{isTh ? "แหล่งสนับสนุน" : "Supporting source"}</a>
               </div>
             </div>
           ))}
@@ -107,10 +113,10 @@ export default async function ThailandEnterpriseTrustPage() {
           <div className="rounded-2xl border border-border bg-card p-6">
             <h2 className="text-2xl font-bold text-foreground">{isTh ? "สิ่งที่หน้าเว็บควรเชื่อมต่อ" : "What the public site should connect"}</h2>
             <ul className="mt-3 space-y-2 text-sm leading-7 text-muted-foreground">
-              <li>{isTh ? "global governance framework ไปสู่ Thailand deployment reality" : "Global governance frameworks to Thailand deployment reality"}</li>
-              <li>{isTh ? "bilingual operation ไปสู่ risk and meaning preservation" : "Bilingual operation to risk and meaning preservation"}</li>
-              <li>{isTh ? "buyer evaluation ไปสู่ procurement and contact path" : "Buyer evaluation to procurement and contact paths"}</li>
-              <li>{isTh ? "research language ไปสู่ roadmap, benchmark, และ release maturity" : "Research language to roadmap, benchmark, and release maturity"}</li>
+              <li>{isTh ? "เชื่อม global governance framework เข้ากับสภาพการ deploy จริงในประเทศไทย" : "Global governance frameworks to Thailand deployment reality"}</li>
+              <li>{isTh ? "เชื่อมการทำงานสองภาษาเข้ากับการรักษาความหมายและระดับความเสี่ยง" : "Bilingual operation to risk and meaning preservation"}</li>
+              <li>{isTh ? "เชื่อม buyer evaluation ไปสู่ procurement path และเส้นทางติดต่อทีมงาน" : "Buyer evaluation to procurement and contact paths"}</li>
+              <li>{isTh ? "เชื่อมภาษาเชิงวิจัยไปสู่ roadmap, benchmark และ maturity ของการปล่อยระบบ" : "Research language to roadmap, benchmark, and release maturity"}</li>
             </ul>
           </div>
         </div>
@@ -118,9 +124,9 @@ export default async function ThailandEnterpriseTrustPage() {
         <div className="mt-10 rounded-2xl border border-border bg-card p-8">
           <h2 className="text-2xl font-bold text-foreground">{isTh ? "อ่านต่อในบริบทไทย" : "Continue in Thailand context"}</h2>
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
-            <Link href={`${localePrefix}/blog/constitutional-ai-thailand-enterprise-guide`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "Thailand constitutional AI guide" : "Thailand constitutional AI guide"}</Link>
-            <Link href={`${localePrefix}/methodology`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">Methodology</Link>
-            <Link href={`${localePrefix}/evaluation`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">Evaluation Hub</Link>
+            <Link href={`${localePrefix}/blog/constitutional-ai-thailand-enterprise-guide`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "คู่มือ Constitutional AI สำหรับไทย" : "Thailand constitutional AI guide"}</Link>
+            <Link href={`${localePrefix}/methodology`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "วิธีวิทยา" : "Methodology"}</Link>
+            <Link href={`${localePrefix}/evaluation`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "ศูนย์กลางการประเมิน" : "Evaluation Hub"}</Link>
           </div>
         </div>
       </section>
