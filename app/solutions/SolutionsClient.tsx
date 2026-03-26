@@ -50,7 +50,7 @@ const solutions = [
     descEn: "Overcome context window limitations with RCTDB v2.0 — a 3-layer hybrid database (Vector + Graph + SQL) with 8D Schema for complete contextual memory.",
     descTh: "เอาชนะข้อจำกัด Context Window ด้วย RCTDB v2.0 — ฐานข้อมูล Hybrid 3 ชั้น พร้อม 8D Schema",
     stats: [
-      { label: "Compression", value: "79%" },
+      { label: "Compression", value: "74%" },
       { label: "DB Layers", value: "3" },
       { label: "Schema Dims", value: "8D" },
     ],

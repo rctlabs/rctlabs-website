@@ -21,7 +21,7 @@ export default function ResearchClient() {
     {
       slug: "v240-analysearch-41-algorithms",
       title: "v2.4.0: Analysearch Intent Engine & 41 Production Algorithms",
-      description: "41 algorithms across 9 tiers: Foundation (15), Intelligence (14), Consciousness (12). Includes Genesis Engine, ITSR, The Crystallizer, Planning Depth Expander, and Constraint Satisfaction Solver.",
+      description: "A release focused on the nine capability tiers behind RCT reasoning, orchestration, verification, memory, and autonomous planning.",
       category: "Algorithms",
       badge: "v2.4.0",
       authors: "RCT Core Team",
@@ -71,7 +71,7 @@ export default function ResearchClient() {
     {
       slug: "signedai-consensus",
       title: "SignedAI: Multi-LLM Attestation with 0.3% Hallucination Rate",
-      description: "Constitutional AI consensus verification using GPT-4, Claude 3.5, and Gemini Pro. Achieves 0.3% hallucination rate (vs industry 12-15%) through multi-tier voting with ED25519 cryptographic signatures.",
+      description: "Consensus-based AI verification designed for regulated environments, with a measured 0.3% hallucination rate and full auditability.",
       category: "AI Safety",
       badge: "Core",
       authors: "RCT Core Team",
@@ -80,8 +80,8 @@ export default function ResearchClient() {
     },
     {
       slug: "rctdb-8d-memory",
-      title: "RCTDB v2.0: 8-Dimensional Universal Memory Schema",
-      description: "Universal memory architecture with Registry (Identity & Discovery), Vault (Infinite Storage), and Governance (Rules & Evolution) zones. 74% lossless compression with vector and graph storage.",
+      title: "RCTDB v2.0: Persistent Enterprise Memory Architecture",
+      description: "A persistent memory architecture for enterprise agents, combining structured context, provenance, compression, and cross-session continuity.",
       category: "Database",
       badge: "Core",
       authors: "RCT Core Team",
@@ -107,9 +107,9 @@ export default function ResearchClient() {
       <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
         <div className="mx-auto max-w-4xl space-y-8 text-center">
           <p className="font-mono text-sm uppercase tracking-wider text-accent">Research & Releases</p>
-          <h1 className="text-5xl font-bold leading-tight text-foreground text-balance md:text-6xl">RCT Ecosystem v3.7.0</h1>
+          <h1 className="text-5xl font-bold leading-tight text-foreground text-balance md:text-6xl">Research & Release Library</h1>
           <p className="mx-auto max-w-2xl text-xl text-muted-foreground text-balance md:text-2xl">
-            Version history, architecture papers, benchmark evidence, and technical specifications for the Constitutional AI Operating System.
+            Production baseline v5.4.5, release notes, architecture papers, benchmark evidence, and public-safe technical references for the Constitutional AI Operating System.
           </p>
           <div className="grid gap-3 sm:grid-cols-3">
             <Link href="/whitepaper" className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
@@ -166,10 +166,10 @@ export default function ResearchClient() {
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {[
-            { label: "Tests Passing", value: "3,765" },
+            { label: "Tests Passing", value: "4,849" },
             { label: "Production Algorithms", value: "41" },
             { label: "Architecture Layers", value: "10" },
-            { label: "Regional Markets", value: "8" },
+            { label: "Microservices", value: "62" },
           ].map((stat) => (
             <div key={stat.label} className="space-y-2 text-center">
               <div className="text-3xl font-bold text-accent md:text-4xl">{stat.value}</div>

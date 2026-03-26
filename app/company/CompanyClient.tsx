@@ -159,7 +159,7 @@ export default function CompanyClient() {
           {[
             { label: isTh ? "Architecture Layers" : "Architecture Layers", value: "10" },
             { label: isTh ? "Production Algorithms" : "Production Algorithms", value: "41" },
-            { label: isTh ? "Validation Tests" : "Validation Tests", value: "3,765" },
+            { label: isTh ? "Validation Tests" : "Validation Tests", value: "4,849" },
             { label: isTh ? "Hallucination Rate" : "Hallucination Rate", value: "0.3%" },
           ].map((stat) => (
             <div key={stat.label} className="space-y-2">

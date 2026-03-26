@@ -16,10 +16,10 @@ const layers = {
     { num: "L3", name: "Knowledge Engine", desc: "Semantic indexing, vector search, and knowledge graph construction for intelligent information retrieval.", icon: Brain, color: "#D4A853" },
     { num: "L4", name: "Memory & Context", desc: "RCTDB v2.0 with 8-dimensional universal memory schema for persistent context across sessions and agents.", icon: Database, color: "#C4745B" },
     { num: "L5", name: "Reasoning Core", desc: "Multi-strategy reasoning including chain-of-thought, tree-of-thought, and hybrid approaches powered by the FDIA Equation.", icon: Brain, color: "#B8A9C9" },
-    { num: "L6", name: "Multi-LLM Orchestration", desc: "Dynamic model selection and routing across GPT-4, Claude, Gemini, Llama, and custom fine-tuned models.", icon: Network, color: "#D4A853" },
+    { num: "L6", name: "Multi-LLM Orchestration", desc: "Dynamic model selection and routing across global, regional, and task-specific model families.", icon: Network, color: "#D4A853" },
     { num: "L7", name: "Agent Framework", desc: "Autonomous agent lifecycle management with JITNA Protocol for inter-agent communication and consensus.", icon: Bot, color: "#89B4C8" },
-    { num: "L8", name: "Safety & Verification", desc: "SignedAI consensus mechanism achieving 99.7% hallucination prevention with triple-verification pipeline.", icon: Shield, color: "#7B9E87" },
-    { num: "L9", name: "Application Layer", desc: "Domain-specific solutions including FloatingAI assistant, ArtentAI creative engine, and enterprise integrations.", icon: AppWindow, color: "#C4745B" },
+    { num: "L8", name: "Safety & Verification", desc: "Consensus-based verification, traceability, and policy controls designed to hold hallucination risk to 0.3% on benchmarked workloads.", icon: Shield, color: "#7B9E87" },
+    { num: "L9", name: "Application Layer", desc: "Domain-specific assistants, enterprise workflows, and solution packages built on the shared platform core.", icon: AppWindow, color: "#C4745B" },
     { num: "L10", name: "Self-Evolving Orchestrator", desc: "Continuous self-improvement through performance monitoring, A/B testing, and adaptive algorithm selection.", icon: RefreshCw, color: "#B8A9C9" },
   ],
   th: [
@@ -28,10 +28,10 @@ const layers = {
     { num: "L3", name: "Knowledge Engine", desc: "Semantic Indexing, Vector Search และ Knowledge Graph สำหรับการดึงข้อมูลอัจฉริยะ", icon: Brain, color: "#D4A853" },
     { num: "L4", name: "Memory & Context", desc: "RCTDB v2.0 พร้อม Schema หน่วยความจำ 8 มิติ สำหรับการเก็บ Context ถาวรข้าม Sessions และ Agents", icon: Database, color: "#C4745B" },
     { num: "L5", name: "Reasoning Core", desc: "การให้เหตุผลหลายกลยุทธ์รวม Chain-of-Thought, Tree-of-Thought กับเคลื่อนด้วยสมการ FDIA", icon: Brain, color: "#B8A9C9" },
-    { num: "L6", name: "Multi-LLM Orchestration", desc: "การเลือกและกำหนดเส้นทาง Model แบบ Dynamic ข้าม GPT-4, Claude, Gemini, Llama", icon: Network, color: "#D4A853" },
+    { num: "L6", name: "Multi-LLM Orchestration", desc: "การเลือกและกำหนดเส้นทาง model แบบ dynamic ข้ามตระกูลโมเดลระดับโลก ระดับภูมิภาค และเฉพาะงาน", icon: Network, color: "#D4A853" },
     { num: "L7", name: "Agent Framework", desc: "การจัดการ Lifecycle ของ Agent อัตโนมัติพร้อม JITNA Protocol สำหรับการสื่อสารระหว่าง Agent", icon: Bot, color: "#89B4C8" },
-    { num: "L8", name: "Safety & Verification", desc: "กลไก SignedAI Consensus ป้องกัน Hallucination 99.7% ด้วย Triple-Verification Pipeline", icon: Shield, color: "#7B9E87" },
-    { num: "L9", name: "Application Layer", desc: "โซลูชันเฉพาะทาง ได้แก่ FloatingAI Assistant, ArtentAI Creative Engine และ Enterprise Integrations", icon: AppWindow, color: "#C4745B" },
+    { num: "L8", name: "Safety & Verification", desc: "ชั้น consensus-based verification, traceability และ policy controls ที่ทำให้ hallucination risk เหลือ 0.3% ใน benchmark workloads", icon: Shield, color: "#7B9E87" },
+    { num: "L9", name: "Application Layer", desc: "ชั้นสำหรับ assistants, enterprise workflows และ solution packages ที่สร้างบน platform core เดียวกัน", icon: AppWindow, color: "#C4745B" },
     { num: "L10", name: "Self-Evolving Orchestrator", desc: "การปรับปรุงตัวเองต่อเนื่องผ่าน Performance Monitoring, A/B Testing และ Adaptive Algorithm Selection", icon: RefreshCw, color: "#B8A9C9" },
   ],
 }
@@ -96,8 +96,8 @@ export default function ArchitecturePage() {
             ? "ต่างจาก AI Frameworks แบบ Monolithic แนวทาง Layered ช่วยให้สามารถนำชั้นเฉพาะมาใช้ทีละชั้น เช่น เริ่มจาก L6 สำหรับ Multi-LLM Orchestration เพิ่ม L8 สำหรับ Safety Verification จากนั้นขยายสู่ Full Stack ตามความต้องการ"
             : "Unlike monolithic AI frameworks, the layered approach allows enterprises to adopt specific layers incrementally. Start with L6 for orchestration, add L8 for safety, then expand as needs grow."}</p>
           <p>{isTh
-            ? "สถาปัตยกรรมรองรับ 52 Microservices กระจายข้าม 10 ชั้น ประมวลผลมากกว่า 10,000 requests ต่อวินาที ด้วย Latency ต่ำกว่า 100ms"
-            : "The architecture supports 52 microservices distributed across all 10 layers, processing over 10,000 requests per second with sub-100ms latency."}</p>
+            ? "ปัจจุบันสถาปัตยกรรมขับเคลื่อน 62 microservices ที่กระจายข้าม 10 ชั้น และถูกออกแบบให้ขยายต่อได้โดยไม่ทำให้ governance หรือ observability แตกเป็นส่วนๆ"
+            : "The architecture currently operates across 62 microservices spanning all 10 layers, with scaling designed to preserve governance, observability, and operational clarity."}</p>
         </div>
       </section>
 
@@ -111,8 +111,8 @@ export default function ArchitecturePage() {
           </h2>
           <p className="mt-3 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
             {isTh
-              ? "เลือกแต่ละชั้นเพื่อดู microservices และ tech stack ที่ประกอบเป็นสถาปัตยกรรม 10 ชั้นของ RCT"
-              : "Inspect the real microservice groups and tech stack inside each layer of the 10-layer RCT architecture."}
+              ? "เลือกแต่ละชั้นเพื่อดู service groups และความสามารถหลักที่ประกอบเป็นสถาปัตยกรรม 10 ชั้นของ RCT"
+              : "Select a layer to inspect the service groups and platform capabilities that make up the 10-layer RCT architecture."}
           </p>
         </div>
         <LazyInteractiveArchDiagram language={isTh ? "th" : "en"} />
@@ -172,7 +172,7 @@ export default function ArchitecturePage() {
           {[
             { href: "/genome", label: isTh ? "7 Genome System" : "7 Genome System", desc: isTh ? "ระบบย่อย DNA ที่ขับเคลื่อนแต่ละชั้น" : "The DNA subsystems that power each layer", icon: "🧬" },
             { href: "/fdia", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "แกนกลางทางคณิตศาสตร์ของ Reasoning Layer" : "The mathematical core of the Reasoning Layer", icon: "📐" },
-            { href: "/algorithms", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "อัลกอริทึมเฉพาะ 41 ตัวใน 9 Tiers" : "41 proprietary algorithms across 9 tiers", icon: "⚡" },
+            { href: "/algorithms", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "41 production algorithms แบ่งเป็น 9 capability tiers" : "41 production algorithms organized across 9 capability tiers", icon: "⚡" },
             { href: "/benchmark", label: isTh ? "เกณฑ์มาตรฐาน" : "Benchmarks", desc: isTh ? "เมตริกประสิทธิภาพข้ามทุกชั้น" : "Performance metrics across all layers", icon: "📊" },
             { href: "/integration", label: isTh ? "การเชื่อมต่อ" : "Integration", desc: isTh ? "วิธี Deploy สถาปัตยกรรม 10 ชั้น" : "How to deploy the 10-layer stack", icon: "🔌" },
             { href: "/solutions", label: isTh ? "โซลูชัน" : "Solutions", desc: isTh ? "โซลูชัน Enterprise AI" : "Enterprise AI solutions", icon: "🛡️" },

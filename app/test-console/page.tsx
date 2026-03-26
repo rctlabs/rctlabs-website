@@ -201,10 +201,10 @@ export default function TestConsolePage() {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: "Total Tests", value: "3,765", color: "text-violet-400" },
+              { label: "Total Tests", value: "4,849", color: "text-violet-400" },
               { label: "Passing Rate", value: "100%", color: "text-green-400" },
-              { label: "Microservices", value: "15", color: "text-blue-400" },
-              { label: "Version", value: "v3.7.0", color: "text-yellow-400" },
+              { label: "Microservices", value: "62", color: "text-blue-400" },
+              { label: "Version", value: "v5.4.5", color: "text-yellow-400" },
             ].map(({ label, value, color }) => (
               <div key={label} className="bg-[#0d1117] border border-white/10 rounded-xl p-5 text-center">
                 <div className={`text-2xl font-bold ${color}`}>{value}</div>

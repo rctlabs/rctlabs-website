@@ -92,6 +92,7 @@ export function Footer() {
       { label: isTh ? "ราคา" : "Pricing", href: "/pricing" },
     ],
     [isTh ? "เทคโนโลยี" : "Technology"]: [
+      { label: isTh ? "ระบบหลัก" : "Core Systems", href: "/core-systems" },
       { label: isTh ? "สถาปัตยกรรม" : "Architecture", href: "/architecture" },
       { label: "7 Genome System", href: "/genome" },
       { label: "41 Algorithms", href: "/algorithms" },
@@ -239,11 +240,11 @@ export function Footer() {
             <div className="flex items-center gap-2 mt-2">
               <span className={`text-2xs px-2 py-0.5 rounded-full font-medium ${
                 isDark ? "bg-dark-sage-bg text-warm-sage" : "tag-sage"
-              }`}>v3.0</span>
+              }`}>v5.4.5</span>
               <span className={`text-2xs px-2 py-0.5 rounded-full font-medium ${
                 isDark ? "bg-dark-amber-bg text-warm-amber" : "tag-amber"
               }`}>
-                {isTh ? "กำลังพัฒนา" : "Active Development"}
+                {isTh ? "พร้อมใช้งานระดับ Production" : "Production Ready"}
               </span>
             </div>
           </div>

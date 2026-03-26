@@ -10,12 +10,9 @@ import { getLocaleFromPathname, getLocalePrefix } from "@/lib/i18n"
 import HeroSection from "@/components/sections/hero-section"
 import OverviewSection from "@/components/sections/overview-section"
 import FDIASection from "@/components/sections/fdia-section"
-import MetricsSection from "@/components/sections/metrics-section"
 import EvidenceSection from "@/components/sections/evidence-section"
 import RoadmapSection from "@/components/sections/roadmap-section"
-import ArchitectMascot from "@/components/architect-mascot"
 import SectionPreviewCard from "@/components/section-preview-card"
-import TechTooltip from "@/components/tech-tooltip"
 import { pixelIcons } from "@/lib/pixel-icons"
 
 const deepDiveCards = [
@@ -51,11 +48,11 @@ const deepDiveCards = [
   },
   {
     iconSrc: pixelIcons.algorithms,
-    title: "41 Algorithms & Analysearch",
-    titleTh: "41 อัลกอริทึม และ Analysearch",
-    description: "41 proprietary algorithms plus the Analysearch hybrid methodology.",
-    descriptionTh: "41 อัลกอริทึมเฉพาะ พร้อม Analysearch Hybrid Methodology",
-    href: "/algorithms",
+    title: "Core Systems & Engines",
+    titleTh: "ระบบหลักและเอ็นจิน",
+    description: "A public-safe overview of HexaCore, Intent Loop, Analysearch, and Delta Memory.",
+    descriptionTh: "ภาพรวมแบบ public-safe ของ HexaCore, Intent Loop, Analysearch และ Delta Memory",
+    href: "/core-systems",
     color: "#D4A853",
     bg: "#FEF3C7",
   },
@@ -98,123 +95,66 @@ export default function HomePage() {
           : "RCT Ecosystem - ระบบปฏิบัติการ AI ที่เน้น Intent"}
       </h1>
 
-      <section className="border-y border-border bg-card/30 py-12 transition-colors duration-300 md:py-16">
-        <div className="mx-auto max-w-300 px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-6 text-2xl font-bold text-foreground sm:text-3xl">
-            {locale === "en" ? "Why RCT Ecosystem?" : "ทำไมองค์กรจึงเลือก RCT Ecosystem?"}
-          </h2>
-          <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
-            <p>
-              {locale === "en"
-                ? <>
-                    RCT Ecosystem is the world&apos;s first <TechTooltip term="Constitutional AI" language="en">Intent-Centric AI Operating System</TechTooltip>. It moves beyond prompt engineering by understanding the outcome you are trying to create, then assembling the optimal AI pipeline to produce it.
-                  </>
-                : <>
-                    RCT Ecosystem คือระบบปฏิบัติการ AI แบบเน้นเจตนาที่ออกแบบมาสำหรับงานระดับองค์กร โดยก้าวข้ามการสั่งงานแบบ prompt engineering ไปสู่การทำความเข้าใจผลลัพธ์ที่ธุรกิจต้องการ แล้วประกอบลำดับการทำงานของ AI ที่เหมาะสมที่สุดภายใต้แนวคิด <TechTooltip term="Constitutional AI" language="th">Constitutional AI</TechTooltip>
-                  </>}
+      {/* ── Core Intelligence Pillars ──────────────────────────────── */}
+      <section className="border-y border-border bg-card/30 py-12 md:py-14 transition-colors duration-300">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 text-center">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-warm-amber">
+              {locale === "en" ? "Core Intelligence Pillars" : "เสาหลักปัญญาประดิษฐ์"}
             </p>
-            <p>
-              {locale === "en"
-                ? <>
-                    Built on the <TechTooltip term="FDIA" language="en">FDIA Equation</TechTooltip>, a 10-Layer cognitive architecture, and <TechTooltip term="7 Genome" language="en">7 interlocking genomes</TechTooltip>, the system delivers enterprise-grade reliability with verified outputs, persistent memory via <TechTooltip term="RCTDB" language="en">RCTDB</TechTooltip>, and orchestrated intelligence through <TechTooltip term="JITNA" language="en">JITNA</TechTooltip>.
-                  </>
-                : <>
-                    ระบบนี้สร้างบนสมการ <TechTooltip term="FDIA" language="th">FDIA</TechTooltip> สถาปัตยกรรมเชิงปัญญา 10 ชั้น และ <TechTooltip term="7 Genome" language="th">7 genomes</TechTooltip> ที่ทำงานประสานกัน เพื่อให้ได้ความน่าเชื่อถือระดับองค์กรผ่านผลลัพธ์ที่ตรวจสอบได้ หน่วยความจำถาวรด้วย <TechTooltip term="RCTDB" language="th">RCTDB</TechTooltip> และการประสานงานอัจฉริยะผ่าน <TechTooltip term="JITNA" language="th">JITNA</TechTooltip>
-                  </>}
-            </p>
+            <h2 className="text-xl font-bold text-foreground sm:text-2xl">
+              {locale === "en" ? "Four Engines. One Unified System." : "4 เครื่องยนต์. ระบบเดียวที่สมบูรณ์."}
+            </h2>
           </div>
-          <div className="mt-8">
-            <ArchitectMascot className="mx-auto max-w-3xl" />
-          </div>
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { stat: "41", label: locale === "en" ? "Proprietary Algorithms" : "อัลกอริทึมเฉพาะ", color: "#D4A853", href: `${localePrefix}/algorithms` },
-              { stat: "99.7%", label: locale === "en" ? "Accuracy Rate" : "อัตราความแม่นยำ", color: "#7B9E87", href: `${localePrefix}/solutions/ai-hallucination-prevention` },
-              { stat: "10", label: locale === "en" ? "Architecture Layers" : "ชั้นสถาปัตยกรรม", color: "#89B4C8", href: `${localePrefix}/architecture` },
-            ].map((item) => (
+              {
+                stat: locale === "en" ? "7 Models" : "7 โมเดล",
+                title: "HexaCore AI Engine",
+                desc: locale === "en"
+                  ? "Western, Eastern, and Typhoon (Thai) LLMs. Each task routed to the optimal model automatically."
+                  : "LLM Western, Eastern และ Typhoon ภาษาไทย — เลือกโมเดลที่เหมาะกับแต่ละงานอัตโนมัติ",
+                color: "#D4A853",
+                href: `${localePrefix}/core-systems`,
+              },
+              {
+                stat: "1,500×",
+                title: locale === "en" ? "Intent Loop Engine" : "Intent Loop Engine",
+                desc: locale === "en"
+                  ? "7-state pipeline. Cold start 3–5s → warm recall <50ms. Memory-first routing cuts cost 60–75%."
+                  : "Pipeline 7 สถานะ: cold start 3–5 วินาที → warm recall <50ms ลดต้นทุน 60–75% ด้วย memory-first routing",
+                color: "#7B9E87",
+                href: `${localePrefix}/core-systems`,
+              },
+              {
+                stat: locale === "en" ? "4 Modes" : "4 โหมด",
+                title: "Analysearch Intent",
+                desc: locale === "en"
+                  ? "Quick, Standard, Deep, Mirror. GIGO protection + cross-disciplinary synthesis on every query."
+                  : "Quick, Standard, Deep, Mirror — GIGO Protection และ Cross-disciplinary Synthesis ทุก query",
+                color: "#89B4C8",
+                href: `${localePrefix}/core-systems`,
+              },
+              {
+                stat: "74% less",
+                title: locale === "en" ? "Delta Memory Engine" : "Delta Memory Engine",
+                desc: locale === "en"
+                  ? "Stores only state changes, not full snapshots. 74% compression with <1ms state reconstruction."
+                  : "บันทึกเฉพาะสิ่งที่เปลี่ยนแปลง ลดหน่วยความจำ 74% พร้อม reconstruction <1ms",
+                color: "#C4745B",
+                href: `${localePrefix}/core-systems`,
+              },
+            ].map((pillar) => (
               <Link
-                key={item.label}
-                href={item.href}
-                className="group relative overflow-hidden rounded-xl border border-border bg-card p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+                key={pillar.title}
+                href={pillar.href}
+                className="group rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-warm-amber/30"
               >
-                <div className="mb-1 text-3xl font-bold" style={{ color: item.color }}>
-                  {item.stat}
-                </div>
-                <div className={`text-sm text-muted-foreground ${locale === "th" ? "subtitle-th" : ""}`}>{item.label}</div>
+                <div className="mb-1 text-2xl font-bold" style={{ color: pillar.color }}>{pillar.stat}</div>
+                <div className="mb-1.5 text-sm font-semibold text-foreground group-hover:text-warm-amber transition-colors duration-200">{pillar.title}</div>
+                <p className={`text-xs leading-relaxed text-muted-foreground ${locale === "th" ? "subtitle-th" : ""}`}>{pillar.desc}</p>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-        <div className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
-          <div className="rounded-2xl border border-border bg-card p-8 md:p-10">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-warm-amber">
-              {locale === "en" ? "Built for enterprise evaluation" : "ออกแบบเพื่อการประเมินระดับองค์กร"}
-            </p>
-            <h2 className="text-foreground">
-              {locale === "en"
-                ? "Evaluate governance, verification, and deployment readiness in one journey"
-                : "ประเมินด้าน governance การตรวจสอบผลลัพธ์ และความพร้อมในการใช้งานจริงได้ในเส้นทางเดียว"}
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              {locale === "en"
-                ? "Start from the whitepaper, compare solutions, review pricing, and inspect current research releases to decide where RCT fits in your enterprise AI roadmap."
-                : "เริ่มจาก whitepaper เปรียบเทียบโซลูชัน ตรวจสอบ pricing และอ่านงานวิจัยล่าสุด เพื่อประเมินว่า RCT เหมาะกับแผน AI ระดับองค์กรของคุณอย่างไร"}
-            </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {[
-                {
-                  title: locale === "en" ? "Whitepaper" : "Whitepaper",
-                  description: locale === "en" ? "Architecture and platform thesis" : "ภาพรวมสถาปัตยกรรมและแนวคิดของแพลตฟอร์ม",
-                  href: `${localePrefix}/whitepaper`,
-                },
-                {
-                  title: locale === "en" ? "Solutions" : "โซลูชัน",
-                  description: locale === "en" ? "Use cases and business outcomes" : "กรณีใช้งานและผลลัพธ์ทางธุรกิจ",
-                  href: `${localePrefix}/solutions`,
-                },
-                {
-                  title: locale === "en" ? "Pricing" : "ราคา",
-                  description: locale === "en" ? "Commercial fit and deployment model" : "รูปแบบการใช้งานและความเหมาะสมเชิงพาณิชย์",
-                  href: `${localePrefix}/pricing`,
-                },
-                {
-                  title: locale === "en" ? "Research" : "งานวิจัย",
-                  description: locale === "en" ? "Releases, evidence, and technical depth" : "รีลีส หลักฐาน และความลึกทางเทคนิค",
-                  href: `${localePrefix}/research`,
-                },
-              ].map((item) => (
-                <Link key={item.href} href={item.href} className="rounded-xl border border-border bg-background p-4 transition-colors hover:bg-muted">
-                  <div className="text-sm font-semibold text-foreground">{item.title}</div>
-                  <div className={`mt-1 text-sm text-muted-foreground ${locale === "th" ? "subtitle-th" : ""}`}>{item.description}</div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-card p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-warm-sage">
-              {locale === "en" ? "Common evaluation goals" : "เป้าหมายที่พบบ่อยในการประเมิน"}
-            </p>
-            <div className="mt-4 space-y-4 text-sm text-muted-foreground">
-              {[
-                locale === "en"
-                  ? "Reduce hallucination risk in customer-facing and operational workflows"
-                  : "ลดความเสี่ยงจาก AI hallucination ในงานที่เกี่ยวข้องกับลูกค้าและการปฏิบัติงาน",
-                locale === "en"
-                  ? "Add verifiable outputs, memory, and policy-aligned orchestration"
-                  : "เพิ่มผลลัพธ์ที่ตรวจสอบได้ ระบบหน่วยความจำ และการ orchestration ที่สอดคล้องกับนโยบายองค์กร",
-                locale === "en"
-                  ? "Prepare for private deployment, governance, and regional compliance"
-                  : "เตรียมความพร้อมสำหรับ private deployment, governance และการปฏิบัติตามข้อกำหนดระดับภูมิภาค",
-              ].map((item) => (
-                <div key={item} className="rounded-xl border border-border/70 bg-background px-4 py-3">
-                  {item}
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -226,12 +166,12 @@ export default function HomePage() {
         <div className="space-y-10">
           <div className="mx-auto max-w-2xl space-y-3 text-center">
             <h2 className="text-foreground">
-              {locale === "th" ? "สำรวจองค์ประกอบของ Ecosystem" : "Explore the Ecosystem"}
+              {locale === "th" ? "เลือกเส้นทางการสำรวจเชิงลึก" : "Choose a Deep-Dive Path"}
             </h2>
             <p className="text-muted-foreground">
               {locale === "th"
-                ? "แต่ละองค์ประกอบของ RCT Ecosystem ถูกออกแบบให้ทำงานได้ทั้งแบบแยกส่วนและเสริมกัน สำรวจแต่ละโมดูลเพื่อทำความเข้าใจบทบาทเชิงธุรกิจและเชิงเทคนิค"
-                : "Each component of the RCT Ecosystem is designed to work independently and synergistically. Explore each module in detail."}
+                ? "เริ่มจากเลนส์ที่ต้องการ: ระบบหลัก โปรโตคอล การเชื่อมต่อ การกำกับดูแล หรือ deployment โดยไม่ต้องอ่านคำอธิบายซ้ำจากด้านบนอีกครั้ง"
+                : "Start from the lens you need: core systems, protocols, deployment, governance, or architecture. This section is now a navigation hub rather than a repeated overview."}
             </p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
@@ -247,7 +187,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <MetricsSection />
       <EvidenceSection />
       <RoadmapSection />
 

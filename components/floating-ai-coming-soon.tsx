@@ -26,12 +26,12 @@ export function FloatingAIComingSoon() {
     title: language === 'th' ? 'ผู้ช่วย FloatingAI' : 'FloatingAI Assistant',
     comingSoon: language === 'th' ? 'เร็วๆ นี้' : 'Coming Soon',
     message: language === 'th' 
-      ? 'ผู้ช่วย AI ของเรากำลังอยู่ระหว่างการพัฒนา เรากำลังสร้างสิ่งที่น่าทึ่งด้วยฐานความรู้กว่า 55 หัวข้อที่ครอบคลุมอัลกอริทึมทั้ง 41 รายการ'
-      : 'Our AI assistant is currently under development. We\'re building something amazing with 55+ knowledge base topics covering all 41 algorithms.',
+      ? 'ผู้ช่วย AI แบบลอยกำลังอยู่ระหว่างการพัฒนา เวอร์ชันเปิดตัวจะเน้นการนำทางผลิตภัณฑ์ การตอบคำถามด้านแพลตฟอร์ม และการช่วยเลือกโซลูชันที่เหมาะกับงานองค์กร'
+      : 'The floating AI assistant is still in development. The first public release will focus on product guidance, platform Q&A, and helping teams choose the right enterprise workflow.',
     featuresTitle: language === 'th' ? 'สิ่งที่คาดหวังได้:' : 'What to Expect:',
-    feature1: language === 'th' ? 'การตอบสนองแบบ Multi-LLM consensus' : 'Multi-LLM consensus responses',
-    feature2: language === 'th' ? 'ฐานความรู้กว่า 55 หัวข้อ' : '55+ knowledge base topics',
-    feature3: language === 'th' ? 'การตรวจจับเจตนาแบบเรียลไทม์' : 'Real-time intent detection',
+    feature1: language === 'th' ? 'แนะนำเส้นทางผลิตภัณฑ์และสถาปัตยกรรม' : 'Guided product and architecture discovery',
+    feature2: language === 'th' ? 'ตอบคำถามด้านแพลตฟอร์มและ use case' : 'Platform and use-case Q&A',
+    feature3: language === 'th' ? 'ช่วยคัดกรอง workflow สำหรับงานองค์กร' : 'Workflow triage for enterprise teams',
     feature4: language === 'th' ? 'รองรับสองภาษา (EN/TH)' : 'Bilingual support (EN/TH)',
     notifyMe: language === 'th' ? 'แจ้งเตือนเมื่อพร้อมใช้งาน' : 'Notify me when ready',
     emailPlaceholder: language === 'th' ? 'อีเมลของคุณ' : 'your@email.com',
@@ -70,7 +70,7 @@ export function FloatingAIComingSoon() {
             whileHover={{ scale: 1.1 }}
             onClick={() => setIsOpen(true)}
             className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent text-accent-foreground shadow-lg shadow-accent/30 flex items-center justify-center animate-glow-pulse"
-            aria-label="Open AI Assistant"
+            aria-label={language === 'th' ? 'เปิดตัวช่วย AI แบบกำลังพัฒนา' : 'Open coming-soon AI assistant'}
           >
             <Sparkles className="w-6 h-6" />
           </motion.button>

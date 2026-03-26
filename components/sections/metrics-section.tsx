@@ -26,20 +26,20 @@ const metrics = [
   { label: { en: "Overall Accuracy", th: "ความแม่นยำโดยรวม" }, value: "96.1%", bar: 96.1, color: "#7B9E87" },
   { label: { en: "Hallucination Rate", th: "อัตรา Hallucination" }, value: "0.3%", bar: 99.7, color: "#7B9E87" },
   { label: { en: "Response Latency", th: "Response Latency" }, value: "< 200ms", bar: 80, color: "#D4A853" },
-  { label: { en: "Uptime SLA", th: "Uptime SLA" }, value: "99.9%", bar: 99.9, color: "#7B9E87" },
+  { label: { en: "Uptime SLA", th: "Uptime SLA" }, value: "99.98%", bar: 99.98, color: "#7B9E87" },
   { label: { en: "Data Quality Score", th: "คะแนน Data Quality" }, value: "85/100", bar: 85, color: "#89B4C8" },
   { label: { en: "Constitutional Compliance", th: "Constitutional Compliance" }, value: "100%", bar: 100, color: "#7B9E87" },
 ]
 
 const highlightsData = {
   en: [
-    { value: 52, suffix: "", label: "Microservices", desc: "Running in production", href: "/integration" },
+    { value: 62, suffix: "", label: "Microservices", desc: "Running in production", href: "/integration" },
     { value: 41, suffix: "", label: "Algorithms", desc: "Across 9 tiers", href: "/algorithms" },
     { value: 10, suffix: "", label: "Layers", desc: "Architecture stack", href: "/architecture" },
     { value: 7, suffix: "", label: "Genomes", desc: "Core DNA components", href: "/genome" },
   ],
   th: [
-    { value: 52, suffix: "", label: "Microservices", desc: "ทำงานใน Production", href: "/integration" },
+    { value: 62, suffix: "", label: "Microservices", desc: "ทำงานใน Production", href: "/integration" },
     { value: 41, suffix: "", label: "Algorithms", desc: "ใน 9 Tiers", href: "/algorithms" },
     { value: 10, suffix: "", label: "Layers", desc: "Architecture Stack", href: "/architecture" },
     { value: 7, suffix: "", label: "Genomes", desc: "องค์ประกอบ DNA หลัก", href: "/genome" },

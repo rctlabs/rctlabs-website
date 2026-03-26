@@ -113,6 +113,15 @@ const OptimizedImage = memo(function OptimizedImage({
     }
   }, [shouldLoadImmediately, isInView])
 
+  // Catch images that loaded during SSR before React hydrated the onLoad handler
+  useEffect(() => {
+    if (!isInView) return
+    const img = imgRef.current?.querySelector("img")
+    if (img?.complete && img.naturalWidth > 0 && !isLoaded) {
+      setIsLoaded(true)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleLoad = useCallback(() => {
     setIsLoaded(true)
     onLoad?.()
