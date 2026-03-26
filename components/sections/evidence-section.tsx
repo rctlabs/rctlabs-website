@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { BookOpen, ExternalLink, FlaskConical, BarChart3, Shield } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import Image from "next/image"
+import { pixelIcons } from "@/lib/pixel-icons"
 
 const evidenceCards = [
   {
@@ -92,8 +93,7 @@ const partners = [
   { name: "GitHub", abbr: "GH" },
 ]
 
-const PIXEL_EVIDENCE =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-evidence-book_bad1b506.png"
+const PIXEL_EVIDENCE = pixelIcons.evidence
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },

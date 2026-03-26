@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { useLanguage } from "@/components/language-provider"
-import { getLocaleFromPathname } from "@/lib/i18n"
+import { getLocaleFromPathname, getLocalePrefix } from "@/lib/i18n"
 import HeroSection from "@/components/sections/hero-section"
 import OverviewSection from "@/components/sections/overview-section"
 import FDIASection from "@/components/sections/fdia-section"
@@ -16,17 +16,11 @@ import RoadmapSection from "@/components/sections/roadmap-section"
 import ArchitectMascot from "@/components/architect-mascot"
 import SectionPreviewCard from "@/components/section-preview-card"
 import TechTooltip from "@/components/tech-tooltip"
-import OptimizedImage from "@/components/ui/optimized-image"
-
-const PIXEL_STAT_ICONS = [
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-algorithm-gears_dbfb4610.png",
-  "/pixel-icons/shield.svg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-architecture-layers_33ca737f.png",
-]
+import { pixelIcons } from "@/lib/pixel-icons"
 
 const deepDiveCards = [
   {
-    icon: "🏗️",
+    iconSrc: pixelIcons.architecture,
     title: "10-Layer Architecture",
     titleTh: "สถาปัตยกรรม 10 ชั้น",
     description: "A comprehensive cognitive architecture stack from data ingestion to autonomous improvement.",
@@ -36,7 +30,7 @@ const deepDiveCards = [
     bg: "#DBEAFE",
   },
   {
-    icon: "🧬",
+    iconSrc: pixelIcons.genome,
     title: "7 Genome System",
     titleTh: "ระบบ 7 Genome",
     description: "Seven interconnected genomes forming a continuous improvement cycle.",
@@ -46,7 +40,7 @@ const deepDiveCards = [
     bg: "#FEE2E2",
   },
   {
-    icon: "🔗",
+    iconSrc: pixelIcons.jitna,
     title: "JITNA Protocol",
     titleTh: "โปรโตคอล JITNA",
     description: "Just-In-Time Nodal Assembly — the 'HTTP of the Agentic AI world'.",
@@ -56,7 +50,7 @@ const deepDiveCards = [
     bg: "#D1FAE5",
   },
   {
-    icon: "⚡",
+    iconSrc: pixelIcons.algorithms,
     title: "41 Algorithms & Analysearch",
     titleTh: "41 อัลกอริทึม และ Analysearch",
     description: "41 proprietary algorithms plus the Analysearch hybrid methodology.",
@@ -66,7 +60,7 @@ const deepDiveCards = [
     bg: "#FEF3C7",
   },
   {
-    icon: "🔌",
+    iconSrc: pixelIcons.rocket,
     title: "Integration & Deployment",
     titleTh: "การเชื่อมต่อ และ Deployment",
     description: "MCP-native integration with multi-provider AI support and deployment infrastructure.",
@@ -80,7 +74,7 @@ const deepDiveCards = [
 export default function HomePage() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname) || "en"
-  const localePrefix = locale === "th" ? "/th" : "/en"
+  const localePrefix = getLocalePrefix(locale)
   const { language } = useLanguage()
 
   return (
@@ -89,7 +83,7 @@ export default function HomePage() {
       <HeroSection />
 
       <h1 className="sr-only">
-        {language === "en"
+        {locale === "en"
           ? "RCT Ecosystem - Intent-Centric AI Operating System"
           : "RCT Ecosystem - ระบบปฏิบัติการ AI ที่เน้น Intent"}
       </h1>
@@ -101,7 +95,7 @@ export default function HomePage() {
           </h2>
           <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
             <p>
-              {language === "en"
+              {locale === "en"
                 ? <>
                     RCT Ecosystem is the world&apos;s first <TechTooltip term="Constitutional AI" language="en">Intent-Centric AI Operating System</TechTooltip>. It moves beyond prompt engineering by understanding the outcome you are trying to create, then assembling the optimal AI pipeline to produce it.
                   </>
@@ -110,7 +104,7 @@ export default function HomePage() {
                   </>}
             </p>
             <p>
-              {language === "en"
+              {locale === "en"
                 ? <>
                     Built on the <TechTooltip term="FDIA" language="en">FDIA Equation</TechTooltip>, a 10-Layer cognitive architecture, and <TechTooltip term="7 Genome" language="en">7 interlocking genomes</TechTooltip>, the system delivers enterprise-grade reliability with verified outputs, persistent memory via <TechTooltip term="RCTDB" language="en">RCTDB</TechTooltip>, and orchestrated intelligence through <TechTooltip term="JITNA" language="en">JITNA</TechTooltip>.
                   </>
@@ -123,15 +117,12 @@ export default function HomePage() {
             <ArchitectMascot className="mx-auto max-w-3xl" />
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            {[
-              { stat: "41", label: language === "en" ? "Proprietary Algorithms" : "อัลกอริทึมเฉพาะ", color: "#D4A853", href: `${localePrefix}/algorithms` },
-              { stat: "99.7%", label: language === "en" ? "Accuracy Rate" : "อัตราความแม่นยำ", color: "#7B9E87", href: `${localePrefix}/solutions/ai-hallucination-prevention` },
-              { stat: "10", label: language === "en" ? "Architecture Layers" : "ชั้นสถาปัตยกรรม", color: "#89B4C8", href: `${localePrefix}/architecture` },
+              {[
+              { stat: "41", label: locale === "en" ? "Proprietary Algorithms" : "อัลกอริทึมเฉพาะ", color: "#D4A853", href: `${localePrefix}/algorithms` },
+              { stat: "99.7%", label: locale === "en" ? "Accuracy Rate" : "อัตราความแม่นยำ", color: "#7B9E87", href: `${localePrefix}/solutions/ai-hallucination-prevention` },
+              { stat: "10", label: locale === "en" ? "Architecture Layers" : "ชั้นสถาปัตยกรรม", color: "#89B4C8", href: `${localePrefix}/architecture` },
             ].map((item, index) => (
               <Link key={item.label} href={item.href} className="group relative overflow-hidden rounded-xl border border-border bg-card p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
-                <div className="pointer-events-none absolute right-3 top-3 h-9 w-9 opacity-50 transition-opacity duration-200 group-hover:opacity-90">
-                  <OptimizedImage src={PIXEL_STAT_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={36} height={36} className="transition duration-200 group-hover:scale-110 group-hover:brightness-90 group-hover:contrast-125" />
-                </div>
                 <div className="mb-1 text-3xl font-bold" style={{ color: item.color }}>
                   {item.stat}
                 </div>

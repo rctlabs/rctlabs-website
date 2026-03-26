@@ -12,8 +12,9 @@ import { FileText, ArrowRight } from "lucide-react"
 import JITNAFlowchart from "@/components/diagrams/jitna-flowchart"
 import SectionHeading from "@/components/section-heading"
 import OptimizedImage from "@/components/ui/optimized-image"
+import { pixelIcons } from "@/lib/pixel-icons"
 
-const PIXEL_JITNA = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-jitna-protocol.webp"
+const PIXEL_JITNA = pixelIcons.jitna
 
 const primitives = [
   {

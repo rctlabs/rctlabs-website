@@ -10,21 +10,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { type Locale, getLocaleFromPathname, addLocaleToPathname, removeLocaleFromPathname } from "@/lib/i18n"
+import { type Locale, addLocaleToPathname, resolveLocale } from "@/lib/i18n"
 
 export function LanguageSwitcher() {
   const pathname = usePathname()
   const router = useRouter()
   const { language } = useLanguage()
 
-  const currentLocale = language
+  const currentLocale = resolveLocale(pathname, language)
 
   const switchLocale = (newLocale: Locale) => {
     if (newLocale === currentLocale) return
-    
-    const cleanPath = removeLocaleFromPathname(pathname)
-    const newPath = addLocaleToPathname(cleanPath, newLocale)
-    
+
+    const newPath = addLocaleToPathname(pathname || "/", newLocale)
+
     router.push(newPath)
   }
 

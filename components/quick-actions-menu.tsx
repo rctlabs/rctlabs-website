@@ -2,9 +2,11 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 import { Menu, Search, FileText, Mail, Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 interface QuickActionItem {
   label: string
@@ -16,7 +18,8 @@ interface QuickActionItem {
 export default function QuickActionsMenu() {
   const [open, setOpen] = useState(false)
   const { language } = useLanguage()
-  const localePrefix = language === "th" ? "/th" : "/en"
+  const pathname = usePathname()
+  const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
 
   const actions = useMemo<QuickActionItem[]>(() => [
     {
@@ -45,7 +48,7 @@ export default function QuickActionsMenu() {
   ], [language, localePrefix])
 
   return (
-    <div className="fixed bottom-36 right-4 z-[41] sm:bottom-40 sm:right-6">
+    <div className="fixed bottom-36 right-4 z-41 sm:bottom-40 sm:right-6">
       <AnimatePresence>
         {open ? (
           <motion.div

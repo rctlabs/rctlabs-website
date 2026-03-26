@@ -56,7 +56,10 @@ function getImageExtension(src: string): string | null {
   return match?.[1]?.toLowerCase() ?? null
 }
 
-function getAvifSrc(src: string): string | undefined {
+function getAvifSrc(src: string, pixelated: boolean): string | undefined {
+  if (pixelated || src.includes("/pixel-icons/") || src.includes("/images/pixel/")) {
+    return undefined
+  }
   if (src.endsWith(".webp")) return src.replace(/\.webp$/, ".avif")
   return undefined
 }
@@ -127,7 +130,7 @@ const OptimizedImage = memo(function OptimizedImage({
   }, [currentSrc, fallbackSrc, onError])
 
   const extension = getImageExtension(currentSrc)
-  const avifSrc = getAvifSrc(currentSrc)
+  const avifSrc = getAvifSrc(currentSrc, pixelated)
   const style: React.CSSProperties = {
     ...(aspectRatio ? { aspectRatio } : {}),
     ...(pixelated ? { imageRendering: "pixelated" as const } : {}),

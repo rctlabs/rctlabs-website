@@ -9,10 +9,11 @@ import { usePathname } from "next/navigation"
 import { FlaskConical, Palette, ShieldCheck, ArrowRight, Layers, Cpu, Zap } from "lucide-react"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { getLocaleFromPathname } from "@/lib/i18n"
+import { pixelIcons } from "@/lib/pixel-icons"
 
-const PIXEL_LABS = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-algorithm-gears_dbfb4610.png"
-const PIXEL_ARTENT = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-brain-icon-YV3hZvbAaJBXWEMr6T2Tnc.webp"
-const PIXEL_SIGNED = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-shield-icon-MfxsPeu6XRAKST8C3hCmf9.webp"
+const PIXEL_LABS = pixelIcons.algorithms
+const PIXEL_ARTENT = pixelIcons.brain
+const PIXEL_SIGNED = pixelIcons.shield
 
 const products = [
   {

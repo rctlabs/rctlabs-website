@@ -4,19 +4,22 @@ import Link from "next/link"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
+import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { LazyPerformanceRadarChart } from "@/components/diagrams/lazy-diagram-wrapper"
 import SectionHeading from "@/components/section-heading"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { useMounted } from "@/hooks/use-mounted"
+import { pixelIcons } from "@/lib/pixel-icons"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
-const PIXEL_METRICS = "/pixel-icons/network.svg"
+const PIXEL_METRICS = pixelIcons.network
 
 const PIXEL_ICONS = [
-  "/pixel-icons/network.svg",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-algorithm-gears_dbfb4610.png",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-architecture-layers_33ca737f.png",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-genome-dna_90dc39e4.png",
+  pixelIcons.network,
+  pixelIcons.algorithms,
+  pixelIcons.architecture,
+  pixelIcons.genome,
 ]
 
 const metrics = [
@@ -79,11 +82,12 @@ function AnimatedCounter({ target, suffix = "", reducedMotion = false }: { targe
 export default function MetricsSection() {
   const { resolvedTheme } = useTheme()
   const { language } = useLanguage()
+  const pathname = usePathname()
   const mounted = useMounted()
   const isDark = mounted && resolvedTheme === "dark"
   const prefersReducedMotion = useReducedMotion()
   const highlights = highlightsData[language as keyof typeof highlightsData] || highlightsData.en
-  const localePrefix = language === "th" ? "/th" : "/en"
+  const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
 
   return (
     <section id="metrics" aria-label="Performance Metrics" className={`py-16 md:py-24 transition-colors duration-300 ${isDark ? "bg-dark-900" : "bg-warm-cream"}`}>

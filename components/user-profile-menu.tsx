@@ -8,8 +8,10 @@
 import { useState } from "react"
 import { User, LogOut, Settings, ChevronDown } from "lucide-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { buildContactHref } from "@/lib/funnel"
+import { resolveLocale, getLocalePrefix } from "@/lib/i18n"
 
 interface UserProfileMenuProps {
   /** Future: pass user object when Supabase Auth is wired */
@@ -20,6 +22,7 @@ interface UserProfileMenuProps {
 export function UserProfileMenu({ user = null, isAuthenticated = false }: UserProfileMenuProps) {
   const [open, setOpen] = useState(false)
   const { language } = useLanguage()
+  const pathname = usePathname()
 
   const copy = language === "th"
     ? {
@@ -35,7 +38,7 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
         signOut: "Sign out",
       }
 
-  const localePrefix = language === "th" ? "/th" : "/en"
+  const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
   const contactHref = `${localePrefix}/contact`
   const accessHref = buildContactHref(language, "launch:request-access")
 

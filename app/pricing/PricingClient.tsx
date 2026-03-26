@@ -10,6 +10,7 @@ import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { buildContactHref } from "@/lib/funnel"
 import { pricingCheckoutLinks } from "@/lib/payment-links"
+import { pixelIcons } from "@/lib/pixel-icons"
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 
@@ -32,8 +33,7 @@ const tiers = [
     icon: Brain,
     color: "#7B9E87",
     popular: false,
-    pixelIcon:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-brain-icon-YV3hZvbAaJBXWEMr6T2Tnc.webp",
+    pixelIcon: pixelIcons.brain,
     features: [
       { en: "Multi-LLM Orchestration Engine", th: "Multi-LLM Orchestration Engine" },
       { en: "FDIA Equation Framework", th: "FDIA Equation Framework" },
@@ -64,8 +64,7 @@ const tiers = [
     icon: Sparkles,
     color: "#D4A853",
     popular: true,
-    pixelIcon:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-rocket-icon-oSMB9StjMFt3Nvu8bxaJcw.webp",
+    pixelIcon: pixelIcons.rocket,
     features: [
       { en: "Multi-Modal Content Generation", th: "Multi-Modal Content Generation" },
       { en: "Intent-Driven Creative Engine", th: "Intent-Driven Creative Engine" },
@@ -96,8 +95,7 @@ const tiers = [
     icon: Shield,
     color: "#89B4C8",
     popular: false,
-    pixelIcon:
-      "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-shield-icon-MfxsPeu6XRAKST8C3hCmf9.webp",
+    pixelIcon: pixelIcons.shield,
     features: [
       { en: "Cryptographic Output Verification", th: "Cryptographic Output Verification" },
       { en: "Blockchain Audit Trail", th: "Blockchain Audit Trail" },

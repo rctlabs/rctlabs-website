@@ -12,10 +12,11 @@ import {
 } from "lucide-react"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { getLocaleFromPathname } from "@/lib/i18n"
+import { pixelIcons } from "@/lib/pixel-icons"
 
-const PIXEL_SHIELD = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-shield-icon-MfxsPeu6XRAKST8C3hCmf9.webp"
-const PIXEL_BRAIN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-brain-icon-YV3hZvbAaJBXWEMr6T2Tnc.webp"
-const PIXEL_ROUTING = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-network-icon-8aUM6KhHFxaYJMNCWLXw5c.webp"
+const PIXEL_SHIELD = pixelIcons.shield
+const PIXEL_BRAIN = pixelIcons.brain
+const PIXEL_ROUTING = pixelIcons.network
 
 const solutions = [
   {

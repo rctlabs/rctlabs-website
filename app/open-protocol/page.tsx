@@ -11,8 +11,9 @@ import { getLocaleFromPathname } from "@/lib/i18n"
 import SectionHeading from "@/components/section-heading"
 import JITNAFlowchart from "@/components/diagrams/jitna-flowchart"
 import OptimizedImage from "@/components/ui/optimized-image"
+import { pixelIcons } from "@/lib/pixel-icons"
 
-const PIXEL_PROTOCOL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-jitna-protocol.webp"
+const PIXEL_PROTOCOL = pixelIcons.jitna
 
 export default function ProtocolPage() {
   const pathname = usePathname()

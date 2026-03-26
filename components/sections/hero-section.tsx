@@ -7,23 +7,21 @@ import { useRef } from "react"
 import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
 import { usePathname } from "next/navigation"
-import { getLocaleFromPathname } from "@/lib/i18n"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { useMounted } from "@/hooks/use-mounted"
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
 const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
-const PIXEL_BRAIN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-brain-icon-YV3hZvbAaJBXWEMr6T2Tnc.webp"
-const PIXEL_ARCH = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-architecture-layers_33ca737f.png"
 
 export default function HeroSection() {
   const { language, t } = useLanguage()
   const { resolvedTheme } = useTheme()
   const mounted = useMounted()
   const pathname = usePathname()
-  const locale = getLocaleFromPathname(pathname) || language
-  const localePrefix = locale === "th" ? "/th" : "/en"
+  const locale = resolveLocale(pathname, language)
+  const localePrefix = getLocalePrefix(locale)
   const heroRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(heroRef, { margin: "-100px" })
   const prefersReducedMotion = useReducedMotion()
@@ -108,17 +106,6 @@ export default function HeroSection() {
               <p className={`text-lg sm:text-xl leading-relaxed max-w-lg ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-muted" : "text-warm-secondary"}`}>
                 {t("hero.subtitle")}
               </p>
-              <div className="flex flex-wrap gap-3 pt-2">
-                {[
-                  { label: language === "en" ? "Intent-Centric" : "Intent-Centric", icon: PIXEL_BRAIN },
-                  { label: language === "en" ? "10 Layers" : "10 Layers", icon: PIXEL_ARCH },
-                ].map((item) => (
-                  <div key={item.label} className={`group inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors ${isDark ? "border-border bg-card/70 text-warm-muted hover:bg-card" : "border-warm-light-gray bg-white/70 text-warm-secondary hover:bg-white"}`}>
-                    <OptimizedImage src={item.icon} alt="" pixelated showErrorFallback={false} containerClassName="h-4 w-4" objectFit="contain" width={16} height={16} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
-                    {item.label}
-                  </div>
-                ))}
-              </div>
             </motion.div>
 
             <motion.div variants={itemVariants} className="flex flex-wrap gap-3 justify-center lg:justify-start">
@@ -173,57 +160,27 @@ export default function HeroSection() {
             className="group relative"
           >
             <div className="relative rounded-[28px] border border-border bg-white/84 p-4 shadow-[0_14px_32px_rgba(0,0,0,0.08)] sm:p-6 dark:bg-card/84">
-              <div className="pointer-events-none absolute right-5 top-5 h-10 w-10 opacity-55">
-                <OptimizedImage src={PIXEL_BRAIN} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={40} height={40} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
-              </div>
-              <div className="mb-4 text-right text-sm text-muted-foreground">
-                {language === "en" ? "Use ← → or click nodes" : "ใช้ ← → หรือคลิกที่ node"}
-              </div>
-              <LazyFDIAFlowchart />
-              <motion.div
-                initial={shouldAnimate ? { opacity: 0, y: 12 } : false}
-                animate={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
-                transition={shouldAnimate ? { delay: 0.2, duration: 0.24 } : undefined}
-                className={`absolute bottom-4 left-4 right-4 rounded-xl border p-4 z-10 ${
-                  isDark ? "bg-card/92 border-border" : "bg-white/92 border-warm-light-gray"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className={`text-xs sm:text-sm font-medium mb-0.5 ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>FDIA Framework</div>
-                          <div className={`text-sm font-bold font-mono ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
-                            F = D<sup className="text-warm-terracotta">I</sup> × A
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="h-2 w-2 rounded-full bg-warm-sage" />
-                    <span className="text-xs font-medium text-warm-sage">Active</span>
+              <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <div className={`text-xs sm:text-sm font-medium mb-0.5 ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>FDIA Framework</div>
+                  <div className={`text-sm font-bold font-mono ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+                    F = D<sup className="text-warm-terracotta">I</sup> × A
                   </div>
                 </div>
-              </motion.div>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                  <span className={`rounded-full border px-2.5 py-1 ${isDark ? "border-border bg-card/80" : "border-warm-light-gray bg-white/90"}`}>
+                    {language === "en" ? "Hover to preview" : "ชี้เพื่อพรีวิว"}
+                  </span>
+                  <span className={`rounded-full border px-2.5 py-1 ${isDark ? "border-border bg-card/80" : "border-warm-light-gray bg-white/90"}`}>
+                    {language === "en" ? "Click to pin" : "คลิกเพื่อตรึง"}
+                  </span>
+                  <span className={`rounded-full border px-2.5 py-1 ${isDark ? "border-border bg-card/80" : "border-warm-light-gray bg-white/90"}`}>
+                    {language === "en" ? "Esc to clear" : "กด Esc เพื่อล้าง"}
+                  </span>
+                </div>
+              </div>
+              <LazyFDIAFlowchart />
             </div>
-
-            <motion.div
-              animate={prefersReducedMotion || !isInView ? { y: 0 } : { y: [0, -4, 0] }}
-              transition={{ duration: 5, repeat: prefersReducedMotion || !isInView ? 0 : Infinity, ease: "easeInOut" }}
-              className={`absolute -top-2 -right-2 sm:-top-4 sm:-right-4 rounded-xl px-4 py-2.5 shadow-md border ${
-                isDark ? "bg-card border-border" : "bg-white border-warm-light-gray"
-              }`}
-            >
-              <div className={`text-xs sm:text-sm ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{language === "en" ? "Accuracy" : "ความแม่นยำ"}</div>
-              <div className="text-lg font-bold text-warm-sage">99.7%</div>
-            </motion.div>
-
-            <motion.div
-              animate={prefersReducedMotion || !isInView ? { y: 0 } : { y: [0, 3, 0] }}
-              transition={{ duration: 6, repeat: prefersReducedMotion || !isInView ? 0 : Infinity, ease: "easeInOut", delay: 1 }}
-              className={`absolute -bottom-3 -left-3 rounded-xl px-3 py-2 shadow-md border ${
-                isDark ? "bg-card border-border" : "bg-white border-warm-light-gray"
-              }`}
-            >
-              <div className={`text-xs sm:text-sm ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>Version</div>
-              <div className="text-sm font-bold text-warm-amber">v2.7.0</div>
-            </motion.div>
           </motion.div>
         </div>
 

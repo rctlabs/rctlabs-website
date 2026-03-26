@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import type { Language } from "@/components/language-provider"
 import { buildContactHref } from "@/lib/funnel"
+import { getLocalePrefix } from "@/lib/i18n"
 
 interface WhitepaperAccessFormProps {
   language: Language
@@ -74,7 +75,7 @@ function getSchema(language: Language) {
 
 export default function WhitepaperAccessForm({ language }: WhitepaperAccessFormProps) {
   const [submitted, setSubmitted] = useState(false)
-  const localePrefix = language === "th" ? "/th" : "/en"
+  const localePrefix = getLocalePrefix(language)
   const t = copy[language]
 
   const form = useForm<WhitepaperLeadValues>({

@@ -17,6 +17,7 @@ import SearchModal, { useSearchModal } from "@/components/search/search-modal"
 import { UserProfileMenu } from "@/components/user-profile-menu"
 import { KeyboardShortcutsDialog } from "@/components/keyboard-shortcuts-dialog"
 import { useMounted } from "@/hooks/use-mounted"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 const SEARCH_DATA = [
   { title: "Solutions Overview",           description: "AI solutions for enterprise",                      href: "/solutions",                              category: "Solutions" },
@@ -214,7 +215,8 @@ export function Navbar() {
   const navTextClass       = isOnDarkHero ? "text-white/90" : isDark ? "text-warm-gray/70" : "text-warm-gray"
   const navTextActiveClass = isOnDarkHero ? "text-white" : isDark ? "text-white" : "text-warm-charcoal"
 
-  const localePrefix = language === "th" ? "/th" : "/en"
+  const locale = resolveLocale(pathname, language)
+  const localePrefix = getLocalePrefix(locale)
   const localHref = (href: string) => `${localePrefix}${href}`
 
   const getLabel = (key: string) =>
@@ -384,10 +386,10 @@ export function Navbar() {
                 className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all group ${
                   isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
                 }`}
-                aria-label={language === "en" ? "Switch to Thai" : "Switch to English"}
+                aria-label={locale === "en" ? "Current language English, switch to Thai" : "Current language Thai, switch to English"}
               >
                 <Globe size={15} className="group-hover:rotate-180 transition-transform duration-500" />
-                <span>{language === "en" ? "TH" : "EN"}</span>
+                <span>{locale === "en" ? "EN → TH" : "TH → EN"}</span>
               </button>
 
               {/* Notification + Auth */}
@@ -441,7 +443,7 @@ export function Navbar() {
                     }`}
                   >
                     <Globe size={16} />
-                    <span className="text-xs">{language === "en" ? "ภาษาไทย" : "English"}</span>
+                    <span className="text-xs">{locale === "en" ? "EN → ไทย" : "ไทย → EN"}</span>
                   </button>
                 </div>
 

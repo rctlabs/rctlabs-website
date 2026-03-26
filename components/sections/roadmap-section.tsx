@@ -7,8 +7,9 @@ import { useLanguage } from "@/components/language-provider"
 import VersionTimelineGraph from "@/components/diagrams/version-timeline-graph"
 import SectionHeading from "@/components/section-heading"
 import { useMounted } from "@/hooks/use-mounted"
+import { pixelIcons } from "@/lib/pixel-icons"
 
-const PIXEL_ROCKET = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-rocket-icon-oSMB9StjMFt3Nvu8bxaJcw.webp"
+const PIXEL_ROCKET = pixelIcons.rocket
 
 const roadmapData = {
   en: [

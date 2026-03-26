@@ -38,33 +38,6 @@ export default function FDIAFlowchart() {
   const nodeR = 44
   const nodeOrder = ["data", "intent", "architect", "future"]
 
-  const touchStartX = useRef<number | null>(null)
-  const touchStartY = useRef<number | null>(null)
-
-  const handleTouchStart = (event: React.TouchEvent) => {
-    touchStartX.current = event.touches[0].clientX
-    touchStartY.current = event.touches[0].clientY
-  }
-
-  const handleTouchEnd = (event: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return
-    const dx = event.changedTouches[0].clientX - touchStartX.current
-    const dy = event.changedTouches[0].clientY - touchStartY.current
-    touchStartX.current = null
-    touchStartY.current = null
-    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return
-    const currentIndex = activeNode ? nodeOrder.indexOf(activeNode) : -1
-    if (dx < 0) {
-      const nextNode = nodeOrder[(currentIndex + 1) % nodeOrder.length]
-      setActiveNode(nextNode)
-      setAnnouncement(isEn ? `Navigated to ${nextNode} node` : `ไปที่ node ${nextNode}`)
-      return
-    }
-    const prevNode = nodeOrder[(currentIndex + nodeOrder.length - 1) % nodeOrder.length]
-    setActiveNode(prevNode)
-    setAnnouncement(isEn ? `Navigated to ${prevNode} node` : `ไปที่ node ${prevNode}`)
-  }
-
   const connections = [
     { from: "data", to: "intent", label: isEn ? "Amplify" : "ขยาย", labelPos: { x: 240, y: 130 } },
     { from: "data", to: "architect", label: isEn ? "Guide" : "กำกับ", labelPos: { x: 240, y: 275 } },
@@ -140,10 +113,13 @@ export default function FDIAFlowchart() {
     )
   }
 
+  const inspectorNode = nodes.find((node) => node.id === (activeNode || hoveredNode)) ?? null
+  const inspectorMode = activeNode ? (isEn ? "Pinned selection" : "รายละเอียดที่ตรึงไว้") : hoveredNode ? (isEn ? "Hover preview" : "พรีวิวจากการชี้") : (isEn ? "Framework overview" : "ภาพรวมของ framework")
+
   return (
     <div ref={containerRef} className="w-full" role="application" aria-label="FDIA Equation Flowchart" tabIndex={0} onKeyDown={handleKeyDown}>
       <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">{announcement}</div>
-      <div className="relative overflow-hidden rounded-2xl border border-warm-light-gray bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)]" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div className="overflow-hidden rounded-2xl border border-warm-light-gray bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
         <svg viewBox={`0 0 ${svgW} ${svgH}`} className="h-auto w-full" style={{ minHeight: "280px" }}>
           <defs>
             {nodes.map((node) => (
@@ -214,21 +190,42 @@ export default function FDIAFlowchart() {
             )
           })}
         </svg>
-
-        {activeNode && (() => {
-          const node = nodes.find((item) => item.id === activeNode)
-          if (!node) return null
-          return (
-            <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-warm-light-gray bg-white/96 px-5 py-4 shadow-[0_8px_24px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+        <div className="border-t border-warm-light-gray bg-[#FCFAF6] px-5 py-4">
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-warm-secondary">{inspectorMode}</div>
+            {activeNode ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveNode(null)
+                  setAnnouncement(isEn ? "Node deselected" : "ยกเลิกการเลือก node")
+                }}
+                className="rounded-full border border-warm-light-gray px-3 py-1 text-xs font-medium text-warm-charcoal transition-colors hover:bg-white"
+              >
+                {isEn ? "Clear selection" : "ล้างการเลือก"}
+              </button>
+            ) : null}
+          </div>
+          {inspectorNode ? (
+            <div className="min-h-[116px] rounded-xl border border-warm-light-gray bg-white px-4 py-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
               <div className="mb-1 flex items-center gap-2">
-                <span className="text-lg">{node.icon}</span>
-                <span className="font-mono text-lg font-bold" style={{ color: node.color }}>{node.letter}</span>
-                <h4 className="text-base font-semibold text-warm-charcoal">{isEn ? node.label : node.labelTh}</h4>
+                <span className="text-lg">{inspectorNode.icon}</span>
+                <span className="font-mono text-lg font-bold" style={{ color: inspectorNode.color }}>{inspectorNode.letter}</span>
+                <h4 className="text-base font-semibold text-warm-charcoal">{isEn ? inspectorNode.label : inspectorNode.labelTh}</h4>
               </div>
-              <p className="text-sm leading-relaxed text-warm-secondary">{isEn ? node.desc : node.descTh}</p>
+              <p className="text-sm leading-relaxed text-warm-secondary">{isEn ? inspectorNode.desc : inspectorNode.descTh}</p>
             </div>
-          )
-        })()}
+          ) : (
+            <div className="min-h-[116px] rounded-xl border border-dashed border-warm-light-gray bg-white px-4 py-4">
+              <div className="mb-2 text-base font-semibold text-warm-charcoal">{isEn ? "How FDIA works" : "FDIA ทำงานอย่างไร"}</div>
+              <p className="text-sm leading-relaxed text-warm-secondary">
+                {isEn
+                  ? "Hover a node to preview its role, click a node to pin the explanation, or use the arrow keys and Enter to inspect the system with the keyboard."
+                  : "ชี้ที่ node เพื่อดูบทบาทแบบพรีวิว คลิกเพื่อตรึงรายละเอียด หรือใช้ปุ่มลูกศรและ Enter เพื่อตรวจสอบระบบผ่านคีย์บอร์ด"}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
