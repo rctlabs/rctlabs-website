@@ -1,11 +1,14 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getSoftwareApplicationSchema } from "@/lib/schema"
 import ChangelogClient from "./ChangelogClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
   return createBilingualMetadata(
-    "en",
+    locale,
     "Changelog",
     "บันทึกการเปลี่ยนแปลง",
     "RCT Labs product changelog: version history, feature releases, performance improvements, and breaking changes across all RCT products and protocols.",
@@ -15,16 +18,18 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function ChangelogPage() {
+export default async function ChangelogPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Changelog", url: "https://rctlabs.co/en/changelog" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Changelog", url: `https://rctlabs.co${localePrefix}/changelog` },
   ])
 
   const softwareSchema = {
-    ...getSoftwareApplicationSchema("en"),
-    releaseNotes: "https://rctlabs.co/en/changelog",
-    softwareHelp: "https://rctlabs.co/en/docs",
+    ...getSoftwareApplicationSchema(locale),
+    releaseNotes: `https://rctlabs.co${localePrefix}/changelog`,
+    softwareHelp: `https://rctlabs.co${localePrefix}/docs`,
   }
 
   return (

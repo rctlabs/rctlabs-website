@@ -40,13 +40,25 @@ const SEARCH_DATA = [
   { title: "RCT-7 Mental Model",           description: "7-step reasoning framework",                      href: "/protocols/rct-7-mental-model",           category: "Protocols" },
   { title: "Whitepaper",                   description: "Complete technical documentation",                href: "/whitepaper",                             category: "Resources" },
   { title: "Blog",                         description: "Latest insights and updates",                     href: "/blog",                                   category: "Resources" },
+  { title: "Roadmap",                      description: "Public launch roadmap and platform milestones",   href: "/roadmap",                                category: "Resources" },
+  { title: "Methodology",                  description: "How RCT validates, reviews, and discloses trust-sensitive content", href: "/methodology", category: "Resources" },
+  { title: "Benchmark Summary",            description: "Public-safe benchmark framing and quality caveats", href: "/benchmark-summary", category: "Resources" },
+  { title: "Evaluation Hub",               description: "Compare governance, memory, routing, and buyer evaluation paths", href: "/evaluation", category: "Resources" },
+  { title: "Governance vs Copilots",       description: "Compare enterprise AI governance platforms with generic copilots", href: "/evaluation/enterprise-ai-governance-vs-generic-copilots", category: "Resources" },
+  { title: "Memory vs Context Windows",    description: "Why memory systems differ from larger context windows", href: "/evaluation/enterprise-ai-memory-vs-large-context-windows", category: "Resources" },
+  { title: "Routing vs Static Orchestration", description: "Compare dynamic AI routing with static orchestration", href: "/evaluation/dynamic-ai-routing-vs-static-orchestration", category: "Resources" },
+  { title: "Build vs Buy Governed AI",     description: "Which governed AI layers should your organization own", href: "/evaluation/build-vs-buy-governed-ai-systems", category: "Resources" },
+  { title: "AI Evaluation Checklist",      description: "Buyer questions before enterprise AI procurement", href: "/evaluation/enterprise-ai-platform-evaluation-checklist", category: "Resources" },
+  { title: "Glossary",                     description: "Definitions for constitutional AI, routing, memory, and verification", href: "/glossary", category: "Resources" },
+  { title: "Thailand Enterprise Trust",    description: "Thai institutional context for enterprise AI trust and adoption", href: "/thailand-enterprise-trust", category: "Resources" },
   { title: "Use Cases",                    description: "Real-world applications",                         href: "/use-cases",                              category: "Resources" },
   { title: "Integration Guide",            description: "API and SDK documentation",                       href: "/integration",                            category: "Resources" },
   { title: "Changelog",                    description: "Version history and updates",                     href: "/changelog",                              category: "Resources" },
   { title: "Research",                     description: "Academic research and papers",                    href: "/research",                               category: "Resources" },
   { title: "Community",                    description: "Join the RCT community",                          href: "/community",                              category: "Resources" },
-  { title: "About Us",                     description: "Our mission and story",                           href: "/about",                                  category: "Resources" },
-  { title: "FAQ",                          description: "Frequently asked questions",                      href: "/faq",                                    category: "Resources" },
+  { title: "Company",                      description: "Company overview, press, and credibility",        href: "/company",                                category: "Company" },
+  { title: "About Us",                     description: "Our mission and story",                           href: "/about",                                  category: "Company" },
+  { title: "FAQ",                          description: "Frequently asked questions",                      href: "/faq",                                    category: "Company" },
 ]
 
 const LOGO_HORIZONTAL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
@@ -85,13 +97,20 @@ const navItems: NavItem[] = [
   // Resources
   { key: "nav.whitepaper",   href: "/whitepaper",  group: "resources" },
   { key: "nav.blog",         href: "/blog",         group: "resources" },
+  { key: "nav.roadmap",      href: "/roadmap",      group: "resources" },
+  { key: "nav.methodology",  href: "/methodology",  group: "resources" },
+  { key: "nav.evaluation",   href: "/evaluation",   group: "resources" },
   { key: "nav.usecases",     href: "/use-cases",    group: "resources" },
   { key: "nav.integration",  href: "/integration",  group: "resources" },
   { key: "nav.research",     href: "/research",     group: "resources" },
   { key: "nav.community",    href: "/community",    group: "resources" },
   { key: "nav.changelog",    href: "/changelog",    group: "resources" },
-  { key: "nav.about",        href: "/about",         group: "resources" },
-  { key: "nav.faq",          href: "/faq",           group: "resources" },
+  { key: "nav.glossary",     href: "/glossary",     group: "resources" },
+  // Company
+  { key: "nav.company",      href: "/company",      group: "company", isHub: true },
+  { key: "nav.about",        href: "/about",        group: "company" },
+  { key: "nav.press",        href: "/company/press",group: "company" },
+  { key: "nav.faq",          href: "/faq",           group: "company" },
 ]
 
 const navGroups = [
@@ -100,6 +119,7 @@ const navGroups = [
   { id: "technology", labelEn: "Technology", labelTh: "เทคโนโลยี" },
   { id: "protocols",  labelEn: "Protocols",  labelTh: "โปรโตคอล" },
   { id: "resources",  labelEn: "Resources",  labelTh: "ทรัพยากร" },
+  { id: "company",    labelEn: "Company",    labelTh: "บริษัท" },
 ]
 
 // Nav item labels not covered by global translation dict
@@ -119,11 +139,17 @@ const navLabels: Record<string, { en: string; th: string }> = {
   "nav.rct7":         { en: "RCT-7 Mental Model",          th: "RCT-7 Mental Model" },
   "nav.fdia_demo":    { en: "FDIA Live Demo",               th: "FDIA Demo (live)" },
   "nav.whitepaper":   { en: "Whitepaper",                  th: "Whitepaper" },
+  "nav.roadmap":      { en: "Roadmap",                     th: "Roadmap" },
+  "nav.methodology":  { en: "Methodology",                 th: "Methodology" },
+  "nav.evaluation":   { en: "Evaluation Hub",              th: "Evaluation Hub" },
   "nav.usecases":     { en: "Use Cases",                   th: "กรณีศึกษา" },
   "nav.integration":  { en: "Integration Guide",           th: "Integration Guide" },
   "nav.research":     { en: "Research",                    th: "งานวิจัย" },
   "nav.community":    { en: "Community",                   th: "ชุมชน" },
   "nav.changelog":    { en: "Changelog",                   th: "บันทึกการเปลี่ยนแปลง" },
+  "nav.glossary":     { en: "Glossary",                    th: "Glossary" },
+  "nav.company":      { en: "Company",                     th: "บริษัท" },
+  "nav.press":        { en: "Press",                       th: "ข่าวสารองค์กร" },
 }
 
 export function Navbar() {

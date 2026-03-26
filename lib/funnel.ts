@@ -1,4 +1,4 @@
-import type { Language } from "@/components/language-provider"
+type FunnelLanguage = "en" | "th"
 
 type FunnelIntentDefinition = {
   key: string
@@ -112,7 +112,7 @@ const funnelIntentMap: Record<string, FunnelIntentDefinition> = {
   },
 }
 
-export function getFunnelIntent(language: Language, contextKey?: string | null) {
+export function getFunnelIntent(language: FunnelLanguage, contextKey?: string | null) {
   if (!contextKey) return null
   const intent = funnelIntentMap[contextKey]
   if (!intent) return null
@@ -126,6 +126,6 @@ export function getFunnelIntent(language: Language, contextKey?: string | null) 
   }
 }
 
-export function buildContactHref(language: Language, contextKey: string) {
+export function buildContactHref(language: FunnelLanguage, contextKey: string) {
   return `/${language}/contact?context=${encodeURIComponent(contextKey)}`
 }

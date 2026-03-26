@@ -1,11 +1,14 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import ProductsClient from "./ProductsClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
   return createBilingualMetadata(
-    "en",
+    locale,
     "Products",
     "ผลิตภัณฑ์",
     "RCT Labs products: RCTLabs testing platform, ARTENT AI creative engine, and Signed AI verification system. Enterprise AI solutions built on constitutional AI principles.",
@@ -15,10 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Products", url: "https://rctlabs.co/en/products" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Products", url: `https://rctlabs.co${localePrefix}/products` },
   ])
 
   const faqSchema = getFAQSchema([
@@ -39,9 +44,9 @@ export default function ProductsPage() {
     "@type": "ItemList",
     name: "RCT Labs Products",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "RCTLabs", url: "https://rctlabs.co/en/products/rctlabs" },
-      { "@type": "ListItem", position: 2, name: "ARTENT AI", url: "https://rctlabs.co/en/products/artent-ai" },
-      { "@type": "ListItem", position: 3, name: "SignedAI", url: "https://rctlabs.co/en/products/signed-ai" },
+      { "@type": "ListItem", position: 1, name: "RCTLabs", url: `https://rctlabs.co${localePrefix}/products/rctlabs` },
+      { "@type": "ListItem", position: 2, name: "ARTENT AI", url: `https://rctlabs.co${localePrefix}/products/artent-ai` },
+      { "@type": "ListItem", position: 3, name: "SignedAI", url: `https://rctlabs.co${localePrefix}/products/signed-ai` },
     ],
   }
 

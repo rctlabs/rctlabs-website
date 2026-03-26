@@ -1,11 +1,14 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import PricingClient from "./PricingClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
   return createBilingualMetadata(
-    "en",
+    locale,
     "Pricing",
     "ราคา",
     "Transparent enterprise pricing for RCT Labs. RCTLabs testing platform, ARTENT AI, and Signed AI — custom enterprise plans with no hidden fees. Contact sales for quotes.",
@@ -15,10 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Pricing", url: "https://rctlabs.co/en/pricing" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Pricing", url: `https://rctlabs.co${localePrefix}/pricing` },
   ])
 
   const faqSchema = getFAQSchema([

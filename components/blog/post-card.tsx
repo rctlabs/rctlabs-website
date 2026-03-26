@@ -4,11 +4,12 @@ import type { BlogPostMetadata } from "@/lib/blog"
 
 interface PostCardProps extends BlogPostMetadata {
   slug: string
+  localePrefix: string
 }
 
-export function PostCard({ slug, title, author, date, category, excerpt, readTime }: PostCardProps) {
+export function PostCard({ slug, title, author, date, category, excerpt, readTime, localePrefix }: PostCardProps) {
   return (
-    <Link href={`/blog/${slug}`}>
+    <Link href={`${localePrefix}/blog/${slug}`}>
       <article className="group h-full p-8 rounded-lg border border-border hover:border-accent/50 hover:shadow-lg transition bg-card">
         <div className="space-y-4 h-full flex flex-col">
           <div className="flex items-center gap-3">

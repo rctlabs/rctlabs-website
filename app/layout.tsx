@@ -7,6 +7,7 @@ import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
 import { AppProviders } from "@/components/app-providers"
 import { Toaster } from "sonner"
+import { SITE_OG_IMAGE, SITE_URL, SOCIAL_LINKS } from "@/lib/site-config"
 
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION
 const bingSiteVerification = process.env.BING_SITE_VERIFICATION
@@ -68,7 +69,7 @@ export async function generateMetadata(): Promise<Metadata> {
     : "Constitutional AI infrastructure with 10-layer architecture, multi-LLM consensus, and data sovereignty for enterprise deployment."
 
   return {
-    metadataBase: new URL("https://rctlabs.co"),
+    metadataBase: new URL(SITE_URL),
     title,
     description,
     keywords: [
@@ -93,24 +94,24 @@ export async function generateMetadata(): Promise<Metadata> {
       telephone: false,
     },
     alternates: {
-      canonical: `https://rctlabs.co/${locale}`,
+      canonical: `${SITE_URL}/${locale}`,
       languages: {
-        en: "https://rctlabs.co/en",
-        th: "https://rctlabs.co/th",
-        "x-default": "https://rctlabs.co/en",
+        en: `${SITE_URL}/en`,
+        th: `${SITE_URL}/th`,
+        "x-default": `${SITE_URL}/en`,
       },
     },
     openGraph: {
       type: "website",
       locale: locale === "th" ? "th_TH" : "en_US",
       alternateLocale: locale === "th" ? ["en_US"] : ["th_TH"],
-      url: `https://rctlabs.co/${locale}`,
+      url: `${SITE_URL}/${locale}`,
       siteName: "RCT Labs",
       title,
       description,
       images: [
         {
-          url: `https://rctlabs.co/opengraph-image?locale=${locale}`,
+          url: `${SITE_OG_IMAGE}?locale=${locale}`,
           width: 1200,
           height: 630,
           alt: title,
@@ -122,8 +123,8 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      creator: "@RCTLabs",
-      images: [`https://rctlabs.co/opengraph-image?locale=${locale}`],
+      creator: SOCIAL_LINKS.twitterHandle,
+      images: [`${SITE_OG_IMAGE}?locale=${locale}`],
     },
     robots: {
       index: true,

@@ -1,17 +1,22 @@
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
+import { getAuthorProfileById, getAuthorProfileByName } from "@/lib/authors"
 
 const postsDirectory = path.join(process.cwd(), "content/blog")
 
 export interface BlogPostMetadata {
   title: string
   author: string
+  authorId?: string
+  reviewerId?: string
   date: string
-  category: "research" | "philosophy" | "industry" | "news"
+  lastReviewed?: string
+  category: "release" | "research" | "philosophy" | "news"
   excerpt: string
   tags: string[]
   readTime: number
+  references?: string[]
 }
 
 export interface BlogPost extends BlogPostMetadata {
@@ -58,4 +63,71 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
 
 export function getBlogPostsByCategory(category: BlogPostMetadata["category"]): BlogPost[] {
   return getAllBlogPosts().filter((post) => post.category === category)
+}
+
+export function getResolvedAuthorProfile(post: BlogPost) {
+  return getAuthorProfileById(post.authorId) ?? getAuthorProfileByName(post.author)
+}
+
+export function getResolvedReviewerProfile(post: BlogPost) {
+  return getAuthorProfileById(post.reviewerId) ?? getAuthorProfileById("rct-research-desk")
+}
+
+export function getPostReviewDate(post: BlogPost) {
+  return post.lastReviewed || post.date
+}
+
+export function getPostJourney(post: BlogPost) {
+  if (post.slug.includes("memory")) {
+    return {
+      solutionHref: "/solutions/enterprise-ai-memory",
+      solutionLabel: "Explore Enterprise AI Memory",
+      authorityHref: "/benchmark-summary",
+      authorityLabel: "Review Benchmark Summary",
+      conversionContext: "pricing:rctlabs:sales",
+      conversionLabel: "Request enterprise evaluation",
+    }
+  }
+
+  if (post.slug.includes("thailand")) {
+    return {
+      solutionHref: "/solutions/ai-hallucination-prevention",
+      solutionLabel: "Explore AI Hallucination Prevention",
+      authorityHref: "/thailand-enterprise-trust",
+      authorityLabel: "Open Thailand Enterprise Trust Layer",
+      conversionContext: "whitepaper:evaluation-pack:request",
+      conversionLabel: "Request the Thailand evaluation path",
+    }
+  }
+
+  if (post.slug.includes("hallucination") || post.slug.includes("governance") || post.slug.includes("constitutional")) {
+    return {
+      solutionHref: "/solutions/ai-hallucination-prevention",
+      solutionLabel: "Explore AI Hallucination Prevention",
+      authorityHref: "/methodology",
+      authorityLabel: "Review Methodology",
+      conversionContext: "whitepaper:evaluation-pack:request",
+      conversionLabel: "Request the evaluation pack",
+    }
+  }
+
+  if (post.slug.includes("evaluate") || post.slug.includes("routing")) {
+    return {
+      solutionHref: "/solutions/dynamic-ai-routing",
+      solutionLabel: "Explore Dynamic AI Routing",
+      authorityHref: "/evaluation",
+      authorityLabel: "Open Evaluation Hub",
+      conversionContext: "pricing:rctlabs:sales",
+      conversionLabel: "Talk to the platform team",
+    }
+  }
+
+  return {
+    solutionHref: "/solutions",
+    solutionLabel: "Explore Solutions",
+    authorityHref: "/glossary",
+    authorityLabel: "Open Glossary",
+    conversionContext: "launch:request-access",
+    conversionLabel: "Request guided evaluation",
+  }
 }
