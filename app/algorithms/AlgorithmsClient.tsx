@@ -16,26 +16,26 @@ const PIXEL_ALGO = pixelIcons.algorithms
 
 const tiers = {
   en: [
-    { tier: "Tier 1", name: "Foundation", algos: "ALGO-01 to ALGO-04", desc: "Core processing primitives: intent parsing, data normalization, token optimization, and basic routing.", color: "#89B4C8" },
-    { tier: "Tier 2", name: "Analysis", algos: "ALGO-05 to ALGO-08", desc: "Sentiment analysis, entity extraction, context classification, and self-evolving pattern recognition.", color: "#7B9E87" },
-    { tier: "Tier 3", name: "Reasoning", algos: "ALGO-09 to ALGO-14", desc: "Chain-of-thought, tree-of-thought, reflexion agent, and hybrid multi-path reasoning approaches.", color: "#D4A853" },
-    { tier: "Tier 4", name: "Orchestration", algos: "ALGO-15 to ALGO-18", desc: "Multi-LLM coordination — dynamic selection and routing across GPT-4, Claude, Gemini, and custom models.", color: "#C4745B" },
-    { tier: "Tier 5", name: "Verification", algos: "ALGO-19 to ALGO-22", desc: "SignedAI consensus, hallucination detection, fact-checking, and output quality scoring.", color: "#B8A9C9" },
-    { tier: "Tier 6", name: "Memory", algos: "ALGO-23 to ALGO-26", desc: "RCTDB v2.0 integration: delta compression, semantic indexing, context retrieval, cross-session continuity.", color: "#89B4C8" },
-    { tier: "Tier 7", name: "Adaptation", algos: "ALGO-27 to ALGO-32", desc: "Adaptive learning that personalizes responses, optimizes performance, and evolves strategies from feedback.", color: "#7B9E87" },
-    { tier: "Tier 8", name: "Synthesis", algos: "ALGO-33 to ALGO-36", desc: "Cross-disciplinary synthesis combining knowledge from multiple domains to generate novel insights.", color: "#D4A853" },
-    { tier: "Tier 9", name: "Autonomy", algos: "ALGO-37 to ALGO-41", desc: "Planning Depth Expander, Constraint Satisfaction Solver, Genesis Engine, ITSR, and The Crystallizer.", color: "#C4745B" },
+    { tier: "Tier 1", name: "Foundation", algos: "Core primitives", desc: "Intent parsing, normalization, token discipline, and baseline routing used across every workflow.", color: "#89B4C8" },
+    { tier: "Tier 2", name: "Analysis", algos: "Signal extraction", desc: "Entity detection, context classification, semantic tagging, and pattern recognition for incoming tasks.", color: "#7B9E87" },
+    { tier: "Tier 3", name: "Reasoning", algos: "Decision paths", desc: "Structured reasoning strategies that expand, compare, and validate alternative solution paths.", color: "#D4A853" },
+    { tier: "Tier 4", name: "Orchestration", algos: "Model routing", desc: "Task-to-model coordination that selects the best reasoning surface for speed, cost, and quality.", color: "#C4745B" },
+    { tier: "Tier 5", name: "Verification", algos: "Trust controls", desc: "Consensus, hallucination checks, evidence scoring, and quality gates for production responses.", color: "#B8A9C9" },
+    { tier: "Tier 6", name: "Memory", algos: "Persistent context", desc: "Compression, semantic indexing, retrieval, and continuity logic that preserve context across sessions.", color: "#89B4C8" },
+    { tier: "Tier 7", name: "Adaptation", algos: "Feedback loops", desc: "System behaviors that personalize output, tune execution, and learn from repeated enterprise use cases.", color: "#7B9E87" },
+    { tier: "Tier 8", name: "Synthesis", algos: "Cross-domain fusion", desc: "Mechanisms that connect signals from multiple disciplines to produce more useful insights.", color: "#D4A853" },
+    { tier: "Tier 9", name: "Autonomy", algos: "Planning systems", desc: "Longer-horizon planning, constraint handling, and governed autonomous execution for complex workflows.", color: "#C4745B" },
   ],
   th: [
-    { tier: "Tier 1", name: "Foundation", algos: "ALGO-01 ถึง ALGO-04", desc: "Primitives การประมวลผลหลัก: Intent Parsing, Data Normalization, Token Optimization และ Basic Routing", color: "#89B4C8" },
-    { tier: "Tier 2", name: "Analysis", algos: "ALGO-05 ถึง ALGO-08", desc: "Sentiment Analysis, Entity Extraction, Context Classification และ Self-Evolving Pattern Recognition", color: "#7B9E87" },
-    { tier: "Tier 3", name: "Reasoning", algos: "ALGO-09 ถึง ALGO-14", desc: "Chain-of-Thought, Tree-of-Thought, Reflexion Agent และ Hybrid Multi-Path Reasoning", color: "#D4A853" },
-    { tier: "Tier 4", name: "Orchestration", algos: "ALGO-15 ถึง ALGO-18", desc: "การประสาน Multi-LLM — Dynamic Selection และ Routing ข้าม GPT-4, Claude, Gemini", color: "#C4745B" },
-    { tier: "Tier 5", name: "Verification", algos: "ALGO-19 ถึง ALGO-22", desc: "SignedAI Consensus, Hallucination Detection, Fact-Checking และ Output Quality Scoring", color: "#B8A9C9" },
-    { tier: "Tier 6", name: "Memory", algos: "ALGO-23 ถึง ALGO-26", desc: "RCTDB v2.0: Delta Compression, Semantic Indexing, Context Retrieval และ Cross-Session Continuity", color: "#89B4C8" },
-    { tier: "Tier 7", name: "Adaptation", algos: "ALGO-27 ถึง ALGO-32", desc: "การเรียนรู้แบบปรับตัวที่ Personalize Responses และพัฒนากลยุทธ์ตาม Feedback Loops", color: "#7B9E87" },
-    { tier: "Tier 8", name: "Synthesis", algos: "ALGO-33 ถึง ALGO-36", desc: "Synthesis ข้ามสาขาวิชาที่รวมความรู้จากหลายโดเมน สร้าง Insights ใหม่", color: "#D4A853" },
-    { tier: "Tier 9", name: "Autonomy", algos: "ALGO-37 ถึง ALGO-41", desc: "Planning Depth Expander, Constraint Solver, Genesis Engine, ITSR และ The Crystallizer", color: "#C4745B" },
+    { tier: "Tier 1", name: "Foundation", algos: "Core primitives", desc: "Primitive พื้นฐานสำหรับ intent parsing, normalization, token discipline และ baseline routing", color: "#89B4C8" },
+    { tier: "Tier 2", name: "Analysis", algos: "Signal extraction", desc: "การดึง entity, การจัดชั้น context, semantic tagging และ pattern recognition สำหรับงานที่เข้ามา", color: "#7B9E87" },
+    { tier: "Tier 3", name: "Reasoning", algos: "Decision paths", desc: "กลยุทธ์ reasoning แบบมีโครงสร้างเพื่อขยาย เปรียบเทียบ และตรวจสอบหลายแนวทางคำตอบ", color: "#D4A853" },
+    { tier: "Tier 4", name: "Orchestration", algos: "Model routing", desc: "การประสาน model ตามงานเพื่อบาลานซ์ความเร็ว ต้นทุน และคุณภาพ", color: "#C4745B" },
+    { tier: "Tier 5", name: "Verification", algos: "Trust controls", desc: "consensus, hallucination checks, evidence scoring และ quality gates สำหรับ production responses", color: "#B8A9C9" },
+    { tier: "Tier 6", name: "Memory", algos: "Persistent context", desc: "compression, semantic indexing, retrieval และ continuity logic ที่รักษาบริบทข้าม session", color: "#89B4C8" },
+    { tier: "Tier 7", name: "Adaptation", algos: "Feedback loops", desc: "behavior ที่ personalize output ปรับ execution และเรียนรู้จากการใช้งานจริงขององค์กร", color: "#7B9E87" },
+    { tier: "Tier 8", name: "Synthesis", algos: "Cross-domain fusion", desc: "กลไกที่เชื่อมสัญญาณจากหลายโดเมนเพื่อสร้าง insight ที่ใช้งานได้มากขึ้น", color: "#D4A853" },
+    { tier: "Tier 9", name: "Autonomy", algos: "Planning systems", desc: "การวางแผนระยะยาว การจัดการ constraint และการทำงานอัตโนมัติแบบมี governance", color: "#C4745B" },
   ],
 }
 
@@ -65,8 +65,8 @@ export default function AlgorithmsPage() {
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground">41 Algorithms & Analysearch</h1>
           <p className="text-lg text-muted-foreground">
             {isTh
-              ? "41 อัลกอริทึมเฉพาะที่ขับเคลื่อน Cognitive Engine พร้อม Analysearch — Hybrid Methodology ที่ผสาน Analysis และ Research"
-              : "41 proprietary algorithms powering the cognitive engine, plus Analysearch — a hybrid methodology combining analysis and research."}
+              ? "41 production algorithms ที่ขับเคลื่อน cognitive workflows พร้อม Analysearch สำหรับการวิเคราะห์และสังเคราะห์แบบหลายระดับ"
+              : "41 production algorithms powering cognitive workflows, with Analysearch providing the multi-depth analysis and synthesis layer."}
           </p>
         </div>
       </section>
@@ -106,7 +106,7 @@ export default function AlgorithmsPage() {
                   <div className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-warm-terracotta">{isTh ? "Pixel Accent" : "Pixel Accent"}</div>
                   <h3 className="text-xl font-bold text-foreground">{isTh ? "41 algorithms, one intent surface" : "41 algorithms, one intent surface"}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {isTh ? "หน้า algorithms จะไม่หยุดที่ tier cards อีกต่อไป แต่แสดงพฤติกรรมของระบบจริงผ่าน interaction, execution stages และ visual language แบบเดียวกับ Manus" : "The algorithms page now moves beyond static tier cards and shows runtime behavior through interaction, execution stages, and the same visual language used in Manus."}
+                    {isTh ? "หน้านี้แสดงให้เห็นว่า capability แต่ละกลุ่มทำงานร่วมกันอย่างไร ตั้งแต่การตีความ intent ไปจนถึงการตัดสินใจแบบมี verification" : "This page shows how the capability groups work together, from intent interpretation to verified decision support."}
                   </p>
                 </div>
               </div>
@@ -120,8 +120,8 @@ export default function AlgorithmsPage() {
         <div className="mx-auto max-w-3xl px-4 space-y-4 text-muted-foreground text-base leading-relaxed">
           <h2 className="text-2xl font-bold text-foreground">{isTh ? "สถาปัตยกรรม 9 ระดับ" : "The 9-Tier Architecture"}</h2>
           <p>{isTh
-            ? "RCT Ecosystem จัดอัลกอริทึมเฉพาะ 41 ตัวเป็น 9 ระดับความสามารถ แต่ละระดับสร้างบนความสามารถของระดับก่อนหน้า ทำให้เกิด Dynamic Routing — ระบบเลือกชุดอัลกอริทึมที่เหมาะสมโดยอัตโนมัติ"
-            : "41 proprietary algorithms organized into 9 capability tiers, each building upon the previous. This hierarchical design enables dynamic routing — the system automatically selects optimal algorithms based on task complexity."}</p>
+            ? "RCT Ecosystem จัดอัลกอริทึม 41 ตัวเป็น 9 ระดับความสามารถ โดยแต่ละระดับต่อยอดจากระดับก่อนหน้าเพื่อสร้าง routing และ reasoning ที่เหมาะกับบริบทธุรกิจต่างกัน"
+            : "The 41 algorithms are grouped into 9 capability tiers. Each tier extends the one below it so the platform can route work according to business context, depth, and risk."}</p>
         </div>
       </section>
 

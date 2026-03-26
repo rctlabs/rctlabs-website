@@ -43,10 +43,10 @@ const dimensions = [
 ]
 
 const stats = [
-  { value: "79%", label: "Delta Compression", color: "#7B9E87" },
-  { value: "3", label: "Database Layers", color: "#D4A853" },
-  { value: "8D", label: "Schema Dimensions", color: "#C4745B" },
-  { value: "∞", label: "Session Persistence", color: "#89B4C8" },
+  { value: "74%", label: "Delta Compression", color: "#7B9E87" },
+  { value: "3", label: "Memory Layers", color: "#D4A853" },
+  { value: "8D", label: "Context Dimensions", color: "#C4745B" },
+  { value: "24/7", label: "Cross-Session Recall", color: "#89B4C8" },
 ]
 
 export default function EnterpriseAIMemoryPage() {
@@ -90,8 +90,8 @@ export default function EnterpriseAIMemoryPage() {
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-10" style={{ color: textSecondary }}>
               {isEn
-                ? "Overcome context window limits with RCTDB v2.0 — hybrid 3-layer database with 8-dimensional schema, 79% delta compression, and infinite session persistence."
-                : "ก้าวข้าม Context Window ด้วย RCTDB v2.0 — ฐานข้อมูล Hybrid 3 ชั้นพร้อม Schema 8 มิติ, Delta Compression 79% และ Session Persistence อนันต์"}
+                ? "Extend enterprise AI beyond the context window with a persistent memory stack that combines hybrid storage, governed recall, and 74% delta compression."
+                : "ขยายศักยภาพ AI องค์กรให้เกินข้อจำกัดของ context window ด้วย persistent memory stack ที่รวม hybrid storage, governed recall และ delta compression 74%"}
             </motion.p>
             {/* Stats */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
@@ -116,18 +116,18 @@ export default function EnterpriseAIMemoryPage() {
             <div className="space-y-4 text-base leading-relaxed" style={{ color: textSecondary }}>
               <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 {isEn
-                  ? "RCTDB v2.0 is the RCT Ecosystem's answer to the most fundamental limitation in modern AI: the context window bottleneck. While traditional LLMs lose all context between sessions, RCTDB provides a persistent, 8-dimensional memory layer that grows smarter with every interaction."
-                  : "RCTDB v2.0 คือคำตอบของ RCT Ecosystem ต่อข้อจำกัดพื้นฐานที่สุดใน AI สมัยใหม่: คอขวด Context Window ในขณะที่ LLMs แบบดั้งเดิมสูญเสียบริบทระหว่าง Sessions RCTDB ให้ Memory Layer ถาวร 8 มิติที่ฉลาดขึ้นทุกการโต้ตอบ"}
+                  ? "RCTDB v2.0 addresses a core enterprise AI limitation: important context should survive beyond a single prompt or session. The platform keeps useful operational memory available for future workflows without forcing teams to restate everything from scratch."
+                  : "RCTDB v2.0 แก้ข้อจำกัดสำคัญของ AI ระดับองค์กร: บริบทที่สำคัญควรอยู่รอดเกินกว่าหนึ่ง prompt หรือหนึ่ง session ระบบจึงรักษา operational memory ที่นำกลับมาใช้กับ workflow ถัดไปได้โดยไม่ต้องให้ทีมเริ่มอธิบายใหม่ทุกครั้ง"}
               </motion.p>
               <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
                 {isEn
-                  ? "The hybrid 3-layer architecture combines Vector storage for semantic search, Graph storage for relationship mapping, and SQL storage for structured metadata — enabling queries that no single database type can handle."
-                  : "สถาปัตยกรรม Hybrid 3 ชั้นรวม Vector Storage สำหรับ Semantic Search, Graph Storage สำหรับ Relationship Mapping และ SQL Storage สำหรับ Structured Metadata — ทำ Query ที่ฐานข้อมูลชนิดเดียวทำไม่ได้"}
+                  ? "The memory stack blends semantic, relational, and structured storage so retrieval can remain accurate, explainable, and practical for production systems."
+                  : "memory stack นี้ผสาน storage เชิง semantic, relational และ structured เข้าด้วยกัน เพื่อให้ retrieval มีทั้งความแม่นยำ อธิบายได้ และใช้งานได้จริงในระบบ production"}
               </motion.p>
               <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
                 {isEn
-                  ? "With 79% delta compression, RCTDB stores more data in less space while maintaining full fidelity — and the 8-dimensional schema captures Content, Context, Intent, Temporal, Relational, Confidence, Source, and Evolution metadata for every piece of information."
-                  : "ด้วย Delta Compression 79% RCTDB จัดเก็บข้อมูลมากขึ้นในพื้นที่น้อยลง และ Schema 8 มิติจับ Content, Context, Intent, Temporal, Relational, Confidence, Source และ Evolution metadata สำหรับข้อมูลทุกชิ้น"}
+                  ? "Delta compression reduces storage load by 74% on representative workloads, while the context schema keeps enough structure for governed recall, provenance, and enterprise-grade continuity."
+                  : "delta compression ลดภาระการจัดเก็บลง 74% ใน representative workloads ขณะที่ context schema ยังเก็บโครงสร้างที่เพียงพอสำหรับ governed recall, provenance และความต่อเนื่องระดับองค์กร"}
               </motion.p>
             </div>
           </div>
@@ -138,13 +138,13 @@ export default function EnterpriseAIMemoryPage() {
           <div className="max-w-5xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
-                {isEn ? "3-Layer " : "สถาปัตยกรรม "}
-                <span style={{ color: "#7B9E87" }}>{isEn ? "Hybrid Architecture" : "Hybrid 3 ชั้น"}</span>
+                {isEn ? "Multi-Layer " : "สถาปัตยกรรม "}
+                <span style={{ color: "#7B9E87" }}>{isEn ? "Memory Architecture" : "หน่วยความจำหลายชั้น"}</span>
               </h2>
               <p className="text-base max-w-2xl mx-auto" style={{ color: textSecondary }}>
                 {isEn
-                  ? "RCTDB v2.0 combines three complementary database paradigms into a unified memory system."
-                  : "RCTDB v2.0 รวม 3 รูปแบบฐานข้อมูลที่เสริมกันเป็นระบบหน่วยความจำเดียว"}
+                  ? "RCTDB v2.0 combines complementary storage paradigms into a single enterprise memory system."
+                  : "RCTDB v2.0 รวม storage paradigms ที่เสริมกันเป็นระบบหน่วยความจำองค์กรเดียว"}
               </p>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -171,13 +171,13 @@ export default function EnterpriseAIMemoryPage() {
           <div className="max-w-5xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
-                <span style={{ color: "#D4A853" }}>8-Dimensional</span>
-                {isEn ? " Schema" : " Schema"}
+                <span style={{ color: "#D4A853" }}>{isEn ? "Context" : "Context"}</span>
+                {isEn ? " Dimensions" : " Dimensions"}
               </h2>
               <p className="text-base max-w-2xl mx-auto" style={{ color: textSecondary }}>
                 {isEn
-                  ? "Every piece of data is stored with 8 dimensions of metadata — enabling rich contextual retrieval far beyond keyword matching."
-                  : "ข้อมูลทุกชิ้นถูกจัดเก็บพร้อม Metadata 8 มิติ — เปิดใช้งาน Contextual Retrieval ที่ก้าวไกลกว่า Keyword Matching ธรรมดา"}
+                  ? "Each memory item carries structured context that helps retrieval go beyond keyword matching and remain useful in real enterprise workflows."
+                  : "ข้อมูลความจำแต่ละชิ้นมาพร้อม context ที่มีโครงสร้าง ช่วยให้ retrieval ไปได้ไกลกว่า keyword matching และยังใช้งานได้จริงใน workflow ขององค์กร"}
               </p>
             </motion.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

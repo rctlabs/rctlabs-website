@@ -104,7 +104,7 @@ export default async function PressPage() {
     { label: "Core Positioning", value: "Constitutional AI Operating System" },
     { label: "Architecture", value: "10 Layers" },
     { label: "Algorithms", value: "41 production algorithms" },
-    { label: "Validation Coverage", value: "3,765 tests" },
+    { label: "Validation Coverage", value: "4,849 tests" },
     { label: "Hallucination Benchmark", value: "0.3%" },
     { label: "Uptime", value: "99.98%" },
   ]

@@ -36,7 +36,7 @@ export default function HeroSection() {
     { value: "41", label: t("hero.stat.algorithms"), icon: Brain },
     { value: "10", label: t("hero.stat.layers"), icon: Layers },
     { value: "7", label: t("hero.stat.genomes"), icon: Dna },
-    { value: "99.9%", label: t("hero.stat.uptime"), icon: Zap },
+    { value: "99.98%", label: t("hero.stat.uptime"), icon: Zap },
   ]
 
   const containerVariants = {

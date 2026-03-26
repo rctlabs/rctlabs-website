@@ -14,6 +14,79 @@ import { pixelIcons } from "@/lib/pixel-icons"
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 
+const subscriptionPlans = [
+  {
+    nameEn: "Free",
+    nameTh: "Free",
+    priceEn: "$0",
+    priceTh: "$0",
+    periodEn: "/month",
+    periodTh: "/เดือน",
+    descriptionEn: "For learning, evaluation, and early exploration.",
+    descriptionTh: "สำหรับการเรียนรู้ ประเมินระบบ และทดลองใช้งานระยะแรก",
+    featuresEn: ["50 templates", "1K tokens", "Entry access"],
+    featuresTh: ["50 เทมเพลต", "1K tokens", "สิทธิ์เริ่มต้น"],
+    accent: "#89B4C8",
+    popular: false,
+  },
+  {
+    nameEn: "Starter",
+    nameTh: "Starter",
+    priceEn: "$14.99",
+    priceTh: "$14.99",
+    periodEn: "/month",
+    periodTh: "/เดือน",
+    descriptionEn: "For individuals and small teams validating workflows.",
+    descriptionTh: "สำหรับบุคคลหรือทีมเล็กที่กำลังตรวจสอบ workflow",
+    featuresEn: ["100 templates", "5K tokens", "2 LLMs"],
+    featuresTh: ["100 เทมเพลต", "5K tokens", "2 LLMs"],
+    accent: "#7B9E87",
+    popular: false,
+  },
+  {
+    nameEn: "Pro",
+    nameTh: "Pro",
+    priceEn: "$39.99",
+    priceTh: "$39.99",
+    periodEn: "/month",
+    periodTh: "/เดือน",
+    descriptionEn: "Best fit for professional teams using consensus workflows.",
+    descriptionTh: "เหมาะที่สุดสำหรับทีมมืออาชีพที่ใช้ consensus workflow",
+    featuresEn: ["150+ templates", "25K tokens", "Multi-LLM consensus"],
+    featuresTh: ["150+ เทมเพลต", "25K tokens", "Multi-LLM consensus"],
+    accent: "#D4A853",
+    popular: true,
+  },
+  {
+    nameEn: "Business",
+    nameTh: "Business",
+    priceEn: "$99.99",
+    priceTh: "$99.99",
+    periodEn: "/month",
+    periodTh: "/เดือน",
+    descriptionEn: "For growing businesses that need white-label and integration support.",
+    descriptionTh: "สำหรับธุรกิจที่ต้องการ white-label และการเชื่อมต่อเพิ่มเติม",
+    featuresEn: ["Unlimited usage bands", "White-label", "Custom integrations"],
+    featuresTh: ["ระดับใช้งานไม่จำกัด", "White-label", "Custom integrations"],
+    accent: "#C4745B",
+    popular: false,
+  },
+  {
+    nameEn: "Enterprise",
+    nameTh: "Enterprise",
+    priceEn: "Custom",
+    priceTh: "กำหนดเอง",
+    periodEn: "plan",
+    periodTh: "แพ็กเกจ",
+    descriptionEn: "Private infrastructure, compliance, and dedicated support.",
+    descriptionTh: "Private infrastructure, compliance และทีม support เฉพาะ",
+    featuresEn: ["Private deployment", "Custom SLA", "Dedicated team"],
+    featuresTh: ["Private deployment", "Custom SLA", "ทีมเฉพาะ"],
+    accent: "#B8A9C9",
+    popular: false,
+  },
+]
+
 /* ─── PRICING TIERS ────────────────────────────────────────────────── */
 const tiers = [
   {
@@ -39,12 +112,12 @@ const tiers = [
       { en: "FDIA Equation Framework", th: "FDIA Equation Framework" },
       { en: "10-Layer Cognitive Architecture", th: "10-Layer Cognitive Architecture" },
       { en: "7 Genome Subsystems", th: "7 Genome Subsystems" },
-      { en: "41 Proprietary Algorithms", th: "41 Proprietary Algorithms" },
+      { en: "Production Algorithm Engine", th: "Production Algorithm Engine" },
       { en: "Analysearch Methodology", th: "Analysearch Methodology" },
       { en: "Custom Model Training", th: "Custom Model Training" },
       { en: "Dedicated Support Team", th: "ทีม Support เฉพาะ" },
       { en: "On-premise Deployment", th: "On-premise Deployment" },
-      { en: "SLA 99.9% Uptime", th: "SLA 99.9% Uptime" },
+      { en: "SLA 99.98% Uptime", th: "SLA 99.98% Uptime" },
     ],
   },
   {
@@ -196,9 +269,58 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* ── Pricing Cards ────────────────────────────────────────────── */}
+      <section className="pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-300 mx-auto">
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-warm-charcoal dark:text-warm-light-gray">
+              {isTh ? "แผนสมาชิกที่เผยแพร่สาธารณะ" : "Public Subscription Tiers"}
+            </h2>
+            <p className="mt-3 text-sm max-w-2xl mx-auto text-warm-gray dark:text-[#888]">
+              {isTh
+                ? "โครงสร้างราคาสำหรับการประเมินและเริ่มใช้งาน ก่อนขยายไปสู่ deployment ระดับองค์กร"
+                : "Commercial entry points for evaluation and early production adoption before moving into enterprise deployment."}
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            {subscriptionPlans.map((plan) => (
+              <div key={plan.nameEn} className={`rounded-2xl border p-5 ${plan.popular ? "border-warm-amber/40 bg-white ring-1 ring-warm-amber/20 dark:bg-[#1E1E1E]" : "border-warm-light-gray bg-white dark:border-[#2A2A2A] dark:bg-[#1E1E1E]"}`}>
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="text-base font-bold text-warm-charcoal dark:text-warm-light-gray">{isTh ? plan.nameTh : plan.nameEn}</h3>
+                  {plan.popular ? <span className="rounded-full bg-warm-amber px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">{isTh ? "แนะนำ" : "Popular"}</span> : null}
+                </div>
+                <p className="mt-2 text-sm text-warm-gray dark:text-[#888]">{isTh ? plan.descriptionTh : plan.descriptionEn}</p>
+                <div className="mt-4 flex items-end gap-1">
+                  <div className="text-3xl font-bold font-display" style={{ color: plan.accent }}>{isTh ? plan.priceTh : plan.priceEn}</div>
+                  <div className="pb-1 text-xs text-[#999] dark:text-[#666]">{isTh ? plan.periodTh : plan.periodEn}</div>
+                </div>
+                <ul className="mt-4 space-y-2">
+                  {(isTh ? plan.featuresTh : plan.featuresEn).map((feature) => (
+                    <li key={feature} className="flex items-start gap-2 text-xs text-[#4A4A4A] dark:text-[#AAA]">
+                      <Check size={14} className="mt-0.5 shrink-0" style={{ color: plan.accent }} />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Product Suites ───────────────────────────────────────────── */}
       <section className="pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-300 mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="max-w-300 mx-auto">
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-warm-charcoal dark:text-warm-light-gray">
+              {isTh ? "ชุดผลิตภัณฑ์สำหรับองค์กร" : "Enterprise Product Suites"}
+            </h2>
+            <p className="mt-3 text-sm max-w-2xl mx-auto text-warm-gray dark:text-[#888]">
+              {isTh
+                ? "เมื่อทีมของคุณผ่านช่วงประเมินแล้ว ให้เลือก product suite ที่ตรงกับ use case, governance และรูปแบบ deployment"
+                : "Once your team moves beyond evaluation, choose the product suite that fits your use case, governance model, and deployment needs."}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {tiers.map((tier, i) => {
             const Icon = tier.icon
             const paymentLink = pricingCheckoutLinks[tier.id as keyof typeof pricingCheckoutLinks]
@@ -318,6 +440,7 @@ export default function PricingPage() {
               </motion.div>
             )
           })}
+          </div>
         </div>
       </section>
 

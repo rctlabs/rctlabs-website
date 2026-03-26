@@ -193,7 +193,7 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
       >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <p className="text-3xl font-bold text-accent">3,765</p>
+            <p className="text-3xl font-bold text-accent">4,849</p>
             <p className="text-sm text-muted-foreground">{t("Tests Passing", "การทดสอบผ่าน")}</p>
           </div>
           <div>
@@ -201,7 +201,7 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
             <p className="text-sm text-muted-foreground">{t("Algorithms", "อัลกอริทึม")}</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-accent">52</p>
+            <p className="text-3xl font-bold text-accent">62</p>
             <p className="text-sm text-muted-foreground">{t("Microservices", "ไมโครเซอร์วิส")}</p>
           </div>
           <div>

@@ -5,8 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider, type Language } from "@/components/language-provider"
 import { useEffect, useState, type ReactNode } from "react"
 
-const FloatingAI = dynamic(
-  () => import("@/components/floating-ai").then((module) => module.FloatingAI),
+const FloatingAIComingSoon = dynamic(
+  () => import("@/components/floating-ai-coming-soon").then((module) => module.FloatingAIComingSoon),
   { ssr: false, loading: () => null },
 )
 
@@ -55,7 +55,7 @@ function DeferredFloatingAI() {
     }
   }, [shouldRender])
 
-  return shouldRender ? <FloatingAI /> : null
+  return shouldRender ? <FloatingAIComingSoon /> : null
 }
 
 interface AppProvidersProps {

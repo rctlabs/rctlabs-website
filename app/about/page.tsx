@@ -17,8 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
     "About RCT Labs — Origin Story & The Architect",
     "เกี่ยวกับ RCT Labs — เรื่องราวต้นกำเนิดและ The Architect",
     // Lengthened meta descriptions for SEO (150-160 chars)
-    "RCT Labs: Solo architect from Khlong Toei, Bangkok, built a Constitutional AI OS with 41 algorithms, 7 Genomes, 2,210 tests, and 0.3% hallucination rate. Discover the real story behind FDIA, JITNA, and the 7 Genome system.",
-    "RCT Labs: สร้างโดย Solo Architect จากคลองเตย กรุงเทพฯ — 41 อัลกอริทึม, 7 Genome, 2,210 เทสต์, Hallucination 0.3%. ค้นพบเรื่องจริงเบื้องหลัง FDIA, JITNA และระบบ 7 Genome",
+    "RCT Labs: Solo architect from Khlong Toei, Bangkok, built a Constitutional AI OS with 41 algorithms, 7 Genomes, 4,849 tests, and 0.3% hallucination rate. Discover the real story behind FDIA, JITNA, and the 7 Genome system.",
+    "RCT Labs: สร้างโดย Solo Architect จากคลองเตย กรุงเทพฯ — 41 อัลกอริทึม, 7 Genome, 4,849 เทสต์, Hallucination 0.3%. ค้นพบเรื่องจริงเบื้องหลัง FDIA, JITNA และระบบ 7 Genome",
     "/about",
     ["AI research", "intent-driven AI", "FDIA equation", "Constitutional AI", "Thailand AI", "RCT Labs founder", "Ittirit Saengow"]
   )
@@ -111,9 +111,31 @@ export default async function AboutPage() {
     { value: "41", label: isTh ? "Algorithms" : "Algorithms" },
     { value: "10", label: isTh ? "Layers" : "Layers" },
     { value: "7", label: isTh ? "Genomes" : "Genomes" },
-    { value: "2,210", label: isTh ? "Tests ผ่าน" : "Tests Passing" },
+    { value: "4,849", label: isTh ? "Tests ผ่าน" : "Tests Passing" },
+    { value: "62", label: "Microservices" },
     { value: "0.3%", label: isTh ? "Hallucination Rate" : "Hallucination Rate" },
     { value: "99.98%", label: isTh ? "Uptime SLA" : "Uptime SLA" },
+  ]
+
+  const platformHighlights = [
+    {
+      title: isTh ? "Linux for AI Agents" : "Linux for AI Agents",
+      description: isTh
+        ? "RCT ถูกวางตำแหน่งเป็น Constitutional AI Operating System ที่เชื่อม architecture, orchestration, verification, memory และ governance เข้าเป็นระบบเดียว"
+        : "RCT is positioned as a Constitutional AI Operating System that unifies architecture, orchestration, verification, memory, and governance into one operational layer.",
+    },
+    {
+      title: isTh ? "Intent Loop + Memory" : "Intent Loop + Memory",
+      description: isTh
+        ? "ระบบ warm recall ต่ำกว่า 50ms และลดต้นทุน 60-75% จากการวนกลับมาใช้ memory เดิมก่อนคำนวณใหม่"
+        : "Warm recall under 50ms and 60-75% cost reduction by routing through memory before recomputation.",
+    },
+    {
+      title: isTh ? "Delta Engine Compression" : "Delta Engine Compression",
+      description: isTh
+        ? "เก็บเฉพาะ state ที่เปลี่ยนแปลง ลดภาระหน่วยความจำเฉลี่ย 74% พร้อม reconstruction ระดับต่ำกว่า 1ms"
+        : "Stores only changed state, reducing memory overhead by 74% on average with sub-millisecond reconstruction.",
+    },
   ]
 
   const genomes = [
@@ -122,7 +144,7 @@ export default async function AboutPage() {
     { id: 3, name: "JITNA Genome", role: "THE LANGUAGE", desc: isTh ? "Just-In-Time Nodal Assembly — ภาษาสากลของ Intent" : "Just-In-Time Nodal Assembly — the universal language of intent.", color: "bg-warm-sky/20 text-warm-sky border-warm-sky/30" },
     { id: 4, name: "RCT Codex Genome", role: "THE CONSTITUTION", desc: isTh ? "10 Codices พื้นฐาน — กรอบรัฐธรรมนูญของระบบ" : "10 foundational codices — the constitutional framework of the system.", color: "bg-warm-sage/20 text-warm-sage border-warm-sage/30" },
     { id: 5, name: "SignedAI Genome", role: "THE VERIFICATION", desc: isTh ? "Multi-LLM Consensus Engine พร้อม 8D Quality Scoring" : "Multi-LLM consensus engine with 8D quality scoring.", color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
-    { id: 6, name: "Vault-1010 Genome", role: "THE MEMORY", desc: isTh ? "Knowledge Vault 1,010+ ไฟล์ พร้อม 8-Dimensional Universal Schema" : "1,010+ file knowledge vault with 8-dimensional universal schema.", color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
+    { id: 6, name: "Vault Genome", role: "THE MEMORY", desc: isTh ? "ชั้นหน่วยความจำถาวรพร้อม schema เชิงบริบทหลายมิติ" : "Persistent memory layer with multi-dimensional contextual schema.", color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
     { id: 7, name: "RCT-7 Genome", role: "THE IMPROVEMENT", desc: isTh ? "วงจรปรับปรุงต่อเนื่องที่เชื่อมทุก Genome กลับสู่จุดเริ่มต้น" : "Continuous improvement cycle connecting all genomes back to the beginning.", color: "bg-green-500/20 text-green-400 border-green-500/30" },
   ]
 
@@ -141,13 +163,14 @@ export default async function AboutPage() {
     { version: "v5.0", date: isTh ? "ม.ค. 2026" : "Jan 2026", title: "Genome Edition", desc: isTh ? "Complete Architect Attribution, 7 Genome Layer Integration, 520 Test Framework" : "Complete architect attribution, 7 Genome Layer integration, 520 test framework" },
     { version: "v7.0", date: isTh ? "ม.ค. 2026" : "Jan 2026", title: "Complete Ecosystem", desc: isTh ? "41 Algorithms, 427 Test Functions, 500K+ Property-based Examples, Intent Loop Engine" : "41 algorithms, 427 test functions, 500K+ property-based examples, Intent Loop Engine" },
     { version: "v8.0", date: isTh ? "ก.พ. 2026" : "Feb 2026", title: "Open Standard", desc: isTh ? "JITNA RFC-001 Open Protocol, RCTDB v2.0 Universal Infrastructure, Apache 2.0 License" : "JITNA RFC-001 open protocol, RCTDB v2.0 universal infrastructure, Apache 2.0 license" },
+    { version: "v5.4.5", date: isTh ? "มี.ค. 2026" : "Mar 2026", title: isTh ? "Production Ready" : "Production Ready", desc: isTh ? "4,849 tests ผ่าน, 62 microservices, Hallucination 0.3%, Full Suite Green" : "4,849 tests passing, 62 microservices, 0.3% hallucination, Full Suite Green" },
   ]
 
   const shockItems = [
     { label: "Language Paradox", value: isTh ? "ไม่ได้ใช้ภาษาอังกฤษเป็นหลัก — แต่สร้างภาษา Intent สากล (JITNA)" : "Doesn't primarily use English — yet created a universal intent language (JITNA)" },
     { label: "Resource Paradox", value: isTh ? "สร้าง AI-grade System ผ่านมือถือ Android เครื่องเดียว" : "Built an AI-grade system through a single Android mobile phone" },
-    { label: "Constitution Shift", value: isTh ? "จากผู้ใช้ AI → ผู้บัญญัติกฎหมาย AI (The 9 Codex)" : "From AI user → AI lawmaker (The 9 Codex)" },
-    { label: "Scale Achievement", value: isTh ? "500,200+ Property-based Test Examples, 2,210 Tests ผ่าน 100%" : "500,200+ property-based test examples, 2,210 tests passing at 100%" },
+    { label: "Constitution Shift", value: isTh ? "จากผู้ใช้ AI → ผู้กำหนดกรอบ Constitutional AI ของตนเอง" : "From AI user to defining an original Constitutional AI framework" },
+    { label: "Scale Achievement", value: isTh ? "Large-scale property-based testing พร้อม 4,849 tests ผ่าน" : "Large-scale property-based testing with 4,849 passing tests" },
   ]
 
   return (
@@ -178,6 +201,9 @@ export default async function AboutPage() {
               ? "RCT Ecosystem ไม่ได้เกิดจากห้องแล็บหรือกองทุนร่วมลงทุน แต่เกิดจากประสบการณ์ชีวิตจริง ความเชื่อมั่นว่ามนุษย์คนเดียวที่มี Intent ชัดเจน สามารถออกแบบระบบที่เทียบเท่ากับสิ่งที่ทีมทั้งทีมสร้าง"
               : "RCT Ecosystem was born not from a lab or a venture fund — but from lived experience, relentless curiosity, and the conviction that a single human with clear intent can design systems that rival what entire teams build."}
           </p>
+          <p className="text-sm font-medium uppercase tracking-[0.16em] text-warm-amber">
+            {isTh ? "Constitutional AI Operating System • Linux for AI Agents" : "Constitutional AI Operating System • Linux for AI Agents"}
+          </p>
         </div>
       </section>
 
@@ -192,6 +218,17 @@ export default async function AboutPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-16 md:py-20">
+        <div className="grid gap-4 md:grid-cols-3">
+          {platformHighlights.map((item) => (
+            <div key={item.title} className="rounded-2xl border border-border bg-card p-6">
+              <h2 className="text-base font-bold text-foreground">{item.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
