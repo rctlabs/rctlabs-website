@@ -72,6 +72,14 @@ export default async function EvaluationPage() {
       titleTh: "Build vs buy for governed AI systems",
       text: "The real question is not build versus buy in isolation, but which layers you want to own: governance, routing, memory, verification, and ongoing release discipline.",
       textTh: "คำถามจริงไม่ใช่ build หรือ buy แบบโดด ๆ แต่คือองค์กรต้องการถือครองชั้นไหนเองบ้าง เช่น governance, routing, memory, verification และ release discipline",
+      href: "/evaluation/build-vs-buy-governed-ai-systems",
+    },
+    {
+      title: "Enterprise AI platform evaluation checklist",
+      titleTh: "Enterprise AI platform evaluation checklist",
+      text: "A buyer-side checklist should move beyond demos into governance, memory, routing, benchmarks, disclosure boundaries, and operational maturity.",
+      textTh: "เช็กลิสต์สำหรับ buyer ควรพาออกจากการดู demo ไปสู่คำถามด้าน governance, memory, routing, benchmark, disclosure boundary และ operational maturity",
+      href: "/evaluation/enterprise-ai-platform-evaluation-checklist",
     },
   ]
 
@@ -89,7 +97,7 @@ export default async function EvaluationPage() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {comparisons.map((item) => (
             <div key={item.title} className="rounded-2xl border border-border bg-card p-6">
               <h2 className="text-xl font-semibold text-foreground">{isTh ? item.titleTh : item.title}</h2>
