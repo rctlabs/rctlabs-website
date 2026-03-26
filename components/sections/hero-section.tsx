@@ -26,7 +26,7 @@ export default function HeroSection() {
   const isInView = useInView(heroRef, { margin: "-100px" })
   const prefersReducedMotion = useReducedMotion()
   const isDark = mounted && resolvedTheme === "dark"
-  const shouldAnimate = !prefersReducedMotion
+  const shouldAnimate = !prefersReducedMotion && isInView
 
   const scrollTo = (id: string) => {
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth" })
@@ -43,13 +43,13 @@ export default function HeroSection() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.05, delayChildren: 0.02 },
+      transition: { staggerChildren: 0.035, delayChildren: 0.01 },
     },
   }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 16 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.32 } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.24 } },
   }
 
   return (
@@ -93,7 +93,7 @@ export default function HeroSection() {
             >
               <OptimizedImage src={LOGO_MARK} alt="RCT Ecosystem Logo" containerClassName="w-5 h-5" objectFit="contain" priority width={20} height={20} />
               <span className={`text-xs font-medium ${isDark ? "text-warm-muted" : "text-warm-gray"}`}>{t("hero.badge")}</span>
-              <div className={`w-1.5 h-1.5 rounded-full bg-warm-sage ${shouldAnimate ? "animate-pulse" : ""}`} />
+              <div className="h-1.5 w-1.5 rounded-full bg-warm-sage" />
             </motion.div>
 
             <motion.div variants={itemVariants} className="space-y-4">
@@ -130,23 +130,25 @@ export default function HeroSection() {
               </Link>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-6 pt-8">
+            <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3 pt-8 md:grid-cols-4">
               {stats.map((stat) => (
                 <motion.div
                   key={stat.label}
                   initial={shouldAnimate ? { opacity: 0, scale: 0.96 } : false}
                   animate={shouldAnimate ? { opacity: 1, scale: 1 } : undefined}
-                  transition={shouldAnimate ? { duration: 0.28 } : undefined}
-                  className={`flex items-center gap-3 rounded-2xl px-3 py-2 transition-all duration-300 ${isDark ? "hover:bg-card/60" : "hover:bg-white/60"}`}
+                  transition={shouldAnimate ? { duration: 0.2 } : undefined}
+                  className={`rounded-2xl border px-3 py-3 transition-all duration-300 ${isDark ? "border-border bg-card/55 hover:bg-card/75" : "border-white/60 bg-white/72 hover:bg-white/90"}`}
                 >
-                  <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shadow-sm ${
-                    isDark ? "bg-card/80 border-border" : "bg-white/80 border-warm-light-gray"
-                  }`}>
-                    <stat.icon size={18} className="text-warm-amber" />
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <div className={`flex h-8 w-8 items-center justify-center rounded-lg border shadow-sm ${
+                      isDark ? "bg-card/80 border-border" : "bg-white/90 border-warm-light-gray"
+                    }`}>
+                      <stat.icon size={15} className="text-warm-amber" />
+                    </div>
+                    <div className={`text-right text-lg font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{stat.value}</div>
                   </div>
-                  <div>
-                    <div className={`text-xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{stat.value}</div>
-                    <div className={`text-xs sm:text-sm ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{stat.label}</div>
+                  <div className={`text-[11px] font-medium leading-snug sm:text-xs ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>
+                    {stat.label}
                   </div>
                 </motion.div>
               ))}
@@ -156,7 +158,7 @@ export default function HeroSection() {
           <motion.div
             initial={shouldAnimate ? { opacity: 0, x: 24 } : false}
             animate={shouldAnimate ? { opacity: 1, x: 0 } : undefined}
-            transition={shouldAnimate ? { duration: 0.34, delay: 0.08 } : undefined}
+            transition={shouldAnimate ? { duration: 0.26, delay: 0.04 } : undefined}
             className="group relative"
           >
             <div className="relative rounded-[28px] border border-border bg-white/84 p-4 shadow-[0_14px_32px_rgba(0,0,0,0.08)] sm:p-6 dark:bg-card/84">
@@ -184,13 +186,13 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        <motion.div initial={shouldAnimate ? { opacity: 0 } : false} animate={shouldAnimate ? { opacity: 1 } : undefined} transition={shouldAnimate ? { delay: 0.36 } : undefined} className="flex justify-center mt-8 lg:mt-10">
+        <motion.div initial={shouldAnimate ? { opacity: 0 } : false} animate={shouldAnimate ? { opacity: 1 } : undefined} transition={shouldAnimate ? { delay: 0.2 } : undefined} className="mt-8 flex justify-center lg:mt-10">
           <button
             onClick={() => scrollTo("#overview")}
             className={`flex flex-col items-center gap-2 transition-colors group ${isDark ? "text-warm-subtle hover:text-warm-pale" : "text-warm-gray hover:text-warm-charcoal"}`}
           >
             <span className="text-xs font-medium uppercase tracking-widest">{language === "en" ? "Scroll to explore" : "เลื่อนเพื่อสำรวจ"}</span>
-            <motion.div animate={prefersReducedMotion ? { y: 0 } : { y: [0, 4, 0] }} transition={{ duration: 2.4, repeat: prefersReducedMotion ? 0 : Infinity, ease: "easeInOut" }}>
+            <motion.div animate={prefersReducedMotion ? { y: 0 } : { y: [0, 3, 0] }} transition={{ duration: 2.8, repeat: prefersReducedMotion ? 0 : Infinity, ease: "easeInOut" }}>
               <ArrowDown className="w-4 h-4" />
             </motion.div>
           </button>

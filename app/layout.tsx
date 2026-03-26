@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { headers } from "next/headers"
-import { Inter, JetBrains_Mono, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
+import { Inter, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
@@ -44,18 +44,11 @@ const spaceMono = Space_Mono({
   display: "swap",
 })
 
-/* Backward-compat mono */
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono-alt",
-  display: "swap",
-})
-
 /* Thai: Kanit (matches Space Grotesk geometric style) */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
   weight: ["200", "400", "500", "600", "700"],
-  variable: "--font-thai",
+  variable: "--rct-font-thai",
   display: "swap",
 })
 
@@ -188,7 +181,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${jetbrainsMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
         {/* Skip to content for accessibility */}
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded">Skip to content</a>
         <AppProviders initialLocale={locale as "en" | "th"}>

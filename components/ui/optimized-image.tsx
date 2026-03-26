@@ -82,7 +82,7 @@ const OptimizedImage = memo(function OptimizedImage({
   onLoad,
   onError,
 }: OptimizedImageProps) {
-  const shouldLoadImmediately = priority || Boolean(width && height && width <= 64 && height <= 64)
+  const shouldLoadImmediately = priority || pixelated || Boolean(width && height && width <= 64 && height <= 64)
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isInView, setIsInView] = useState(shouldLoadImmediately)
@@ -165,7 +165,7 @@ const OptimizedImage = memo(function OptimizedImage({
             alt={alt}
             width={width}
             height={height}
-            fetchPriority={priority ? "high" : shouldLoadImmediately ? "low" : "auto"}
+            fetchPriority={priority ? "high" : "auto"}
             loading={priority || shouldLoadImmediately ? "eager" : "lazy"}
             decoding="async"
             sizes={sizes}

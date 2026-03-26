@@ -343,14 +343,14 @@ export function Navbar() {
               {/* Search button */}
               <button
                 onClick={openSearch}
-                className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all ${
+                className={`hidden md:flex shrink-0 items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all ${
                   isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
                 }`}
                 aria-label="Search (Ctrl+K)"
               >
-                <Search size={15} />
-                <span className="hidden lg:inline">Search</span>
-                <kbd className={`hidden lg:inline px-1.5 py-0.5 text-[10px] rounded border ${
+                <Search size={15} className="shrink-0" />
+                <span className="hidden xl:inline whitespace-nowrap">Search</span>
+                <kbd className={`hidden xl:inline px-1.5 py-0.5 text-[10px] rounded border ${
                   isDark ? "border-[#444] text-warm-gray/50" : "border-warm-light-gray text-warm-gray/60"
                 }`}>⌘K</kbd>
               </button>
@@ -383,13 +383,13 @@ export function Navbar() {
               {/* Language switcher */}
               <button
                 onClick={toggleLanguage}
-                className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all group ${
+                className={`hidden md:flex shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all group ${
                   isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
                 }`}
                 aria-label={locale === "en" ? "Current language English, switch to Thai" : "Current language Thai, switch to English"}
               >
-                <Globe size={15} className="group-hover:rotate-180 transition-transform duration-500" />
-                <span>{locale === "en" ? "EN → TH" : "TH → EN"}</span>
+                <Globe size={15} className="shrink-0 transition-transform duration-500 group-hover:rotate-180" />
+                <span className="whitespace-nowrap">{locale === "en" ? "EN → TH" : "TH → EN"}</span>
               </button>
 
               {/* Notification + Auth */}

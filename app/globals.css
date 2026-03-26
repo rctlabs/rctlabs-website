@@ -197,8 +197,16 @@
 }
 
 @layer base {
-  * {
+  *,
+  *::before,
+  *::after {
     @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
@@ -206,6 +214,8 @@
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     text-rendering: optimizeLegibility;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
   }
 
   /* Warm Enterprise Typography */
@@ -332,12 +342,16 @@
 
 /* Improved reduced motion support for accessibility */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -545,6 +559,9 @@
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .pixel-icon:hover { transform: scale(1.12) translateY(-2px); }
 .pixel-float   { animation: pixel-float 3s ease-in-out infinite; }
