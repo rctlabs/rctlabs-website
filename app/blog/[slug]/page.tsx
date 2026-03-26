@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getBlogPostBySlug, getAllBlogPosts } from "@/lib/blog"
+import { getBlogPostBySlug, getAllBlogPosts, getPostJourney, getPostReviewDate, getResolvedAuthorProfile, getResolvedReviewerProfile } from "@/lib/blog"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
 import { Navbar } from "@/components/navbar"
@@ -10,6 +10,8 @@ import Link from "next/link"
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react"
 import { MDXContent } from "@/components/mdx-content"
 import { SITE_URL } from "@/lib/site-config"
+import { ArticleTrustSummary } from "@/components/blog/article-trust-summary"
+import { ArticleCtaPanel } from "@/components/blog/article-cta-panel"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -57,6 +59,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const allPosts = getAllBlogPosts()
+  const author = getResolvedAuthorProfile(post)
+  const reviewer = getResolvedReviewerProfile(post)
+  const reviewedDate = getPostReviewDate(post)
+  const postJourney = getPostJourney(post)
   const currentIndex = allPosts.findIndex((p) => p.slug === slug)
   const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
@@ -72,10 +78,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       : post.excerpt,
     "url": `${SITE_URL}${localePrefix}/blog/${slug}`,
     "datePublished": post.date,
+    "dateModified": reviewedDate,
     "author": {
-      "@type": "Person",
-      "name": post.author
+      "@type": author?.profileType === "organization" ? "Organization" : "Person",
+      "name": author?.name ?? post.author
     },
+    "editor": reviewer ? {
+      "@type": reviewer.profileType === "organization" ? "Organization" : "Person",
+      "name": reviewer.name,
+    } : undefined,
     "publisher": {
       "@type": "Organization",
       "name": "RCT Labs",
@@ -122,10 +133,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </div>
 
+        <ArticleTrustSummary
+          locale={locale}
+          localePrefix={localePrefix}
+          author={author}
+          reviewer={reviewer}
+          reviewedDate={reviewedDate}
+          references={post.references ?? []}
+        />
+
         {/* MDX Content */}
         <div className="prose prose-invert max-w-none mb-16">
           <MDXContent content={post.content} />
         </div>
+
+        <ArticleCtaPanel
+          locale={locale}
+          localePrefix={localePrefix}
+          solutionHref={postJourney.solutionHref}
+          solutionLabel={postJourney.solutionLabel}
+          authorityHref={postJourney.authorityHref}
+          authorityLabel={postJourney.authorityLabel}
+          conversionContext={postJourney.conversionContext}
+          conversionLabel={postJourney.conversionLabel}
+        />
 
         {/* Article Navigation */}
         <div className="border-t border-border pt-12">
@@ -166,11 +197,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <User className="w-8 h-8 text-accent/40" />
             </div>
             <div>
-              <h3 className="font-bold text-foreground">{post.author}</h3>
+              <h3 className="font-bold text-foreground">{author?.name ?? post.author}</h3>
               <p className="text-muted-foreground text-sm">
-                {post.author} is a researcher and author at RCT Labs, contributing to our mission of advancing
-                intent-driven AI.
+                {author?.bio[locale] ?? `${post.author} contributes to the public research and editorial library at RCT Labs.`}
               </p>
+              {author ? <Link href={`${localePrefix}/authors/${author.id}`} className="mt-2 inline-block text-sm text-accent hover:underline">{locale === "th" ? "ดูโปรไฟล์ผู้เขียน" : "View author profile"}</Link> : null}
             </div>
           </div>
         </div>
