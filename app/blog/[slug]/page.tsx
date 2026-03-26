@@ -2,12 +2,14 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getBlogPostBySlug, getAllBlogPosts } from "@/lib/blog"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react"
 import { MDXContent } from "@/components/mdx-content"
+import { SITE_URL } from "@/lib/site-config"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -23,9 +25,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
   const post = getBlogPostBySlug(slug)
+  const locale = await getRequestLocale()
 
   if (!post) {
-    return createBilingualMetadata("en", "Post Not Found", "ไม่พบบทความ", "The blog post you're looking for doesn't exist.", "ไม่พบบทความที่คุณกำลังค้นหา", "/blog")
+    return createBilingualMetadata(locale, "Post Not Found", "ไม่พบบทความ", "The blog post you're looking for doesn't exist.", "ไม่พบบทความที่คุณกำลังค้นหา", "/blog")
   }
 
   const metaDescription = post.excerpt && post.excerpt.length < 150
@@ -33,7 +36,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     : post.excerpt
 
   return createBilingualMetadata(
-    "en",
+    locale,
     post.title,
     post.title,
     metaDescription || post.title,
@@ -46,6 +49,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
   const post = getBlogPostBySlug(slug)
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
 
   if (!post) {
     notFound()
@@ -65,7 +70,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     "description": post.excerpt && post.excerpt.length < 150
       ? `${post.excerpt} Read the full article for practical strategies, examples, and best practices from RCT Labs.`
       : post.excerpt,
-    "url": `https://rctlabs.co/blog/${slug}`,
+    "url": `${SITE_URL}${localePrefix}/blog/${slug}`,
     "datePublished": post.date,
     "author": {
       "@type": "Person",
@@ -76,7 +81,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       "name": "RCT Labs",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://rctlabs.co/logo.png"
+        "url": `${SITE_URL}/logo.png`
       }
     }
   }
@@ -89,7 +94,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* Article */}
       <article className="mx-auto max-w-4xl px-4 py-24">
         <Button variant="ghost" size="sm" asChild className="mb-8">
-          <Link href="/blog">
+          <Link href={`${localePrefix}/blog`}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
@@ -126,7 +131,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="border-t border-border pt-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {prevPost ? (
-              <Link href={`/blog/${prevPost.slug}`} className="group">
+              <Link href={`${localePrefix}/blog/${prevPost.slug}`} className="group">
                 <div className="space-y-2">
                   <p className="text-xs font-semibold text-muted-foreground uppercase">Previous Post</p>
                   <h3 className="text-lg font-bold text-foreground group-hover:text-accent transition">
@@ -139,7 +144,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <div />
             )}
             {nextPost ? (
-              <Link href={`/blog/${nextPost.slug}`} className="group md:text-right">
+              <Link href={`${localePrefix}/blog/${nextPost.slug}`} className="group md:text-right">
                 <div className="space-y-2">
                   <p className="text-xs font-semibold text-muted-foreground uppercase">Next Post</p>
                   <h3 className="text-lg font-bold text-foreground group-hover:text-accent transition">
@@ -179,7 +184,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             .filter((p) => p.category === post.category && p.slug !== slug)
             .slice(0, 3)
             .map((relatedPost) => (
-              <Link key={relatedPost.slug} href={`/blog/${relatedPost.slug}`}>
+              <Link key={relatedPost.slug} href={`${localePrefix}/blog/${relatedPost.slug}`}>
                 <article className="group h-full p-8 rounded-lg border border-border hover:border-accent/50 hover:shadow-lg transition bg-card">
                   <div className="space-y-3">
                     <span className="inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-semibold rounded capitalize">

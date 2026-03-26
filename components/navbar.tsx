@@ -40,13 +40,15 @@ const SEARCH_DATA = [
   { title: "RCT-7 Mental Model",           description: "7-step reasoning framework",                      href: "/protocols/rct-7-mental-model",           category: "Protocols" },
   { title: "Whitepaper",                   description: "Complete technical documentation",                href: "/whitepaper",                             category: "Resources" },
   { title: "Blog",                         description: "Latest insights and updates",                     href: "/blog",                                   category: "Resources" },
+  { title: "Roadmap",                      description: "Public launch roadmap and platform milestones",   href: "/roadmap",                                category: "Resources" },
   { title: "Use Cases",                    description: "Real-world applications",                         href: "/use-cases",                              category: "Resources" },
   { title: "Integration Guide",            description: "API and SDK documentation",                       href: "/integration",                            category: "Resources" },
   { title: "Changelog",                    description: "Version history and updates",                     href: "/changelog",                              category: "Resources" },
   { title: "Research",                     description: "Academic research and papers",                    href: "/research",                               category: "Resources" },
   { title: "Community",                    description: "Join the RCT community",                          href: "/community",                              category: "Resources" },
-  { title: "About Us",                     description: "Our mission and story",                           href: "/about",                                  category: "Resources" },
-  { title: "FAQ",                          description: "Frequently asked questions",                      href: "/faq",                                    category: "Resources" },
+  { title: "Company",                      description: "Company overview, press, and credibility",        href: "/company",                                category: "Company" },
+  { title: "About Us",                     description: "Our mission and story",                           href: "/about",                                  category: "Company" },
+  { title: "FAQ",                          description: "Frequently asked questions",                      href: "/faq",                                    category: "Company" },
 ]
 
 const LOGO_HORIZONTAL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
@@ -85,13 +87,17 @@ const navItems: NavItem[] = [
   // Resources
   { key: "nav.whitepaper",   href: "/whitepaper",  group: "resources" },
   { key: "nav.blog",         href: "/blog",         group: "resources" },
+  { key: "nav.roadmap",      href: "/roadmap",      group: "resources" },
   { key: "nav.usecases",     href: "/use-cases",    group: "resources" },
   { key: "nav.integration",  href: "/integration",  group: "resources" },
   { key: "nav.research",     href: "/research",     group: "resources" },
   { key: "nav.community",    href: "/community",    group: "resources" },
   { key: "nav.changelog",    href: "/changelog",    group: "resources" },
-  { key: "nav.about",        href: "/about",         group: "resources" },
-  { key: "nav.faq",          href: "/faq",           group: "resources" },
+  // Company
+  { key: "nav.company",      href: "/company",      group: "company", isHub: true },
+  { key: "nav.about",        href: "/about",        group: "company" },
+  { key: "nav.press",        href: "/company/press",group: "company" },
+  { key: "nav.faq",          href: "/faq",           group: "company" },
 ]
 
 const navGroups = [
@@ -100,6 +106,7 @@ const navGroups = [
   { id: "technology", labelEn: "Technology", labelTh: "เทคโนโลยี" },
   { id: "protocols",  labelEn: "Protocols",  labelTh: "โปรโตคอล" },
   { id: "resources",  labelEn: "Resources",  labelTh: "ทรัพยากร" },
+  { id: "company",    labelEn: "Company",    labelTh: "บริษัท" },
 ]
 
 // Nav item labels not covered by global translation dict
@@ -119,11 +126,14 @@ const navLabels: Record<string, { en: string; th: string }> = {
   "nav.rct7":         { en: "RCT-7 Mental Model",          th: "RCT-7 Mental Model" },
   "nav.fdia_demo":    { en: "FDIA Live Demo",               th: "FDIA Demo (live)" },
   "nav.whitepaper":   { en: "Whitepaper",                  th: "Whitepaper" },
+  "nav.roadmap":      { en: "Roadmap",                     th: "Roadmap" },
   "nav.usecases":     { en: "Use Cases",                   th: "กรณีศึกษา" },
   "nav.integration":  { en: "Integration Guide",           th: "Integration Guide" },
   "nav.research":     { en: "Research",                    th: "งานวิจัย" },
   "nav.community":    { en: "Community",                   th: "ชุมชน" },
   "nav.changelog":    { en: "Changelog",                   th: "บันทึกการเปลี่ยนแปลง" },
+  "nav.company":      { en: "Company",                     th: "บริษัท" },
+  "nav.press":        { en: "Press",                       th: "ข่าวสารองค์กร" },
 }
 
 export function Navbar() {

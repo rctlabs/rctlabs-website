@@ -2,12 +2,14 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { PostCard } from "@/components/blog/post-card"
 import { Button } from "@/components/ui/button"
 import { RESEARCH_CATEGORIES } from "@/lib/constants"
 import type { BlogPost } from "@/lib/blog"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 interface BlogPageClientProps {
   posts: BlogPost[]
@@ -15,6 +17,9 @@ interface BlogPageClientProps {
 
 export function BlogPageClient({ posts }: BlogPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const pathname = usePathname()
+  const localePrefix = getLocalePrefix(resolveLocale(pathname, "en"))
+  const localHref = (href: string) => `${localePrefix}${href}`
 
   const filteredPosts = selectedCategory === "all" ? posts : posts.filter((p) => p.category === selectedCategory)
 
@@ -37,7 +42,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
         <section className="mx-auto max-w-7xl px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             <div className="md:col-span-2">
-              <Link href={`/blog/${filteredPosts[0].slug}`} className="group block h-full">
+              <Link href={localHref(`/blog/${filteredPosts[0].slug}`)} className="group block h-full">
                 <div className="bg-card border-2 border-accent rounded-lg overflow-hidden h-full flex flex-col hover:shadow-lg transition">
                   <div className="h-64 bg-gradient-to-br from-accent/20 to-secondary/20 flex items-center justify-center">
                     <div className="text-center">
@@ -108,6 +113,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
                   category={post.category}
                   excerpt={post.excerpt}
                   slug={post.slug}
+                  localePrefix={localePrefix}
                   readTime={post.readTime}
                   tags={post.tags ?? []}
                 />

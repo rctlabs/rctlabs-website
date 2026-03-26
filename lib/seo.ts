@@ -1,12 +1,15 @@
+import { SITE_DESCRIPTION, SITE_NAME, SITE_OG_IMAGE, SITE_URL, SOCIAL_LINKS } from "./site-config"
+
 export const siteConfig = {
-  name: "RCT Labs",
-  description: "Revolutionizing human-AI interaction through intent-driven design.",
-  url: "https://rctlabs.co",
-  ogImage: "https://rctlabs.co/opengraph-image",
+  name: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  url: SITE_URL,
+  ogImage: SITE_OG_IMAGE,
   links: {
-    twitter: "https://twitter.com/rctlabs",
-    github: "https://github.com/rctlabs",
-    discord: "https://discord.gg/rctlabs",
+    twitter: SOCIAL_LINKS.twitter,
+    github: SOCIAL_LINKS.github,
+    discord: SOCIAL_LINKS.discord,
+    linkedin: SOCIAL_LINKS.linkedin,
   },
 }
 

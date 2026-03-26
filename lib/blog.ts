@@ -8,7 +8,7 @@ export interface BlogPostMetadata {
   title: string
   author: string
   date: string
-  category: "research" | "philosophy" | "industry" | "news"
+  category: "release" | "research" | "philosophy" | "news"
   excerpt: string
   tags: string[]
   readTime: number

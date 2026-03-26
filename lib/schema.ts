@@ -1,5 +1,15 @@
 // Schema.org structured data for SEO
 import type { Locale } from './i18n'
+import {
+  SITE_HALLUCINATION_RATE,
+  SITE_MICROSERVICE_COUNT,
+  SITE_NAME,
+  SITE_TEST_COUNT,
+  SITE_UPTIME,
+  SITE_URL,
+  SITE_VERSION,
+  SOCIAL_LINKS,
+} from './site-config'
 
 export function getOrganizationSchema(locale: Locale) {
   return {
@@ -19,10 +29,10 @@ export function getOrganizationSchema(locale: Locale) {
       jobTitle: 'The Architect',
     },
     sameAs: [
-      'https://github.com/rct-ecosystem',
-      'https://twitter.com/rctlabs',
-      'https://linkedin.com/company/rctlabs',
-      'https://discord.gg/rctlabs',
+      SOCIAL_LINKS.github,
+      SOCIAL_LINKS.twitter,
+      SOCIAL_LINKS.linkedin,
+      SOCIAL_LINKS.discord,
     ],
     contactPoint: {
       '@type': 'ContactPoint',
@@ -100,8 +110,8 @@ export function getWebSiteSchema(locale: Locale) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'RCT Labs',
-    url: `https://rctlabs.co/${locale}`,
+    name: SITE_NAME,
+    url: `${SITE_URL}/${locale}`,
     description: locale === 'th'
       ? 'ระบบปฏิบัติการสำหรับปัญญาประดิษฐ์ที่ขับเคลื่อนด้วยเจตนา'
       : 'The Operating System for Intent-Driven Intelligence',
@@ -110,7 +120,7 @@ export function getWebSiteSchema(locale: Locale) {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `https://rctlabs.co/${locale}/search?q={search_term_string}`,
+        urlTemplate: `${SITE_URL}/${locale}/search?q={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },
@@ -134,29 +144,29 @@ export function getSoftwareApplicationSchema(locale: Locale) {
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.9',
-      ratingCount: '2210',
+      ratingCount: String(SITE_TEST_COUNT),
       bestRating: '5',
     },
     description: locale === 'th'
-      ? 'ระบบปฏิบัติการ AI แบบรัฐธรรมนูญพร้อมสถาปัตยกรรม 10 ชั้น 41 อัลกอริทึม และ Multi-LLM Consensus'
-      : 'Constitutional AI Operating System with 10-layer architecture, 41 algorithms, and Multi-LLM Consensus',
+      ? `ระบบปฏิบัติการ AI แบบรัฐธรรมนูญพร้อมสถาปัตยกรรม 10 ชั้น 62 microservices การตรวจสอบหลายโมเดล และ Hallucination ${SITE_HALLUCINATION_RATE}`
+      : `Constitutional AI Operating System with a 10-layer architecture, ${SITE_MICROSERVICE_COUNT} microservices, multi-model verification, and ${SITE_HALLUCINATION_RATE} hallucination rate.`,
     featureList: [
       '10-Layer Architecture',
-      '41 Production Algorithms',
+      `${SITE_MICROSERVICE_COUNT} Production Microservices`,
       'Multi-LLM Consensus',
       'SignedAI Verification',
       'RCTDB v2.0',
       'JITNA Protocol',
-      '99.98% Uptime SLA',
+      `${SITE_UPTIME} Uptime SLA`,
       'Bilingual Support (EN/TH)',
     ].join(', '),
-    softwareVersion: '2.7.0',
-    releaseNotes: 'https://rctlabs.co/changelog',
-    url: 'https://rctlabs.co',
+    softwareVersion: SITE_VERSION,
+    releaseNotes: `${SITE_URL}/en/changelog`,
+    url: SITE_URL,
     author: {
       '@type': 'Organization',
-      name: 'RCT Labs',
-      url: 'https://rctlabs.co',
+      name: SITE_NAME,
+      url: SITE_URL,
     },
   }
 }

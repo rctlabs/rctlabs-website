@@ -1,4 +1,7 @@
 import type { MetadataRoute } from "next"
+import { NOINDEX_ROUTE_PREFIXES, SITE_URL } from "@/lib/site-config"
+
+const disallow = [...NOINDEX_ROUTE_PREFIXES.map((prefix) => `${prefix}/`), "/_next/", "/_vercel/"]
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,14 +9,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: ["/", "/en/", "/th/"],
-        disallow: ["/api/", "/admin/", "/owner/", "/monitor/", "/analytics/", "/test-console/", "/websocket/", "/_next/", "/_vercel/"],
+        disallow,
       },
       {
         userAgent: "GPTBot",
-        disallow: "/",
+        allow: ["/", "/en/", "/th/"],
+        disallow,
       },
     ],
-    sitemap: "https://rctlabs.co/sitemap.xml",
-    host: "https://rctlabs.co",
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   }
 }

@@ -1,22 +1,29 @@
 import type { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import ResearchClient from "./ResearchClient"
 
-export const metadata: Metadata = createBilingualMetadata(
-  "en",
-  "Research & Releases — RCT Labs Architecture, Algorithms, and Protocol Papers",
-  "งานวิจัยและรีลีส — เอกสารสถาปัตยกรรม อัลกอริทึม และโปรโตคอลของ RCT Labs",
-  "Explore RCT Labs research, version history, architecture papers, algorithm releases, SignedAI verification, RCTDB memory design, and JITNA protocol specifications for enterprise constitutional AI.",
-  "สำรวจงานวิจัยและประวัติรีลีสของ RCT Labs ครอบคลุมสถาปัตยกรรม อัลกอริทึม SignedAI การออกแบบ RCTDB และข้อกำหนดโปรโตคอล JITNA สำหรับ constitutional AI ระดับองค์กร",
-  "/research",
-  ["RCT research", "constitutional AI research", "JITNA RFC", "RCTDB paper", "SignedAI verification research"]
-)
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
 
-export default function ResearchPage() {
+  return createBilingualMetadata(
+    locale,
+    "Research & Releases — RCT Labs Architecture, Algorithms, and Protocol Papers",
+    "งานวิจัยและรีลีส — เอกสารสถาปัตยกรรม อัลกอริทึม และโปรโตคอลของ RCT Labs",
+    "Explore RCT Labs research, version history, architecture papers, algorithm releases, SignedAI verification, RCTDB memory design, and JITNA protocol specifications for enterprise constitutional AI.",
+    "สำรวจงานวิจัยและประวัติรีลีสของ RCT Labs ครอบคลุมสถาปัตยกรรม อัลกอริทึม SignedAI การออกแบบ RCTDB และข้อกำหนดโปรโตคอล JITNA สำหรับ constitutional AI ระดับองค์กร",
+    "/research",
+    ["RCT research", "constitutional AI research", "JITNA RFC", "RCTDB paper", "SignedAI verification research"]
+  )
+}
+
+export default async function ResearchPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Research", url: "https://rctlabs.co/en/research" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Research", url: `https://rctlabs.co${localePrefix}/research` },
   ])
 
   const faqSchema = getFAQSchema([

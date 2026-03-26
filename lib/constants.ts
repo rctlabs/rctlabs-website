@@ -43,11 +43,11 @@ export const PHILOSOPHY_CONCEPTS = [
 ]
 
 export const RESEARCH_CATEGORIES = [
-  { id: "all", label: "All Papers", value: "all" },
-  { id: "mathematics", label: "Mathematics", value: "mathematics" },
-  { id: "ethics", label: "Ethics", value: "ethics" },
-  { id: "systems", label: "Systems", value: "systems" },
-  { id: "algorithms", label: "Algorithms", value: "algorithms" },
+  { id: "all", label: "All Posts", value: "all" },
+  { id: "release", label: "Releases", value: "release" },
+  { id: "research", label: "Research", value: "research" },
+  { id: "philosophy", label: "Philosophy", value: "philosophy" },
+  { id: "news", label: "News", value: "news" },
 ]
 
 export const COMPANY_VALUES = [

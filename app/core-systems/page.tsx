@@ -1,10 +1,13 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import CoreSystemsClient from "./CoreSystemsClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
   return createBilingualMetadata(
-    "en",
+    locale,
     "Core Systems — HexaCore, Intent Loop, Analysearch, Delta Memory",
     "Core Systems — HexaCore, Intent Loop, Analysearch, Delta Memory",
     "A public-safe overview of the four core systems behind RCT: model routing, intent continuity, multi-depth analysis, and enterprise memory.",
