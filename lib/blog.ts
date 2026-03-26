@@ -82,10 +82,21 @@ export function getPostJourney(post: BlogPost) {
     return {
       solutionHref: "/solutions/enterprise-ai-memory",
       solutionLabel: "Explore Enterprise AI Memory",
-      authorityHref: "/core-systems",
-      authorityLabel: "Review Core Systems",
+      authorityHref: "/benchmark-summary",
+      authorityLabel: "Review Benchmark Summary",
       conversionContext: "pricing:rctlabs:sales",
       conversionLabel: "Request enterprise evaluation",
+    }
+  }
+
+  if (post.slug.includes("thailand")) {
+    return {
+      solutionHref: "/solutions/ai-hallucination-prevention",
+      solutionLabel: "Explore AI Hallucination Prevention",
+      authorityHref: "/thailand-enterprise-trust",
+      authorityLabel: "Open Thailand Enterprise Trust Layer",
+      conversionContext: "whitepaper:evaluation-pack:request",
+      conversionLabel: "Request the Thailand evaluation path",
     }
   }
 
@@ -93,8 +104,8 @@ export function getPostJourney(post: BlogPost) {
     return {
       solutionHref: "/solutions/ai-hallucination-prevention",
       solutionLabel: "Explore AI Hallucination Prevention",
-      authorityHref: "/research",
-      authorityLabel: "Review Research and Releases",
+      authorityHref: "/methodology",
+      authorityLabel: "Review Methodology",
       conversionContext: "whitepaper:evaluation-pack:request",
       conversionLabel: "Request the evaluation pack",
     }
@@ -104,8 +115,8 @@ export function getPostJourney(post: BlogPost) {
     return {
       solutionHref: "/solutions/dynamic-ai-routing",
       solutionLabel: "Explore Dynamic AI Routing",
-      authorityHref: "/architecture",
-      authorityLabel: "Review Architecture",
+      authorityHref: "/evaluation",
+      authorityLabel: "Open Evaluation Hub",
       conversionContext: "pricing:rctlabs:sales",
       conversionLabel: "Talk to the platform team",
     }
@@ -114,8 +125,8 @@ export function getPostJourney(post: BlogPost) {
   return {
     solutionHref: "/solutions",
     solutionLabel: "Explore Solutions",
-    authorityHref: "/roadmap",
-    authorityLabel: "Review Roadmap",
+    authorityHref: "/glossary",
+    authorityLabel: "Open Glossary",
     conversionContext: "launch:request-access",
     conversionLabel: "Request guided evaluation",
   }
