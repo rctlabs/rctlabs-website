@@ -45,13 +45,13 @@ export default function HeroSection() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.04 },
+      transition: { staggerChildren: 0.05, delayChildren: 0.02 },
     },
   }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 16 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.42 } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.32 } },
   }
 
   return (
@@ -76,8 +76,8 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="absolute top-20 -left-40 h-125 w-125 rounded-full bg-warm-amber opacity-8 blur-[120px]" />
-      <div className="absolute bottom-20 -right-40 h-100 w-100 rounded-full bg-warm-sage opacity-6 blur-[100px]" />
+      <div className="absolute top-20 -left-32 h-104 w-104 rounded-full bg-warm-amber opacity-6 blur-[88px]" />
+      <div className="absolute bottom-20 -right-28 h-84 w-84 rounded-full bg-warm-sage opacity-5 blur-[72px]" />
 
       <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 w-full">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -89,7 +89,7 @@ export default function HeroSection() {
           >
             <motion.div
               variants={itemVariants}
-              className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full backdrop-blur-sm border shadow-sm ${
+              className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border shadow-sm ${
                 isDark ? "bg-card/80 border-border" : "bg-white/80 border-warm-light-gray"
               }`}
             >
@@ -133,7 +133,7 @@ export default function HeroSection() {
               </button>
               <Link
                 href={`${localePrefix}/demo/fdia`}
-                className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-medium backdrop-blur-sm border rounded-xl transition-all hover:shadow-sm duration-300 ${
+                className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-medium border rounded-xl transition-[background-color,box-shadow] hover:shadow-sm duration-200 ${
                   isDark
                     ? "text-warm-pale bg-card/80 border-border hover:bg-secondary"
                     : "text-warm-charcoal bg-white/80 border-warm-light-gray hover:bg-white"
@@ -152,7 +152,7 @@ export default function HeroSection() {
                   transition={shouldAnimate ? { duration: 0.28 } : undefined}
                   className={`flex items-center gap-3 rounded-2xl px-3 py-2 transition-all duration-300 ${isDark ? "hover:bg-card/60" : "hover:bg-white/60"}`}
                 >
-                  <div className={`w-10 h-10 rounded-xl backdrop-blur-sm border flex items-center justify-center shadow-sm ${
+                  <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shadow-sm ${
                     isDark ? "bg-card/80 border-border" : "bg-white/80 border-warm-light-gray"
                   }`}>
                     <stat.icon size={18} className="text-warm-amber" />
@@ -169,10 +169,10 @@ export default function HeroSection() {
           <motion.div
             initial={shouldAnimate ? { opacity: 0, x: 24 } : false}
             animate={shouldAnimate ? { opacity: 1, x: 0 } : undefined}
-            transition={shouldAnimate ? { duration: 0.45, delay: 0.12 } : undefined}
+            transition={shouldAnimate ? { duration: 0.34, delay: 0.08 } : undefined}
             className="group relative"
           >
-            <div className="relative rounded-[28px] border border-border bg-white/82 p-4 shadow-[0_20px_48px_rgba(0,0,0,0.10)] sm:p-6 dark:bg-card/82 sm:backdrop-blur-sm">
+            <div className="relative rounded-[28px] border border-border bg-white/84 p-4 shadow-[0_14px_32px_rgba(0,0,0,0.08)] sm:p-6 dark:bg-card/84">
               <div className="pointer-events-none absolute right-5 top-5 h-10 w-10 opacity-55">
                 <OptimizedImage src={PIXEL_BRAIN} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={40} height={40} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
               </div>
@@ -183,7 +183,7 @@ export default function HeroSection() {
               <motion.div
                 initial={shouldAnimate ? { opacity: 0, y: 12 } : false}
                 animate={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
-                transition={shouldAnimate ? { delay: 0.28, duration: 0.3 } : undefined}
+                transition={shouldAnimate ? { delay: 0.2, duration: 0.24 } : undefined}
                 className={`absolute bottom-4 left-4 right-4 rounded-xl border p-4 z-10 ${
                   isDark ? "bg-card/92 border-border" : "bg-white/92 border-warm-light-gray"
                 }`}
@@ -206,7 +206,7 @@ export default function HeroSection() {
             <motion.div
               animate={prefersReducedMotion || !isInView ? { y: 0 } : { y: [0, -4, 0] }}
               transition={{ duration: 5, repeat: prefersReducedMotion || !isInView ? 0 : Infinity, ease: "easeInOut" }}
-              className={`absolute -top-2 -right-2 sm:-top-4 sm:-right-4 rounded-xl px-4 py-2.5 shadow-lg border ${
+              className={`absolute -top-2 -right-2 sm:-top-4 sm:-right-4 rounded-xl px-4 py-2.5 shadow-md border ${
                 isDark ? "bg-card border-border" : "bg-white border-warm-light-gray"
               }`}
             >
@@ -217,7 +217,7 @@ export default function HeroSection() {
             <motion.div
               animate={prefersReducedMotion || !isInView ? { y: 0 } : { y: [0, 3, 0] }}
               transition={{ duration: 6, repeat: prefersReducedMotion || !isInView ? 0 : Infinity, ease: "easeInOut", delay: 1 }}
-              className={`absolute -bottom-3 -left-3 rounded-xl px-3 py-2 shadow-lg border ${
+              className={`absolute -bottom-3 -left-3 rounded-xl px-3 py-2 shadow-md border ${
                 isDark ? "bg-card border-border" : "bg-white border-warm-light-gray"
               }`}
             >

@@ -103,8 +103,79 @@ export default function SolutionsPage() {
     { value: "99.7%", labelEn: "Verified Accuracy", labelTh: "ความแม่นยำที่ตรวจสอบได้", color: "#7B9E87" },
     { value: "8", labelEn: "LLMs in Consensus", labelTh: "LLMs ในฉันทามติ", color: "#D4A853" },
   ]
+  const faqs = isTh
+    ? [
+        {
+          question: "ควรเริ่มจากโซลูชันไหนก่อน",
+          answer:
+            "ถ้าปัญหาหลักคือ hallucination, trust หรือ compliance ให้เริ่มจาก AI Hallucination Prevention ก่อน ถ้าปัญหาหลักคือ context loss หรือ workflow ที่ต้องจำต่อเนื่อง ให้เริ่มจาก Enterprise AI Memory และถ้าต้องคุมต้นทุนหรือเลือก model ให้เหมาะกับงาน ให้เริ่มจาก Dynamic AI Routing",
+        },
+        {
+          question: "โซลูชันเหล่านี้ใช้ร่วมกันได้หรือไม่",
+          answer:
+            "ได้ และจริง ๆ แล้วถูกออกแบบให้ทำงานร่วมกัน SignedAI จัดการ verification, RCTDB จัดการ memory และ routing layer จัดการ model orchestration ทำให้ได้ระบบที่เสถียรและตรวจสอบย้อนหลังได้มากกว่าใช้เครื่องมือเดี่ยว",
+        },
+        {
+          question: "เหมาะกับ use case แบบใด",
+          answer:
+            "เหมาะกับ enterprise copilots, regulated workflows, multilingual support, retrieval-heavy operations, document intelligence และระบบที่ผลลัพธ์ของ AI ต้องตรวจสอบย้อนหลังได้",
+        },
+      ]
+    : [
+        {
+          question: "Which solution should a team evaluate first?",
+          answer:
+            "Start with AI Hallucination Prevention if trust, compliance, or accuracy risk is the main blocker. Start with Enterprise AI Memory if context loss and repeated workflow memory are the bottleneck. Start with Dynamic AI Routing if model selection, speed, and cost efficiency are the main concerns.",
+        },
+        {
+          question: "Do these solutions work together?",
+          answer:
+            "Yes. They are designed to work as a system: SignedAI handles verification, RCTDB handles persistent memory, and the routing layer selects the right model and policy path for each task.",
+        },
+        {
+          question: "What kinds of use cases fit these solutions?",
+          answer:
+            "They fit enterprise copilots, regulated workflows, multilingual support operations, retrieval-heavy document intelligence, and any environment where AI outputs need to be auditable and repeatable.",
+        },
+      ]
+  const relatedResources = [
+    {
+      href: localHref("/platform"),
+      title: isTh ? "ดู Platform ทั้งระบบ" : "Explore the Full Platform",
+      description: isTh ? "เข้าใจว่าโซลูชันเหล่านี้เชื่อมกับ architecture ใหญ่ของ RCT อย่างไร" : "Understand how these solutions connect to the larger RCT architecture.",
+    },
+    {
+      href: localHref("/protocols"),
+      title: isTh ? "อ่าน Open Protocols" : "Read the Open Protocols",
+      description: isTh ? "ดู JITNA, FDIA และแนวคิดที่ใช้รองรับ solution layer" : "Review JITNA, FDIA, and the protocol layer behind the solution stack.",
+    },
+    {
+      href: localHref("/benchmark"),
+      title: isTh ? "ดู Benchmark และผลการตรวจสอบ" : "See Benchmark and Validation",
+      description: isTh ? "เปรียบเทียบตัวเลข hallucination, latency และ performance" : "Compare hallucination, latency, and performance metrics.",
+    },
+  ]
 
   return (
+    <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+              },
+            })),
+          }),
+        }}
+      />
     <main className="min-h-screen bg-background" id="main-content">
       <Navbar />
 
@@ -352,6 +423,40 @@ const result = await client.execute({
         </div>
       </section>
 
+      <section className="mx-auto max-w-5xl px-4 py-6">
+        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="mb-4">
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">FAQ</div>
+              <h2 className="mt-2 text-2xl font-bold text-foreground">{isTh ? "คำถามที่ผู้ประเมินโซลูชันมักถาม" : "Questions Enterprise Evaluators Usually Ask"}</h2>
+            </div>
+            <div className="space-y-3">
+              {faqs.map((faq) => (
+                <details key={faq.question} className="rounded-xl border border-border bg-background/70 p-4">
+                  <summary className="cursor-pointer list-none font-semibold text-foreground">{faq.question}</summary>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="mb-4">
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">Related Resources</div>
+              <h2 className="mt-2 text-2xl font-bold text-foreground">{isTh ? "เส้นทางอ่านต่อที่แนะนำ" : "Recommended Next Reading Path"}</h2>
+            </div>
+            <div className="space-y-3">
+              {relatedResources.map((item) => (
+                <Link key={item.href} href={item.href} className="block rounded-xl border border-border bg-background/70 p-4 transition-colors hover:border-warm-amber/40 hover:bg-warm-amber/5">
+                  <div className="text-sm font-semibold text-foreground">{item.title}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{item.description}</div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-muted/30 py-20">
         <div className="mx-auto max-w-3xl px-4 text-center space-y-6">
@@ -370,5 +475,6 @@ const result = await client.execute({
 
       <Footer />
     </main>
+    </>
   )
 }

@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { createBilingualMetadata, getSoftwareApplicationSchema, type Locale } from "@/lib/seo-bilingual"
+import { createBilingualMetadata, getFAQSchema, getSoftwareApplicationSchema, type Locale } from "@/lib/seo-bilingual"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -102,10 +102,60 @@ export default async function PlatformPage() {
   ]
 
   const schema = getSoftwareApplicationSchema(locale as Locale)
+  const faqItems = locale === "th"
+    ? [
+        {
+          question: "แพลตฟอร์ม RCT Labs คืออะไร",
+          answer:
+            "RCT Ecosystem คือ Constitutional AI Operating System สำหรับงานระดับองค์กรที่รวม 10-layer architecture, multi-LLM verification, memory infrastructure, routing, governance และ compliance-aware deployment ไว้ในระบบเดียว",
+        },
+        {
+          question: "แพลตฟอร์มนี้เหมาะกับองค์กรแบบใด",
+          answer:
+            "เหมาะกับองค์กรที่ต้องการลด hallucination, เพิ่ม auditability, เก็บบริบทข้าม workflow และใช้ AI ในสภาพแวดล้อมที่มีข้อกำกับดูแลหรือความเสี่ยงสูง เช่น enterprise operations, regulated industries และ multilingual deployments",
+        },
+        {
+          question: "อะไรคือความแตกต่างจากการต่อ LLM แบบทั่วไป",
+          answer:
+            "RCT ไม่ได้เป็นเพียง orchestration layer แต่รวม verification, deterministic routing, memory architecture, protocol layer และ signed outputs เพื่อให้ผลลัพธ์ตรวจสอบย้อนหลังได้และ deploy ได้จริงในระดับองค์กร",
+        },
+      ]
+    : [
+        {
+          question: "What is the RCT Labs platform?",
+          answer:
+            "RCT Ecosystem is a constitutional AI operating system that combines a 10-layer architecture, multi-LLM verification, persistent memory, intelligent routing, governance, and compliance-aware deployment into one platform.",
+        },
+        {
+          question: "Who is the platform designed for?",
+          answer:
+            "It is designed for organizations that need lower hallucination risk, stronger auditability, persistent context across workflows, and enterprise AI deployments in regulated or multilingual environments.",
+        },
+        {
+          question: "How is it different from a typical LLM integration stack?",
+          answer:
+            "RCT goes beyond orchestration by combining verification, deterministic routing, memory architecture, protocol layers, and signed outputs so AI behavior can be explained, audited, and deployed safely at enterprise scale.",
+        },
+      ]
+  const faqSchema = getFAQSchema(locale, faqItems)
+  const relatedResources = locale === "th"
+    ? [
+        { href: "/architecture", title: "สถาปัตยกรรม 10 ชั้น", description: "ดู layer ทั้งระบบและ service boundaries" },
+        { href: "/protocols", title: "Open Protocols", description: "ทำความเข้าใจ JITNA, FDIA และ RCT-7" },
+        { href: "/benchmark", title: "Benchmark และการตรวจสอบ", description: "ดูตัวเลขเปรียบเทียบ performance และ hallucination" },
+        { href: "/case-studies/stardew-valley", title: "Case Study เชิงเทคนิค", description: "ดูตัวอย่าง integration จริงแบบ deterministic" },
+      ]
+    : [
+        { href: "/architecture", title: "10-Layer Architecture", description: "Inspect the full system layers and service boundaries." },
+        { href: "/protocols", title: "Open Protocols", description: "Understand JITNA, FDIA, and the RCT-7 mental model." },
+        { href: "/benchmark", title: "Benchmark and Validation", description: "Review performance, latency, and hallucination comparisons." },
+        { href: "/case-studies/stardew-valley", title: "Technical Case Study", description: "See a deterministic integration example end to end." },
+      ]
 
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <main className="min-h-screen bg-background dark">
         <Navbar />
 
@@ -128,6 +178,36 @@ export default async function PlatformPage() {
               <Button variant="outline" asChild>
                 <Link href="/contact">{p("cta_secondary")}</Link>
               </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <div className="rounded-3xl border border-accent/20 bg-card/60 p-6 md:p-8">
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div className="space-y-3">
+              <p className="text-sm font-mono text-accent uppercase tracking-wider">
+                {locale === "th" ? "Platform Summary" : "Platform Summary"}
+              </p>
+              <h2 className="text-foreground">
+                {locale === "th" ? "คำตอบสั้นที่สุด: แพลตฟอร์มนี้ทำอะไร" : "Short Answer: What This Platform Does"}
+              </h2>
+              <p className="text-muted-foreground leading-relaxed">
+                {locale === "th"
+                  ? "RCT Ecosystem ทำหน้าที่เป็นระบบปฏิบัติการสำหรับ AI ระดับองค์กร โดยรับผิดชอบ verification, memory, routing, governance และ deployment discipline เพื่อให้ AI ทำงานได้อย่างตรวจสอบได้ ปลอดภัยขึ้น และคุมต้นทุนได้จริง"
+                  : "RCT Ecosystem acts as an operating system for enterprise AI by handling verification, memory, routing, governance, and deployment discipline so AI systems can be more auditable, safer, and easier to operate at scale."}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border bg-background/80 p-5">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">
+                {locale === "th" ? "Why Buyers Evaluate This Page" : "Why Buyers Evaluate This Page"}
+              </h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>{locale === "th" ? "อธิบายสถาปัตยกรรมแบบ layer-by-layer" : "Explains the architecture layer by layer."}</li>
+                <li>{locale === "th" ? "มีตัวเลข performance และ validation ชัดเจน" : "Shows explicit performance and validation numbers."}</li>
+                <li>{locale === "th" ? "เชื่อม protocol, memory, routing และ compliance เข้าด้วยกัน" : "Connects protocols, memory, routing, and compliance in one system."}</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -446,6 +526,44 @@ export default async function PlatformPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <p className="text-sm font-mono text-accent uppercase tracking-wider mb-3">
+              {locale === "th" ? "FAQ" : "FAQ"}
+            </p>
+            <h2 className="text-foreground mb-4">
+              {locale === "th" ? "คำถามหลักที่ผู้ประเมินระบบมักถาม" : "Key Questions Technical Evaluators Ask"}
+            </h2>
+            <div className="space-y-3">
+              {faqItems.map((faq) => (
+                <details key={faq.question} className="rounded-xl border border-border bg-background/70 p-4">
+                  <summary className="cursor-pointer list-none font-semibold text-foreground">{faq.question}</summary>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <p className="text-sm font-mono text-accent uppercase tracking-wider mb-3">
+              {locale === "th" ? "Related Resources" : "Related Resources"}
+            </p>
+            <h2 className="text-foreground mb-4">
+              {locale === "th" ? "อ่านต่อในส่วนที่เกี่ยวข้อง" : "Continue Through the Related System Pages"}
+            </h2>
+            <div className="space-y-3">
+              {relatedResources.map((item) => (
+                <Link key={item.href} href={item.href} className="block rounded-xl border border-border bg-background/70 p-4 transition-colors hover:border-accent/40 hover:bg-accent/5">
+                  <div className="text-sm font-semibold text-foreground">{item.title}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{item.description}</div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>

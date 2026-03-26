@@ -12,7 +12,7 @@ const pixelAccentMap: Record<string, string> = {
   "7 Genome System": "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-genome-dna_90dc39e4.png",
   "JITNA Protocol": "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-jitna-protocol_09eaa6f4.png",
   "41 Algorithms & Analysearch": "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-algorithm-gears_dbfb4610.png",
-  "Integration & Deployment": "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-network-icon-8aUM6KhHFxaYJMNCWLXw5c.webp",
+  "Integration & Deployment": "/pixel-icons/network.svg",
 }
 
 interface SectionPreviewCardProps {
@@ -54,7 +54,7 @@ export default function SectionPreviewCard({
     >
       <Link
         href={href}
-        className={`group flex flex-col gap-3 p-5 rounded-xl border transition-all duration-300 h-full hover:shadow-md ${
+        className={`group relative flex h-full flex-col gap-3 overflow-hidden rounded-xl border p-5 transition-all duration-300 hover:shadow-md ${
           isDark
             ? "bg-card border-border hover:border-warm-amber/40"
             : "bg-card border-border hover:border-warm-amber/40"
@@ -64,8 +64,8 @@ export default function SectionPreviewCard({
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.14),transparent_40%)]" />
         </div>
         {accentSrc && (
-          <div className="pointer-events-none absolute right-4 top-4 h-12 w-12 opacity-50 transition-all duration-200 group-hover:opacity-90">
-            <OptimizedImage src={accentSrc} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={48} height={48} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
+          <div className="pointer-events-none absolute right-4 top-4 h-12 w-12 opacity-70 transition-all duration-200 group-hover:scale-110 group-hover:opacity-100">
+            <OptimizedImage src={accentSrc} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={48} height={48} className="transition duration-200 group-hover:brightness-95 group-hover:contrast-125" />
           </div>
         )}
         <div

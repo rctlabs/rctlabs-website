@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
@@ -9,10 +10,10 @@ import SectionHeading from "@/components/section-heading"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { useMounted } from "@/hooks/use-mounted"
 
-const PIXEL_METRICS = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-network-icon-8aUM6KhHFxaYJMNCWLXw5c.webp"
+const PIXEL_METRICS = "/pixel-icons/network.svg"
 
 const PIXEL_ICONS = [
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-network-icon-8aUM6KhHFxaYJMNCWLXw5c.webp",
+  "/pixel-icons/network.svg",
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-algorithm-gears_dbfb4610.png",
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-architecture-layers_33ca737f.png",
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-genome-dna_90dc39e4.png",
@@ -29,16 +30,16 @@ const metrics = [
 
 const highlightsData = {
   en: [
-    { value: 52, suffix: "", label: "Microservices", desc: "Running in production" },
-    { value: 41, suffix: "", label: "Algorithms", desc: "Across 9 tiers" },
-    { value: 10, suffix: "", label: "Layers", desc: "Architecture stack" },
-    { value: 7, suffix: "", label: "Genomes", desc: "Core DNA components" },
+    { value: 52, suffix: "", label: "Microservices", desc: "Running in production", href: "/integration" },
+    { value: 41, suffix: "", label: "Algorithms", desc: "Across 9 tiers", href: "/algorithms" },
+    { value: 10, suffix: "", label: "Layers", desc: "Architecture stack", href: "/architecture" },
+    { value: 7, suffix: "", label: "Genomes", desc: "Core DNA components", href: "/genome" },
   ],
   th: [
-    { value: 52, suffix: "", label: "Microservices", desc: "ทำงานใน Production" },
-    { value: 41, suffix: "", label: "Algorithms", desc: "ใน 9 Tiers" },
-    { value: 10, suffix: "", label: "Layers", desc: "Architecture Stack" },
-    { value: 7, suffix: "", label: "Genomes", desc: "องค์ประกอบ DNA หลัก" },
+    { value: 52, suffix: "", label: "Microservices", desc: "ทำงานใน Production", href: "/integration" },
+    { value: 41, suffix: "", label: "Algorithms", desc: "ใน 9 Tiers", href: "/algorithms" },
+    { value: 10, suffix: "", label: "Layers", desc: "Architecture Stack", href: "/architecture" },
+    { value: 7, suffix: "", label: "Genomes", desc: "องค์ประกอบ DNA หลัก", href: "/genome" },
   ],
 }
 
@@ -82,6 +83,7 @@ export default function MetricsSection() {
   const isDark = mounted && resolvedTheme === "dark"
   const prefersReducedMotion = useReducedMotion()
   const highlights = highlightsData[language as keyof typeof highlightsData] || highlightsData.en
+  const localePrefix = language === "th" ? "/th" : "/en"
 
   return (
     <section id="metrics" aria-label="Performance Metrics" className={`py-16 md:py-24 transition-colors duration-300 ${isDark ? "bg-dark-900" : "bg-warm-cream"}`}>
@@ -103,15 +105,17 @@ export default function MetricsSection() {
           className="mb-8 grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4"
         >
           {highlights.map((highlight, index) => (
-            <motion.div key={highlight.label} whileHover={prefersReducedMotion ? undefined : { y: -2 }} className={`group relative overflow-hidden rounded-2xl border p-5 text-center transition-[border-color,box-shadow,transform] duration-200 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.22)]" : "bg-white border-warm-light-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)]"}`}>
-              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(123,158,135,0.12),transparent_46%)]" />
-              </div>
-              <OptimizedImage src={PIXEL_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="mx-auto mb-1 h-8 w-8" objectFit="contain" width={32} height={32} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
-              <div className={`text-3xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}><AnimatedCounter target={highlight.value} suffix={highlight.suffix} reducedMotion={prefersReducedMotion} /></div>
-              <div className="mt-1 text-sm font-semibold text-warm-amber">{highlight.label}</div>
-              <div className={`mt-0.5 text-xs sm:text-sm ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{highlight.desc}</div>
-            </motion.div>
+            <Link key={highlight.label} href={`${localePrefix}${highlight.href}`} className="block">
+              <motion.div whileHover={prefersReducedMotion ? undefined : { y: -2 }} className={`group relative overflow-hidden rounded-2xl border p-5 text-center transition-[border-color,box-shadow,transform] duration-200 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.22)]" : "bg-white border-warm-light-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)]"}`}>
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(123,158,135,0.12),transparent_46%)]" />
+                </div>
+                <OptimizedImage src={PIXEL_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="mx-auto mb-2 h-8 w-8" objectFit="contain" width={32} height={32} className="transition duration-200 group-hover:scale-110 group-hover:brightness-95 group-hover:contrast-125" />
+                <div className={`text-3xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}><AnimatedCounter target={highlight.value} suffix={highlight.suffix} reducedMotion={prefersReducedMotion} /></div>
+                <div className="mt-1 text-sm font-semibold text-warm-amber">{highlight.label}</div>
+                <div className={`mt-0.5 text-xs sm:text-sm ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{highlight.desc}</div>
+              </motion.div>
+            </Link>
           ))}
         </motion.div>
 

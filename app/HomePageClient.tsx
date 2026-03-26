@@ -20,7 +20,7 @@ import OptimizedImage from "@/components/ui/optimized-image"
 
 const PIXEL_STAT_ICONS = [
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-algorithm-gears_dbfb4610.png",
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-shield-icon-MfxsPeu6XRAKST8C3hCmf9.webp",
+  "/pixel-icons/shield.svg",
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-architecture-layers_33ca737f.png",
 ]
 
@@ -124,19 +124,19 @@ export default function HomePage() {
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {[
-              { stat: "41", label: language === "en" ? "Proprietary Algorithms" : "อัลกอริทึมเฉพาะ", color: "#D4A853" },
-              { stat: "99.7%", label: language === "en" ? "Accuracy Rate" : "อัตราความแม่นยำ", color: "#7B9E87" },
-              { stat: "10", label: language === "en" ? "Architecture Layers" : "ชั้นสถาปัตยกรรม", color: "#89B4C8" },
+              { stat: "41", label: language === "en" ? "Proprietary Algorithms" : "อัลกอริทึมเฉพาะ", color: "#D4A853", href: `${localePrefix}/algorithms` },
+              { stat: "99.7%", label: language === "en" ? "Accuracy Rate" : "อัตราความแม่นยำ", color: "#7B9E87", href: `${localePrefix}/solutions/ai-hallucination-prevention` },
+              { stat: "10", label: language === "en" ? "Architecture Layers" : "ชั้นสถาปัตยกรรม", color: "#89B4C8", href: `${localePrefix}/architecture` },
             ].map((item, index) => (
-              <div key={item.label} className="group relative overflow-hidden rounded-xl border border-border bg-card p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
+              <Link key={item.label} href={item.href} className="group relative overflow-hidden rounded-xl border border-border bg-card p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
                 <div className="pointer-events-none absolute right-3 top-3 h-9 w-9 opacity-50 transition-opacity duration-200 group-hover:opacity-90">
-                  <OptimizedImage src={PIXEL_STAT_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={36} height={36} className="transition duration-200 group-hover:brightness-75 group-hover:contrast-125" />
+                  <OptimizedImage src={PIXEL_STAT_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="h-full w-full" objectFit="contain" width={36} height={36} className="transition duration-200 group-hover:scale-110 group-hover:brightness-90 group-hover:contrast-125" />
                 </div>
                 <div className="mb-1 text-3xl font-bold" style={{ color: item.color }}>
                   {item.stat}
                 </div>
                 <div className={`text-sm text-muted-foreground ${language === "th" ? "subtitle-th" : ""}`}>{item.label}</div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -148,9 +148,6 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
         <div className="space-y-10">
           <div className="mx-auto max-w-2xl space-y-3 text-center">
-            <p className="text-sm font-mono uppercase tracking-wider text-warm-amber">
-              {locale === "th" ? "เจาะลึก" : "Deep Dive"}
-            </p>
             <h2 className="text-foreground">
               {locale === "th" ? "สำรวจ Ecosystem" : "Explore the Ecosystem"}
             </h2>

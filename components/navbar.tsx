@@ -226,8 +226,8 @@ export function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ${
           scrolled
             ? isDark
-              ? "bg-warm-charcoal/94 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.22)] border-b border-[#333]"
-              : "bg-white/90 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b border-warm-light-gray/60"
+              ? "bg-warm-charcoal/95 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.18)] border-b border-[#333]"
+              : "bg-white/92 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.03)] border-b border-warm-light-gray/60"
             : isOnDarkHero
               ? "bg-linear-to-b from-black/30 to-transparent"
               : "bg-transparent"

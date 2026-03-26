@@ -37,8 +37,8 @@ export default function ArchitectMascot({ className = "" }: ArchitectMascotProps
           </h3>
           <p className="text-sm text-muted-foreground">
             {language === "th"
-              ? "มาสคอตนี้เป็น SVG fallback สำหรับแบรนด์ช่วงก่อน pixel-art production asset จะพร้อม"
-              : "This mascot is an SVG fallback for brand identity until the final pixel-art production asset is ready."}
+              ? "สื่อสารหลักการว่า human judgment, verification และ intent alignment ยังเป็นแกนกลางของระบบ แม้ workflow จะถูกเร่งด้วย AI"
+              : "It reinforces that human judgment, verification, and intent alignment remain central even when workflows are accelerated with AI."}
           </p>
         </div>
       </div>

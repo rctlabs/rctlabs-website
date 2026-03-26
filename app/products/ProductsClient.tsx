@@ -87,9 +87,77 @@ export default function ProductsPage() {
     { value: "99.7%", labelEn: "Verified Accuracy", labelTh: "ความแม่นยำที่ตรวจสอบได้", color: "#7B9E87" },
     { value: "3", labelEn: "Core Products", labelTh: "ผลิตภัณฑ์หลัก", color: "#B8A9C9" },
   ]
+  const faqs = isTh
+    ? [
+        {
+          question: "ถ้าจะเริ่มจากผลิตภัณฑ์เดียว ควรเริ่มตัวไหนก่อน",
+          answer:
+            "เริ่มจาก RCTLabs หากโจทย์หลักคือการทดสอบและ benchmark ระบบ AI เริ่มจาก SignedAI หากกังวลเรื่อง hallucination, trust หรือ auditability และเริ่มจาก ARTENT AI หากโจทย์หลักคือ creative workflow ที่ต้องคุมทิศทางให้ตรง intent",
+        },
+        {
+          question: "ผลิตภัณฑ์เหล่านี้แชร์ infrastructure ร่วมกันหรือไม่",
+          answer:
+            "ใช่ ทั้งสามผลิตภัณฑ์ใช้ operating system layer เดียวกันของ RCT เช่น 10-layer architecture, JITNA Protocol, FDIA Equation และ shared trust infrastructure จึงต่อยอดกันได้ง่ายและควบคุมมาตรฐานได้สม่ำเสมอ",
+        },
+        {
+          question: "Products ต่างจาก Solutions อย่างไร",
+          answer:
+            "Solutions อธิบาย pain point ที่ระบบช่วยแก้ ส่วน Products คือผิวหน้าการใช้งานหรือ service layer ที่นำ infrastructure ของ RCT ไปใช้งานในรูปแบบเฉพาะมากขึ้น",
+        },
+      ]
+    : [
+        {
+          question: "If a team starts with one product, which should it choose first?",
+          answer:
+            "Start with RCTLabs if the main need is testing and benchmarking AI systems. Start with SignedAI if hallucination, trust, or auditability is the blocker. Start with ARTENT AI if the main challenge is creative workflow execution aligned to intent.",
+        },
+        {
+          question: "Do the products share the same infrastructure foundation?",
+          answer:
+            "Yes. All three products run on the same RCT operating system foundation, including the 10-layer architecture, FDIA Equation, JITNA Protocol, and shared trust infrastructure.",
+        },
+        {
+          question: "How are Products different from Solutions?",
+          answer:
+            "Solutions describe the problem categories RCT addresses. Products describe the concrete interfaces or services built on top of the shared RCT infrastructure for specific workflows.",
+        },
+      ]
+  const relatedResources = [
+    {
+      href: localHref("/solutions"),
+      title: isTh ? "เริ่มจากฝั่ง Solutions" : "Start from Solutions",
+      description: isTh ? "ย้อนกลับไปดู pain points และปัญหาที่ระบบช่วยแก้" : "Map products back to the problem categories they solve.",
+    },
+    {
+      href: localHref("/platform"),
+      title: isTh ? "ดู Platform Foundation" : "Review the Platform Foundation",
+      description: isTh ? "เข้าใจ infrastructure และ architecture ที่รองรับ products ทั้งหมด" : "Understand the architecture and infrastructure behind all products.",
+    },
+    {
+      href: localHref("/whitepaper"),
+      title: isTh ? "อ่าน Whitepaper เพิ่มเติม" : "Read the Whitepapers",
+      description: isTh ? "เจาะลึก protocol, architecture และวิธีคิดของระบบ" : "Go deeper into protocols, architecture, and evaluation material.",
+    },
+  ]
 
   return (
-    <main className="min-h-screen bg-background" id="main-content">
+    <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: { "@type": "Answer", text: faq.answer },
+            })),
+          }),
+        }}
+      />
+      <main className="min-h-screen bg-background" id="main-content">
       <Navbar />
 
       {/* Hero */}
@@ -193,6 +261,32 @@ export default function ProductsPage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-5xl px-4 pb-12">
+        <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">Answer-First Summary</div>
+              <h2 className="mt-3 text-2xl font-bold text-foreground">
+                {isTh ? "สรุปสั้นที่สุด: หน้า Products นี้ตอบอะไร" : "Short Answer: What This Products Page Answers"}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                {isTh
+                  ? "หน้านี้ตอบว่าผลิตภัณฑ์หลักของ RCT มีอะไรบ้าง แต่ละตัวเหมาะกับ use case แบบไหน และแต่ละตัวใช้ operating system foundation เดียวกันอย่างไรเพื่อรักษามาตรฐานด้าน trust, verification และ deployment discipline"
+                  : "This page explains which core RCT products are available, what use cases each one fits, and how they all inherit the same operating system foundation for trust, verification, and disciplined deployment."}
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-background/70 p-5">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-warm-sage">{isTh ? "Buyer Signals" : "Buyer Signals"}</h3>
+              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <li>{isTh ? "แยก product positioning ชัดเจน" : "Clear product positioning by workflow."}</li>
+                <li>{isTh ? "เชื่อม products กลับไปยัง platform foundation" : "Maps products back to the shared platform foundation."}</li>
+                <li>{isTh ? "มี CTA ต่อไปยัง pricing, contact และ technical material" : "Connects products to pricing, contact, and technical material."}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Product Cards */}
       <section className="mx-auto max-w-5xl px-4 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -288,9 +382,37 @@ export default function ProductsPage() {
             </Link>
           </div>
         </div>
+        <div className="mx-auto mt-10 max-w-5xl grid gap-6 px-4 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">FAQ</div>
+            <h2 className="mt-3 text-2xl font-bold text-foreground">{isTh ? "คำถามที่ผู้ประเมินผลิตภัณฑ์มักถาม" : "Questions Product Evaluators Usually Ask"}</h2>
+            <div className="mt-4 space-y-3">
+              {faqs.map((faq) => (
+                <details key={faq.question} className="rounded-xl border border-border bg-background/70 p-4">
+                  <summary className="list-none cursor-pointer font-semibold text-foreground">{faq.question}</summary>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">Related Resources</div>
+            <h2 className="mt-3 text-2xl font-bold text-foreground">{isTh ? "ลำดับอ่านต่อที่แนะนำ" : "Recommended Next Reading"}</h2>
+            <div className="mt-4 space-y-3">
+              {relatedResources.map((item) => (
+                <Link key={item.href} href={item.href} className="block rounded-xl border border-border bg-background/70 p-4 transition-colors hover:border-warm-amber/40 hover:bg-warm-amber/5">
+                  <div className="text-sm font-semibold text-foreground">{item.title}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{item.description}</div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       <Footer />
-    </main>
+      </main>
+    </>
   )
 }
