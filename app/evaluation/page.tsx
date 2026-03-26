@@ -48,19 +48,30 @@ export default async function EvaluationPage() {
   const comparisons = [
     {
       title: "Enterprise AI governance vs generic copilots",
+      titleTh: "Enterprise AI governance vs generic copilots",
       text: "Governance-oriented platforms are evaluated on policy, routing, evidence, rollback, and auditability. Generic copilots are often evaluated mainly on surface productivity.",
+      textTh: "แพลตฟอร์มที่เน้น governance ต้องถูกประเมินด้าน policy, routing, evidence, rollback และ auditability ขณะที่ generic copilots มักถูกวัดแค่ productivity ที่ผิวหน้า",
+      href: "/evaluation/enterprise-ai-governance-vs-generic-copilots",
     },
     {
-      title: "Memory systems vs larger context windows",
+      title: "Enterprise AI memory vs large context windows",
+      titleTh: "Enterprise AI memory vs large context windows",
       text: "A larger context window increases capacity. A memory system governs what is retained, reused, validated, expired, and explained over time.",
+      textTh: "context window ที่ใหญ่ขึ้นคือความจุ แต่ memory system คือวินัยในการเก็บ ใช้ ตรวจสอบ หมดอายุ และอธิบายบริบทในระยะยาว",
+      href: "/evaluation/enterprise-ai-memory-vs-large-context-windows",
     },
     {
-      title: "Dynamic routing vs static single-model orchestration",
+      title: "Dynamic AI routing vs static orchestration",
+      titleTh: "Dynamic AI routing vs static orchestration",
       text: "Routing lets teams vary cost, latency, and risk handling by workload type instead of forcing one path for every request.",
+      textTh: "routing ช่วยให้ทีมปรับต้นทุน latency และการจัดการความเสี่ยงตามชนิดงาน แทนการบังคับให้ทุกคำขอผ่าน path เดียวกัน",
+      href: "/evaluation/dynamic-ai-routing-vs-static-orchestration",
     },
     {
       title: "Build vs buy for governed AI systems",
+      titleTh: "Build vs buy for governed AI systems",
       text: "The real question is not build versus buy in isolation, but which layers you want to own: governance, routing, memory, verification, and ongoing release discipline.",
+      textTh: "คำถามจริงไม่ใช่ build หรือ buy แบบโดด ๆ แต่คือองค์กรต้องการถือครองชั้นไหนเองบ้าง เช่น governance, routing, memory, verification และ release discipline",
     },
   ]
 
@@ -81,8 +92,13 @@ export default async function EvaluationPage() {
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {comparisons.map((item) => (
             <div key={item.title} className="rounded-2xl border border-border bg-card p-6">
-              <h2 className="text-xl font-semibold text-foreground">{item.title}</h2>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.text}</p>
+              <h2 className="text-xl font-semibold text-foreground">{isTh ? item.titleTh : item.title}</h2>
+              <p className="mt-3 text-sm leading-7 text-muted-foreground">{isTh ? item.textTh : item.text}</p>
+              {item.href ? (
+                <Link href={`${localePrefix}${item.href}`} className="mt-4 inline-flex text-sm font-medium text-accent hover:underline">
+                  {isTh ? "อ่านหน้าเปรียบเทียบฉบับเต็ม" : "Read the full comparison"}
+                </Link>
+              ) : null}
             </div>
           ))}
         </div>
