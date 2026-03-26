@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
+import { headers } from "next/headers"
+import { Inter, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
@@ -43,18 +44,11 @@ const spaceMono = Space_Mono({
   display: "swap",
 })
 
-/* Backward-compat mono */
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono-alt",
-  display: "swap",
-})
-
 /* Thai: Kanit (matches Space Grotesk geometric style) */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
   weight: ["200", "400", "500", "600", "700"],
-  variable: "--font-thai",
+  variable: "--rct-font-thai",
   display: "swap",
 })
 
@@ -65,79 +59,94 @@ const notoSansThai = Noto_Sans_Thai({
   display: "swap",
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://rctlabs.co"),
-  title: "RCT Labs - Intent Operating System",
-  description:
-    "Revolutionizing human-AI interaction through intent-driven design. Explore cutting-edge philosophy, research, and open protocols.",
-  keywords: [
-    "intent-driven AI",
-    "AI alignment",
-    "machine learning",
-    "intent operating system",
-    "FDIA formula",
-    "research",
-    "constitutional AI",
-    "multi-LLM consensus",
-    "AI verification",
-    "SignedAI",
-    "JITNA language",
-    "RCT-7 process",
-  ],
-  authors: [{ name: "RCT Labs" }, { name: "Ittirit Saengow" }],
-  creator: "RCT Labs",
-  publisher: "RCT Labs",
-  formatDetection: {
-    email: false,
-    telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    alternateLocale: ["th_TH"],
-    url: "https://rctlabs.co",
-    siteName: "RCT Labs",
-    title: "RCT Labs - Intent Operating System",
-    description:
-      "Constitutional AI Operating System — 10-Layer architecture, multi-LLM consensus, and absolute data sovereignty.",
-    images: [
-      {
-        url: "https://rctlabs.co/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "RCT Labs - Intent Operating System",
-        type: "image/png",
-      },
+export async function generateMetadata(): Promise<Metadata> {
+  const headerList = await headers()
+  const locale = (headerList.get("x-locale") === "th" ? "th" : "en") as "en" | "th"
+  const title = locale === "th" ? "RCT Labs - ระบบปฏิบัติการ AI ที่เน้น Intent" : "RCT Labs - Intent Operating System"
+  const description = locale === "th"
+    ? "โครงสร้างพื้นฐาน Constitutional AI พร้อมสถาปัตยกรรม 10 ชั้น Multi-LLM Consensus และ Data Sovereignty สำหรับงานระดับองค์กร"
+    : "Constitutional AI infrastructure with 10-layer architecture, multi-LLM consensus, and data sovereignty for enterprise deployment."
+
+  return {
+    metadataBase: new URL("https://rctlabs.co"),
+    title,
+    description,
+    keywords: [
+      "intent-driven AI",
+      "AI alignment",
+      "machine learning",
+      "intent operating system",
+      "FDIA formula",
+      "research",
+      "constitutional AI",
+      "multi-LLM consensus",
+      "AI verification",
+      "SignedAI",
+      "JITNA language",
+      "RCT-7 process",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "RCT Labs - Intent Operating System",
-    description: "Revolutionizing human-AI interaction through intent-driven design.",
-    creator: "@RCTLabs",
-    images: ["https://rctlabs.co/opengraph-image"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
+    authors: [{ name: "RCT Labs" }, { name: "Ittirit Saengow" }],
+    creator: "RCT Labs",
+    publisher: "RCT Labs",
+    formatDetection: {
+      email: false,
+      telephone: false,
+    },
+    alternates: {
+      canonical: `https://rctlabs.co/${locale}`,
+      languages: {
+        en: "https://rctlabs.co/en",
+        th: "https://rctlabs.co/th",
+        "x-default": "https://rctlabs.co/en",
+      },
+    },
+    openGraph: {
+      type: "website",
+      locale: locale === "th" ? "th_TH" : "en_US",
+      alternateLocale: locale === "th" ? ["en_US"] : ["th_TH"],
+      url: `https://rctlabs.co/${locale}`,
+      siteName: "RCT Labs",
+      title,
+      description,
+      images: [
+        {
+          url: `https://rctlabs.co/opengraph-image?locale=${locale}`,
+          width: 1200,
+          height: 630,
+          alt: title,
+          type: "image/png",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@RCTLabs",
+      images: [`https://rctlabs.co/opengraph-image?locale=${locale}`],
+    },
+    robots: {
       index: true,
       follow: true,
-      noimageindex: false,
-      "max-snippet": -1,
-      "max-image-preview": "large",
-      "max-video-preview": -1,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        "max-snippet": -1,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+      },
     },
-  },
-  verification,
-  icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon-dark-32x32.png",
-    apple: "/apple-icon.png",
-  },
-  manifest: "/site.webmanifest",
-    generator: 'v0.app'
+    verification,
+    icons: {
+      icon: "/icon.svg",
+      shortcut: "/icon-dark-32x32.png",
+      apple: "/apple-icon.png",
+    },
+    manifest: "/site.webmanifest",
+    generator: "v0.app",
+  }
 }
 
 export default async function RootLayout({
@@ -145,7 +154,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const { headers } = await import('next/headers')
   const headersList = await headers()
   const locale = (headersList.get('x-locale') || 'en') as 'en' | 'th'
 
@@ -173,7 +181,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${jetbrainsMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
         {/* Skip to content for accessibility */}
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded">Skip to content</a>
         <AppProviders initialLocale={locale as "en" | "th"}>

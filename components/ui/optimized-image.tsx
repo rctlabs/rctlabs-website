@@ -56,7 +56,10 @@ function getImageExtension(src: string): string | null {
   return match?.[1]?.toLowerCase() ?? null
 }
 
-function getAvifSrc(src: string): string | undefined {
+function getAvifSrc(src: string, pixelated: boolean): string | undefined {
+  if (pixelated || src.includes("/pixel-icons/") || src.includes("/images/pixel/")) {
+    return undefined
+  }
   if (src.endsWith(".webp")) return src.replace(/\.webp$/, ".avif")
   return undefined
 }
@@ -79,9 +82,10 @@ const OptimizedImage = memo(function OptimizedImage({
   onLoad,
   onError,
 }: OptimizedImageProps) {
+  const shouldLoadImmediately = priority || pixelated || Boolean(width && height && width <= 64 && height <= 64)
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
-  const [isInView, setIsInView] = useState(priority)
+  const [isInView, setIsInView] = useState(shouldLoadImmediately)
   const [currentSrc, setCurrentSrc] = useState(src)
   const imgRef = useRef<HTMLDivElement>(null)
 
@@ -89,10 +93,11 @@ const OptimizedImage = memo(function OptimizedImage({
     setCurrentSrc(src)
     setHasError(false)
     setIsLoaded(false)
-  }, [src])
+    setIsInView(shouldLoadImmediately)
+  }, [src, shouldLoadImmediately])
 
   useEffect(() => {
-    if (priority || isInView) return
+    if (shouldLoadImmediately || isInView) return
     const element = imgRef.current
     if (!element) return
 
@@ -106,7 +111,7 @@ const OptimizedImage = memo(function OptimizedImage({
       imageObserverCallbacks.delete(element)
       observer.unobserve(element)
     }
-  }, [priority, isInView])
+  }, [shouldLoadImmediately, isInView])
 
   const handleLoad = useCallback(() => {
     setIsLoaded(true)
@@ -125,7 +130,7 @@ const OptimizedImage = memo(function OptimizedImage({
   }, [currentSrc, fallbackSrc, onError])
 
   const extension = getImageExtension(currentSrc)
-  const avifSrc = getAvifSrc(currentSrc)
+  const avifSrc = getAvifSrc(currentSrc, pixelated)
   const style: React.CSSProperties = {
     ...(aspectRatio ? { aspectRatio } : {}),
     ...(pixelated ? { imageRendering: "pixelated" as const } : {}),
@@ -147,7 +152,7 @@ const OptimizedImage = memo(function OptimizedImage({
 
   return (
     <div ref={imgRef} className={`relative overflow-hidden ${containerClassName}`} style={style}>
-      {!isLoaded && <div className="absolute inset-0 rounded-lg bg-secondary animate-pulse" aria-hidden="true" />}
+      {!isLoaded && <div className="absolute inset-0 rounded-lg bg-secondary/55" aria-hidden="true" />}
       {isInView && (
         <picture style={{ display: "contents" }}>
           {avifSrc && <source type="image/avif" srcSet={avifSrc} sizes={sizes} />}
@@ -161,12 +166,12 @@ const OptimizedImage = memo(function OptimizedImage({
             width={width}
             height={height}
             fetchPriority={priority ? "high" : "auto"}
-            loading={priority ? "eager" : "lazy"}
+            loading={priority || shouldLoadImmediately ? "eager" : "lazy"}
             decoding="async"
             sizes={sizes}
             onLoad={handleLoad}
             onError={handleError}
-            className={`h-full w-full transition-opacity duration-500 ease-out ${isLoaded ? "opacity-100" : "opacity-0"} ${className}`}
+            className={`h-full w-full transition-opacity duration-300 ease-out ${isLoaded ? "opacity-100" : "opacity-0"} ${className}`}
             style={{
               objectFit,
               ...(pixelated ? { imageRendering: "pixelated" as const } : {}),

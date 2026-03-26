@@ -86,6 +86,11 @@ export function getLocaleFromPathname(pathname: string): Locale | null {
   return null
 }
 
+export function resolveLocale(pathname: string | null | undefined, fallback: Locale = defaultLocale): Locale {
+  if (!pathname) return fallback
+  return getLocaleFromPathname(pathname) ?? fallback
+}
+
 // Remove locale from pathname
 export function removeLocaleFromPathname(pathname: string): string {
   const locale = getLocaleFromPathname(pathname)
@@ -98,4 +103,13 @@ export function removeLocaleFromPathname(pathname: string): string {
 export function addLocaleToPathname(pathname: string, locale: Locale): string {
   const cleanPath = removeLocaleFromPathname(pathname)
   return `/${locale}${cleanPath === '/' ? '' : cleanPath}`
+}
+
+export function getLocalePrefix(locale: Locale): `/${Locale}` {
+  return locale === 'th' ? '/th' : '/en'
+}
+
+export function localizeHref(href: string, locale: Locale): string {
+  if (/^(https?:)?\/\//.test(href)) return href
+  return `${getLocalePrefix(locale)}${href === '/' ? '' : href}`
 }

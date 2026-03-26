@@ -89,7 +89,7 @@ export const LazyFDIACalculatorPanel = (props: Record<string, unknown>) => (
     componentProps={props}
     rootMargin="120px"
     preloadOnHover={false}
-    fallback={<div className="min-h-[360px] w-full animate-pulse rounded-xl border border-border bg-card/60" />}
+    fallback={<div className="min-h-90 w-full animate-pulse rounded-xl border border-border bg-card/60" />}
   />
 )
 

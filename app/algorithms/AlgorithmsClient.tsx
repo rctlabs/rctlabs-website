@@ -10,8 +10,9 @@ import { ArrowRight, Zap } from "lucide-react"
 import SectionHeading from "@/components/section-heading"
 import AnalysearchDemo from "@/components/demos/analysearch-demo"
 import OptimizedImage from "@/components/ui/optimized-image"
+import { pixelIcons } from "@/lib/pixel-icons"
 
-const PIXEL_ALGO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-algorithm-gears.webp"
+const PIXEL_ALGO = pixelIcons.algorithms
 
 const tiers = {
   en: [

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
@@ -26,11 +26,11 @@ const nodes: Node[] = [
   { id: "algorithms", label: "41 Algorithms", labelTh: "41 Algorithms", color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15", desc: "9 tiers from foundational processing to autonomous evolution", descTh: "9 Tiers ตั้งแต่การประมวลผลพื้นฐานถึง Autonomous Evolution", angle: 300 },
 ]
 
-const cx = 280
-const cy = 250
-const orbitR = 175
-const nodeR = 40
-const centerR = 50
+const cx = 250
+const cy = 210
+const orbitR = 145
+const nodeR = 36
+const centerR = 46
 
 function polarToXY(angleDeg: number, radius: number) {
   const rad = ((angleDeg - 90) * Math.PI) / 180
@@ -48,69 +48,74 @@ export default function EcosystemOverviewDiagram() {
   const isEn = language === "en"
   const nodePositions = nodes.map((node) => ({ ...node, ...polarToXY(node.angle, orbitR) }))
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!containerRef.current?.contains(document.activeElement)) return
-      switch (event.key) {
-        case "ArrowRight":
-        case "ArrowDown":
-          event.preventDefault()
-          setFocusedIndex((prev) => (prev + 1) % nodes.length)
-          setHovered(nodes[(focusedIndex + 1) % nodes.length].id)
-          break
-        case "ArrowLeft":
-        case "ArrowUp":
-          event.preventDefault()
-          setFocusedIndex((prev) => (prev - 1 + nodes.length) % nodes.length)
-          setHovered(nodes[(focusedIndex - 1 + nodes.length) % nodes.length].id)
-          break
-        case "Enter":
-        case " ":
-          event.preventDefault()
-          setSelected(nodes[focusedIndex].id)
-          setHovered(nodes[focusedIndex].id)
-          break
-        case "Escape":
-          event.preventDefault()
-          setSelected(null)
-          setHovered(null)
-          break
+  const handleKeyDown = (event: React.KeyboardEvent<SVGSVGElement>) => {
+    switch (event.key) {
+      case "ArrowRight":
+      case "ArrowDown": {
+        event.preventDefault()
+        const nextIndex = (focusedIndex + 1) % nodes.length
+        setFocusedIndex(nextIndex)
+        setHovered(nodes[nextIndex].id)
+        break
       }
+      case "ArrowLeft":
+      case "ArrowUp": {
+        event.preventDefault()
+        const nextIndex = (focusedIndex - 1 + nodes.length) % nodes.length
+        setFocusedIndex(nextIndex)
+        setHovered(nodes[nextIndex].id)
+        break
+      }
+      case "Enter":
+      case " ":
+        event.preventDefault()
+        setSelected(nodes[focusedIndex].id)
+        setHovered(nodes[focusedIndex].id)
+        break
+      case "Escape":
+        event.preventDefault()
+        setSelected(null)
+        setHovered(null)
+        break
     }
+  }
 
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [focusedIndex])
+  const renderNodeLabel = (node: Node) => {
+    const label = isEn ? node.label : node.labelTh
+    const parts = label.split(" ")
+    const firstLine = parts.length > 2 ? parts.slice(0, Math.ceil(parts.length / 2)).join(" ") : parts[0]
+    const secondLine = parts.length > 2 ? parts.slice(Math.ceil(parts.length / 2)).join(" ") : parts.slice(1).join(" ")
+
+    return (
+      <text x={(node as Node & { x: number }).x} y={(node as Node & { x: number; y: number }).y - 1} textAnchor="middle" fontSize={parts.length > 2 ? 7.2 : 8.2} fontWeight={600} fill={node.color} fontFamily="var(--font-sans)">
+        <tspan x={(node as Node & { x: number }).x} dy={secondLine ? -4 : 3}>{firstLine}</tspan>
+        {secondLine ? <tspan x={(node as Node & { x: number }).x} dy={10}>{secondLine}</tspan> : null}
+      </text>
+    )
+  }
 
   return (
     <div ref={containerRef} className={`rounded-xl border p-4 ${isDark ? "bg-warm-charcoal border-border" : "bg-white border-warm-light-gray"}`}>
-      <p className={`mb-2 text-right text-2xs ${isDark ? "text-warm-subtle" : "text-warm-muted"}`}>
+      <p className={`mb-3 text-right text-xs ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-subtle" : "text-warm-muted"}`}>
         {isEn ? "Use ← → or click to explore" : "ใช้ ← → หรือคลิกเพื่อสำรวจ"}
       </p>
 
-      <svg viewBox="0 0 560 500" className="mx-auto w-full max-w-140" role="application" aria-label="RCT Ecosystem Overview Diagram" tabIndex={0}>
+      <svg viewBox="0 0 500 420" className="mx-auto w-full max-w-120" role="application" aria-label="RCT Ecosystem Overview Diagram" tabIndex={0} onKeyDown={handleKeyDown}>
         <circle cx={cx} cy={cy} r={orbitR} fill="none" stroke={isDark ? "#2A2A2A" : "#E8E3DC"} strokeWidth={1} strokeDasharray="6 4" />
+
+        <motion.g
+          animate={{ rotate: 360 }}
+          transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+          style={{ transformOrigin: `${cx}px ${cy}px` }}
+        >
+          <circle cx={cx} cy={cy - orbitR} r="5" fill="#D4A853" opacity="0.9" />
+          <circle cx={cx + 8} cy={cy - orbitR + 26} r="3" fill="#89B4C8" opacity="0.65" />
+          <circle cx={cx - 10} cy={cy - orbitR + 52} r="2.5" fill="#C4745B" opacity="0.45" />
+        </motion.g>
 
         {nodePositions.map((node) => (
           <motion.line key={`line-${node.id}`} x1={cx} y1={cy} x2={node.x} y2={node.y} stroke={hovered === node.id ? node.color : isDark ? "#333" : "#D4D0C8"} strokeWidth={hovered === node.id ? 2.5 : 1.5} strokeDasharray={hovered === node.id ? "none" : "6 4"} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} />
         ))}
-
-        {nodePositions.map((node, index) => {
-          const next = nodePositions[(index + 1) % nodePositions.length]
-          return (
-            <motion.path
-              key={`inter-${node.id}`}
-              d={`M ${node.x} ${node.y} L ${next.x} ${next.y}`}
-              stroke={isDark ? "#3A3A3A" : "#D4C8B8"}
-              strokeWidth={1.5}
-              strokeDasharray="5 3"
-              fill="none"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
-              transition={{ duration: 1.2, delay: index * 0.2, repeat: Infinity, repeatDelay: nodePositions.length * 0.2 + 0.4, ease: "easeInOut" }}
-            />
-          )
-        })}
 
         <motion.circle cx={cx} cy={cy} r={centerR} fill={isDark ? "#222" : "#FAF6F0"} stroke="#D4A853" strokeWidth={2.5} initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, type: "spring" }} style={{ transformOrigin: `${cx}px ${cy}px` }} />
         <text x={cx} y={cy - 8} textAnchor="middle" fontSize={13} fontWeight={700} fill="#D4A853" fontFamily="monospace">RCT</text>
@@ -125,20 +130,7 @@ export default function EcosystemOverviewDiagram() {
               {(isHovered || isSelected) && <circle cx={node.x} cy={node.y} r={nodeR + 6} fill={node.color} opacity={isSelected ? 0.25 : 0.15} />}
               {isFocused && <circle cx={node.x} cy={node.y} r={nodeR + 4} fill="none" stroke={node.color} strokeWidth={2} strokeDasharray="4 4" opacity={0.8} />}
               <circle cx={node.x} cy={node.y} r={nodeR} fill={isDark ? node.darkBg : node.bg} stroke={isHovered || isSelected ? node.color : isDark ? "#333" : "#D4D0C8"} strokeWidth={isHovered || isSelected ? 2.5 : 1.5} />
-              {(() => {
-                const label = isEn ? node.label : node.labelTh
-                const words = label.split(" ")
-                if (words.length >= 2) {
-                  const mid = Math.ceil(words.length / 2)
-                  return (
-                    <text x={node.x} y={node.y - 2} textAnchor="middle" fontSize={8.5} fontWeight={600} fill={node.color} fontFamily="var(--font-sans)">
-                      <tspan x={node.x} dy={-5}>{words.slice(0, mid).join(" ")}</tspan>
-                      <tspan x={node.x} dy={11}>{words.slice(mid).join(" ")}</tspan>
-                    </text>
-                  )
-                }
-                return <text x={node.x} y={node.y + 1} textAnchor="middle" dominantBaseline="middle" fontSize={8.5} fontWeight={600} fill={node.color} fontFamily="var(--font-sans)">{label}</text>
-              })()}
+              {renderNodeLabel(node)}
             </motion.g>
           )
         })}
@@ -153,8 +145,8 @@ export default function EcosystemOverviewDiagram() {
           let tx = node.x - tooltipW / 2
           let ty = node.y + nodeR + 20
           if (tx < 10) tx = 10
-          if (tx + tooltipW > 550) tx = 550 - tooltipW
-          if (ty + tooltipH > 490) ty = node.y - nodeR - tooltipH - 20
+          if (tx + tooltipW > 490) tx = 490 - tooltipW
+          if (ty + tooltipH > 410) ty = node.y - nodeR - tooltipH - 20
           if (ty < 10) ty = 10
           const desc = isEn ? node.desc : node.descTh
           return (

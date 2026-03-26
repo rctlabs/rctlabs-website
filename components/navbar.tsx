@@ -17,6 +17,7 @@ import SearchModal, { useSearchModal } from "@/components/search/search-modal"
 import { UserProfileMenu } from "@/components/user-profile-menu"
 import { KeyboardShortcutsDialog } from "@/components/keyboard-shortcuts-dialog"
 import { useMounted } from "@/hooks/use-mounted"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 const SEARCH_DATA = [
   { title: "Solutions Overview",           description: "AI solutions for enterprise",                      href: "/solutions",                              category: "Solutions" },
@@ -214,7 +215,8 @@ export function Navbar() {
   const navTextClass       = isOnDarkHero ? "text-white/90" : isDark ? "text-warm-gray/70" : "text-warm-gray"
   const navTextActiveClass = isOnDarkHero ? "text-white" : isDark ? "text-white" : "text-warm-charcoal"
 
-  const localePrefix = language === "th" ? "/th" : "/en"
+  const locale = resolveLocale(pathname, language)
+  const localePrefix = getLocalePrefix(locale)
   const localHref = (href: string) => `${localePrefix}${href}`
 
   const getLabel = (key: string) =>
@@ -226,8 +228,8 @@ export function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ${
           scrolled
             ? isDark
-              ? "bg-warm-charcoal/94 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.22)] border-b border-[#333]"
-              : "bg-white/90 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.04)] border-b border-warm-light-gray/60"
+              ? "bg-warm-charcoal/95 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.18)] border-b border-[#333]"
+              : "bg-white/92 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.03)] border-b border-warm-light-gray/60"
             : isOnDarkHero
               ? "bg-linear-to-b from-black/30 to-transparent"
               : "bg-transparent"
@@ -341,14 +343,14 @@ export function Navbar() {
               {/* Search button */}
               <button
                 onClick={openSearch}
-                className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all ${
+                className={`hidden md:flex shrink-0 items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all ${
                   isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
                 }`}
                 aria-label="Search (Ctrl+K)"
               >
-                <Search size={15} />
-                <span className="hidden lg:inline">Search</span>
-                <kbd className={`hidden lg:inline px-1.5 py-0.5 text-[10px] rounded border ${
+                <Search size={15} className="shrink-0" />
+                <span className="hidden xl:inline whitespace-nowrap">Search</span>
+                <kbd className={`hidden xl:inline px-1.5 py-0.5 text-[10px] rounded border ${
                   isDark ? "border-[#444] text-warm-gray/50" : "border-warm-light-gray text-warm-gray/60"
                 }`}>⌘K</kbd>
               </button>
@@ -381,13 +383,13 @@ export function Navbar() {
               {/* Language switcher */}
               <button
                 onClick={toggleLanguage}
-                className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all group ${
+                className={`hidden md:flex shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all group ${
                   isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
                 }`}
-                aria-label={language === "en" ? "Switch to Thai" : "Switch to English"}
+                aria-label={locale === "en" ? "Current language English, switch to Thai" : "Current language Thai, switch to English"}
               >
-                <Globe size={15} className="group-hover:rotate-180 transition-transform duration-500" />
-                <span>{language === "en" ? "TH" : "EN"}</span>
+                <Globe size={15} className="shrink-0 transition-transform duration-500 group-hover:rotate-180" />
+                <span className="whitespace-nowrap">{locale === "en" ? "EN → TH" : "TH → EN"}</span>
               </button>
 
               {/* Notification + Auth */}
@@ -441,7 +443,7 @@ export function Navbar() {
                     }`}
                   >
                     <Globe size={16} />
-                    <span className="text-xs">{language === "en" ? "ภาษาไทย" : "English"}</span>
+                    <span className="text-xs">{locale === "en" ? "EN → ไทย" : "ไทย → EN"}</span>
                   </button>
                 </div>
 

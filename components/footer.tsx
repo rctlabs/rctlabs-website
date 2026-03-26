@@ -8,15 +8,18 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { useTheme } from "next-themes"
 import { toast } from "sonner"
 import { useMounted } from "@/hooks/use-mounted"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 const LOGO_PNG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
 
 export function Footer() {
   const { language, t } = useLanguage()
+  const pathname = usePathname()
   const { theme } = useTheme()
   const mounted = useMounted()
   const isDark = (mounted ? theme : "light") === "dark"
@@ -27,7 +30,7 @@ export function Footer() {
   const [emailError, setEmailError] = useState("")
   const [isSuccess, setIsSuccess] = useState(false)
 
-  const localePrefix = isTh ? "/th" : "/en"
+  const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
   const lh = (href: string) => `${localePrefix}${href}`
 
   const validateEmail = (value: string) => {

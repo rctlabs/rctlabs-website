@@ -7,6 +7,7 @@
  *   SUPABASE_SERVICE_KEY = service_role_key (secret)
  */
 import { createClient } from "@supabase/supabase-js"
+import { getSupabaseConfig } from "@/lib/auth/config"
 
 type Database = {
   public: {
@@ -29,11 +30,7 @@ let _client: ReturnType<typeof createClient<Database>> | null = null
 
 export function getSupabaseAdmin() {
   if (_client) return _client
-  const url = process.env.SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_KEY
-  if (!url || !key) {
-    throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_KEY environment variables")
-  }
+  const { url, key } = getSupabaseConfig("admin")
   _client = createClient<Database>(url, key, {
     auth: { persistSession: false },
   })

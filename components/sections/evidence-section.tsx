@@ -1,12 +1,10 @@
 "use client"
 
-import { useRef, useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { BookOpen, ExternalLink, FlaskConical, BarChart3, Shield } from "lucide-react"
-import { useTheme } from "next-themes"
 import { useLanguage } from "@/components/language-provider"
 import Image from "next/image"
-import { useMounted } from "@/hooks/use-mounted"
+import { pixelIcons } from "@/lib/pixel-icons"
 
 const evidenceCards = [
   {
@@ -95,8 +93,7 @@ const partners = [
   { name: "GitHub", abbr: "GH" },
 ]
 
-const PIXEL_EVIDENCE =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-evidence-book_bad1b506.png"
+const PIXEL_EVIDENCE = pixelIcons.evidence
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -104,33 +101,8 @@ const fadeUp = {
 }
 
 export default function EvidenceSection() {
-  const { resolvedTheme } = useTheme()
-  const mounted = useMounted()
-  const isDark = mounted && resolvedTheme === "dark"
   const { language } = useLanguage()
   const isTh = language === "th"
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [isPaused, setIsPaused] = useState(false)
-
-  /* Auto-scroll logo carousel */
-  useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    let animId: number
-    const speed = 0.5
-
-    const step = () => {
-      if (!isPaused && el) {
-        el.scrollLeft += speed
-        if (el.scrollLeft >= el.scrollWidth / 2) {
-          el.scrollLeft = 0
-        }
-      }
-      animId = requestAnimationFrame(step)
-    }
-    animId = requestAnimationFrame(step)
-    return () => cancelAnimationFrame(animId)
-  }, [isPaused])
 
   return (
     <section
@@ -159,7 +131,6 @@ export default function EvidenceSection() {
               height={48}
               className="inline-block w-10 h-10 sm:w-12 sm:h-12 object-contain"
               style={{ imageRendering: "pixelated" }}
-              unoptimized
             />
             <span>
               <span className="font-semibold" style={{ color: "#7B9E87" }}>
@@ -252,7 +223,7 @@ export default function EvidenceSection() {
           })}
         </div>
 
-        {/* Partner Logo Carousel */}
+        {/* Partner compatibility grid */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -264,35 +235,18 @@ export default function EvidenceSection() {
             {isTh ? "เทคโนโลยีที่รองรับ" : "Compatible Technologies"}
           </p>
 
-          <div
-            className="relative overflow-hidden"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            {/* Gradient fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none bg-linear-to-r from-background to-transparent" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none bg-linear-to-l from-background to-transparent" />
-
-            <div
-              ref={scrollRef}
-              className="flex gap-6 overflow-x-hidden py-3"
-              style={{ scrollBehavior: "auto" }}
-            >
-              {/* Duplicate for infinite scroll */}
-              {[...partners, ...partners].map((p, i) => (
-                <div
-                  key={`${p.name}-${i}`}
-                  className="shrink-0 flex items-center gap-2.5 px-5 py-3 rounded-xl border transition-colors bg-card border-border hover:border-warm-amber/30"
-                >
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-bold bg-secondary text-muted-foreground">
-                    {p.abbr}
-                  </div>
-                  <span className="text-sm font-medium whitespace-nowrap text-muted-foreground">
-                    {p.name}
-                  </span>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {partners.map((partner) => (
+              <div
+                key={partner.name}
+                className="flex items-center gap-2.5 rounded-xl border border-border bg-card px-4 py-3 transition-colors hover:border-warm-amber/30"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary text-[10px] font-bold text-muted-foreground">
+                  {partner.abbr}
                 </div>
-              ))}
-            </div>
+                <span className="text-sm font-medium text-muted-foreground">{partner.name}</span>
+              </div>
+            ))}
           </div>
         </motion.div>
       </div>

@@ -7,9 +7,9 @@ import { useLanguage } from "@/components/language-provider"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { LazyFDIACalculatorPanel, LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
 import SectionHeading from "@/components/section-heading"
+import { pixelIcons } from "@/lib/pixel-icons"
 
-const PIXEL_BRAIN =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/8bit-brain-icon-YV3hZvbAaJBXWEMr6T2Tnc.webp"
+const PIXEL_BRAIN = pixelIcons.brain
 
 function InfographicAccordion({ language }: { language: string }) {
   return (

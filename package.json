@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev --port 3005",
+    "dev:3010": "next dev -H 0.0.0.0 --port 3010",
     "dev:host": "next dev -H 0.0.0.0 --port 3005",
     "lint": "eslint .",
     "start": "next start",

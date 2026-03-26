@@ -1,10 +1,19 @@
 import { ImageResponse } from "next/og"
+import { headers } from "next/headers"
 
 export const alt = "RCT Labs - Intent Operating System"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
-export default function OgImage() {
+export default async function OgImage() {
+  const headerList = await headers()
+  const locale = headerList.get("x-locale") === "th" ? "th" : "en"
+  const title = locale === "th" ? "RCT Labs" : "RCT Labs"
+  const subtitle = locale === "th" ? "ระบบปฏิบัติการ AI ที่เน้น Intent" : "Intent Operating System"
+  const tagline = locale === "th"
+    ? "Constitutional AI · Multi-LLM Consensus · Data Sovereignty"
+    : "Constitutional AI · Multi-LLM Consensus · Data Sovereignty"
+
   return new ImageResponse(
     (
       <div
@@ -46,7 +55,7 @@ export default function OgImage() {
             letterSpacing: "-0.02em",
           }}
         >
-          RCT Labs
+          {title}
         </h1>
 
         {/* Subtitle */}
@@ -59,7 +68,7 @@ export default function OgImage() {
             textTransform: "uppercase" as const,
           }}
         >
-          Intent Operating System
+          {subtitle}
         </p>
 
         {/* Tagline */}
@@ -73,7 +82,7 @@ export default function OgImage() {
             lineHeight: 1.4,
           }}
         >
-          Constitutional AI &middot; Multi-LLM Consensus &middot; Data Sovereignty
+          {tagline}
         </p>
       </div>
     ),
