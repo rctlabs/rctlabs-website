@@ -188,23 +188,23 @@ export default async function AboutPage() {
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-amber/10 border border-warm-amber/30 text-warm-amber text-sm font-medium">
             <Sparkles className="w-4 h-4" />
-            {isTh ? "เกี่ยวกับผู้สร้างและ Ecosystem" : "About the Architect & Ecosystem"}
+            {isTh ? "สถาปัตยกรรม Constitutional AI สำหรับองค์กร" : "Enterprise Constitutional AI Architecture"}
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-foreground leading-tight text-balance">
-            {isTh ? "จาก Chaos สู่ Architecture" : "From Chaos to Architecture"}
+            {isTh ? "เปลี่ยน Intent ให้เป็นความจริงที่ตรวจสอบได้" : "Scaling Intent into Verifiable Truth"}
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground text-balance max-w-2xl mx-auto">
             {isTh
-              ? "สถาปนิกคนเดียว มือถือเครื่องเดียว สมการเดียวที่เปลี่ยนทุกอย่าง"
-              : "One architect. One mobile phone. One equation that changes everything."}
+              ? "ระบบปฏิบัติการ AI ที่ออกแบบมาเพื่อการกำกับดูแล ความทรงจำองค์กร และลดการหลอนอย่างเป็นระบบ"
+              : "An AI operating system built natively for strict governance, persistent enterprise memory, and systemic hallucination control."}
           </p>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             {isTh
-              ? "RCT Ecosystem ไม่ได้เกิดจากห้องแล็บหรือกองทุนร่วมลงทุน แต่เกิดจากประสบการณ์ชีวิตจริง ความเชื่อมั่นว่ามนุษย์คนเดียวที่มี Intent ชัดเจน สามารถออกแบบระบบที่เทียบเท่ากับสิ่งที่ทีมทั้งทีมสร้าง"
-              : "RCT Ecosystem was born not from a lab or a venture fund — but from lived experience, relentless curiosity, and the conviction that a single human with clear intent can design systems that rival what entire teams build."}
+              ? "สร้างขึ้นบนสมการ FDIA และสถาปัตยกรรมระดับ 10-Layer ระบบนิเวศ RCT ไม่ใช่แค่การประกอบโมเดลเข้าด้วยกัน แต่เราออกแบบสายวิวัฒนาการใหม่ ที่ทุกผลลัพธ์ได้รับการตรวจสอบ รองรับงานระดับองค์กรที่อ่อนไหวที่สุด"
+              : "Built on the FDIA equation and a 10-Layer Architecture, RCT Ecosystem orchestrates models into a governed enterprise runtime. We engineer deterministic pathways where every output is verifiable, making AI safe for highly-regulated workflows."}
           </p>
-          <p className="text-sm font-medium uppercase tracking-[0.16em] text-warm-amber">
-            {isTh ? "Constitutional AI Operating System • Linux for AI Agents" : "Constitutional AI Operating System • Linux for AI Agents"}
+          <p className="text-sm font-medium uppercase tracking-[0.16em] text-warm-amber mt-8">
+            {isTh ? "สถาปนิกอิสระ • 41 Algorithms • 0.3% Hallucination Rate" : "Solo Architect • 41 Algorithms • 0.3% Hallucination Verification"}
           </p>
         </div>
       </section>

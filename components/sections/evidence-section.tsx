@@ -159,45 +159,48 @@ export default function EvidenceSection() {
                 variants={fadeUp}
                 transition={{ duration: 0.5, delay: i * 0.12 }}
                 whileHover={{ y: -4 }}
-                className="relative flex flex-col p-6 rounded-2xl border transition-shadow hover:shadow-lg group bg-card border-border"
+                className="group relative flex h-full flex-col rounded-[24px] border border-border bg-card p-6 transition-[transform,border-color,box-shadow] duration-300 hover:border-warm-amber/30 hover:shadow-[0_14px_34px_rgba(0,0,0,0.08)]"
               >
-                {/* Top row: tag + stat */}
-                <div className="flex items-start justify-between mb-4">
-                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-secondary text-muted-foreground">
-                    <Icon size={10} />
-                    {isTh ? card.tagTh : card.tagEn}
-                  </span>
-                  <div className="text-right">
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.12),transparent_40%)]" />
+                </div>
+
+                <div className="relative z-10 mb-5 flex items-start justify-between gap-4">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-warm-amber/20 bg-secondary text-muted-foreground transition-transform duration-300 group-hover:scale-105">
+                      <Icon size={16} />
+                    </div>
+                    <span className="inline-flex min-w-0 items-center rounded-full bg-secondary px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      {isTh ? card.tagTh : card.tagEn}
+                    </span>
+                  </div>
+                  <div className="shrink-0 rounded-2xl border border-border/70 bg-background/70 px-3 py-2 text-right">
                     <div
-                      className="text-lg font-bold font-mono"
+                      className="text-lg font-bold font-mono leading-none"
                       style={{ color: card.color }}
                     >
                       {card.stat}
                     </div>
-                    <div className="text-[9px] uppercase tracking-wider text-muted-foreground">
+                    <div className="mt-1 text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
                       {isTh ? card.statLabelTh : card.statLabelEn}
                     </div>
                   </div>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-sm font-bold leading-snug mb-3 text-foreground">
+                <h3 className="relative z-10 mb-4 text-base font-bold leading-snug text-foreground">
                   {isTh ? card.titleTh : card.titleEn}
                 </h3>
 
-                {/* Quote */}
-                <blockquote className="text-xs leading-relaxed mb-3 pl-3 border-l-2 border-warm-amber/30 text-muted-foreground">
+                <blockquote className="relative z-10 mb-4 border-l-2 border-warm-amber/30 pl-3 text-xs leading-relaxed text-muted-foreground">
                   {isTh ? card.quoteTh : card.quoteEn}
                 </blockquote>
 
-                {/* RCT Relevance */}
-                <div className="text-[11px] leading-relaxed mb-4 px-3 py-2 rounded-lg bg-secondary/50 text-muted-foreground">
+                <div className="relative z-10 mb-5 rounded-xl bg-secondary/55 px-3.5 py-3 text-[11px] leading-relaxed text-muted-foreground">
                   <span className="font-semibold">RCT:</span>{" "}
                   {isTh ? card.relevanceTh : card.relevanceEn}
                 </div>
 
-                {/* Source + Link */}
-                <div className="mt-auto pt-3 border-t border-dashed border-border flex items-start gap-2">
+                <div className="relative z-10 mt-auto flex items-start gap-2 border-t border-dashed border-border pt-4">
                   <BookOpen
                     size={12}
                     className="mt-0.5 shrink-0 text-muted-foreground"

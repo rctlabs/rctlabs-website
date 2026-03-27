@@ -20,8 +20,8 @@ export default function ContactPageClient() {
     {
       icon: Mail,
       label: isTh ? "อีเมล" : "Email",
-      value: "hello@rctlabs.co",
-      href: "mailto:hello@rctlabs.co",
+      value: "owner@rctlabs.co",
+      href: "mailto:owner@rctlabs.co",
     },
     {
       icon: MapPin,
@@ -100,7 +100,7 @@ export default function ContactPageClient() {
           <div className="text-center space-y-4">
             <h3 className="text-xl font-semibold text-foreground">{isTh ? "สอบถามทั่วไป" : "General Inquiries"}</h3>
             <p className="text-muted-foreground">{isTh ? "สำหรับคำถามทั่วไปและข้อมูลเกี่ยวกับ RCT Labs" : "For general questions and information about RCT Labs"}</p>
-            <p className="text-sm font-medium text-accent">hello@rctlabs.co</p>
+            <p className="text-sm font-medium text-accent">owner@rctlabs.co</p>
           </div>
           <div className="text-center space-y-4">
             <h3 className="text-xl font-semibold text-foreground">{isTh ? "พาร์ตเนอร์" : "Partnership"}</h3>

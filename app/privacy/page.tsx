@@ -64,7 +64,7 @@ export default function PrivacyPage() {
     },
     {
       title: "10. Contact Us",
-      content: "If you have questions or concerns about this Privacy Policy, please contact us at hello@rctlabs.co or privacy@rctlabs.co.",
+      content: "If you have questions or concerns about this Privacy Policy, please contact us at owner@rctlabs.co or privacy@rctlabs.co.",
     },
   ]
 

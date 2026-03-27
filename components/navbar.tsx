@@ -26,7 +26,7 @@ const SEARCH_DATA = [
   { title: "Dynamic AI Routing",           description: "Intelligent routing for AI systems",               href: "/solutions/dynamic-ai-routing",            category: "Solutions" },
   { title: "Products Overview",            description: "Discover our AI products and platforms",          href: "/products",                               category: "Products" },
   { title: "RCT Labs",                     description: "AI development platform",                         href: "/products/rctlabs",                       category: "Products" },
-  { title: "ARTENT AI",                    description: "Autonomous reasoning technology",                  href: "/products/artent-ai",                     category: "Products" },
+  { title: "ArtentAI",                     description: "Autonomous reasoning technology",                  href: "/products/artent-ai",                     category: "Products" },
   { title: "Signed AI",                    description: "Cryptographically signed AI execution",            href: "/products/signed-ai",                     category: "Products" },
   { title: "Pricing",                      description: "Flexible pricing plans for all needs",             href: "/pricing",                                category: "Products" },
   { title: "System Architecture",          description: "10-layer constitutional AI architecture",          href: "/architecture",                           category: "Technology" },
@@ -128,7 +128,7 @@ const navLabels: Record<string, { en: string; th: string }> = {
   "nav.memory":       { en: "Enterprise AI Memory",        th: "AI Memory ระดับ Enterprise" },
   "nav.routing":      { en: "Dynamic AI Routing",          th: "Dynamic AI Routing" },
   "nav.rctlabs":      { en: "RCT Labs Platform",           th: "RCT Labs Platform" },
-  "nav.artentai":     { en: "ARTENT AI",                   th: "ARTENT AI" },
+  "nav.artentai":     { en: "ArtentAI",                    th: "ArtentAI" },
   "nav.signedai":     { en: "Signed AI",                   th: "Signed AI" },
   "nav.pricing":      { en: "Pricing",                     th: "ราคา" },
   "nav.genome":       { en: "7 Genome System",             th: "7 Genome System" },
@@ -276,20 +276,20 @@ export function Navbar() {
                 src={LOGO_MARK}
                 alt="RCT"
                 width={32} height={32}
-                className={`h-8 w-8 md:hidden object-contain ${isDark ? "brightness-0 invert" : ""}`}
+                className={`h-8 w-8 sm:hidden object-contain ${isDark ? "brightness-0 invert" : ""}`}
                 priority
               />
               <Image
                 src={LOGO_HORIZONTAL}
                 alt="RCT — Reverse Component Thinking"
                 width={160} height={32}
-                className={`hidden md:block h-8 w-40 object-contain ${isDark ? "brightness-0 invert" : ""}`}
+                className={`hidden sm:block h-8 w-40 object-contain ${isDark ? "brightness-0 invert" : ""}`}
                 priority
               />
             </Link>
 
             {/* Desktop nav — grouped dropdowns */}
-            <div className="hidden md:flex items-center gap-0.5" ref={dropdownRef}>
+            <div className="hidden sm:flex items-center gap-0.5" ref={dropdownRef}>
               {navGroups.map((group) => {
                 const groupItems = navItems.filter(i => i.group === group.id)
                 const groupActive = isGroupActive(group.id)
@@ -369,7 +369,7 @@ export function Navbar() {
               {/* Search button */}
               <button
                 onClick={openSearch}
-                className={`hidden md:flex shrink-0 items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all ${
+                className={`hidden sm:flex shrink-0 items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all ${
                   isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
                 }`}
                 aria-label="Search (Ctrl+K)"
@@ -384,7 +384,7 @@ export function Navbar() {
               {/* Theme toggle */}
               <button
                 onClick={() => setTheme(isDark ? "light" : "dark")}
-                className={`hidden md:flex p-2 rounded-lg transition-all ${
+                className={`hidden sm:flex p-2 rounded-lg transition-all ${
                   isOnDarkHero
                     ? "text-white/90 hover:text-white hover:bg-white/10 bg-white/5 backdrop-blur-sm"
                     : isDark
@@ -409,7 +409,7 @@ export function Navbar() {
               {/* Language switcher */}
               <button
                 onClick={toggleLanguage}
-                className={`hidden md:flex shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all group ${
+                className={`hidden sm:flex shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all group ${
                   isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
                 }`}
                 aria-label={locale === "en" ? "Current language English, switch to Thai" : "Current language Thai, switch to English"}
@@ -419,14 +419,14 @@ export function Navbar() {
               </button>
 
               {/* Notification + Auth */}
-              <div className="hidden md:flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-2">
                 <UserProfileMenu />
               </div>
 
               {/* Mobile toggle */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className={`md:hidden p-2 rounded-lg transition-colors ${
+                className={`sm:hidden p-2 rounded-lg transition-colors ${
                   isDark ? "text-white hover:bg-white/5" : "text-warm-charcoal hover:bg-warm-sand/50"
                 }`}
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -446,7 +446,7 @@ export function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              className={`md:hidden border-t overflow-hidden ${
+              className={`sm:hidden border-t overflow-hidden ${
                 isDark ? "bg-warm-charcoal/98 backdrop-blur-xl border-[#333]" : "bg-white/95 backdrop-blur-xl border-warm-light-gray/60"
               }`}
             >

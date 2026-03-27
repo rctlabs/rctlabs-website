@@ -77,22 +77,22 @@ export default function RoadmapSection() {
           {roadmap.map((item, index) => {
             const StatusIcon = statusIcons[item.status]
             return (
-              <motion.div key={item.phase} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.5, delay: index * 0.08 }} className={`rounded-2xl border p-6 transition-all duration-300 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]" : "bg-white border-warm-light-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]"} ${item.status === "in-progress" ? "ring-2 ring-warm-amber/30" : ""}`}>
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl text-xs font-bold" style={{ backgroundColor: isDark ? item.darkBg : item.bg, color: item.color }}>{item.phase.replace("Phase ", "P")}</div>
-                  <div className="flex-1">
-                    <h3 className={`text-base font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{item.title}</h3>
-                    <div className="mt-0.5 flex items-center gap-1.5">
+              <motion.div key={item.phase} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.5, delay: index * 0.08 }} className={`flex h-full flex-col rounded-[24px] border p-6 sm:p-7 transition-all duration-300 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]" : "bg-white border-warm-light-gray hover:shadow-[0_10px_32px_rgba(0,0,0,0.07)]"} ${item.status === "in-progress" ? "ring-2 ring-warm-amber/30" : ""}`}>
+                <div className="mb-5 flex items-start gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border text-xs font-bold" style={{ backgroundColor: isDark ? item.darkBg : item.bg, color: item.color, borderColor: `${item.color}33` }}>{item.phase.replace("Phase ", "P")}</div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className={`text-base font-bold leading-snug ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{item.title}</h3>
+                    <div className="mt-1.5 flex items-center gap-1.5">
                       <StatusIcon size={12} style={{ color: item.color }} />
                       <span className="text-xs font-medium" style={{ color: item.color }}>{statusLabels[item.status]}</span>
                     </div>
                   </div>
                 </div>
-                <div className="space-y-2">
+                <div className="mt-1 space-y-2.5">
                   {item.tasks.map((task, taskIndex) => (
                     <div key={taskIndex} className="flex items-start gap-2.5">
                       {item.status === "done" ? <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-warm-sage" /> : <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />}
-                      <span className={`text-sm sm:text-[15px] ${item.status === "done" ? isDark ? "text-warm-dim line-through" : "text-warm-gray line-through" : isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{task}</span>
+                      <span className={`text-sm leading-relaxed sm:text-[15px] ${item.status === "done" ? isDark ? "text-warm-dim line-through" : "text-warm-gray line-through" : isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{task}</span>
                     </div>
                   ))}
                 </div>

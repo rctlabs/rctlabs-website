@@ -10,73 +10,6 @@ import { getLocaleFromPathname, getLocalePrefix } from "@/lib/i18n"
 import HeroSection from "@/components/sections/hero-section"
 import OverviewSection from "@/components/sections/overview-section"
 import FDIASection from "@/components/sections/fdia-section"
-import EvidenceSection from "@/components/sections/evidence-section"
-import RoadmapSection from "@/components/sections/roadmap-section"
-import SectionPreviewCard from "@/components/section-preview-card"
-import { pixelIcons } from "@/lib/pixel-icons"
-
-const deepDiveCards = [
-  {
-    iconSrc: pixelIcons.architecture,
-    title: "10-Layer Architecture",
-    titleTh: "สถาปัตยกรรม 10 ชั้น",
-    description: "A comprehensive cognitive architecture stack from data ingestion to autonomous improvement.",
-    descriptionTh: "สถาปัตยกรรม Cognitive Stack ตั้งแต่ Data Ingestion ถึง Autonomous Improvement",
-    href: "/architecture",
-    color: "#89B4C8",
-    bg: "#DBEAFE",
-  },
-  {
-    iconSrc: pixelIcons.genome,
-    title: "7 Genome System",
-    titleTh: "ระบบ 7 Genome",
-    description: "Seven interconnected genomes forming a continuous improvement cycle.",
-    descriptionTh: "7 Genomes ที่เชื่อมต่อกันสร้างวงจรปรับปรุงต่อเนื่อง",
-    href: "/genome",
-    color: "#C4745B",
-    bg: "#FEE2E2",
-  },
-  {
-    iconSrc: pixelIcons.jitna,
-    title: "JITNA Protocol",
-    titleTh: "โปรโตคอล JITNA",
-    description: "Just-In-Time Nodal Assembly — the 'HTTP of the Agentic AI world'.",
-    descriptionTh: "Just-In-Time Nodal Assembly — 'HTTP แห่งโลก Agentic AI'",
-    href: "/protocols/jitna-rfc-001",
-    color: "#7B9E87",
-    bg: "#D1FAE5",
-  },
-  {
-    iconSrc: pixelIcons.algorithms,
-    title: "Core Systems & Engines",
-    titleTh: "ระบบหลักและเอ็นจิน",
-    description: "A public-safe overview of HexaCore, Intent Loop, Analysearch, and Delta Memory.",
-    descriptionTh: "ภาพรวมแบบ public-safe ของ HexaCore, Intent Loop, Analysearch และ Delta Memory",
-    href: "/core-systems",
-    color: "#D4A853",
-    bg: "#FEF3C7",
-  },
-  {
-    iconSrc: pixelIcons.rocket,
-    title: "Integration & Deployment",
-    titleTh: "การเชื่อมต่อ และ Deployment",
-    description: "MCP-native integration with multi-provider AI support and deployment infrastructure.",
-    descriptionTh: "MCP-native Integration พร้อม Multi-provider AI Support",
-    href: "/integration",
-    color: "#B8A9C9",
-    bg: "#EDE9FE",
-  },
-  {
-    iconSrc: pixelIcons.shield,
-    title: "Signed AI & Verification",
-    titleTh: "Signed AI และการตรวจสอบ",
-    description: "Cryptographic verification, trusted outputs, and governance-ready auditability for enterprise deployment.",
-    descriptionTh: "การยืนยันผลลัพธ์ด้วย cryptography ความน่าเชื่อถือของคำตอบ และ auditability สำหรับงานระดับองค์กร",
-    href: "/products/signed-ai",
-    color: "#7B9E87",
-    bg: "#D1FAE5",
-  },
-]
 
 export default function HomePage() {
   const pathname = usePathname()
@@ -148,7 +81,7 @@ export default function HomePage() {
               <Link
                 key={pillar.title}
                 href={pillar.href}
-                className="group rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-warm-amber/30"
+                className="group flex flex-col items-center text-center rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-warm-amber/30"
               >
                 <div className="mb-1 text-2xl font-bold" style={{ color: pillar.color }}>{pillar.stat}</div>
                 <div className="mb-1.5 text-sm font-semibold text-foreground group-hover:text-warm-amber transition-colors duration-200">{pillar.title}</div>
@@ -160,35 +93,7 @@ export default function HomePage() {
       </section>
 
       <OverviewSection />
-      <FDIASection />
-
-      <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-        <div className="space-y-10">
-          <div className="mx-auto max-w-2xl space-y-3 text-center">
-            <h2 className="text-foreground">
-              {locale === "th" ? "เลือกเส้นทางการสำรวจเชิงลึก" : "Choose a Deep-Dive Path"}
-            </h2>
-            <p className="text-muted-foreground">
-              {locale === "th"
-                ? "เริ่มจากเลนส์ที่ต้องการ: ระบบหลัก โปรโตคอล การเชื่อมต่อ การกำกับดูแล หรือ deployment โดยไม่ต้องอ่านคำอธิบายซ้ำจากด้านบนอีกครั้ง"
-                : "Start from the lens you need: core systems, protocols, deployment, governance, or architecture. This section is now a navigation hub rather than a repeated overview."}
-            </p>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
-            {deepDiveCards.map((card, index) => (
-              <SectionPreviewCard
-                key={card.href}
-                {...card}
-                href={`${localePrefix}${card.href}`}
-                delay={index * 0.08}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <EvidenceSection />
-      <RoadmapSection />
+      <OverviewSection />
 
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
         <div className="relative overflow-hidden rounded-lg border border-border bg-card p-10 md:p-16">

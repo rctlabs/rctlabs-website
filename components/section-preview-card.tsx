@@ -48,7 +48,7 @@ export default function SectionPreviewCard({
     >
       <Link
         href={href}
-        className={`group relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl border p-4 sm:p-5 transition-all duration-300 hover:shadow-md ${
+        className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border p-5 sm:p-6 transition-[transform,border-color,box-shadow] duration-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] ${
           isDark
             ? "bg-card border-border hover:border-warm-amber/40"
             : "bg-card border-border hover:border-warm-amber/40"
@@ -57,9 +57,9 @@ export default function SectionPreviewCard({
         <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.14),transparent_40%)]" />
         </div>
-        <div className="flex items-start gap-3 sm:gap-4">
+        <div className="mb-5 flex flex-col items-center gap-3">
           <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-2xl transition-transform duration-300 group-hover:scale-110 sm:h-13 sm:w-13"
+            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border text-2xl transition-transform duration-300 group-hover:scale-105"
             style={{ backgroundColor: isDark ? `${color}20` : bg }}
           >
             {iconSrc ? (
@@ -75,22 +75,23 @@ export default function SectionPreviewCard({
               />
             ) : icon}
           </div>
-          <div className="min-w-0 flex-1">
-            <h3
-              className="mb-2 text-sm font-bold text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-base"
-            >
-              {language === "th" ? titleTh : title}
-            </h3>
-            <p className={`text-xs leading-relaxed text-muted-foreground sm:text-sm ${language === "th" ? "subtitle-th" : ""}`}>
-              {language === "th" ? descriptionTh : description}
-            </p>
-          </div>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground text-center">
+            {language === "th" ? "Deep Dive" : "Deep Dive"}
+          </span>
+        </div>
+        <div className="relative z-10 flex h-full flex-col items-center text-center">
+          <h3 className="mb-3 text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-lg">
+            {language === "th" ? titleTh : title}
+          </h3>
+          <p className={`text-sm leading-relaxed text-muted-foreground sm:text-[15px] ${language === "th" ? "subtitle-th" : ""}`}>
+            {language === "th" ? descriptionTh : description}
+          </p>
         </div>
         <div
-          className="mt-auto flex items-center gap-1 pt-1 text-xs font-semibold opacity-100 transition-all duration-200 sm:opacity-70 sm:group-hover:translate-x-1 sm:group-hover:opacity-100"
+          className="relative z-10 mt-5 flex justify-center items-center gap-1 pt-3 text-xs font-semibold opacity-100 transition-all duration-200 sm:opacity-80 sm:group-hover:-translate-y-1 sm:group-hover:opacity-100"
           style={{ color }}
         >
-          {language === "th" ? "สำรวจ →" : "Explore →"}
+          {language === "th" ? "เปิดดูรายละเอียด →" : "Open the detail path →"}
         </div>
       </Link>
     </motion.div>

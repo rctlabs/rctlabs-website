@@ -65,15 +65,23 @@ export function getArticleSchema(article: {
   image: string
   url: string
   locale: Locale
+  articleBody?: string
+  keywords?: string[]
+  wordCount?: number
+  authorUrl?: string
 }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.title,
     description: article.description,
+    ...(article.articleBody && { articleBody: article.articleBody }),
+    ...(article.keywords && { keywords: article.keywords.join(',') }),
+    ...(article.wordCount && { wordCount: article.wordCount }),
     author: {
       '@type': 'Person',
       name: article.author,
+      ...(article.authorUrl && { url: article.authorUrl }),
     },
     datePublished: article.datePublished,
     dateModified: article.dateModified || article.datePublished,
@@ -162,5 +170,33 @@ export function getSoftwareApplicationSchema(locale: Locale) {
       name: SITE_NAME,
       url: SITE_URL,
     },
+  }
+}
+
+export function getDefinedTermSchema(term: string, description: string, url: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTerm',
+    name: term,
+    description: description,
+    url: url,
+    inDefinedTermSet: 'https://rctlabs.co/glossary'
+  }
+}
+
+export function getPersonSchema(name: string, jobTitle: string, url: string, description?: string, sameAs?: string[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name,
+    jobTitle,
+    url,
+    ...(description && { description }),
+    ...(sameAs && { sameAs }),
+    affiliation: {
+      '@type': 'Organization',
+      name: 'RCT Labs',
+      url: 'https://rctlabs.co'
+    }
   }
 }

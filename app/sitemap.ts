@@ -27,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const blogEntries = getAllBlogPosts().flatMap((post) => {
     const route = `/blog/${post.slug}`
-    const postModified = new Date(post.date)
+    const postModified = new Date(post.lastReviewed || post.date)
     return locales.map((locale) => ({
       url: localizeUrl(locale, route),
       lastModified: Number.isNaN(postModified.getTime()) ? lastModified : postModified,
