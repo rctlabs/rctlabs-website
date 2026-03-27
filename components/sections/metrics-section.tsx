@@ -116,7 +116,7 @@ export default function MetricsSection() {
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(123,158,135,0.12),transparent_46%)]" />
                 </div>
                 <OptimizedImage src={PIXEL_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="mx-auto mb-2 h-8 w-8" objectFit="contain" width={32} height={32} className="transition duration-200 group-hover:scale-110 group-hover:brightness-95 group-hover:contrast-125" />
-                <div className={`text-3xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}><AnimatedCounter target={highlight.value} suffix={highlight.suffix} reducedMotion={prefersReducedMotion} /></div>
+                <div className={`text-3xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}><AnimatedCounter target={highlight.value} suffix={highlight.suffix} reducedMotion={prefersReducedMotion ?? false} /></div>
                 <div className="mt-1 text-sm font-semibold text-warm-amber">{highlight.label}</div>
                 <div className={`mt-0.5 text-xs sm:text-sm ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{highlight.desc}</div>
               </motion.div>

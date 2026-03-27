@@ -57,41 +57,46 @@ export default function SectionPreviewCard({
         <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.14),transparent_40%)]" />
         </div>
-        <div className="mb-5 flex flex-col items-center gap-3">
-          <div
-            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border text-2xl transition-transform duration-300 group-hover:scale-105"
-            style={{ backgroundColor: isDark ? `${color}20` : bg }}
-          >
-            {iconSrc ? (
-              <OptimizedImage
-                src={iconSrc}
-                alt=""
-                pixelated
-                showErrorFallback={false}
-                containerClassName="h-8 w-8"
-                objectFit="contain"
-                width={32}
-                height={32}
-              />
-            ) : icon}
+        <div className="flex flex-col sm:flex-row gap-6 items-start h-full">
+          {/* Left Side: Icon & Meta */}
+          <div className="flex flex-col items-start shrink-0 sm:w-[35%]">
+            <div
+              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border text-2xl transition-transform duration-300 group-hover:scale-105 mb-3"
+              style={{ backgroundColor: isDark ? `${color}20` : bg }}
+            >
+              {iconSrc ? (
+                <OptimizedImage
+                  src={iconSrc}
+                  alt=""
+                  pixelated
+                  showErrorFallback={false}
+                  containerClassName="h-8 w-8"
+                  objectFit="contain"
+                  width={32}
+                  height={32}
+                />
+              ) : icon}
+            </div>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground text-left">
+              {language === "th" ? "Deep Dive" : "Deep Dive"}
+            </span>
           </div>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground text-center">
-            {language === "th" ? "Deep Dive" : "Deep Dive"}
-          </span>
-        </div>
-        <div className="relative z-10 flex h-full flex-col items-center text-center">
-          <h3 className="mb-3 text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-lg">
-            {language === "th" ? titleTh : title}
-          </h3>
-          <p className={`text-sm leading-relaxed text-muted-foreground sm:text-[15px] ${language === "th" ? "subtitle-th" : ""}`}>
-            {language === "th" ? descriptionTh : description}
-          </p>
-        </div>
-        <div
-          className="relative z-10 mt-5 flex justify-center items-center gap-1 pt-3 text-xs font-semibold opacity-100 transition-all duration-200 sm:opacity-80 sm:group-hover:-translate-y-1 sm:group-hover:opacity-100"
-          style={{ color }}
-        >
-          {language === "th" ? "เปิดดูรายละเอียด →" : "Open the detail path →"}
+
+          {/* Right Side: Content */}
+          <div className="relative z-10 flex flex-1 h-full flex-col text-left">
+            <h3 className="mb-2 text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-lg">
+              {language === "th" ? titleTh : title}
+            </h3>
+            <p className={`text-sm leading-relaxed text-muted-foreground sm:text-[15px] mb-4 ${language === "th" ? "subtitle-th" : ""}`}>
+              {language === "th" ? descriptionTh : description}
+            </p>
+            <div
+              className="relative z-10 mt-auto flex items-center gap-1 pt-1 text-xs font-semibold opacity-100 transition-all duration-200 sm:opacity-80 sm:group-hover:translate-x-1 sm:group-hover:opacity-100"
+              style={{ color }}
+            >
+              {language === "th" ? "เปิดดูรายละเอียด →" : "Open the detail path →"}
+            </div>
+          </div>
         </div>
       </Link>
     </motion.div>

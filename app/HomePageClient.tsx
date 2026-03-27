@@ -39,7 +39,7 @@ export default function HomePage() {
               {locale === "en" ? "Four Engines. One Unified System." : "4 เครื่องยนต์. ระบบเดียวที่สมบูรณ์."}
             </h2>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
             {[
               {
                 stat: locale === "en" ? "7 Models" : "7 โมเดล",
@@ -81,18 +81,22 @@ export default function HomePage() {
               <Link
                 key={pillar.title}
                 href={pillar.href}
-                className="group flex flex-col items-center text-center rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-warm-amber/30"
+                className="group flex flex-col sm:flex-row text-left rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-warm-amber/40 gap-6 items-center sm:items-start"
               >
-                <div className="mb-1 text-2xl font-bold" style={{ color: pillar.color }}>{pillar.stat}</div>
-                <div className="mb-1.5 text-sm font-semibold text-foreground group-hover:text-warm-amber transition-colors duration-200">{pillar.title}</div>
-                <p className={`text-xs leading-relaxed text-muted-foreground ${locale === "th" ? "subtitle-th" : ""}`}>{pillar.desc}</p>
+                <div className="flex flex-col shrink-0 sm:w-[45%]">
+                  <div className="mb-2 text-3xl font-bold font-mono" style={{ color: pillar.color }}>{pillar.stat}</div>
+                  <div className="text-base font-semibold text-foreground group-hover:text-warm-amber transition-colors duration-200">{pillar.title}</div>
+                </div>
+                <div className="flex-1 mt-2 sm:mt-0">
+                  <p className={`text-sm leading-relaxed text-muted-foreground ${locale === "th" ? "subtitle-th" : ""}`}>{pillar.desc}</p>
+                </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <OverviewSection />
+      <FDIASection />
       <OverviewSection />
 
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">

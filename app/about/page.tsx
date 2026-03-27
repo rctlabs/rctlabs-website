@@ -212,9 +212,9 @@ export default async function AboutPage() {
       {/* ── Stats Bar ────────────────────────────────────────── */}
       <section className="border-y border-border bg-card">
         <div className="mx-auto max-w-7xl px-4 py-8">
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-8 text-center">
+          <div className="flex flex-wrap justify-center gap-x-12 gap-y-8 text-center">
             {stats.map((s) => (
-              <div key={s.label} className="space-y-1">
+              <div key={s.label} className="space-y-1 min-w-[120px]">
                 <div className="text-2xl font-bold text-warm-amber font-mono">{s.value}</div>
                 <div className="text-xs text-muted-foreground">{s.label}</div>
               </div>

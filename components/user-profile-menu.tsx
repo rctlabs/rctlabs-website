@@ -32,7 +32,7 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
         signOut: "ออกจากระบบ",
       }
     : {
-        contact: "Contact Team",
+        contact: "Contact",
         requestAccess: "Request Access",
         settings: "Settings",
         signOut: "Sign out",
