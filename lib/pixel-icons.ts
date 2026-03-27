@@ -8,4 +8,17 @@ export const pixelIcons = {
   algorithms: "/images/pixel/8bit-algorithm-gears.webp",
   rocket: "/images/pixel/8bit-rocket-icon-oSMB9StjMFt3Nvu8bxaJcw.webp",
   evidence: "/images/pixel/8bit-evidence-book.webp",
+  // New colorful V2 icons — added 2026-03-27
+  cpu: "/images/pixel/pixel-v2-cpu.webp",
+  database: "/images/pixel/pixel-v2-database.webp",
+  heart: "/images/pixel/pixel-v2-heart.webp",
+  target: "/images/pixel/pixel-v2-target.webp",
+  layers: "/images/pixel/pixel-v2-layers.webp",
+  chart: "/images/pixel/pixel-v2-chart.webp",
+  
+  // Pending V2 colorful generation (Quota limit, currently V1)
+  document: "/images/pixel/8bit-document.png",
+  formula: "/images/pixel/8bit-formula.png",
+  map: "/images/pixel/8bit-map.png",
+  flag: "/images/pixel/8bit-flag.png",
 } as const

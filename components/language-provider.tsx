@@ -129,10 +129,9 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
     }
   }, [language, pathname])
 
-  useEffect(() => {
-    if (typeof document === "undefined") return
-    document.documentElement.lang = language
-  }, [language])
+  // NOTE: html[lang] is set server-side by layout.tsx from x-locale header.
+  // We do NOT set it client-side here to avoid triggering CSS :lang() selector
+  // changes during client-side language toggle (which causes font flickering).
 
   const setLanguage = useCallback((lang: Language) => {
     if (!pathname || lang === language) return
