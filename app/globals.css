@@ -212,17 +212,15 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-sans);
+    /* Kanit is included explicitly so Thai glyphs always render in Kanit,
+       regardless of html[lang] attribute value (EN or TH page) */
+    font-family: var(--font-sans), var(--rct-font-thai), "Noto Sans Thai", sans-serif;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     text-rendering: optimizeLegibility;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
   }
 
-  /* Default Thai support: Kanit always in the stack */
-  :lang(th), :lang(th) * {
-    font-family: var(--rct-font-thai, "Kanit", "Noto Sans Thai", sans-serif);
-  }
 
   /* Warm Enterprise Typography */
   h1, h2, h3 {
