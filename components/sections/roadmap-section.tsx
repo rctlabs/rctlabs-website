@@ -13,18 +13,18 @@ const PIXEL_ROCKET = pixelIcons.rocket
 
 const roadmapData = {
   en: [
-    { phase: "Phase 1", title: "Core Architecture & FDIA", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["Define FDIA Equation (F = D^I x A)", "Design 10-Layer Architecture Stack", "Build 7 Genome Subsystems", "Implement JITNA Protocol v1"] },
-    { phase: "Phase 2", title: "Algorithm Engine & Analysearch", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["Develop 41 Algorithms across 9 Tiers", "Build Analysearch Intent (4 Modes)", "Implement GIGO Protection System", "Create SignedAI Hash Verification"] },
-    { phase: "Phase 3", title: "UX/UI & Visual Assets", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["Enterprise-grade website redesign", "Generate FDIA/JITNA/Architecture infographics", "Bilingual (EN/TH) i18n system", "Motion animations & micro-interactions"] },
-    { phase: "Phase 4", title: "Integration & Deployment", status: "in-progress" as const, color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15", tasks: ["Connect Notion + GitHub + Vercel via MCP", "Production deployment on Vercel Edge", "API Documentation & Onboarding Guide", "Performance optimization & monitoring"] },
-    { phase: "Phase 5", title: "Evolution & Scale", status: "planned" as const, color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A", tasks: ["Self-Evolving Orchestrator (Layer 10)", "Cross-Disciplinary Synthesis Engine", "Marketplace Genome activation", "Sovereign Innovation Infrastructure"] },
+    { phase: "Phase 1", title: "Foundations, FDIA, and Core Documentation", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["Define FDIA Equation (F = D^I x A)", "Design the 10-layer architecture model", "Document the 7 Genome system", "Publish core JITNA and architecture references"] },
+    { phase: "Phase 2", title: "HexaCore Infrastructure", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["Complete HexaCore Phase 1 infrastructure", "Ship key manager, registry, routing, and consensus foundation", "Validate 53 targeted tests at 100% pass", "Prepare the Phase 2 implementation runway"] },
+    { phase: "Phase 3", title: "Algorithm Completion and Service Rollout", status: "in-progress" as const, color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15", tasks: ["Advance partial algorithms from service skeletons to operational services", "Align benchmark language with public-safe evidence", "Harden quality-control layers around SignedAI and routing", "Expand integration coverage and release notes"] },
+    { phase: "Phase 4", title: "App Separation and Live Deployment Parity", status: "in-progress" as const, color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15", tasks: ["Close the gap between local routes and live deployment", "Separate public web, owner, test, and studio surfaces", "Finish deployment and monitoring parity", "Ship public-site reliability and SEO corrections"] },
+    { phase: "Phase 5", title: "Production Launch and Scale", status: "planned" as const, color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A", tasks: ["Complete remaining rollout phases", "Promote benchmark-backed claims to live operational reporting", "Scale governance and evaluation tooling", "Open the path to broader enterprise launch"] },
   ],
   th: [
-    { phase: "Phase 1", title: "Core Architecture & FDIA", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["กำหนดสมการ FDIA (F = D^I x A)", "ออกแบบ 10-Layer Architecture Stack", "สร้าง 7 Genome Subsystems", "Implement JITNA Protocol v1"] },
-    { phase: "Phase 2", title: "Algorithm Engine & Analysearch", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["พัฒนา 41 Algorithms ใน 9 Tiers", "สร้าง Analysearch Intent (4 โหมด)", "Implement ระบบ GIGO Protection", "สร้าง SignedAI Hash Verification"] },
-    { phase: "Phase 3", title: "UX/UI & Visual Assets", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["ออกแบบเว็บไซต์ระดับ Enterprise", "สร้าง Infographics สำหรับ FDIA/JITNA/Architecture", "ระบบ Bilingual (EN/TH) i18n", "Motion Animations & Micro-Interactions"] },
-    { phase: "Phase 4", title: "Integration & Deployment", status: "in-progress" as const, color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15", tasks: ["เชื่อมต่อ Notion + GitHub + Vercel ผ่าน MCP", "Production Deployment บน Vercel Edge", "API Documentation & Onboarding Guide", "Performance Optimization & Monitoring"] },
-    { phase: "Phase 5", title: "Evolution & Scale", status: "planned" as const, color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A", tasks: ["Self-Evolving Orchestrator (Layer 10)", "Cross-Disciplinary Synthesis Engine", "เปิดใช้งาน Marketplace Genome", "Sovereign Innovation Infrastructure"] },
+    { phase: "Phase 1", title: "Foundation, FDIA และเอกสารแกนหลัก", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["กำหนดสมการ FDIA (F = D^I x A)", "ออกแบบโมเดลสถาปัตยกรรม 10 ชั้น", "จัดทำเอกสารระบบ 7 Genome", "เผยแพร่เอกสาร JITNA และ architecture แกนหลัก"] },
+    { phase: "Phase 2", title: "HexaCore Infrastructure", status: "done" as const, color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", tasks: ["ปิดงาน HexaCore Phase 1 infrastructure", "ส่งมอบ key manager, registry, routing และ consensus foundation", "ยืนยัน targeted tests 53 รายการผ่าน 100%", "เตรียม runway สำหรับการขึ้น Phase 2"] },
+    { phase: "Phase 3", title: "Algorithm Completion และ Service Rollout", status: "in-progress" as const, color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15", tasks: ["ยกระดับ partial algorithms จาก skeleton ไปสู่ operational services", "ปรับภาษา benchmark ให้เป็น public-safe evidence", "เสริม quality-control layer รอบ SignedAI และ routing", "ขยาย integration coverage และ release notes"] },
+    { phase: "Phase 4", title: "App Separation และ Live Deployment Parity", status: "in-progress" as const, color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15", tasks: ["ปิดช่องว่างระหว่าง local routes กับ live deployment", "แยก public web, owner, test และ studio surfaces", "ทำ deployment และ monitoring parity ให้ครบ", "ส่งมอบ reliability และ SEO corrections ของเว็บสาธารณะ"] },
+    { phase: "Phase 5", title: "Production Launch และการขยายระบบ", status: "planned" as const, color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A", tasks: ["ปิด rollout phases ที่เหลือ", "ยกระดับ benchmark-backed claims ไปสู่ live operational reporting", "ขยาย governance และ evaluation tooling", "เปิดทางสู่การ launch ระดับองค์กรที่กว้างขึ้น"] },
   ],
 }
 
@@ -50,7 +50,7 @@ export default function RoadmapSection() {
           tagColor="gold"
           title={language === "th" ? "Development Roadmap" : "Development Roadmap"}
           italicWord="Roadmap"
-          description="Strategic phases for evolving the RCT Ecosystem from current state to full production deployment."
+          description={language === "th" ? "ภาพรวมระยะการพัฒนาที่ยึดตามสถานะงานจริงของเดือนมีนาคม 2026 ไม่ใช่ roadmap เชิงการตลาดแบบตัดบริบท" : "Strategic phases aligned to the actual March 2026 engineering state, not an abstract marketing roadmap."}
           pixelIcon={PIXEL_ROCKET}
         />
 

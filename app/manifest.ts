@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "RCT Labs - Intent Operating System",
     short_name: "RCT Labs",
-    description: "Revolutionizing human-AI interaction through intent-driven design.",
+    description: "Public-facing RCT Labs snapshot for enterprise AI architecture, verification, and benchmark framing.",
     start_url: "/",
     display: "standalone",
     background_color: "#FAF6F0",
@@ -12,42 +12,22 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: "portrait-primary",
     icons: [
       {
-        src: "/icon-192x192.png",
-        sizes: "192x192",
+        src: "/icon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+        purpose: "any",
+      },
+      {
+        src: "/icon-dark-32x32.png",
+        sizes: "32x32",
         type: "image/png",
         purpose: "any",
       },
       {
-        src: "/icon-512x512.png",
-        sizes: "512x512",
+        src: "/apple-icon.png",
+        sizes: "180x180",
         type: "image/png",
         purpose: "any",
-      },
-      {
-        src: "/icon-maskable-192x192.png",
-        sizes: "192x192",
-        type: "image/png",
-        purpose: "maskable",
-      },
-      {
-        src: "/icon-maskable-512x512.png",
-        sizes: "512x512",
-        type: "image/png",
-        purpose: "maskable",
-      },
-    ],
-    screenshots: [
-      {
-        src: "/screenshot-540x720.png",
-        sizes: "540x720",
-        type: "image/png",
-        form_factor: "narrow",
-      },
-      {
-        src: "/screenshot-1280x720.png",
-        sizes: "1280x720",
-        type: "image/png",
-        form_factor: "wide",
       },
     ],
   }

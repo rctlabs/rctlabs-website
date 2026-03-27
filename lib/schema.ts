@@ -141,23 +141,17 @@ export function getSoftwareApplicationSchema(locale: Locale) {
       price: '0',
       priceCurrency: 'USD',
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      ratingCount: String(SITE_TEST_COUNT),
-      bestRating: '5',
-    },
     description: locale === 'th'
-      ? `ระบบปฏิบัติการ AI แบบรัฐธรรมนูญพร้อมสถาปัตยกรรม 10 ชั้น 62 microservices การตรวจสอบหลายโมเดล และ Hallucination ${SITE_HALLUCINATION_RATE}`
-      : `Constitutional AI Operating System with a 10-layer architecture, ${SITE_MICROSERVICE_COUNT} microservices, multi-model verification, and ${SITE_HALLUCINATION_RATE} hallucination rate.`,
+      ? `โปรแกรมสถาปัตยกรรม AI แบบรัฐธรรมนูญพร้อมสถาปัตยกรรม 10 ชั้น, footprint ระดับ ${SITE_MICROSERVICE_COUNT}+ runtime components, และหลักฐาน benchmark hallucination ${SITE_HALLUCINATION_RATE}`
+      : `Constitutional AI architecture program with a 10-layer model, a ${SITE_MICROSERVICE_COUNT}+ runtime-component footprint, and ${SITE_HALLUCINATION_RATE} hallucination evidence on benchmarked workloads.`,
     featureList: [
       '10-Layer Architecture',
-      `${SITE_MICROSERVICE_COUNT} Production Microservices`,
+      `${SITE_MICROSERVICE_COUNT}+ Runtime Components`,
       'Multi-LLM Consensus',
       'SignedAI Verification',
       'RCTDB v2.0',
       'JITNA Protocol',
-      `${SITE_UPTIME} Uptime SLA`,
+      `${SITE_UPTIME} Availability Target`,
       'Bilingual Support (EN/TH)',
     ].join(', '),
     softwareVersion: SITE_VERSION,

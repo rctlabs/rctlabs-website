@@ -249,7 +249,7 @@ export function Footer() {
               <span className={`text-2xs px-2 py-0.5 rounded-full font-medium ${
                 isDark ? "bg-dark-amber-bg text-warm-amber" : "tag-amber"
               }`}>
-                {isTh ? "พร้อมใช้งานระดับ Production" : "Production Ready"}
+                {isTh ? "สแนปช็อตสถานะสาธารณะ" : "Public Status Snapshot"}
               </span>
             </div>
           </div>
