@@ -127,9 +127,10 @@
 
 @theme inline {
   /* Typography: Space Grotesk display, Inter/Kanit body, Space Mono code */
-  --font-sans: "Inter", "Kanit", system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Kanit", system-ui, sans-serif;
+  --font-sans: "Inter", "Kanit", "Noto Sans Thai", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Kanit", "Noto Sans Thai", system-ui, sans-serif;
   --font-mono: "Space Mono", "JetBrains Mono", "Fira Code", "Geist Mono", monospace;
+  --font-thai: var(--rct-font-thai, "Kanit", "Noto Sans Thai", sans-serif);
 
   /* Custom font sizes */
   --font-size-2xs: 0.625rem;   /* 10px */
@@ -216,6 +217,11 @@
     text-rendering: optimizeLegibility;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
+  }
+
+  /* Default Thai support: Kanit always in the stack */
+  :lang(th), :lang(th) * {
+    font-family: var(--rct-font-thai, "Kanit", "Noto Sans Thai", sans-serif);
   }
 
   /* Warm Enterprise Typography */

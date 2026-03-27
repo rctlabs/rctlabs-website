@@ -364,70 +364,84 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Right controls */}
-            <div className="flex items-center gap-2">
-              {/* Search button */}
+            {/* Right controls — enterprise minimal, overflow-safe for TH/EN */}
+            <div className="flex items-center gap-1 shrink-0">
+
+              {/* Search — icon only on sm/md, icon+label on xl */}
               <button
                 onClick={openSearch}
-                className={`hidden sm:flex shrink-0 items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all ${
-                  isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
+                className={`hidden sm:flex shrink-0 items-center gap-1.5 p-2 rounded-lg transition-colors ${
+                  isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/8" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/60"
                 }`}
-                aria-label="Search (Ctrl+K)"
+                aria-label={language === "en" ? "Search (⌘K)" : "ค้นหา (⌘K)"}
+                title="Search  ⌘K"
               >
-                <Search size={15} className="shrink-0" />
-                <span className="hidden xl:inline whitespace-nowrap">Search</span>
-                <kbd className={`hidden xl:inline px-1.5 py-0.5 text-[10px] rounded border ${
-                  isDark ? "border-[#444] text-warm-gray/50" : "border-warm-light-gray text-warm-gray/60"
+                <Search size={16} className="shrink-0" />
+                <span className="hidden xl:inline text-[13px] font-medium whitespace-nowrap">Search</span>
+                <kbd className={`hidden xl:inline px-1.5 py-0.5 text-[10px] rounded-md border font-mono ${
+                  isDark ? "border-[#444] text-warm-gray/50 bg-white/3" : "border-warm-light-gray text-warm-gray/50 bg-warm-sand/40"
                 }`}>⌘K</kbd>
               </button>
 
-              {/* Theme toggle */}
+              {/* Divider */}
+              <div className={`hidden sm:block h-5 w-px mx-1 ${
+                isDark ? "bg-white/10" : "bg-warm-light-gray"
+              }`} />
+
+              {/* Theme toggle — icon only */}
               <button
                 onClick={() => setTheme(isDark ? "light" : "dark")}
-                className={`hidden sm:flex p-2 rounded-lg transition-all ${
+                className={`hidden sm:flex p-2 rounded-lg transition-colors ${
                   isOnDarkHero
-                    ? "text-white/90 hover:text-white hover:bg-white/10 bg-white/5 backdrop-blur-sm"
+                    ? "text-white/80 hover:text-white hover:bg-white/10"
                     : isDark
-                      ? "text-warm-amber hover:bg-white/5"
-                      : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
+                      ? "text-warm-amber hover:bg-white/8"
+                      : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/60"
                 }`}
-                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                aria-label={isDark ? (language === "en" ? "Light mode" : "โหมดสว่าง") : (language === "en" ? "Dark mode" : "โหมดมืด")}
               >
                 <AnimatePresence mode="wait">
                   {isDark ? (
-                    <motion.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                      <Sun size={18} />
+                    <motion.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
+                      <Sun size={17} />
                     </motion.div>
                   ) : (
-                    <motion.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                      <Moon size={18} />
+                    <motion.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
+                      <Moon size={17} />
                     </motion.div>
                   )}
                 </AnimatePresence>
               </button>
 
-              {/* Language switcher */}
+              {/* Language switcher — compact, no overflow */}
               <button
                 onClick={toggleLanguage}
-                className={`hidden sm:flex shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-[13px] font-medium rounded-lg transition-all group ${
-                  isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/5" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/50"
+                className={`hidden sm:flex shrink-0 items-center gap-1 px-2.5 py-1.5 text-[12px] font-semibold rounded-lg transition-colors border ${
+                  isDark
+                    ? "text-warm-gray/70 hover:text-white hover:bg-white/8 border-[#333] hover:border-[#555]"
+                    : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/60 border-warm-light-gray hover:border-warm-gray/30"
                 }`}
-                aria-label={locale === "en" ? "Current language English, switch to Thai" : "Current language Thai, switch to English"}
+                aria-label={locale === "en" ? "Switch to Thai" : "เปลี่ยนเป็นภาษาอังกฤษ"}
               >
-                <Globe size={15} className="shrink-0 transition-transform duration-500 group-hover:rotate-180" />
-                <span className="whitespace-nowrap">{locale === "en" ? "EN → TH" : "TH → EN"}</span>
+                <Globe size={13} className="shrink-0" />
+                <span className="whitespace-nowrap tracking-wide text-[11px]">{locale === "en" ? "TH" : "EN"}</span>
               </button>
 
-              {/* Notification + Auth */}
-              <div className="hidden sm:flex items-center gap-2">
+              {/* Divider */}
+              <div className={`hidden sm:block h-5 w-px mx-1 ${
+                isDark ? "bg-white/10" : "bg-warm-light-gray"
+              }`} />
+
+              {/* CTA — Request Access */}
+              <div className="hidden sm:flex">
                 <UserProfileMenu />
               </div>
 
-              {/* Mobile toggle */}
+              {/* Mobile hamburger */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
                 className={`sm:hidden p-2 rounded-lg transition-colors ${
-                  isDark ? "text-white hover:bg-white/5" : "text-warm-charcoal hover:bg-warm-sand/50"
+                  isDark ? "text-white hover:bg-white/8" : "text-warm-charcoal hover:bg-warm-sand/60"
                 }`}
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileOpen}

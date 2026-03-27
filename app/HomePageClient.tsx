@@ -10,6 +10,7 @@ import { getLocaleFromPathname, getLocalePrefix } from "@/lib/i18n"
 import HeroSection from "@/components/sections/hero-section"
 import OverviewSection from "@/components/sections/overview-section"
 import FDIASection from "@/components/sections/fdia-section"
+import EvidenceSection from "@/components/sections/evidence-section"
 
 export default function HomePage() {
   const pathname = usePathname()
@@ -97,6 +98,7 @@ export default function HomePage() {
       </section>
 
       <FDIASection />
+      <EvidenceSection />
       <OverviewSection />
 
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
