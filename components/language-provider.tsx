@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useCallback, useMemo, startTransition, type ReactNode } from "react"
+import { createContext, useContext, useCallback, useEffect, useMemo, useState, startTransition, type ReactNode } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { addLocaleToPathname, getLocaleFromPathname } from "@/lib/i18n"
 
@@ -49,8 +49,8 @@ const translations: Record<string, Record<Language, string>> = {
   "hero.title.line2": { en: "Intent-Centric",          th: "Intent-Centric" },
   "hero.title.line3": { en: "AI Operating System",     th: "แห่งอนาคต" },
   "hero.subtitle": {
-    en: "Enterprise-grade cognitive AI operating system with 10-layer architecture, 41 algorithms, 7 Genome subsystems, FDIA equation, and the JITNA Protocol.",
-    th: "ระบบปฏิบัติการ AI เชิงปัญญาระดับ Enterprise พร้อมสถาปัตยกรรม 10 Layers, 41 Algorithms, 7 Genome Subsystems, สมการ FDIA และ JITNA Protocol",
+    en: "Enterprise AI architecture program built around a 10-layer model, a 41-algorithm framework, 7 Genome subsystems, the FDIA equation, and the JITNA Protocol.",
+    th: "โครงการสถาปัตยกรรม AI ระดับองค์กรที่สร้างบนโมเดล 10 ชั้น กรอบอัลกอริทึม 41 รายการ 7 Genome Subsystems สมการ FDIA และ JITNA Protocol",
   },
   "hero.cta.explore": { en: "Explore Architecture", th: "สำรวจสถาปัตยกรรม" },
   "hero.cta.demo":    { en: "View Live Demo",        th: "ดู Live Demo" },
@@ -85,7 +85,7 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Algorithms
   "algo.tag":   { en: "Algorithm Engine", th: "เครื่องยนต์ Algorithm" },
-  "algo.title": { en: "41 Algorithms, 9 Tiers", th: "41 Algorithms, 9 Tiers" },
+  "algo.title": { en: "41-Algorithm Framework, 9 Tiers", th: "กรอบ 41 Algorithms, 9 Tiers" },
 
   // Analysearch
   "analysearch.tag":   { en: "Killer Feature", th: "Killer Feature" },
@@ -120,7 +120,19 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const language = getLocaleFromPathname(pathname || "") ?? initialLocale
+  const [language, setLanguageState] = useState<Language>(() => getLocaleFromPathname(pathname || "") ?? initialLocale)
+
+  useEffect(() => {
+    const localeFromPath = getLocaleFromPathname(pathname || "")
+    if (localeFromPath && localeFromPath !== language) {
+      setLanguageState(localeFromPath)
+    }
+  }, [language, pathname])
+
+  useEffect(() => {
+    if (typeof document === "undefined") return
+    document.documentElement.lang = language
+  }, [language])
 
   const setLanguage = useCallback((lang: Language) => {
     if (!pathname || lang === language) return
@@ -129,6 +141,8 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
     const query = searchParams.toString()
     const hash = typeof window !== "undefined" ? window.location.hash : ""
     const nextHref = `${localizedPath}${query ? `?${query}` : ""}${hash}`
+
+    setLanguageState(lang)
 
     startTransition(() => {
       router.push(nextHref)

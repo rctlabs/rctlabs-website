@@ -223,7 +223,7 @@ export default function WhitepaperPage() {
                   <div className={`p-6 sm:p-8 rounded-2xl border bg-card border-border shadow-sm hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1`}>
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-muted">
-                        <FileText size={24} className={colorClasses[paper.color].text} />
+                        <FileText size={24} className={colorClasses[paper.color as keyof typeof colorClasses].text} />
                       </div>
                       <div className="flex-1">
                         <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">{isTh ? paper.title.th : paper.title.en}</h3>
@@ -237,7 +237,7 @@ export default function WhitepaperPage() {
                           </span>
                           <div className="flex gap-2">
                             {paper.tags.map((tag, j) => (
-                              <span key={j} className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${colorClasses[paper.color].pill}`}>{tag}</span>
+                              <span key={j} className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${colorClasses[paper.color as keyof typeof colorClasses].pill}`}>{tag}</span>
                             ))}
                           </div>
                         </div>
@@ -265,10 +265,10 @@ export default function WhitepaperPage() {
                   <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
                     className={`grid grid-cols-4 items-center px-5 py-3 border-b last:border-b-0 text-xs sm:text-sm ${i % 2 === 0 ? "bg-muted/50" : "bg-card"}`}>
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full shrink-0 ${colorClasses[row.color].dot}`}></div>
+                      <div className={`w-2 h-2 rounded-full shrink-0 ${colorClasses[row.color as keyof typeof colorClasses].dot}`}></div>
                       <span className="font-medium truncate text-foreground">{row.doc}</span>
                     </div>
-                    <div className={`text-center font-mono font-bold ${colorClasses[row.color].text}`}>{row.version}</div>
+                    <div className={`text-center font-mono font-bold ${colorClasses[row.color as keyof typeof colorClasses].text}`}>{row.version}</div>
                     <div className="text-center text-muted-foreground">{row.date}</div>
                     <div className="text-center text-muted-foreground">{isTh ? row.change.th : row.change.en}</div>
                   </motion.div>

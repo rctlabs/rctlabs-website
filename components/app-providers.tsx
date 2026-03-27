@@ -16,16 +16,16 @@ function DeferredFloatingAI() {
   useEffect(() => {
     if (shouldRender) return
 
-    let timeoutId: number | null = null
-    let idleId: number | null = null
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
+    let idleId: any = null
 
     const activate = () => {
       setShouldRender(true)
       if (timeoutId !== null) {
-        window.clearTimeout(timeoutId)
+        clearTimeout(timeoutId)
       }
       if (idleId !== null && "cancelIdleCallback" in window) {
-        window.cancelIdleCallback(idleId)
+        (window as any).cancelIdleCallback(idleId)
       }
       window.removeEventListener("pointerdown", activate)
       window.removeEventListener("keydown", activate)
@@ -37,17 +37,17 @@ function DeferredFloatingAI() {
     window.addEventListener("touchstart", activate, { once: true, passive: true })
 
     if ("requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(activate, { timeout: 1800 })
+      idleId = (window as any).requestIdleCallback(activate, { timeout: 1800 })
     } else {
-      timeoutId = window.setTimeout(activate, 1200)
+      timeoutId = setTimeout(activate, 1200)
     }
 
     return () => {
       if (timeoutId !== null) {
-        window.clearTimeout(timeoutId)
+        clearTimeout(timeoutId)
       }
       if (idleId !== null && "cancelIdleCallback" in window) {
-        window.cancelIdleCallback(idleId)
+        (window as any).cancelIdleCallback(idleId)
       }
       window.removeEventListener("pointerdown", activate)
       window.removeEventListener("keydown", activate)

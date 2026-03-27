@@ -7,7 +7,8 @@ import {
 } from 'next-themes'
 
 // Sets both .dark CSS class AND data-theme="dark" attribute
-// so both next-themes components and manus-migrated components work
+// Note: next-themes injects a <script> tag for FOUC prevention — this is expected behavior
+// and the React 19 console warning about it is a known library-level cosmetic warning.
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
     <NextThemesProvider
@@ -21,3 +22,4 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
     </NextThemesProvider>
   )
 }
+

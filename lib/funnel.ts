@@ -3,10 +3,10 @@ type FunnelLanguage = "en" | "th"
 type FunnelIntentDefinition = {
   key: string
   context: string
-  title: Record<Language, string>
-  description: Record<Language, string>
-  subject: Record<Language, string>
-  message: Record<Language, string>
+  title: Record<FunnelLanguage, string>
+  description: Record<FunnelLanguage, string>
+  subject: Record<FunnelLanguage, string>
+  message: Record<FunnelLanguage, string>
 }
 
 const funnelIntentMap: Record<string, FunnelIntentDefinition> = {

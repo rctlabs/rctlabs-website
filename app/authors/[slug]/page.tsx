@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getPersonSchema } from "@/lib/schema"
 import { getAllAuthorProfiles, getAuthorProfileById } from "@/lib/authors"
 import { getAllBlogPosts, getResolvedAuthorProfile, getResolvedReviewerProfile } from "@/lib/blog"
 
@@ -51,8 +52,17 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     return resolvedAuthor?.id === author.id || resolvedReviewer?.id === author.id
   })
 
+  const personSchema = getPersonSchema(
+    author.name,
+    author.role[locale],
+    `https://rctlabs.co${localePrefix}/authors/${author.id}`,
+    author.bio[locale],
+    author.sameAs
+  )
+
   return (
     <main className="min-h-screen bg-background">
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <Navbar />
       <section className="mx-auto max-w-5xl px-4 py-24 md:py-32">
         <Link href={`${localePrefix}/authors`} className="text-sm text-accent hover:underline">

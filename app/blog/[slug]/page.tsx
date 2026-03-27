@@ -79,13 +79,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     "url": `${SITE_URL}${localePrefix}/blog/${slug}`,
     "datePublished": post.date,
     "dateModified": reviewedDate,
+    "wordCount": post.content.split(/\\s+/).length,
+    "keywords": post.tags?.join(", "),
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}${localePrefix}/blog/${slug}`
+    },
     "author": {
       "@type": author?.profileType === "organization" ? "Organization" : "Person",
-      "name": author?.name ?? post.author
+      "name": author?.name ?? post.author,
+      ...(author ? { "url": `${SITE_URL}${localePrefix}/authors/${author.id}` } : {})
     },
     "editor": reviewer ? {
       "@type": reviewer.profileType === "organization" ? "Organization" : "Person",
       "name": reviewer.name,
+      ...(reviewer ? { "url": `${SITE_URL}${localePrefix}/authors/${reviewer.id}` } : {})
     } : undefined,
     "publisher": {
       "@type": "Organization",

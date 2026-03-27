@@ -4,7 +4,7 @@ import { Footer } from "@/components/footer"
 import { Navbar } from "@/components/navbar"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
-import { getBreadcrumbSchema } from "@/lib/schema"
+import { getBreadcrumbSchema, getDefinedTermSchema } from "@/lib/schema"
 
 const glossaryTerms = [
   {
@@ -69,9 +69,14 @@ export default async function GlossaryPage() {
     { name: isTh ? "อภิธานศัพท์" : "Glossary", url: `https://rctlabs.co${localePrefix}/glossary` },
   ])
 
+  const definedTermsSchema = glossaryTerms.map((t) =>
+    getDefinedTermSchema(isTh ? t.termTh : t.term, isTh ? t.definitionTh : t.definition, `https://rctlabs.co${localePrefix}/glossary#${t.term.toLowerCase().replace(/\s+/g, '-')}`)
+  )
+
   return (
     <main className="min-h-screen bg-background">
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermsSchema) }} />
       <Navbar />
       <section className="mx-auto max-w-6xl px-4 py-24 md:py-32">
         <div className="max-w-3xl">

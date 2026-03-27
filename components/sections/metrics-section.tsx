@@ -12,6 +12,7 @@ import OptimizedImage from "@/components/ui/optimized-image"
 import { useMounted } from "@/hooks/use-mounted"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
+import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_UPTIME } from "@/lib/site-config"
 
 const PIXEL_METRICS = pixelIcons.network
 
@@ -24,22 +25,22 @@ const PIXEL_ICONS = [
 
 const metrics = [
   { label: { en: "Overall Accuracy", th: "ความแม่นยำโดยรวม" }, value: "96.1%", bar: 96.1, color: "#7B9E87" },
-  { label: { en: "Hallucination Rate", th: "อัตรา Hallucination" }, value: "0.3%", bar: 99.7, color: "#7B9E87" },
+  { label: { en: "Hallucination Benchmark", th: "Benchmark Hallucination" }, value: SITE_HALLUCINATION_RATE, bar: 99.7, color: "#7B9E87" },
   { label: { en: "Response Latency", th: "Response Latency" }, value: "< 200ms", bar: 80, color: "#D4A853" },
-  { label: { en: "Uptime SLA", th: "Uptime SLA" }, value: "99.98%", bar: 99.98, color: "#7B9E87" },
+  { label: { en: "Availability Target", th: "Availability Target" }, value: SITE_UPTIME, bar: 99.9, color: "#7B9E87" },
   { label: { en: "Data Quality Score", th: "คะแนน Data Quality" }, value: "85/100", bar: 85, color: "#89B4C8" },
   { label: { en: "Constitutional Compliance", th: "Constitutional Compliance" }, value: "100%", bar: 100, color: "#7B9E87" },
 ]
 
 const highlightsData = {
   en: [
-    { value: 62, suffix: "", label: "Microservices", desc: "Running in production", href: "/integration" },
+    { value: SITE_MICROSERVICE_COUNT, suffix: "+", label: "Runtime Components", desc: "Current public snapshot", href: "/integration" },
     { value: 41, suffix: "", label: "Algorithms", desc: "Across 9 tiers", href: "/algorithms" },
     { value: 10, suffix: "", label: "Layers", desc: "Architecture stack", href: "/architecture" },
     { value: 7, suffix: "", label: "Genomes", desc: "Core DNA components", href: "/genome" },
   ],
   th: [
-    { value: 62, suffix: "", label: "Microservices", desc: "ทำงานใน Production", href: "/integration" },
+    { value: SITE_MICROSERVICE_COUNT, suffix: "+", label: "Runtime Components", desc: "สแนปช็อตสาธารณะปัจจุบัน", href: "/integration" },
     { value: 41, suffix: "", label: "Algorithms", desc: "ใน 9 Tiers", href: "/algorithms" },
     { value: 10, suffix: "", label: "Layers", desc: "Architecture Stack", href: "/architecture" },
     { value: 7, suffix: "", label: "Genomes", desc: "องค์ประกอบ DNA หลัก", href: "/genome" },
@@ -97,7 +98,7 @@ export default function MetricsSection() {
           tagColor="sage"
           title="System Metrics"
           italicWord="Metrics"
-          description={language === "en" ? "Real-time performance indicators demonstrating enterprise-grade reliability and capability." : "ตัวชี้วัดประสิทธิภาพแบบ real-time ที่แสดงความน่าเชื่อถือและความสามารถระดับองค์กร"}
+          description={language === "en" ? "Public-safe indicators showing benchmark context, current footprint, and operational targets for the platform." : "ตัวชี้วัดแบบ public-safe ที่แสดงบริบท benchmark footprint ปัจจุบัน และเป้าหมายเชิงปฏิบัติการของแพลตฟอร์ม"}
           pixelIcon={PIXEL_METRICS}
         />
 
@@ -115,7 +116,7 @@ export default function MetricsSection() {
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(123,158,135,0.12),transparent_46%)]" />
                 </div>
                 <OptimizedImage src={PIXEL_ICONS[index]} alt="" pixelated showErrorFallback={false} containerClassName="mx-auto mb-2 h-8 w-8" objectFit="contain" width={32} height={32} className="transition duration-200 group-hover:scale-110 group-hover:brightness-95 group-hover:contrast-125" />
-                <div className={`text-3xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}><AnimatedCounter target={highlight.value} suffix={highlight.suffix} reducedMotion={prefersReducedMotion} /></div>
+                <div className={`text-3xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}><AnimatedCounter target={highlight.value} suffix={highlight.suffix} reducedMotion={prefersReducedMotion ?? false} /></div>
                 <div className="mt-1 text-sm font-semibold text-warm-amber">{highlight.label}</div>
                 <div className={`mt-0.5 text-xs sm:text-sm ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{highlight.desc}</div>
               </motion.div>

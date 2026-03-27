@@ -145,7 +145,7 @@ export async function generateMetadata(): Promise<Metadata> {
       shortcut: "/icon-dark-32x32.png",
       apple: "/apple-icon.png",
     },
-    manifest: "/site.webmanifest",
+    manifest: "/manifest.webmanifest",
     generator: "v0.app",
   }
 }
@@ -170,8 +170,6 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://rctlabs.co" />
-        {/* Preload font for performance */}
-        <link rel="preload" as="font" href="/fonts/space-grotesk.woff2" type="font/woff2" crossOrigin="anonymous" />
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"

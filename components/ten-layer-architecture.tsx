@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
+import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
 import { cn } from "@/lib/utils"
 
 interface Layer {
@@ -26,7 +27,7 @@ const layers: Layer[] = [
     descriptionTh: "JWT RS256, RBAC, CircuitBreaker - สถาปัตยกรรมที่เน้นความปลอดภัย พร้อมการควบคุมการเข้าถึงและความทนทานต่อความผิดพลาด",
     icon: "Shield",
     color: "from-red-500 to-orange-500",
-    badge: "NEW v2.3.1",
+    badge: SITE_VERSION,
     features: ["JWT RS256 Auth", "RBAC Permissions", "CircuitBreaker", "Rate Limiting"],
     featuresTh: ["JWT RS256 Auth", "RBAC Permissions", "CircuitBreaker", "Rate Limiting"]
   },
@@ -38,7 +39,7 @@ const layers: Layer[] = [
     descriptionTh: "การผสานรวมกับระบบภายนอก API และบริการของบุคคลที่สามผ่านโปรโตคอลมาตรฐาน",
     icon: "Plug",
     color: "from-orange-500 to-yellow-500",
-    badge: "v2.3.0",
+    badge: "Integration Ready",
     features: ["REST API", "GraphQL", "WebSocket", "gRPC"],
     featuresTh: ["REST API", "GraphQL", "WebSocket", "gRPC"]
   },
@@ -62,7 +63,7 @@ const layers: Layer[] = [
     descriptionTh: "L3 API microservice สำหรับ AI สนทนาพร้อมการรับรู้บริบทแบบ real-time และการผสานรวม knowledge base",
     icon: "MessageCircle",
     color: "from-green-500 to-teal-500",
-    badge: "NEW v3.4.0",
+    badge: "Conversational AI",
     features: ["Conversational AI", "KB Integration", "Context Awareness", "Multi-LLM"],
     featuresTh: ["Conversational AI", "KB Integration", "Context Awareness", "Multi-LLM"]
   },
@@ -86,14 +87,14 @@ const layers: Layer[] = [
     descriptionTh: "Multi-LLM consensus engine พร้อม digital signatures สำหรับผลลัพธ์ AI ที่ตรวจสอบได้",
     icon: "Signature",
     color: "from-cyan-500 to-blue-500",
-    badge: "0.3% Halluc.",
+    badge: SITE_HALLUCINATION_RATE,
     features: ["Multi-LLM Voting", "Digital Signatures", "Output Verification", "Consensus"],
     featuresTh: ["Multi-LLM Voting", "Digital Signatures", "Output Verification", "Consensus"]
   },
   {
     id: 4,
-    name: "RCTDB v2.0",
-    nameTh: "RCTDB v2.0",
+    name: "RCTDB",
+    nameTh: "RCTDB",
     description: "8-dimensional universal memory schema with Delta Engine compression and quantum-resistant encryption.",
     descriptionTh: "8-dimensional universal memory schema พร้อม Delta Engine compression และ quantum-resistant encryption",
     icon: "Database",
@@ -106,8 +107,8 @@ const layers: Layer[] = [
     id: 3,
     name: "Algorithm Kernel",
     nameTh: "Algorithm Kernel",
-    description: "41 production algorithms across 9 tiers from basic operations to self-evolving systems.",
-    descriptionTh: "อัลกอริทึม 41 ตัวสำหรับการผลิตใน 9 tiers จากการดำเนินการพื้นฐานถึงระบบ self-evolving",
+    description: "41-algorithm framework across 9 tiers from basic operations to self-evolving systems.",
+    descriptionTh: "กรอบงานอัลกอริทึม 41 ตัวใน 9 tiers ตั้งแต่การดำเนินการพื้นฐานถึงระบบ self-evolving",
     icon: "Cpu",
     color: "from-indigo-500 to-purple-500",
     badge: "41 Algos",
@@ -122,7 +123,7 @@ const layers: Layer[] = [
     descriptionTh: "บริการโครงสร้างพื้นฐานหลักรวมถึงการจัดการหน่วยความจำ context switching และการประมวลผลเหตุการณ์",
     icon: "Layers",
     color: "from-purple-500 to-pink-500",
-    badge: "Kernel v1.4",
+    badge: "Runtime Core",
     features: ["Memory Management", "Context Switching", "Event Bus", "Process Scheduling"],
     featuresTh: ["Memory Management", "Context Switching", "Event Bus", "Process Scheduling"]
   },
@@ -281,16 +282,16 @@ export function TenLayerArchitecture({ locale = "en" }: { locale?: "en" | "th" }
                   <span className="font-medium text-accent">41</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">{t("Services", "บริการ")}</span>
-                  <span className="font-medium text-accent">52</span>
+                  <span className="text-sm text-muted-foreground">{t("Runtime Components", "องค์ประกอบ Runtime")}</span>
+                  <span className="font-medium text-accent">{SITE_MICROSERVICE_COUNT}+</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">{t("Test Coverage", "ความคุ้มครองการทดสอบ")}</span>
-                  <span className="font-medium text-green-500">100%</span>
+                  <span className="text-sm text-muted-foreground">{t("Verified Tests", "การทดสอบที่ยืนยันแล้ว")}</span>
+                  <span className="font-medium text-green-500">{SITE_TEST_COUNT}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">{t("Uptime SLA", "SLA Uptime")}</span>
-                  <span className="font-medium text-green-500">99.98%</span>
+                  <span className="text-sm text-muted-foreground">{t("Availability Target", "เป้าหมายความพร้อมใช้งาน")}</span>
+                  <span className="font-medium text-green-500">{SITE_UPTIME}</span>
                 </div>
               </div>
             </div>

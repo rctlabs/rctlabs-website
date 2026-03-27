@@ -32,7 +32,7 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
         signOut: "ออกจากระบบ",
       }
     : {
-        contact: "Contact Team",
+        contact: "Contact",
         requestAccess: "Request Access",
         settings: "Settings",
         signOut: "Sign out",
@@ -89,18 +89,18 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
 
   // ── Unauthenticated state — current live state ─────────────────────────
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5">
       <Link
         href={contactHref}
-        className="hidden sm:inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium text-foreground/70 hover:text-foreground hover:bg-accent transition-colors"
+        className="hidden xl:inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-foreground/60 hover:text-foreground hover:bg-accent transition-colors"
       >
         {copy.contact}
       </Link>
       <Link
         href={accessHref}
-        className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 text-[13px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+        className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 text-[12px] font-bold text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap leading-none"
       >
-        {copy.requestAccess}
+        {language === "en" ? "Get Access" : "ขอสิทธิ์"}
       </Link>
     </div>
   )

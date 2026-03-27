@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import { ArrowRight, Layers, Cpu, Brain, Shield, Rocket, Database, Network, Bot, AppWindow, RefreshCw } from "lucide-react"
 import { LazyInteractiveArchDiagram } from "@/components/diagrams/lazy-diagram-wrapper"
+import { SITE_MICROSERVICE_COUNT } from "@/lib/site-config"
 
 const layers = {
   en: [
@@ -96,8 +97,8 @@ export default function ArchitecturePage() {
             ? "ต่างจาก AI Frameworks แบบ Monolithic แนวทาง Layered ช่วยให้สามารถนำชั้นเฉพาะมาใช้ทีละชั้น เช่น เริ่มจาก L6 สำหรับ Multi-LLM Orchestration เพิ่ม L8 สำหรับ Safety Verification จากนั้นขยายสู่ Full Stack ตามความต้องการ"
             : "Unlike monolithic AI frameworks, the layered approach allows enterprises to adopt specific layers incrementally. Start with L6 for orchestration, add L8 for safety, then expand as needs grow."}</p>
           <p>{isTh
-            ? "ปัจจุบันสถาปัตยกรรมขับเคลื่อน 62 microservices ที่กระจายข้าม 10 ชั้น และถูกออกแบบให้ขยายต่อได้โดยไม่ทำให้ governance หรือ observability แตกเป็นส่วนๆ"
-            : "The architecture currently operates across 62 microservices spanning all 10 layers, with scaling designed to preserve governance, observability, and operational clarity."}</p>
+            ? `ปัจจุบันสถาปัตยกรรมมี footprint ระดับ ${SITE_MICROSERVICE_COUNT}+ runtime components ที่กระจายข้าม 10 ชั้น และถูกออกแบบให้ขยายต่อได้โดยไม่ทำให้ governance หรือ observability แตกเป็นส่วนๆ`
+            : `The architecture currently spans a ${SITE_MICROSERVICE_COUNT}+ runtime-component footprint across all 10 layers, with scaling designed to preserve governance, observability, and operational clarity.`}</p>
         </div>
       </section>
 
@@ -172,7 +173,7 @@ export default function ArchitecturePage() {
           {[
             { href: "/genome", label: isTh ? "7 Genome System" : "7 Genome System", desc: isTh ? "ระบบย่อย DNA ที่ขับเคลื่อนแต่ละชั้น" : "The DNA subsystems that power each layer", icon: "🧬" },
             { href: "/fdia", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "แกนกลางทางคณิตศาสตร์ของ Reasoning Layer" : "The mathematical core of the Reasoning Layer", icon: "📐" },
-            { href: "/algorithms", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "41 production algorithms แบ่งเป็น 9 capability tiers" : "41 production algorithms organized across 9 capability tiers", icon: "⚡" },
+            { href: "/algorithms", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "กรอบงานอัลกอริทึม 41 รายการ แบ่งเป็น 9 capability tiers" : "A 41-algorithm framework organized across 9 capability tiers", icon: "⚡" },
             { href: "/benchmark", label: isTh ? "เกณฑ์มาตรฐาน" : "Benchmarks", desc: isTh ? "เมตริกประสิทธิภาพข้ามทุกชั้น" : "Performance metrics across all layers", icon: "📊" },
             { href: "/integration", label: isTh ? "การเชื่อมต่อ" : "Integration", desc: isTh ? "วิธี Deploy สถาปัตยกรรม 10 ชั้น" : "How to deploy the 10-layer stack", icon: "🔌" },
             { href: "/solutions", label: isTh ? "โซลูชัน" : "Solutions", desc: isTh ? "โซลูชัน Enterprise AI" : "Enterprise AI solutions", icon: "🛡️" },

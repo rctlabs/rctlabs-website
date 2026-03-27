@@ -12,7 +12,8 @@
         "http://127.0.0.1:3010/case-studies/stardew-valley"
       ],
       "settings": {
-        "preset": "desktop",
+        "formFactor": "mobile",
+        "screenEmulation": { "mobile": true },
         "chromeFlags": "--headless=new --no-sandbox"
       }
     },

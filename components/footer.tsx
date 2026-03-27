@@ -171,7 +171,7 @@ export function Footer() {
               </p>
             </div>
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col w-full md:w-auto gap-2" noValidate>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <div className="flex-1 md:w-64">
                   <input
                     type="email"
@@ -249,13 +249,13 @@ export function Footer() {
               <span className={`text-2xs px-2 py-0.5 rounded-full font-medium ${
                 isDark ? "bg-dark-amber-bg text-warm-amber" : "tag-amber"
               }`}>
-                {isTh ? "พร้อมใช้งานระดับ Production" : "Production Ready"}
+                {isTh ? "สแนปช็อตสถานะสาธารณะ" : "Public Status Snapshot"}
               </span>
             </div>
           </div>
 
           {/* Link columns */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 text-center sm:text-left">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 sm:gap-6 text-center sm:text-left">
             {Object.entries(footerLinks).map(([title, links]) => (
               <nav key={title} aria-label={title}>
                 <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2.5 ${

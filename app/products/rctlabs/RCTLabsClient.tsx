@@ -6,30 +6,31 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
-import { FlaskConical, ArrowRight, BarChart3, Layers, Cpu, Shield } from "lucide-react"
+import { FlaskConical, ArrowRight } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
+import OptimizedImage from "@/components/ui/optimized-image"
 
 const features = [
   {
-    icon: BarChart3, color: "#D4A853",
+    iconSrc: "/images/pixel-art-doc.png", color: "#D4A853",
     titleEn: "62,205+ Test Cases", titleTh: "62,205+ Test Cases",
     descEn: "Comprehensive test suite covering all 9 tiers of the algorithm architecture — from basic intent parsing to self-evolving orchestration.",
     descTh: "ชุดทดสอบครอบคลุมทั้ง 9 Tiers ของสถาปัตยกรรม Algorithm — ตั้งแต่ Basic Intent Parsing ถึง Self-Evolving Orchestration",
   },
   {
-    icon: Layers, color: "#7B9E87",
+    iconSrc: "/images/pixel-art-puzzle.png", color: "#7B9E87",
     titleEn: "9-Tier Validation", titleTh: "9-Tier Validation",
     descEn: "Each algorithm tier has dedicated test suites ensuring correctness, performance, and integration compatibility.",
     descTh: "แต่ละ Algorithm Tier มีชุดทดสอบเฉพาะเพื่อรับรองความถูกต้อง ประสิทธิภาพ และความเข้ากันได้",
   },
   {
-    icon: Cpu, color: "#C4745B",
+    iconSrc: "/images/pixel-art-chat.png", color: "#C4745B",
     titleEn: "Performance Benchmarking", titleTh: "Performance Benchmarking",
     descEn: "Automated benchmarking against industry standards — latency, throughput, accuracy, and resource utilization metrics.",
     descTh: "Benchmarking อัตโนมัติเทียบกับมาตรฐานอุตสาหกรรม — Latency, Throughput, Accuracy และ Resource Utilization",
   },
   {
-    icon: Shield, color: "#89B4C8",
+    iconSrc: "/images/pixel-art-shield.png", color: "#89B4C8",
     titleEn: "Regression Testing", titleTh: "Regression Testing",
     descEn: "Continuous regression testing ensures new updates don't break existing functionality across the entire ecosystem.",
     descTh: "Regression Testing อย่างต่อเนื่องรับประกันว่าอัปเดตใหม่ไม่ทำลายฟังก์ชันที่มีอยู่ทั้ง Ecosystem",
@@ -111,7 +112,9 @@ export default function RCTLabsPage() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="p-6 sm:p-8 rounded-2xl border border-border bg-card"
             >
-              <feat.icon size={28} style={{ color: feat.color }} className="mb-4" />
+              <div className="w-10 h-10 mb-4 flex items-center justify-center rounded-xl" style={{ backgroundColor: `${feat.color}20` }}>
+                <OptimizedImage src={feat.iconSrc} alt="" width={24} height={24} pixelated showErrorFallback={false} containerClassName="w-6 h-6" />
+              </div>
               <h3 className="text-lg font-bold mb-2 text-foreground">{isTh ? feat.titleTh : feat.titleEn}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? feat.descTh : feat.descEn}</p>
             </motion.div>

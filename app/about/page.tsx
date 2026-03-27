@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Shield, Eye, Heart, Sparkles, Target, Zap, ArrowRight, ExternalLink } from "lucide-react"
 import { headers } from "next/headers"
+import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
 
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers()
@@ -17,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
     "About RCT Labs — Origin Story & The Architect",
     "เกี่ยวกับ RCT Labs — เรื่องราวต้นกำเนิดและ The Architect",
     // Lengthened meta descriptions for SEO (150-160 chars)
-    "RCT Labs: Solo architect from Khlong Toei, Bangkok, built a Constitutional AI OS with 41 algorithms, 7 Genomes, 4,849 tests, and 0.3% hallucination rate. Discover the real story behind FDIA, JITNA, and the 7 Genome system.",
-    "RCT Labs: สร้างโดย Solo Architect จากคลองเตย กรุงเทพฯ — 41 อัลกอริทึม, 7 Genome, 4,849 เทสต์, Hallucination 0.3%. ค้นพบเรื่องจริงเบื้องหลัง FDIA, JITNA และระบบ 7 Genome",
+    "RCT Labs: Solo architect from Khlong Toei, Bangkok, building a Constitutional AI architecture program with a 41-algorithm framework, 7 Genomes, and March 2026 engineering snapshot evidence.",
+    "RCT Labs: สร้างโดย Solo Architect จากคลองเตย กรุงเทพฯ — กำลังพัฒนาสถาปัตยกรรม Constitutional AI ด้วยกรอบ 41 อัลกอริทึม 7 Genome และหลักฐานสถานะงานเดือนมีนาคม 2026",
     "/about",
     ["AI research", "intent-driven AI", "FDIA equation", "Constitutional AI", "Thailand AI", "RCT Labs founder", "Ittirit Saengow"]
   )
@@ -53,6 +54,7 @@ export default async function AboutPage() {
     { name: isTh ? "เกี่ยวกับ" : "About", url: `https://rctlabs.co/${locale}/about` },
   ])
   const orgSchema = getOrganizationSchema(locale)
+  const runtimeFootprint = `${SITE_MICROSERVICE_COUNT}+`
 
   const journeyPhases = [
     {
@@ -111,10 +113,10 @@ export default async function AboutPage() {
     { value: "41", label: isTh ? "Algorithms" : "Algorithms" },
     { value: "10", label: isTh ? "Layers" : "Layers" },
     { value: "7", label: isTh ? "Genomes" : "Genomes" },
-    { value: "4,849", label: isTh ? "Tests ผ่าน" : "Tests Passing" },
-    { value: "62", label: "Microservices" },
-    { value: "0.3%", label: isTh ? "Hallucination Rate" : "Hallucination Rate" },
-    { value: "99.98%", label: isTh ? "Uptime SLA" : "Uptime SLA" },
+    { value: SITE_TEST_COUNT.toLocaleString(), label: isTh ? "Verified Backend Tests" : "Verified Backend Tests" },
+    { value: runtimeFootprint, label: isTh ? "Runtime Components" : "Runtime Components" },
+    { value: SITE_HALLUCINATION_RATE, label: isTh ? "Benchmark Hallucination" : "Benchmark Hallucination" },
+    { value: SITE_UPTIME, label: isTh ? "Availability Target" : "Availability Target" },
   ]
 
   const platformHighlights = [
@@ -151,7 +153,7 @@ export default async function AboutPage() {
   const values = [
     { icon: Eye, title: isTh ? "Radical Honesty" : "Radical Honesty", desc: isTh ? "เรายอมรับความไม่แน่นอน ทุก Output มี Confidence Score ไม่ใช่ความแน่นอนเทียม" : "We embrace uncertainty. Every system output includes confidence scores, not false certainty." },
     { icon: Heart, title: isTh ? "Survivor's Empathy" : "Survivor's Empathy", desc: isTh ? "ออกแบบสำหรับผู้ที่มีทรัพยากรจำกัด ถ้ามันทำงานบนมือถือได้ มันทำงานได้ทุกที่" : "Designed for those with limited resources. If it works on a single phone, it works everywhere." },
-    { icon: Shield, title: isTh ? "Verifiable Truth" : "Verifiable Truth", desc: isTh ? "ทุก AI Output ต้องตรวจสอบได้ SignedAI Consensus รับประกัน Hallucination Rate 0.3%" : "Every AI output must be verifiable. SignedAI consensus ensures 0.3% hallucination rate vs industry 12-15%." },
+    { icon: Shield, title: isTh ? "Verifiable Truth" : "Verifiable Truth", desc: isTh ? "ทุก AI Output ต้องตรวจสอบได้ โดยหลักฐาน benchmark ปัจจุบันชี้ไปที่ hallucination ระดับ 0.3% บน controlled workloads และยังอยู่ในช่วงขยายผลเชิงระบบ" : "Every AI output must be verifiable. Current benchmark evidence points to 0.3% hallucination on controlled workloads while the broader system rollout is still maturing." },
     { icon: Sparkles, title: isTh ? "Human-Centric Power" : "Human-Centric Power", desc: isTh ? "AI ไม่ใช่พระเอก พระเอกตัวจริงคือ Intent และมนุษย์ผู้ลงนามการตัดสินใจสุดท้าย" : "AI is not the hero. The real hero is the Intent behind it, and the human who signs the final decision." },
     { icon: Target, title: isTh ? "Long-Term Stewardship" : "Long-Term Stewardship", desc: isTh ? "ทุกบรรทัดโค้ดเป็นส่วนหนึ่งของสิ่งมีชีวิต เราสร้างเพื่อทศวรรษ ไม่ใช่ไตรมาส" : "Every line of code is part of a living organism. We build for decades, not quarters." },
   ]
@@ -163,14 +165,14 @@ export default async function AboutPage() {
     { version: "v5.0", date: isTh ? "ม.ค. 2026" : "Jan 2026", title: "Genome Edition", desc: isTh ? "Complete Architect Attribution, 7 Genome Layer Integration, 520 Test Framework" : "Complete architect attribution, 7 Genome Layer integration, 520 test framework" },
     { version: "v7.0", date: isTh ? "ม.ค. 2026" : "Jan 2026", title: "Complete Ecosystem", desc: isTh ? "41 Algorithms, 427 Test Functions, 500K+ Property-based Examples, Intent Loop Engine" : "41 algorithms, 427 test functions, 500K+ property-based examples, Intent Loop Engine" },
     { version: "v8.0", date: isTh ? "ก.พ. 2026" : "Feb 2026", title: "Open Standard", desc: isTh ? "JITNA RFC-001 Open Protocol, RCTDB v2.0 Universal Infrastructure, Apache 2.0 License" : "JITNA RFC-001 open protocol, RCTDB v2.0 universal infrastructure, Apache 2.0 license" },
-    { version: "v5.4.5", date: isTh ? "มี.ค. 2026" : "Mar 2026", title: isTh ? "Production Ready" : "Production Ready", desc: isTh ? "4,849 tests ผ่าน, 62 microservices, Hallucination 0.3%, Full Suite Green" : "4,849 tests passing, 62 microservices, 0.3% hallucination, Full Suite Green" },
+    { version: SITE_VERSION, date: isTh ? "มี.ค. 2026" : "Mar 2026", title: isTh ? "Engineering Snapshot" : "Engineering Snapshot", desc: isTh ? "HexaCore Phase 1 เสร็จสิ้น, targeted tests 53 รายการผ่าน 100%, backend tests ที่ยืนยันแล้ว 389 รายการ และงาน app separation/deployment parity กำลังดำเนินการ" : "HexaCore Phase 1 completed, 53 targeted tests passed at 100%, 389 backend tests verified, and app separation plus deployment parity remain active work." },
   ]
 
   const shockItems = [
     { label: "Language Paradox", value: isTh ? "ไม่ได้ใช้ภาษาอังกฤษเป็นหลัก — แต่สร้างภาษา Intent สากล (JITNA)" : "Doesn't primarily use English — yet created a universal intent language (JITNA)" },
     { label: "Resource Paradox", value: isTh ? "สร้าง AI-grade System ผ่านมือถือ Android เครื่องเดียว" : "Built an AI-grade system through a single Android mobile phone" },
     { label: "Constitution Shift", value: isTh ? "จากผู้ใช้ AI → ผู้กำหนดกรอบ Constitutional AI ของตนเอง" : "From AI user to defining an original Constitutional AI framework" },
-    { label: "Scale Achievement", value: isTh ? "Large-scale property-based testing พร้อม 4,849 tests ผ่าน" : "Large-scale property-based testing with 4,849 passing tests" },
+    { label: "Scale Achievement", value: isTh ? "จาก prototype เชิงเอกสารสู่ engineering snapshot ที่มี backend tests ยืนยันแล้ว 389 รายการ และ targeted rollout เฉพาะทาง" : "From documentation-driven prototype to an engineering snapshot with 389 verified backend tests and targeted rollout milestones." },
   ]
 
   return (
@@ -186,23 +188,23 @@ export default async function AboutPage() {
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-amber/10 border border-warm-amber/30 text-warm-amber text-sm font-medium">
             <Sparkles className="w-4 h-4" />
-            {isTh ? "เกี่ยวกับผู้สร้างและ Ecosystem" : "About the Architect & Ecosystem"}
+            {isTh ? "สถาปัตยกรรม Constitutional AI สำหรับองค์กร" : "Enterprise Constitutional AI Architecture"}
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-foreground leading-tight text-balance">
-            {isTh ? "จาก Chaos สู่ Architecture" : "From Chaos to Architecture"}
+            {isTh ? "เปลี่ยน Intent ให้เป็นความจริงที่ตรวจสอบได้" : "Scaling Intent into Verifiable Truth"}
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground text-balance max-w-2xl mx-auto">
             {isTh
-              ? "สถาปนิกคนเดียว มือถือเครื่องเดียว สมการเดียวที่เปลี่ยนทุกอย่าง"
-              : "One architect. One mobile phone. One equation that changes everything."}
+              ? "ระบบปฏิบัติการ AI ที่ออกแบบมาเพื่อการกำกับดูแล ความทรงจำองค์กร และลดการหลอนอย่างเป็นระบบ"
+              : "An AI operating system built natively for strict governance, persistent enterprise memory, and systemic hallucination control."}
           </p>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             {isTh
-              ? "RCT Ecosystem ไม่ได้เกิดจากห้องแล็บหรือกองทุนร่วมลงทุน แต่เกิดจากประสบการณ์ชีวิตจริง ความเชื่อมั่นว่ามนุษย์คนเดียวที่มี Intent ชัดเจน สามารถออกแบบระบบที่เทียบเท่ากับสิ่งที่ทีมทั้งทีมสร้าง"
-              : "RCT Ecosystem was born not from a lab or a venture fund — but from lived experience, relentless curiosity, and the conviction that a single human with clear intent can design systems that rival what entire teams build."}
+              ? "สร้างขึ้นบนสมการ FDIA และสถาปัตยกรรมระดับ 10-Layer ระบบนิเวศ RCT ไม่ใช่แค่การประกอบโมเดลเข้าด้วยกัน แต่เราออกแบบสายวิวัฒนาการใหม่ ที่ทุกผลลัพธ์ได้รับการตรวจสอบ รองรับงานระดับองค์กรที่อ่อนไหวที่สุด"
+              : "Built on the FDIA equation and a 10-Layer Architecture, RCT Ecosystem orchestrates models into a governed enterprise runtime. We engineer deterministic pathways where every output is verifiable, making AI safe for highly-regulated workflows."}
           </p>
-          <p className="text-sm font-medium uppercase tracking-[0.16em] text-warm-amber">
-            {isTh ? "Constitutional AI Operating System • Linux for AI Agents" : "Constitutional AI Operating System • Linux for AI Agents"}
+          <p className="text-sm font-medium uppercase tracking-[0.16em] text-warm-amber mt-8">
+            {isTh ? "สถาปนิกอิสระ • 41 Algorithms • 0.3% Hallucination Rate" : "Solo Architect • 41 Algorithms • 0.3% Hallucination Verification"}
           </p>
         </div>
       </section>
@@ -210,9 +212,9 @@ export default async function AboutPage() {
       {/* ── Stats Bar ────────────────────────────────────────── */}
       <section className="border-y border-border bg-card">
         <div className="mx-auto max-w-7xl px-4 py-8">
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-8 text-center">
+          <div className="flex flex-wrap justify-center gap-x-12 gap-y-8 text-center">
             {stats.map((s) => (
-              <div key={s.label} className="space-y-1">
+              <div key={s.label} className="space-y-1 min-w-[120px]">
                 <div className="text-2xl font-bold text-warm-amber font-mono">{s.value}</div>
                 <div className="text-xs text-muted-foreground">{s.label}</div>
               </div>

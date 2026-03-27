@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation"
 import { buildContactHref } from "@/lib/funnel"
 import { pricingCheckoutLinks } from "@/lib/payment-links"
 import { pixelIcons } from "@/lib/pixel-icons"
+import { SITE_UPTIME } from "@/lib/site-config"
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 
@@ -117,7 +118,7 @@ const tiers = [
       { en: "Custom Model Training", th: "Custom Model Training" },
       { en: "Dedicated Support Team", th: "ทีม Support เฉพาะ" },
       { en: "On-premise Deployment", th: "On-premise Deployment" },
-      { en: "SLA 99.98% Uptime", th: "SLA 99.98% Uptime" },
+      { en: `${SITE_UPTIME} availability target`, th: `เป้าหมายความพร้อมใช้งาน ${SITE_UPTIME.replace(" target", "")}` },
     ],
   },
   {
@@ -179,7 +180,7 @@ const tiers = [
       { en: "Enterprise Key Management", th: "Enterprise Key Management" },
       { en: "Dedicated Security Team", th: "ทีม Security เฉพาะ" },
       { en: "Custom Compliance Modules", th: "Custom Compliance Modules" },
-      { en: "SLA 99.99% Uptime", th: "SLA 99.99% Uptime" },
+      { en: "Custom availability commitments", th: "ข้อตกลงความพร้อมใช้งานแบบกำหนดเอง" },
     ],
   },
 ]

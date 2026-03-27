@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { BookOpen, FileText, Brain, ArrowRight, Shield, Globe, Layers, GitBranch, Key, Activity, Container } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_VERSION } from "@/lib/site-config"
 
 export default function ResearchClient() {
   const papers = [
@@ -20,7 +21,7 @@ export default function ResearchClient() {
     },
     {
       slug: "v240-analysearch-41-algorithms",
-      title: "v2.4.0: Analysearch Intent Engine & 41 Production Algorithms",
+      title: "v2.4.0: Analysearch Intent Engine & 41-Algorithm Framework",
       description: "A release focused on the nine capability tiers behind RCT reasoning, orchestration, verification, memory, and autonomous planning.",
       category: "Algorithms",
       badge: "v2.4.0",
@@ -109,7 +110,7 @@ export default function ResearchClient() {
           <p className="font-mono text-sm uppercase tracking-wider text-accent">Research & Releases</p>
           <h1 className="text-5xl font-bold leading-tight text-foreground text-balance md:text-6xl">Research & Release Library</h1>
           <p className="mx-auto max-w-2xl text-xl text-muted-foreground text-balance md:text-2xl">
-            Production baseline v5.4.5, release notes, architecture papers, benchmark evidence, and public-safe technical references for the Constitutional AI Operating System.
+            {SITE_VERSION} baseline, release notes, architecture papers, benchmark evidence, and public-safe technical references for the Constitutional AI Operating System.
           </p>
           <div className="grid gap-3 sm:grid-cols-3">
             <Link href="/whitepaper" className="rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-muted">
@@ -166,10 +167,10 @@ export default function ResearchClient() {
       <section className="mx-auto max-w-7xl px-4 py-24">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {[
-            { label: "Tests Passing", value: "4,849" },
-            { label: "Production Algorithms", value: "41" },
+            { label: "Verified Backend Tests", value: String(SITE_TEST_COUNT) },
+            { label: "Framework Algorithms", value: "41" },
             { label: "Architecture Layers", value: "10" },
-            { label: "Microservices", value: "62" },
+            { label: "Runtime Components", value: `${SITE_MICROSERVICE_COUNT}+` },
           ].map((stat) => (
             <div key={stat.label} className="space-y-2 text-center">
               <div className="text-3xl font-bold text-accent md:text-4xl">{stat.value}</div>

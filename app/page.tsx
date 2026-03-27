@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
     locale,
     "RCT Labs — Constitutional AI Operating System | 41 Algorithms, 0.3% Hallucination",
     "RCT Labs — ระบบปฏิบัติการ AI แบบรัฐธรรมนูญ | 41 อัลกอริทึม, Hallucination 0.3%",
-    "RCT Labs builds the Constitutional AI Operating System with 10-layer architecture, 41 production algorithms, Multi-LLM Consensus, and 0.3% hallucination rate. Enterprise-grade AI governance for Thailand and beyond.",
+    "RCT Labs builds the Constitutional AI Operating System with 10-layer architecture, a 41-algorithm framework, Multi-LLM Consensus, and 0.3% benchmark hallucination framing. Enterprise AI governance for Thailand and beyond.",
     "RCT Labs สร้างระบบปฏิบัติการ AI แบบรัฐธรรมนูญ สถาปัตยกรรม 10 ชั้น 41 อัลกอริทึม Multi-LLM Consensus อัตราหลอน 0.3% ระบบ AI ระดับองค์กรสำหรับประเทศไทยและทั่วโลก",
     "/",
     locale === "th"

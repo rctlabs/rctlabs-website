@@ -127,9 +127,10 @@
 
 @theme inline {
   /* Typography: Space Grotesk display, Inter/Kanit body, Space Mono code */
-  --font-sans: "Inter", "Kanit", system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Kanit", system-ui, sans-serif;
+  --font-sans: "Inter", "Kanit", "Noto Sans Thai", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Kanit", "Noto Sans Thai", system-ui, sans-serif;
   --font-mono: "Space Mono", "JetBrains Mono", "Fira Code", "Geist Mono", monospace;
+  --font-thai: var(--rct-font-thai, "Kanit", "Noto Sans Thai", sans-serif);
 
   /* Custom font sizes */
   --font-size-2xs: 0.625rem;   /* 10px */
@@ -218,6 +219,11 @@
     overscroll-behavior-y: none;
   }
 
+  /* Default Thai support: Kanit always in the stack */
+  :lang(th), :lang(th) * {
+    font-family: var(--rct-font-thai, "Kanit", "Noto Sans Thai", sans-serif);
+  }
+
   /* Warm Enterprise Typography */
   h1, h2, h3 {
     font-family: var(--font-display);
@@ -237,6 +243,17 @@
 
   /* Scroll offset for fixed navbar */
   section[id] { scroll-margin-top: 80px; }
+
+  @media (max-width: 640px) {
+    section[id] { scroll-margin-top: 72px; }
+
+    h1 { line-height: 1.08; }
+    h2 { line-height: 1.12; }
+
+    .subtitle-th {
+      line-height: 1.7;
+    }
+  }
 
   /* Code / Mono text */
   code, pre, .font-mono {
@@ -598,6 +615,18 @@
   outline: none;
   transition: box-shadow var(--focus-ring-transition), outline var(--focus-ring-transition);
 }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 
 button:focus-visible,
 a:focus-visible,

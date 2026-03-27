@@ -6,6 +6,7 @@ import { useLanguage } from "@/components/language-provider"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight, Plug } from "lucide-react"
+import { SITE_UPTIME } from "@/lib/site-config"
 
 const integrations = [
   { titleEn: "Notion Integration", titleTh: "Notion Integration", descEn: "Full CRUD operations on Notion databases, pages, and blocks. Programmatic content management with MCP.", descTh: "การดำเนินการ CRUD แบบเต็มรูปแบบบน Notion databases, pages และ blocks ผ่าน MCP", features: ["Database CRUD", "Page Management", "Block Operations", "Search & Query"] },
@@ -123,8 +124,8 @@ export default function IntegrationPage() {
           <h2 className="text-2xl font-bold text-foreground text-center mb-4">Enterprise <span className="text-warm-terracotta">Deployment</span></h2>
           <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-10">
             {isTh
-              ? "โครงสร้าง Deployment ที่พร้อมใช้งานจริงพร้อม Docker, Kubernetes และ Cloud-Native Architecture"
-              : "Production-ready deployment infrastructure with Docker, Kubernetes, and cloud-native architecture."}
+              ? "โครงสร้าง deployment แบบ public-safe พร้อม Docker, Kubernetes และ cloud-native architecture"
+              : "Public-safe deployment infrastructure with Docker, Kubernetes, and cloud-native architecture."}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {deployments.map((d, i) => (
@@ -162,7 +163,7 @@ export default function IntegrationPage() {
               { labelEn: "MCP Servers", labelTh: "MCP Servers", value: "10+" },
               { labelEn: "AI Providers", labelTh: "AI Providers", value: "3+" },
               { labelEn: "Deployment Time", labelTh: "เวลา Deploy", value: "< 5 min" },
-              { labelEn: "Uptime SLA", labelTh: "Uptime SLA", value: "99.9%" },
+              { labelEn: "Availability Target", labelTh: "เป้าหมายความพร้อมใช้งาน", value: SITE_UPTIME },
               { labelEn: "Auto-scaling", labelTh: "Auto-Scaling", value: "✓ Yes" },
               { labelEn: "Zero Downtime", labelTh: "Zero Downtime", value: "✓ Yes" },
             ].map((spec, i) => (

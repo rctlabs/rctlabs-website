@@ -11,6 +11,7 @@ import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { useMounted } from "@/hooks/use-mounted"
+import { SITE_UPTIME } from "@/lib/site-config"
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
 const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
@@ -36,7 +37,7 @@ export default function HeroSection() {
     { value: "41", label: t("hero.stat.algorithms"), icon: Brain },
     { value: "10", label: t("hero.stat.layers"), icon: Layers },
     { value: "7", label: t("hero.stat.genomes"), icon: Dna },
-    { value: "99.98%", label: t("hero.stat.uptime"), icon: Zap },
+    { value: SITE_UPTIME, label: t("hero.stat.uptime"), icon: Zap },
   ]
 
   const containerVariants = {
