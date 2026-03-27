@@ -4,6 +4,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { SITE_TEST_COUNT, SITE_VERSION } from "@/lib/site-config"
 import { 
   BookOpen, 
   FileText, 
@@ -23,8 +24,8 @@ import {
 
 export const metadata: Metadata = createBilingualMetadata(
   "en",
-  "Documentation — RCT Labs Ecosystem v5.4.5",
-  "เอกสารประกอบ — RCT Labs Ecosystem v5.4.5",
+  "Documentation — RCT Labs Ecosystem 2026.03 Snapshot",
+  "เอกสารประกอบ — RCT Labs Ecosystem 2026.03 Snapshot",
   "RCT Ecosystem documentation — 10-Layer Architecture, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema, and deployment guides for enterprise AI governance.",
   "เอกสาร RCT Ecosystem — สถาปัตยกรรม 10 ชั้น, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema และคู่มือ Deploy สำหรับ AI Governance ระดับองค์กร",
   "/docs",
@@ -44,11 +45,11 @@ export default function DocsPage() {
             <p className="text-sm font-mono text-accent uppercase tracking-wider">Documentation</p>
             <h1 className="text-foreground">RCT Ecosystem Documentation</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Technical documentation for the Constitutional AI Operating System. Architecture, APIs, RFCs, deployment guides, and production references for v5.4.5.
+              Technical documentation for the Constitutional AI Operating System. Architecture, APIs, RFCs, deployment guides, and public-safe references aligned to the March 2026 engineering snapshot.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">v5.4.5</span>
-              <span className="text-xs font-mono text-muted-foreground">4,849 tests passing</span>
+              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">{SITE_VERSION}</span>
+              <span className="text-xs font-mono text-muted-foreground">{SITE_TEST_COUNT} verified backend tests</span>
               <span className="text-xs font-mono text-muted-foreground">•</span>
               <span className="text-xs font-mono text-muted-foreground">10-Layer Architecture</span>
             </div>
@@ -211,7 +212,7 @@ export default function DocsPage() {
               { title: "Kubernetes", desc: "57 resources: HPA, PDB, NetworkPolicy, ArgoCD GitOps, Backup CronJobs.", stat: "57 resources" },
               { title: "API Gateway", desc: "Bun + Hono TypeScript gateway: JWT RS256 auth, RBAC, rate limiting, 10 routes.", stat: "10 routes" },
               { title: "Monitoring", desc: "Prometheus scrape configs + Grafana dashboards: health, RPS, latency, errors.", stat: "Real-time" },
-              { title: "Testing", desc: "Locust + k6 load testing, OWASP security, Chaos (9 scenarios), E2E (7 flows).", stat: "4,849 tests" },
+              { title: "Testing", desc: "Locust + k6 load testing, OWASP security, Chaos (9 scenarios), E2E (7 flows).", stat: `${SITE_TEST_COUNT} verified tests` },
               { title: "Documentation", desc: "C4 Architecture diagrams, Deployment Guide, Runbooks, OpenAPI spec.", stat: "14 endpoints" },
             ].map((item, i) => (
               <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-2">

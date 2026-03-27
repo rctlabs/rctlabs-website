@@ -7,6 +7,7 @@ import { Footer } from "@/components/footer"
 import { ArrowRight, ExternalLink, FileText, Mail, Mic, ShieldCheck } from "lucide-react"
 import { createBilingualMetadata, type Locale } from "@/lib/seo-bilingual"
 import { getBreadcrumbSchema, getFAQSchema, getOrganizationSchema } from "@/lib/schema"
+import { SITE_HALLUCINATION_RATE, SITE_TEST_COUNT, SITE_UPTIME } from "@/lib/site-config"
 
 function getLocale(value: string | null): Locale {
   return value === "th" ? "th" : "en"
@@ -103,10 +104,10 @@ export default async function PressPage() {
   const companyFacts = [
     { label: "Core Positioning", value: "Constitutional AI Operating System" },
     { label: "Architecture", value: "10 Layers" },
-    { label: "Algorithms", value: "41 production algorithms" },
-    { label: "Validation Coverage", value: "4,849 tests" },
-    { label: "Hallucination Benchmark", value: "0.3%" },
-    { label: "Uptime", value: "99.98%" },
+    { label: "Algorithms", value: "41-algorithm framework" },
+    { label: "Validation Coverage", value: `${SITE_TEST_COUNT} verified backend tests` },
+    { label: "Hallucination Benchmark", value: SITE_HALLUCINATION_RATE },
+    { label: "Availability Target", value: SITE_UPTIME },
   ]
 
   const referenceLinks = locale === "th"

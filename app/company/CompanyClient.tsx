@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Briefcase, FileText, Users, ArrowRight, Building2, Star, Globe, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/components/language-provider"
+import { SITE_HALLUCINATION_RATE, SITE_TEST_COUNT } from "@/lib/site-config"
 
 export default function CompanyClient() {
   const { language } = useLanguage()
@@ -159,8 +160,8 @@ export default function CompanyClient() {
           {[
             { label: isTh ? "Architecture Layers" : "Architecture Layers", value: "10" },
             { label: isTh ? "Production Algorithms" : "Production Algorithms", value: "41" },
-            { label: isTh ? "Validation Tests" : "Validation Tests", value: "4,849" },
-            { label: isTh ? "Hallucination Rate" : "Hallucination Rate", value: "0.3%" },
+            { label: isTh ? "Verified Backend Tests" : "Verified Backend Tests", value: String(SITE_TEST_COUNT) },
+            { label: isTh ? "Benchmark Hallucination" : "Benchmark Hallucination", value: SITE_HALLUCINATION_RATE },
           ].map((stat) => (
             <div key={stat.label} className="space-y-2">
               <p className="text-4xl font-bold text-accent">{stat.value}</p>
