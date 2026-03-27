@@ -67,11 +67,19 @@ export function proxy(request: NextRequest) {
 
   if (pathnameLocale) {
     // Strip locale prefix and rewrite to the original page path
-    // e.g. /en/about → /about, /th → /
+    // e.g. /en/about → /about, /th/solutions/ai-hallucination-prevention → /solutions/ai-hallucination-prevention
     const pathnameWithoutLocale = stripLocalePrefix(pathname)
-    const url = new URL(pathnameWithoutLocale, request.url)
+    // IMPORTANT: Use nextUrl.clone() (not `new URL()`) to preserve Next.js internal routing
+    // context for Turbopack — new URL() breaks nested route rewrites.
+    const rewriteUrl = request.nextUrl.clone()
+    rewriteUrl.pathname = pathnameWithoutLocale
 
-    const response = NextResponse.rewrite(url)
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-locale', pathnameLocale)
+
+    const response = NextResponse.rewrite(rewriteUrl, {
+      request: { headers: requestHeaders },
+    })
     response.headers.set('x-locale', pathnameLocale)
     return response
   }
