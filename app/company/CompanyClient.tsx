@@ -159,7 +159,7 @@ export default function CompanyClient() {
         <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
           {[
             { label: isTh ? "Architecture Layers" : "Architecture Layers", value: "10" },
-            { label: isTh ? "Production Algorithms" : "Production Algorithms", value: "41" },
+            { label: isTh ? "Framework Algorithms" : "Framework Algorithms", value: "41" },
             { label: isTh ? "Verified Backend Tests" : "Verified Backend Tests", value: String(SITE_TEST_COUNT) },
             { label: isTh ? "Benchmark Hallucination" : "Benchmark Hallucination", value: SITE_HALLUCINATION_RATE },
           ].map((stat) => (

@@ -238,6 +238,17 @@
   /* Scroll offset for fixed navbar */
   section[id] { scroll-margin-top: 80px; }
 
+  @media (max-width: 640px) {
+    section[id] { scroll-margin-top: 72px; }
+
+    h1 { line-height: 1.08; }
+    h2 { line-height: 1.12; }
+
+    .subtitle-th {
+      line-height: 1.7;
+    }
+  }
+
   /* Code / Mono text */
   code, pre, .font-mono {
     font-family: var(--font-mono);
@@ -598,6 +609,18 @@
   outline: none;
   transition: box-shadow var(--focus-ring-transition), outline var(--focus-ring-transition);
 }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 
 button:focus-visible,
 a:focus-visible,

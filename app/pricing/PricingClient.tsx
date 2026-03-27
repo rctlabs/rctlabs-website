@@ -180,7 +180,7 @@ const tiers = [
       { en: "Enterprise Key Management", th: "Enterprise Key Management" },
       { en: "Dedicated Security Team", th: "ทีม Security เฉพาะ" },
       { en: "Custom Compliance Modules", th: "Custom Compliance Modules" },
-      { en: "SLA 99.99% Uptime", th: "SLA 99.99% Uptime" },
+      { en: "Custom availability commitments", th: "ข้อตกลงความพร้อมใช้งานแบบกำหนดเอง" },
     ],
   },
 ]

@@ -173,7 +173,7 @@ export default function ArchitecturePage() {
           {[
             { href: "/genome", label: isTh ? "7 Genome System" : "7 Genome System", desc: isTh ? "ระบบย่อย DNA ที่ขับเคลื่อนแต่ละชั้น" : "The DNA subsystems that power each layer", icon: "🧬" },
             { href: "/fdia", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "แกนกลางทางคณิตศาสตร์ของ Reasoning Layer" : "The mathematical core of the Reasoning Layer", icon: "📐" },
-            { href: "/algorithms", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "41 production algorithms แบ่งเป็น 9 capability tiers" : "41 production algorithms organized across 9 capability tiers", icon: "⚡" },
+            { href: "/algorithms", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "กรอบงานอัลกอริทึม 41 รายการ แบ่งเป็น 9 capability tiers" : "A 41-algorithm framework organized across 9 capability tiers", icon: "⚡" },
             { href: "/benchmark", label: isTh ? "เกณฑ์มาตรฐาน" : "Benchmarks", desc: isTh ? "เมตริกประสิทธิภาพข้ามทุกชั้น" : "Performance metrics across all layers", icon: "📊" },
             { href: "/integration", label: isTh ? "การเชื่อมต่อ" : "Integration", desc: isTh ? "วิธี Deploy สถาปัตยกรรม 10 ชั้น" : "How to deploy the 10-layer stack", icon: "🔌" },
             { href: "/solutions", label: isTh ? "โซลูชัน" : "Solutions", desc: isTh ? "โซลูชัน Enterprise AI" : "Enterprise AI solutions", icon: "🛡️" },

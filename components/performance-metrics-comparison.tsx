@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useState } from "react"
+import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME } from "@/lib/site-config"
 import { cn } from "@/lib/utils"
 
 interface Metric {
@@ -21,9 +22,9 @@ const metrics: Metric[] = [
     id: "hallucination",
     name: "Hallucination Rate",
     nameTh: "อัตราการ Hallucination",
-    rctValue: "0.3",
+    rctValue: SITE_HALLUCINATION_RATE.replace("% benchmark", ""),
     industryValue: "12-15",
-    improvement: "95%",
+    improvement: "Benchmark",
     unit: "%",
     icon: "Target",
     color: "from-green-500 to-emerald-500"
@@ -52,23 +53,23 @@ const metrics: Metric[] = [
   },
   {
     id: "uptime",
-    name: "Uptime SLA",
-    nameTh: "SLA Uptime",
-    rctValue: "99.98",
+    name: "Availability Target",
+    nameTh: "เป้าหมายความพร้อมใช้งาน",
+    rctValue: SITE_UPTIME.replace(" target", ""),
     industryValue: "99.5",
-    improvement: "Enterprise",
+    improvement: "Target",
     unit: "%",
     icon: "Activity",
     color: "from-purple-500 to-violet-500"
   },
   {
     id: "coverage",
-    name: "Test Coverage",
-    nameTh: "ความคุ้มครองการทดสอบ",
-    rctValue: "100",
+    name: "Verified Tests",
+    nameTh: "การทดสอบที่ยืนยันแล้ว",
+    rctValue: String(SITE_TEST_COUNT),
     industryValue: "70-80",
-    improvement: "Tier-1",
-    unit: "%",
+    improvement: "Snapshot",
+    unit: "tests",
     icon: "Shield",
     color: "from-red-500 to-pink-500"
   },
@@ -176,7 +177,7 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
                   "px-2 py-1 rounded-full text-sm font-medium",
                   "bg-green-500/20 text-green-500"
                 )}>
-                  {metric.improvement} {metric.improvement !== "Enterprise" && metric.improvement !== "Tier-1" && "better"}
+                  {metric.improvement} {!["Enterprise", "Tier-1", "Benchmark", "Target", "Snapshot"].includes(metric.improvement) && "better"}
                 </span>
               </div>
             </div>
@@ -193,16 +194,16 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
       >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <p className="text-3xl font-bold text-accent">4,849</p>
-            <p className="text-sm text-muted-foreground">{t("Tests Passing", "การทดสอบผ่าน")}</p>
+            <p className="text-3xl font-bold text-accent">{SITE_TEST_COUNT}</p>
+            <p className="text-sm text-muted-foreground">{t("Verified Tests", "การทดสอบที่ยืนยันแล้ว")}</p>
           </div>
           <div>
             <p className="text-3xl font-bold text-accent">41</p>
             <p className="text-sm text-muted-foreground">{t("Algorithms", "อัลกอริทึม")}</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-accent">62</p>
-            <p className="text-sm text-muted-foreground">{t("Microservices", "ไมโครเซอร์วิส")}</p>
+            <p className="text-3xl font-bold text-accent">{SITE_MICROSERVICE_COUNT}+</p>
+            <p className="text-sm text-muted-foreground">{t("Runtime Components", "องค์ประกอบ Runtime")}</p>
           </div>
           <div>
             <p className="text-3xl font-bold text-accent">8</p>

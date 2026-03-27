@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Terminal, Play, CheckCircle, XCircle, Clock, ChevronRight, RefreshCw, BarChart3, FileCode } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_VERSION } from "@/lib/site-config"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -201,10 +202,10 @@ export default function TestConsolePage() {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: "Total Tests", value: "4,849", color: "text-violet-400" },
-              { label: "Passing Rate", value: "100%", color: "text-green-400" },
-              { label: "Microservices", value: "62", color: "text-blue-400" },
-              { label: "Version", value: "v5.4.5", color: "text-yellow-400" },
+              { label: "Verified Tests", value: String(SITE_TEST_COUNT), color: "text-violet-400" },
+              { label: "Snapshot Status", value: "Current", color: "text-green-400" },
+              { label: "Runtime Components", value: `${SITE_MICROSERVICE_COUNT}+`, color: "text-blue-400" },
+              { label: "Version", value: SITE_VERSION, color: "text-yellow-400" },
             ].map(({ label, value, color }) => (
               <div key={label} className="bg-[#0d1117] border border-white/10 rounded-xl p-5 text-center">
                 <div className={`text-2xl font-bold ${color}`}>{value}</div>

@@ -161,7 +161,7 @@ const OptimizedImage = memo(function OptimizedImage({
 
   return (
     <div ref={imgRef} className={`relative overflow-hidden ${containerClassName}`} style={style}>
-      {!isLoaded && <div className="absolute inset-0 rounded-lg bg-secondary/55" aria-hidden="true" />}
+      {!isLoaded && <div className={`absolute inset-0 rounded-lg ${priority ? "bg-secondary/35" : "bg-secondary/55"}`} aria-hidden="true" />}
       {isInView && (
         <picture style={{ display: "contents" }}>
           {avifSrc && <source type="image/avif" srcSet={avifSrc} sizes={sizes} />}
@@ -176,7 +176,7 @@ const OptimizedImage = memo(function OptimizedImage({
             height={height}
             fetchPriority={priority ? "high" : "auto"}
             loading={priority || shouldLoadImmediately ? "eager" : "lazy"}
-            decoding="async"
+            decoding={priority ? "sync" : "async"}
             sizes={sizes}
             onLoad={handleLoad}
             onError={handleError}

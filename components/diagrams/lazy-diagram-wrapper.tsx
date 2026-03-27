@@ -6,6 +6,7 @@ interface LazyDiagramWrapperProps {
   importFunc: () => Promise<{ default: ComponentType<any> }>
   componentProps?: Record<string, unknown>
   useIntersectionObserver?: boolean
+  eager?: boolean
   rootMargin?: string
   preloadOnHover?: boolean
   fallback?: React.ReactNode
@@ -20,15 +21,21 @@ export default function LazyDiagramWrapper({
   importFunc,
   componentProps = {},
   useIntersectionObserver = true,
+  eager = false,
   rootMargin = "200px",
   preloadOnHover = true,
   fallback,
   className = "",
 }: LazyDiagramWrapperProps) {
-  const [shouldLoad, setShouldLoad] = useState(!useIntersectionObserver)
+  const [shouldLoad, setShouldLoad] = useState(eager || !useIntersectionObserver)
   const [isPreloaded, setIsPreloaded] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const LazyComponent = useRef<ComponentType<any> | null>(null)
+
+  useEffect(() => {
+    if (!eager || shouldLoad) return
+    setShouldLoad(true)
+  }, [eager, shouldLoad])
 
   useEffect(() => {
     if (!useIntersectionObserver || shouldLoad) return
@@ -80,7 +87,7 @@ export const LazyEcosystemOverview = (props: Record<string, unknown>) => (
 )
 
 export const LazyFDIAFlowchart = (props: Record<string, unknown>) => (
-  <LazyDiagramWrapper importFunc={() => import("@/components/diagrams/fdia-flowchart")} componentProps={props} />
+  <LazyDiagramWrapper importFunc={() => import("@/components/diagrams/fdia-flowchart")} componentProps={props} eager useIntersectionObserver={false} />
 )
 
 export const LazyFDIACalculatorPanel = (props: Record<string, unknown>) => (

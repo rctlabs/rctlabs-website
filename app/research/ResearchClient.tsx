@@ -21,7 +21,7 @@ export default function ResearchClient() {
     },
     {
       slug: "v240-analysearch-41-algorithms",
-      title: "v2.4.0: Analysearch Intent Engine & 41 Production Algorithms",
+      title: "v2.4.0: Analysearch Intent Engine & 41-Algorithm Framework",
       description: "A release focused on the nine capability tiers behind RCT reasoning, orchestration, verification, memory, and autonomous planning.",
       category: "Algorithms",
       badge: "v2.4.0",
@@ -168,7 +168,7 @@ export default function ResearchClient() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {[
             { label: "Verified Backend Tests", value: String(SITE_TEST_COUNT) },
-            { label: "Production Algorithms", value: "41" },
+            { label: "Framework Algorithms", value: "41" },
             { label: "Architecture Layers", value: "10" },
             { label: "Runtime Components", value: `${SITE_MICROSERVICE_COUNT}+` },
           ].map((stat) => (

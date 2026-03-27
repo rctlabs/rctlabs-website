@@ -40,8 +40,8 @@ const casesData: CaseStudy[] = [
     title: { en: "RCT Proving Ground — Ghost Tester QA", th: "RCT Proving Ground — Ghost Tester QA" },
     subtitle: { en: "Automated Quality Assurance System", th: "ระบบ QA อัตโนมัติ" },
     desc: {
-      en: "A production-ready FastAPI-integrated QA system with self-healing capabilities. The Ghost Tester validates code, detects visual regressions, tests interactions, and auto-fixes issues across 34 test scenarios with 100% coverage.",
-      th: "ระบบ QA ที่พร้อมใช้งานจริง ผสาน FastAPI พร้อมความสามารถ Self-Healing ตรวจสอบโค้ด ตรวจจับ Visual Regression ทดสอบ Interaction และแก้ไขอัตโนมัติ ครอบคลุม 34 สถานการณ์ทดสอบ 100%"
+      en: "A FastAPI-integrated QA system with self-healing capabilities. The Ghost Tester validates code, detects visual regressions, tests interactions, and auto-fixes issues across 34 test scenarios with 100% coverage.",
+      th: "ระบบ QA ที่ผสาน FastAPI พร้อมความสามารถ Self-Healing ตรวจสอบโค้ด ตรวจจับ Visual Regression ทดสอบ Interaction และแก้ไขอัตโนมัติ ครอบคลุม 34 สถานการณ์ทดสอบ 100%"
     },
     metrics: [
       { label: "Test Coverage", value: "100%" },
