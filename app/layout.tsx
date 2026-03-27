@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { headers } from "next/headers"
-import { Inter, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
+import { Inter, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
@@ -45,18 +45,11 @@ const spaceMono = Space_Mono({
   display: "swap",
 })
 
-/* Thai: Kanit (matches Space Grotesk geometric style) */
+/* Thai: Kanit (Primary Thai font) */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
-  weight: ["200", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"], // Optimized weights
   variable: "--rct-font-thai",
-  display: "swap",
-})
-
-/* Thai fallback: Noto Sans Thai */
-const notoSansThai = Noto_Sans_Thai({
-  subsets: ["thai"],
-  variable: "--font-thai-fallback",
   display: "swap",
 })
 
@@ -162,7 +155,7 @@ export default async function RootLayout({
   const websiteSchema = getWebSiteSchema(locale)
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} antialiased selection:bg-warm-amber/20 selection:text-warm-amber`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="color-scheme" content="light dark" />
@@ -180,7 +173,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
+      <body className={`min-h-[100vh] bg-background font-sans antialiased`}>
         {/* Skip to content for accessibility */}
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded">Skip to content</a>
         <AppProviders initialLocale={locale as "en" | "th"}>

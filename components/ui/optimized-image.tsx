@@ -60,7 +60,8 @@ function getAvifSrc(src: string, pixelated: boolean): string | undefined {
   if (pixelated || src.includes("/pixel-icons/") || src.includes("/images/pixel/")) {
     return undefined
   }
-  if (src.endsWith(".webp")) return src.replace(/\.webp$/, ".avif")
+  // Only attempt to load AVIF if it's a locally hosted image
+  if (src.startsWith("/") && src.endsWith(".webp")) return src.replace(/\.webp$/, ".avif")
   return undefined
 }
 
