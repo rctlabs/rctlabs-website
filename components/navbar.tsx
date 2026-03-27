@@ -276,14 +276,14 @@ export function Navbar() {
                 src={LOGO_MARK}
                 alt="RCT"
                 width={32} height={32}
-                className={`h-8 w-8 sm:hidden object-contain ${isDark ? "brightness-0 invert" : ""}`}
+                className={`h-8 w-8 sm:hidden object-contain object-left ${isDark ? "brightness-0 invert" : ""}`}
                 priority
               />
               <Image
                 src={LOGO_HORIZONTAL}
                 alt="RCT — Reverse Component Thinking"
-                width={160} height={32}
-                className={`hidden sm:block h-8 w-40 object-contain ${isDark ? "brightness-0 invert" : ""}`}
+                width={144} height={32}
+                className={`hidden sm:block h-8 w-36 object-contain object-left ${isDark ? "brightness-0 invert" : ""}`}
                 priority
               />
             </Link>
