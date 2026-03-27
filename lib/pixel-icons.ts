@@ -8,4 +8,15 @@ export const pixelIcons = {
   algorithms: "/images/pixel/8bit-algorithm-gears.webp",
   rocket: "/images/pixel/8bit-rocket-icon-oSMB9StjMFt3Nvu8bxaJcw.webp",
   evidence: "/images/pixel/8bit-evidence-book.webp",
+  // New icons — added 2026-03-27
+  cpu: "/images/pixel/8bit-cpu-chip.png",
+  database: "/images/pixel/8bit-database.png",
+  heart: "/images/pixel/8bit-heart.png",
+  target: "/images/pixel/8bit-target.png",
+  layers: "/images/pixel/8bit-layers.png",
+  chart: "/images/pixel/8bit-chart.png",
+  document: "/images/pixel/8bit-document.png",
+  formula: "/images/pixel/8bit-formula.png",
+  map: "/images/pixel/8bit-map.png",
+  flag: "/images/pixel/8bit-flag.png",
 } as const

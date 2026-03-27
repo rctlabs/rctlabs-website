@@ -6,8 +6,11 @@ import WhitepaperAccessForm from "@/components/whitepaper-access-form"
 import { useLanguage } from "@/components/language-provider"
 import { buildContactHref } from "@/lib/funnel"
 import { motion } from "framer-motion"
+import Image from "next/image"
 import Link from "next/link"
 import { FileText, ArrowRight, Tag, Clock, History } from "lucide-react"
+import { pixelIcons } from "@/lib/pixel-icons"
+
 
 const colorClasses = {
   "warm-amber": {
@@ -223,7 +226,7 @@ export default function WhitepaperPage() {
                   <div className={`p-6 sm:p-8 rounded-2xl border bg-card border-border shadow-sm hover:shadow-lg transition-all duration-300 group-hover:-translate-y-1`}>
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-muted">
-                        <FileText size={24} className={colorClasses[paper.color as keyof typeof colorClasses].text} />
+                        <Image src={pixelIcons.document} alt="whitepaper" width={32} height={32} className="object-contain" unoptimized />
                       </div>
                       <div className="flex-1">
                         <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">{isTh ? paper.title.th : paper.title.en}</h3>
