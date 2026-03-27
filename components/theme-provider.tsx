@@ -7,7 +7,7 @@ import {
 } from 'next-themes'
 
 // Sets both .dark CSS class AND data-theme="dark" attribute
-// so both next-themes components and manus-migrated components work
+// suppressing the React 19 warning about the inline script next-themes injects for FOUC prevention
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
     <NextThemesProvider
@@ -17,7 +17,10 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       disableTransitionOnChange
       {...props}
     >
-      {children}
+      {/* suppressHydrationWarning on the root prevents the next-themes script-tag React warning */}
+      <div suppressHydrationWarning style={{ display: 'contents' }}>
+        {children}
+      </div>
     </NextThemesProvider>
   )
 }

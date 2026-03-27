@@ -365,7 +365,7 @@ export function Navbar() {
             </div>
 
             {/* Right controls — enterprise minimal, overflow-safe for TH/EN */}
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex items-center gap-1 shrink-0" suppressHydrationWarning>
 
               {/* Search — icon only on sm/md, icon+label on xl */}
               <button
@@ -373,20 +373,21 @@ export function Navbar() {
                 className={`hidden sm:flex shrink-0 items-center gap-1.5 p-2 rounded-lg transition-colors ${
                   isDark ? "text-warm-gray/70 hover:text-white hover:bg-white/8" : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/60"
                 }`}
-                aria-label={language === "en" ? "Search (⌘K)" : "ค้นหา (⌘K)"}
+                aria-label="Search ⌘K"
                 title="Search  ⌘K"
+                suppressHydrationWarning
               >
                 <Search size={16} className="shrink-0" />
                 <span className="hidden xl:inline text-[13px] font-medium whitespace-nowrap">Search</span>
                 <kbd className={`hidden xl:inline px-1.5 py-0.5 text-[10px] rounded-md border font-mono ${
                   isDark ? "border-[#444] text-warm-gray/50 bg-white/3" : "border-warm-light-gray text-warm-gray/50 bg-warm-sand/40"
-                }`}>⌘K</kbd>
+                }`} suppressHydrationWarning>⌘K</kbd>
               </button>
 
               {/* Divider */}
               <div className={`hidden sm:block h-5 w-px mx-1 ${
                 isDark ? "bg-white/10" : "bg-warm-light-gray"
-              }`} />
+              }`} suppressHydrationWarning />
 
               {/* Theme toggle — icon only */}
               <button
@@ -398,7 +399,8 @@ export function Navbar() {
                       ? "text-warm-amber hover:bg-white/8"
                       : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/60"
                 }`}
-                aria-label={isDark ? (language === "en" ? "Light mode" : "โหมดสว่าง") : (language === "en" ? "Dark mode" : "โหมดมืด")}
+                suppressHydrationWarning
+                aria-label="Toggle theme"
               >
                 <AnimatePresence mode="wait">
                   {isDark ? (
@@ -430,7 +432,7 @@ export function Navbar() {
               {/* Divider */}
               <div className={`hidden sm:block h-5 w-px mx-1 ${
                 isDark ? "bg-white/10" : "bg-warm-light-gray"
-              }`} />
+              }`} suppressHydrationWarning />
 
               {/* CTA — Request Access */}
               <div className="hidden sm:flex">
