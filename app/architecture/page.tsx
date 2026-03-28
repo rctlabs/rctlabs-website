@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getFAQSchema, getBreadcrumbSchema } from "@/lib/schema"
+import { getRequestLocale } from "@/lib/request-locale"
+import { SITE_URL } from "@/lib/site-config"
 import ArchitectureClient from "./ArchitectureClient"
 import { FAQSection } from "@/components/faq-section"
 
@@ -33,8 +35,9 @@ const faqItems = [
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
   return createBilingualMetadata(
-    "en",
+    locale,
     "10-Layer AI Architecture",
     "สถาปัตยกรรม AI 10 ชั้น",
     "RCT Labs 10-layer constitutional AI architecture: from hardware abstraction to self-evolving orchestration. The production AI stack powering enterprise-grade multi-LLM systems.",
@@ -44,10 +47,11 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function ArchitecturePage() {
+export default async function ArchitecturePage() {
+  const locale = await getRequestLocale()
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Architecture", url: "https://rctlabs.co/en/architecture" },
+    { name: "Home", url: `${SITE_URL}/${locale}` },
+    { name: "Architecture", url: `${SITE_URL}/${locale}/architecture` },
   ])
   const faqSchema = getFAQSchema(faqItems)
 

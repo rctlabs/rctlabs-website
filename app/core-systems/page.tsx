@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema, getDefinedTermSchema } from "@/lib/schema"
+import { SITE_URL } from "@/lib/site-config"
 import CoreSystemsClient from "./CoreSystemsClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,6 +19,24 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function Page() {
-  return <CoreSystemsClient />
+export default async function Page() {
+  const locale = await getRequestLocale()
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: `${SITE_URL}/${locale}` },
+    { name: "Core Systems", url: `${SITE_URL}/${locale}/core-systems` },
+  ])
+
+  const definedTermSchema = getDefinedTermSchema(
+    "RCT Kernel",
+    "The RCT Kernel is the constitutional AI operating core of RCT Labs, comprising four primary systems: HexaCore (multi-model routing), Intent Loop (intent continuity), Analysearch (multi-depth analysis), and Delta Memory (enterprise AI memory).",
+    `${SITE_URL}/${locale}/core-systems`
+  )
+
+  return (
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermSchema) }} />
+      <CoreSystemsClient />
+    </>
+  )
 }

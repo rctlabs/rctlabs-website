@@ -3,8 +3,12 @@ export const SITE_NAME = "RCT Labs"
 export const SITE_DESCRIPTION = "Enterprise AI architecture and verification platform built around FDIA, JITNA, SignedAI, and staged deployment evidence."
 export const SITE_OG_IMAGE = `${SITE_URL}/opengraph-image`
 export const SITE_VERSION = "2026.03 Snapshot"
-export const SITE_TEST_COUNT = 389
-export const SITE_MICROSERVICE_COUNT = 33
+export const SITE_TEST_COUNT = 4849
+export const SITE_MICROSERVICE_COUNT = 62
+export const SITE_ALGORITHM_COUNT = 41
+export const SITE_LAYER_COUNT = 10
+export const SITE_HEXACORE_COUNT = 6
+export const SITE_CONSENSUS_MODELS = 3
 export const SITE_UPTIME = "99.9% target"
 export const SITE_HALLUCINATION_RATE = "0.3% benchmark"
 
