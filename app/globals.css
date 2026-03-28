@@ -189,11 +189,16 @@
   --color-warm-terracotta: #C4745B;
   --color-warm-sage: #7B9E87;
   --color-warm-sage-light: #A3C4AE;
-  --color-warm-charcoal: #1A1A1A;
+  --color-warm-charcoal: oklch(0.15 0.005 60);
   --color-warm-gray: #6B6B6B;
   --color-warm-light-gray: #E8E3DC;
   --color-warm-lavender: #B8A9C9;
   --color-warm-sky: #89B4C8;
+  /* Extended palette for blog/content pages */
+  --color-warm-dim: #888888;
+  --color-warm-dim-alt: #777777;
+  --color-warm-ghost: #BBBBBB;
+  --color-warm-charcoal-deep: oklch(0.11 0.005 60);
 }
 
 @layer base {

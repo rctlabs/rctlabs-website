@@ -8,7 +8,8 @@ import { Footer } from "@/components/footer"
 import { RESEARCH_CATEGORIES } from "@/lib/constants"
 import type { BlogPost } from "@/lib/blog"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
-import { ArrowRight, BookOpen, Clock, Tag, Search, TrendingUp, FileText, Users, Filter } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
+import { ArrowRight, BookOpen, Clock, Search, TrendingUp, FileText, Users, Filter } from "lucide-react"
 
 interface BlogPageClientProps {
   posts: BlogPost[]
@@ -35,8 +36,19 @@ const CATEGORY_COLORS: Record<string, string> = {
 const getCategoryColor = (cat: string) =>
   CATEGORY_COLORS[cat] ?? "text-warm-amber border-warm-amber/40 bg-warm-amber/10"
 
-function ArticleCard({ post, localePrefix, isFeatured = false }: { post: BlogPost; localePrefix: string; isFeatured?: boolean }) {
+function ArticleCard({
+  post,
+  localePrefix,
+  isFeatured = false,
+  t,
+}: {
+  post: BlogPost
+  localePrefix: string
+  isFeatured?: boolean
+  t: (key: string) => string
+}) {
   const catColor = getCategoryColor(post.category)
+  const catLabel = t(`blog.cat.${post.category}`) || post.category
 
   if (isFeatured) {
     return (
@@ -45,14 +57,14 @@ function ArticleCard({ post, localePrefix, isFeatured = false }: { post: BlogPos
           {/* Glow accent */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-warm-amber/5 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Featured badge */}
+          {/* Badges */}
           <div className="flex items-center gap-3 mb-5">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold ${catColor}`}>
               <span>{CATEGORY_ICONS[post.category] ?? "📄"}</span>
-              <span className="capitalize">{post.category}</span>
+              <span className="capitalize">{catLabel}</span>
             </span>
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-warm-amber/30 bg-warm-amber/10 text-warm-amber text-xs font-bold">
-              ⭐ Featured
+              ⭐ {t("blog.featured")}
             </span>
           </div>
 
@@ -83,11 +95,11 @@ function ArticleCard({ post, localePrefix, isFeatured = false }: { post: BlogPos
               </span>
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
-                {post.readTime} min
+                {post.readTime} {t("common.min")}
               </span>
             </div>
             <span className="flex items-center gap-1.5 text-warm-amber text-sm font-medium group-hover:gap-2.5 transition-all duration-200">
-              Read article <ArrowRight className="w-4 h-4" />
+              {t("blog.read.article")} <ArrowRight className="w-4 h-4" />
             </span>
           </div>
         </article>
@@ -98,16 +110,16 @@ function ArticleCard({ post, localePrefix, isFeatured = false }: { post: BlogPos
   return (
     <Link href={`${localePrefix}/blog/${post.slug}`} className="group block h-full">
       <article className="relative h-full overflow-hidden rounded-xl border border-white/8 bg-warm-charcoal/40 backdrop-blur-sm p-6 flex flex-col hover:border-warm-amber/25 hover:bg-warm-charcoal/60 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-        {/* Subtle top gradient accent */}
+        {/* Top gradient accent */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-warm-amber/20 to-transparent" />
 
         <div className="flex items-center gap-2 mb-4">
           <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-xs font-semibold ${catColor}`}>
             <span>{CATEGORY_ICONS[post.category] ?? "📄"}</span>
-            <span className="capitalize">{post.category}</span>
+            <span className="capitalize">{catLabel}</span>
           </span>
           <span className="ml-auto flex items-center gap-1 text-xs text-warm-dim">
-            <Clock className="w-3 h-3" />{post.readTime} min
+            <Clock className="w-3 h-3" />{post.readTime} {t("common.min")}
           </span>
         </div>
 
@@ -145,6 +157,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState<string>("")
   const pathname = usePathname()
+  const { t } = useLanguage()
   const localePrefix = getLocalePrefix(resolveLocale(pathname, "en"))
 
   const filteredPosts = useMemo(() => {
@@ -155,7 +168,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
         (p) =>
           p.title.toLowerCase().includes(q) ||
           p.excerpt?.toLowerCase().includes(q) ||
-          p.tags?.some((t) => t.toLowerCase().includes(q))
+          p.tags?.some((tg) => tg.toLowerCase().includes(q))
       )
     }
     return result
@@ -163,8 +176,8 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
 
   const totalWords = posts.reduce((acc, p) => acc + (p.readTime ?? 5) * 200, 0)
   const categories = [
-    { id: "all", label: "All Articles" },
-    ...RESEARCH_CATEGORIES,
+    { id: "all", label: t("blog.filter.all") },
+    ...RESEARCH_CATEGORIES.map((c) => ({ ...c, label: t(`blog.cat.${c.id}`) || c.label })),
   ]
 
   const categoryCount = (id: string) =>
@@ -183,24 +196,30 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
           <div className="max-w-3xl space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-warm-amber/30 bg-warm-amber/8 text-warm-amber text-sm font-medium">
               <BookOpen className="w-4 h-4" />
-              RCT Labs Research & Insights
+              {t("blog.badge")}
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-warm-light-gray leading-tight text-balance">
-              Deep-Dives in{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-warm-amber to-orange-400">
-                Constitutional AI
-              </span>
+              {t("blog.title").includes("Constitutional") ? (
+                <>
+                  {t("blog.title").split("Constitutional")[0]}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-warm-amber to-orange-400">
+                    Constitutional AI
+                  </span>
+                </>
+              ) : (
+                t("blog.title")
+              )}
             </h1>
             <p className="text-xl text-warm-dim leading-relaxed max-w-2xl">
-              Technical guides, research breakdowns, and verified insights on FDIA, JITNA, HexaCore, and enterprise AI governance — written by the founder.
+              {t("blog.subtitle")}
             </p>
 
             {/* Stats bar */}
             <div className="flex flex-wrap gap-6 pt-2">
               {[
-                { icon: FileText, label: "Articles", value: posts.length },
-                { icon: TrendingUp, label: "Topics", value: new Set(posts.map(p => p.category)).size },
-                { icon: Clock, label: "Est. reading", value: `${Math.round(totalWords / 1000)}K words` },
+                { icon: FileText, label: t("blog.stat.articles"), value: posts.length },
+                { icon: TrendingUp, label: t("blog.stat.topics"), value: new Set(posts.map(p => p.category)).size },
+                { icon: Clock, label: t("blog.stat.reading"), value: `${Math.round(totalWords / 1000)}K words` },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-center gap-2 text-sm">
                   <Icon className="w-4 h-4 text-warm-amber" />
@@ -245,7 +264,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-warm-dim" />
             <input
               type="text"
-              placeholder="Search articles..."
+              placeholder={t("blog.search.placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-8 pr-4 py-1.5 rounded-lg border border-white/10 bg-white/5 text-sm text-warm-light-gray placeholder:text-warm-dim focus:outline-none focus:border-warm-amber/40 focus:bg-white/8 transition-all w-48 sm:w-56"
@@ -259,12 +278,12 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
         {filteredPosts.length === 0 ? (
           <div className="text-center py-24">
             <div className="text-5xl mb-4">🔍</div>
-            <p className="text-warm-dim text-lg">No articles found for &quot;{searchQuery}&quot;</p>
+            <p className="text-warm-dim text-lg">{t("blog.noResults")} &quot;{searchQuery}&quot;</p>
             <button
               onClick={() => { setSearchQuery(""); setSelectedCategory("all") }}
               className="mt-4 px-4 py-2 rounded-lg border border-white/10 text-sm text-warm-dim hover:border-warm-amber/30 hover:text-warm-amber transition"
             >
-              Clear filters
+              {t("blog.clearFilters")}
             </button>
           </div>
         ) : (
@@ -272,20 +291,23 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
             {/* Results count */}
             <div className="flex items-center justify-between">
               <p className="text-warm-dim text-sm">
-                Showing <span className="font-semibold text-warm-light-gray">{filteredPosts.length}</span> article{filteredPosts.length !== 1 ? "s" : ""}
-                {selectedCategory !== "all" && <span> in <span className="text-warm-amber capitalize">{selectedCategory}</span></span>}
+                {t("blog.showing")} <span className="font-semibold text-warm-light-gray">{filteredPosts.length}</span>{" "}
+                {t("blog.articles")}
+                {selectedCategory !== "all" && (
+                  <span> {t("blog.in")} <span className="text-warm-amber capitalize">{t(`blog.cat.${selectedCategory}`)}</span></span>
+                )}
               </p>
             </div>
 
-            {/* Featured (first post) */}
+            {/* Featured (first post) + 2 sidebar */}
             {filteredPosts.length > 0 && (
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <div className="lg:col-span-3">
-                  <ArticleCard post={filteredPosts[0]} localePrefix={localePrefix} isFeatured />
+                  <ArticleCard post={filteredPosts[0]} localePrefix={localePrefix} isFeatured t={t} />
                 </div>
                 <div className="lg:col-span-2 flex flex-col gap-6">
                   {filteredPosts.slice(1, 3).map((post) => (
-                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} />
+                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} t={t} />
                   ))}
                 </div>
               </div>
@@ -296,12 +318,12 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
               <>
                 <div className="flex items-center gap-4">
                   <div className="h-px flex-1 bg-gradient-to-r from-warm-amber/20 to-transparent" />
-                  <span className="text-xs text-warm-dim font-semibold uppercase tracking-wider">All Articles</span>
+                  <span className="text-xs text-warm-dim font-semibold uppercase tracking-wider">{t("blog.all.articles")}</span>
                   <div className="h-px flex-1 bg-gradient-to-l from-warm-amber/20 to-transparent" />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {filteredPosts.slice(3).map((post) => (
-                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} />
+                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} t={t} />
                   ))}
                 </div>
               </>
@@ -314,9 +336,9 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
       <section className="mx-auto max-w-7xl px-4 py-16">
         <div className="rounded-2xl border border-warm-amber/20 bg-gradient-to-br from-warm-amber/8 to-transparent p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <h2 className="text-2xl font-bold text-warm-light-gray mb-2">Explore the Research</h2>
+            <h2 className="text-2xl font-bold text-warm-light-gray mb-2">{t("blog.cta.title")}</h2>
             <p className="text-warm-dim max-w-md">
-              Every article is written by the founder — with verified metrics, source code references, and full SEO/E-E-A-T compliance.
+              {t("blog.cta.desc")}
             </p>
           </div>
           <div className="flex gap-3 shrink-0">
@@ -324,7 +346,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
               href={`${localePrefix}/authors/ittirit-saengow`}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-warm-amber text-background font-semibold text-sm hover:bg-warm-amber/90 transition"
             >
-              View Author Profile <ArrowRight className="w-4 h-4" />
+              {t("blog.cta.button")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
