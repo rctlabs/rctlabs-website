@@ -1,6 +1,14 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
+  "name": "rctlabs-v0",
+  "version": "1.0.0",
+  "description": "RCT Labs — Constitutional AI Operating System",
+  "author": "Ittirit Saengow",
+  "license": "UNLICENSED",
+  "homepage": "https://rctlabs.co",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ittirit720/rctlabs-v0"
+  },
   "private": true,
   "scripts": {
     "build": "next build",
@@ -13,7 +21,7 @@
     "verify:public": "bash ./scripts/verify-public-truth.sh"
   },
   "dependencies": {
-    "@emotion/is-prop-valid": "latest",
+    "@emotion/is-prop-valid": "^1.2.2",
     "@hookform/resolvers": "^3.10.0",
     "@mdx-js/mdx": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
@@ -53,15 +61,12 @@
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
     "framer-motion": "12.35.0",
-    "fs": "0.0.1-security",
     "gray-matter": "^4.0.3",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
-    "net": "1.0.2",
     "next": "^16.2.1",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
-    "path": "0.12.7",
     "react": "19.2.0",
     "react-day-picker": "9.8.0",
     "react-dom": "19.2.0",
