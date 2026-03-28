@@ -303,8 +303,8 @@ export default function SolutionsPage() {
                       </div>
                     ))}
                   </div>
-                  <Link href={localHref(sol.href)} className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3" style={{ color: sol.color }} aria-label={isTh ? `เรียนรู้เพิ่มเติมเกี่ยวกับ ${sol.titleTh}` : `Learn more about ${sol.titleEn}`}>
-                    {isTh ? "เรียนรู้เพิ่มเติม" : "Learn More"} <ArrowRight size={16} />
+                  <Link href={localHref(sol.href)} className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3" style={{ color: sol.color }}>
+                    {isTh ? `สำรวจ ${sol.titleTh}` : `Explore ${sol.titleEn}`} <ArrowRight size={16} />
                   </Link>
                 </div>
                 <div className="relative flex flex-col justify-center bg-muted/30 p-6 sm:p-8 lg:col-span-2">
