@@ -26,7 +26,7 @@ export default function ArtentAIPage() {
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
         { name: "Home", url: "https://rctlabs.co" },
         { name: isTh ? "ผลิตภัณฑ์" : "Products", url: "https://rctlabs.co/products" },
-        { name: "Artent AI", url: "https://rctlabs.co/products/artent-ai" },
+        { name: "ArtentAI", url: "https://rctlabs.co/products/artent-ai" },
       ])) }} />
       <Navbar />
 
@@ -36,7 +36,7 @@ export default function ArtentAIPage() {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-medium" style={{ backgroundColor: "#B8A9C915", borderColor: "#B8A9C930", color: "#B8A9C9" }}>
             <Palette className="w-4 h-4" /> Creative AI
           </span>
-          <h1 className="text-5xl font-bold text-foreground">Artent AI</h1>
+          <h1 className="text-5xl font-bold text-foreground">ArtentAI</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             {isTh
               ? "Creative AI ที่ขับเคลื่อนด้วยสถาปัตยกรรม ผสมผสาน Intent Understanding กับ Artistic Generation — สร้างผลลัพธ์ที่สอดคล้องกับเป้าหมายเชิงกลยุทธ์"

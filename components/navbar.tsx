@@ -7,7 +7,7 @@
  */
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Globe, ChevronDown, Moon, Sun, Search } from "lucide-react"
+import { Menu, X, ChevronDown, Moon, Sun, Search } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
@@ -153,7 +153,7 @@ const navLabels: Record<string, { en: string; th: string }> = {
 }
 
 export function Navbar() {
-  const { language, toggleLanguage, t } = useLanguage()
+  const { language, t } = useLanguage()
   const { theme, setTheme } = useTheme()
   const mounted = useMounted()
   const pathname = usePathname()
@@ -420,20 +420,6 @@ export function Navbar() {
                 </AnimatePresence>
               </button>
 
-              {/* Language switcher — compact, no overflow */}
-              <button
-                onClick={toggleLanguage}
-                className={`hidden sm:flex shrink-0 items-center gap-1 px-2.5 py-1.5 text-[12px] font-semibold rounded-lg transition-colors border ${
-                  isDark
-                    ? "text-warm-gray/70 hover:text-white hover:bg-white/8 border-[#333] hover:border-[#555]"
-                    : "text-warm-gray hover:text-warm-charcoal hover:bg-warm-sand/60 border-warm-light-gray hover:border-warm-gray/30"
-                }`}
-                aria-label={locale === "en" ? "Switch to Thai" : "เปลี่ยนเป็นภาษาอังกฤษ"}
-              >
-                <Globe size={13} className="shrink-0" />
-                <span className="whitespace-nowrap tracking-wide text-[11px]">{locale === "en" ? "TH" : "EN"}</span>
-              </button>
-
               {/* Divider */}
               <div className={`hidden sm:block h-5 w-px mx-1 ${
                 isDark ? "bg-white/10" : "bg-warm-light-gray"
@@ -482,15 +468,6 @@ export function Navbar() {
                   >
                     {isDark ? <Sun size={16} /> : <Moon size={16} />}
                     <span className="text-xs">{isDark ? (language === "en" ? "Light" : "สว่าง") : (language === "en" ? "Dark" : "มืด")}</span>
-                  </button>
-                  <button
-                    onClick={toggleLanguage}
-                    className={`flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all flex-1 border ${
-                      isDark ? "text-white bg-white/5 hover:bg-white/10 border-[#333]" : "text-warm-charcoal bg-warm-sand/50 hover:bg-warm-sand border-warm-light-gray"
-                    }`}
-                  >
-                    <Globe size={16} />
-                    <span className="text-xs">{locale === "en" ? "EN → ไทย" : "ไทย → EN"}</span>
                   </button>
                 </div>
 

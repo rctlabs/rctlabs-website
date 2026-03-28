@@ -32,7 +32,7 @@ const comparisons = [
     tags: ["Governance", "Reasoning", "Enterprise"],
   },
   {
-    slug: "rct-vs-llm-apis",
+    slug: "rct-labs-vs-llm-apis",
     title: "RCT Platform vs Generic LLM APIs",
     description:
       "Calling OpenAI directly vs building on a verification-aware AI operating system — cost, auditability, and capability gaps.",

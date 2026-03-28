@@ -32,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: localizeUrl(locale, route),
       lastModified: Number.isNaN(postModified.getTime()) ? lastModified : postModified,
       changeFrequency: "monthly" as const,
-      priority: 0.7,
+      priority: post.category === "research" ? 0.75 : 0.68,
       alternates: {
         languages: {
           en: localizeUrl("en", route),

@@ -130,7 +130,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     "keywords": post.tags?.join(", "),
     "image": {
       "@type": "ImageObject",
-      "url": `${SITE_URL}/opengraph-image.png`,
+      "url": `${SITE_URL}/blog/${slug}/opengraph-image`,
+      "width": 1200,
+      "height": 630,
     },
     "mainEntityOfPage": {
       "@type": "WebPage",

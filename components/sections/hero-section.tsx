@@ -98,7 +98,7 @@ export default function HeroSection() {
             </motion.div>
 
             <motion.div variants={itemVariants} className="space-y-4">
-              <h1 className={`text-3xl sm:text-4xl lg:text-[52px] font-bold tracking-[-0.02em] leading-[1.1] ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+              <h1 className={`text-4xl sm:text-5xl lg:text-[62px] font-bold tracking-[-0.03em] leading-[1.08] text-balance ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
                 {t("hero.title.line1")}{" "}
                 <span className="font-display font-semibold text-warm-amber">{t("hero.title.line2")}</span>
                 <br />
