@@ -213,10 +213,17 @@ export function Navbar() {
     return () => window.removeEventListener("rct-open-search", handleOpenSearch as EventListener)
   }, [openSearch])
 
-  // Close menus on route change
+  // Close menus and update expanded accordion on route change
   useEffect(() => {
     setMobileOpen(false)
     setOpenDropdown(null)
+    
+    // Auto-expand the mobile accordion group corresponding to the active page
+    const locPath = pathname?.replace(/^\/(en|th)/, "") || "/"
+    const activeItem = navItems.find(i => locPath === i.href || (i.href !== "/" && locPath.startsWith(i.href)))
+    if (activeItem?.group) {
+      setExpandedGroups(prev => prev.includes(activeItem.group) ? prev : [...prev, activeItem.group])
+    }
   }, [pathname])
 
   const handleRouteClick = () => {

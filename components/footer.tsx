@@ -255,15 +255,15 @@ export function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 sm:gap-6 text-center sm:text-left">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-8 sm:gap-6 text-left">
             {Object.entries(footerLinks).map(([title, links]) => (
               <nav key={title} aria-label={title}>
-                <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2.5 ${
+                <h4 className={`text-xs font-semibold uppercase tracking-wider mb-3 ${
                   isDark ? "text-warm-subdued" : "text-warm-charcoal"
                 }`}>
                   {title}
                 </h4>
-                <ul className="space-y-1.5">
+                <ul className="space-y-2.5">
                   {links.map((link) => (
                     <li key={link.label}>
                       {"external" in link && link.external ? (
@@ -271,7 +271,7 @@ export function Footer() {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`text-xs sm:text-sm transition-colors ${
+                          className={`text-xs sm:text-sm transition-colors block ${
                             isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
                           }`}
                         >
@@ -280,7 +280,7 @@ export function Footer() {
                       ) : (
                         <Link
                           href={lh(link.href)}
-                          className={`text-xs sm:text-sm transition-colors ${
+                          className={`text-xs sm:text-sm transition-colors block ${
                             isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
                           }`}
                         >
