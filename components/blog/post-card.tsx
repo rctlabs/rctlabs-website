@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { ArrowRight, Clock, Users } from "lucide-react"
+import { ArrowRight, Clock, Users, FlaskConical, Newspaper, Wrench, Lightbulb, BarChart3, FileIcon } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 import type { BlogPostMetadata } from "@/lib/blog"
 
 interface PostCardProps extends BlogPostMetadata {
@@ -15,17 +16,18 @@ const CATEGORY_COLORS: Record<string, string> = {
   case_study: "text-cyan-400 border-cyan-400/30 bg-cyan-400/8",
 }
 
-const CATEGORY_ICONS: Record<string, string> = {
-  research: "🔬",
-  news: "📰",
-  tutorial: "🛠️",
-  philosophy: "💡",
-  case_study: "📊",
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  research: FlaskConical,
+  news: Newspaper,
+  tutorial: Wrench,
+  philosophy: Lightbulb,
+  case_study: BarChart3,
 }
 
 export function PostCard({ slug, title, author, date, category, excerpt, readTime, tags = [], localePrefix }: PostCardProps) {
   const catColor = CATEGORY_COLORS[category] ?? "text-warm-amber border-warm-amber/30 bg-warm-amber/8"
-  const catIcon = CATEGORY_ICONS[category] ?? "📄"
+  const CatIcon = CATEGORY_ICONS[category] ?? FileIcon
+  const formattedDate = date ? new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null
 
   return (
     <Link href={`${localePrefix}/blog/${slug}`} className="group block h-full">
@@ -36,7 +38,7 @@ export function PostCard({ slug, title, author, date, category, excerpt, readTim
         {/* Category + read time */}
         <div className="flex items-center gap-2 mb-4">
           <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-xs font-semibold ${catColor}`}>
-            <span>{catIcon}</span>
+            <CatIcon className="w-3 h-3" />
             <span className="capitalize">{category}</span>
           </span>
           <span className="ml-auto flex items-center gap-1 text-xs text-warm-dim">
@@ -74,6 +76,9 @@ export function PostCard({ slug, title, author, date, category, excerpt, readTim
             <Users className="w-3 h-3" />
             <span>{author.split(" ").slice(0, 2).join(" ")}</span>
           </div>
+          {formattedDate && (
+            <span className="text-xs text-warm-dim/60 tabular-nums">{formattedDate}</span>
+          )}
           <ArrowRight className="w-4 h-4 text-warm-amber opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200" />
         </div>
       </article>

@@ -9,19 +9,20 @@ import { RESEARCH_CATEGORIES } from "@/lib/constants"
 import type { BlogPost } from "@/lib/blog"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { useLanguage } from "@/components/language-provider"
-import { ArrowRight, BookOpen, Clock, Search, TrendingUp, FileText, Users, Filter } from "lucide-react"
+import { ArrowRight, BookOpen, Clock, Search, TrendingUp, FileText, Users, Filter, FlaskConical, Newspaper, Wrench, Lightbulb, BarChart3, FileIcon, Star } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 
 interface BlogPageClientProps {
   posts: BlogPost[]
 }
 
-const CATEGORY_ICONS: Record<string, string> = {
-  all: "📚",
-  research: "🔬",
-  news: "📰",
-  tutorial: "🛠️",
-  philosophy: "💡",
-  case_study: "📊",
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  all: BookOpen,
+  research: FlaskConical,
+  news: Newspaper,
+  tutorial: Wrench,
+  philosophy: Lightbulb,
+  case_study: BarChart3,
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -60,11 +61,11 @@ function ArticleCard({
           {/* Badges */}
           <div className="flex items-center gap-3 mb-5">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold ${catColor}`}>
-              <span>{CATEGORY_ICONS[post.category] ?? "📄"}</span>
+              {(() => { const CatIcon = CATEGORY_ICONS[post.category] ?? FileIcon; return <CatIcon className="w-3.5 h-3.5" /> })()}
               <span className="capitalize">{catLabel}</span>
             </span>
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-warm-amber/30 bg-warm-amber/10 text-warm-amber text-xs font-bold">
-              ⭐ {t("blog.featured")}
+              <Star className="w-3 h-3" /> {t("blog.featured")}
             </span>
           </div>
 
@@ -115,7 +116,7 @@ function ArticleCard({
 
         <div className="flex items-center gap-2 mb-4">
           <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-xs font-semibold ${catColor}`}>
-            <span>{CATEGORY_ICONS[post.category] ?? "📄"}</span>
+            {(() => { const CatIcon = CATEGORY_ICONS[post.category] ?? FileIcon; return <CatIcon className="w-3 h-3" /> })()}
             <span className="capitalize">{catLabel}</span>
           </span>
           <span className="ml-auto flex items-center gap-1 text-xs text-warm-dim">
@@ -146,6 +147,11 @@ function ArticleCard({
 
         <div className="flex items-center justify-between pt-3 border-t border-white/8 mt-auto">
           <span className="text-xs text-warm-dim">{(post.author ?? post.authorId ?? "RCT Labs").split(" ").slice(0, 2).join(" ")}</span>
+          {post.date && (
+            <span className="text-xs text-warm-dim/60 tabular-nums">
+              {new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+            </span>
+          )}
           <ArrowRight className="w-4 h-4 text-warm-amber opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200" />
         </div>
       </article>
@@ -251,7 +257,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
                       : "border-white/10 text-warm-dim hover:border-white/20 hover:text-warm-light-gray"
                   }`}
                 >
-                  {CATEGORY_ICONS[cat.id] && <span className="mr-1">{CATEGORY_ICONS[cat.id]}</span>}
+                  {(() => { const CatIcon = CATEGORY_ICONS[cat.id]; return CatIcon ? <CatIcon className="inline-block w-3 h-3 mr-1" /> : null })()}
                   {cat.label}
                   <span className="ml-1.5 opacity-50">({count})</span>
                 </button>

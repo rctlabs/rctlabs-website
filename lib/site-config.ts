@@ -41,6 +41,14 @@ export const PUBLIC_ROUTE_PRIORITIES: Record<string, number> = {
   "/roadmap": 0.75,
   "/contact": 0.75,
   "/docs": 0.7,
+  "/authors": 0.72,
+  "/authors/ittirit-saengow": 0.78,
+  "/authors/rct-research-desk": 0.65,
+  "/compare": 0.75,
+  "/compare/constitutional-ai-vs-rag": 0.75,
+  "/compare/rct-labs-vs-llm-apis": 0.75,
+  "/compare/verification-vs-prompt-engineering": 0.75,
+  "/compare/rctdb-vs-vector-databases": 0.75,
 }
 
 export const PUBLIC_ROUTES = [
@@ -94,6 +102,14 @@ export const PUBLIC_ROUTES = [
   "/privacy",
   "/terms",
   "/roadmap",
+  "/authors",
+  "/authors/ittirit-saengow",
+  "/authors/rct-research-desk",
+  "/compare",
+  "/compare/constitutional-ai-vs-rag",
+  "/compare/rct-labs-vs-llm-apis",
+  "/compare/verification-vs-prompt-engineering",
+  "/compare/rctdb-vs-vector-databases",
 ] as const
 
 export const NOINDEX_ROUTE_PREFIXES = [
