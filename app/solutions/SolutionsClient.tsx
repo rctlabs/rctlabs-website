@@ -304,7 +304,7 @@ export default function SolutionsPage() {
                     ))}
                   </div>
                   <Link href={localHref(sol.href)} className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3" style={{ color: sol.color }}>
-                    {isTh ? "เรียนรู้เพิ่มเติม" : "Learn More"} <ArrowRight size={16} />
+                    {isTh ? `สำรวจ ${sol.titleTh}` : `Explore ${sol.titleEn}`} <ArrowRight size={16} />
                   </Link>
                 </div>
                 <div className="relative flex flex-col justify-center bg-muted/30 p-6 sm:p-8 lg:col-span-2">
