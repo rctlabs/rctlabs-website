@@ -37,7 +37,7 @@ export function getOrganizationSchema(locale: Locale) {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Technical Support',
-      email: 'hello@rctlabs.co',
+      email: 'owner@rctlabs.co',
       availableLanguage: ['en', 'th'],
     },
   }

@@ -189,16 +189,11 @@
   --color-warm-terracotta: #C4745B;
   --color-warm-sage: #7B9E87;
   --color-warm-sage-light: #A3C4AE;
-  --color-warm-charcoal: oklch(0.15 0.005 60);
+  --color-warm-charcoal: #1A1A1A;
   --color-warm-gray: #6B6B6B;
   --color-warm-light-gray: #E8E3DC;
   --color-warm-lavender: #B8A9C9;
   --color-warm-sky: #89B4C8;
-  /* Extended palette for blog/content pages */
-  --color-warm-dim: #888888;
-  --color-warm-dim-alt: #777777;
-  --color-warm-ghost: #BBBBBB;
-  --color-warm-charcoal-deep: oklch(0.11 0.005 60);
 }
 
 @layer base {
@@ -680,3 +675,122 @@ svg text { text-rendering: optimizeLegibility; }
   transition-timing-function: var(--rct-ease-out);
   will-change: transform, opacity;
 }
+
+/* ==========================================================================
+   ENTERPRISE BACKGROUND DEPTH SYSTEM (C1)
+   3-layer system: noise + gradient mesh + grid
+   Inspired by: Linear (noise), Anthropic (warm mesh), Vercel (grid)
+   ========================================================================== */
+
+/* Layer 1: Noise texture — quality/premium signal */
+.bg-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layer 2: Gradient mesh — section warmth / direction */
+.bg-mesh-amber {
+  background: radial-gradient(
+    ellipse 80% 50% at 10% 0%,
+    oklch(0.72 0.12 75 / 0.06) 0%,
+    transparent 60%
+  );
+}
+.bg-mesh-amber-right {
+  background: radial-gradient(
+    ellipse 70% 60% at 90% 10%,
+    oklch(0.72 0.12 75 / 0.05) 0%,
+    transparent 55%
+  );
+}
+.bg-mesh-cool {
+  background: radial-gradient(
+    ellipse 70% 60% at 90% 20%,
+    oklch(0.65 0.08 220 / 0.04) 0%,
+    transparent 55%
+  );
+}
+.bg-mesh-hero {
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, oklch(0.72 0.12 75 / 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 80%, oklch(0.65 0.08 220 / 0.04) 0%, transparent 50%);
+}
+
+/* Glow shadow utilities */
+.shadow-glow-amber { box-shadow: 0 0 40px oklch(0.72 0.12 75 / 0.12); }
+.shadow-glow-sm-amber { box-shadow: 0 0 20px oklch(0.72 0.12 75 / 0.08); }
+
+/* ==========================================================================
+   ENTERPRISE COLOR TOKENS — Semantic palette extension (C2)
+   ========================================================================== */
+
+:root {
+  /* Status colors */
+  --rct-status-live: #22c55e;
+  --rct-status-progress: #D4A853;
+  --rct-status-planned: #89B4C8;
+  --rct-status-deprecated: #ef4444;
+
+  /* Article category accent colors */
+  --rct-cat-research: #60a5fa;
+  --rct-cat-news: #34d399;
+  --rct-cat-tutorial: #a78bfa;
+  --rct-cat-philosophy: #fb923c;
+  --rct-cat-case-study: #22d3ee;
+
+  /* Ambient glow */
+  --rct-glow-amber: rgba(212, 168, 83, 0.12);
+  --rct-glow-blue: rgba(137, 180, 200, 0.10);
+  --rct-glow-green: rgba(34, 197, 94, 0.08);
+}
+
+/* ==========================================================================
+   ENTERPRISE MOTION SYSTEM — Precision easing tokens (C3)
+   Inspired by: Linear (fast-precise), Vercel (entrance/exit), Framer
+   ========================================================================== */
+
+:root {
+  /* Precision easing */
+  --rct-ease-precise: cubic-bezier(0.16, 1, 0.3, 1);
+  --rct-ease-entrance: cubic-bezier(0, 0, 0.2, 1);
+  --rct-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --rct-ease-spring-light: cubic-bezier(0.34, 1.3, 0.64, 1);
+
+  /* Duration hierarchy */
+  --rct-duration-micro: 80ms;
+  --rct-duration-quick: 150ms;
+  --rct-duration-base: 200ms;
+  --rct-duration-smooth: 300ms;
+  --rct-duration-slow: 500ms;
+}
+
+/* Motion utility classes */
+.motion-precise { transition-timing-function: var(--rct-ease-precise); }
+.motion-entrance { transition-timing-function: var(--rct-ease-entrance); }
+.motion-spring { transition-timing-function: var(--rct-ease-spring-light); }
+
+@keyframes fade-in-right {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-fade-in-right { animation: fade-in-right 0.3s var(--rct-ease-entrance) forwards; }
+
+/* Reading progress bar — warm amber thin line */
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, oklch(0.72 0.12 75), oklch(0.78 0.14 75));
+  z-index: 100;
+  pointer-events: none;
+  transition: none;
+}
+

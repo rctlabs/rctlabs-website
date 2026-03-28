@@ -15,13 +15,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return createBilingualMetadata(
     locale,
-    "About RCT Labs — Origin Story & The Architect",
-    "เกี่ยวกับ RCT Labs — เรื่องราวต้นกำเนิดและ The Architect",
+    "About RCT Labs — Constitutional AI Platform | Thai-Built Enterprise AI Operating System",
+    "เกี่ยวกับ RCT Labs — Constitutional AI Platform ระดับองค์กร สร้างโดยคนไทย",
     // Lengthened meta descriptions for SEO (150-160 chars)
-    "RCT Labs: Solo architect from Khlong Toei, Bangkok, building a Constitutional AI architecture program with a 41-algorithm framework, 7 Genomes, and March 2026 engineering snapshot evidence.",
-    "RCT Labs: สร้างโดย Solo Architect จากคลองเตย กรุงเทพฯ — กำลังพัฒนาสถาปัตยกรรม Constitutional AI ด้วยกรอบ 41 อัลกอริทึม 7 Genome และหลักฐานสถานะงานเดือนมีนาคม 2026",
+    "RCT Labs: Enterprise Constitutional AI Operating System — 389 verified tests, 33 microservices, multi-LLM governance, and 0.3% hallucination control built by a solo architect from Bangkok.",
+    "RCT Labs: ระบบ AI ระดับองค์กร — ผ่านการทดสอบ 389 รายการ, 33 microservices, governance หลาย LLM และ hallucination ต่ำ 0.3% สร้างโดย Solo Architect จากกรุงเทพฯ",
     "/about",
-    ["AI research", "intent-driven AI", "FDIA equation", "Constitutional AI", "Thailand AI", "RCT Labs founder", "Ittirit Saengow"]
+    ["Constitutional AI", "enterprise AI platform", "AI governance", "Thailand AI", "RCT Labs", "Ittirit Saengow", "multi-LLM consensus"]
   )
 }
 
@@ -33,28 +33,13 @@ export default async function AboutPage() {
     "@type": "Person",
     "name": "Ittirit Saengow",
     "alternateName": "อิทธิฤทธิ์ แซ่โง้ว",
-    "jobTitle": "Founder and Architect, RCT Labs",
-    "description": "Founder and sole developer of RCT Labs — built a constitutional AI operating system (4,849 passing tests, 62 microservices, 41 algorithms) independently in Bangkok, Thailand in 30 days at zero cost.",
+    "jobTitle": "Architect of Intent",
+    "description": "Solo architect from Khlong Toei, Bangkok. Creator of RCT Labs, FDIA equation, and the 7 Genome System.",
     "url": "https://rctlabs.co/about",
     "sameAs": [
-      "https://github.com/ittirit720",
-      "https://github.com/rctlabs",
+      "https://github.com/rct-ecosystem",
       "https://www.linkedin.com/in/ittirit-saengow/"
     ],
-    "knowsAbout": [
-      "constitutional AI system design",
-      "FDIA equation and framework",
-      "JITNA protocol specification",
-      "enterprise AI governance",
-      "full-stack Next.js development",
-      "bilingual AI platform architecture",
-      "AI operating systems",
-      "Thailand enterprise AI deployment"
-    ],
-    "nationality": {
-      "@type": "Country",
-      "name": "Thailand"
-    },
     "affiliation": {
       "@type": "Organization",
       "name": "RCT Labs",
@@ -227,10 +212,10 @@ export default async function AboutPage() {
       {/* ── Stats Bar ────────────────────────────────────────── */}
       <section className="border-y border-border bg-card">
         <div className="mx-auto max-w-7xl px-4 py-8">
-          <div className="flex flex-wrap justify-center gap-x-12 gap-y-8 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-6 text-center">
             {stats.map((s) => (
-              <div key={s.label} className="space-y-1 min-w-[120px]">
-                <div className="text-2xl font-bold text-warm-amber font-mono">{s.value}</div>
+              <div key={s.label} className="space-y-1">
+                <div className="text-2xl font-bold text-warm-amber font-mono tabular-nums">{s.value}</div>
                 <div className="text-xs text-muted-foreground">{s.label}</div>
               </div>
             ))}
