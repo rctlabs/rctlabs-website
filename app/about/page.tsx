@@ -180,6 +180,52 @@ export default async function AboutPage() {
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Reverse Component Thinking (RCT)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Reverse Component Thinking (RCT) is a methodology that starts from the desired outcome and works backward to define the exact components, verifications, and intent structures required to achieve it. Unlike forward-prompt engineering, RCT treats every AI interaction as a constitutional declaration traceable to a measurable business goal."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does RCT Labs prevent AI hallucination in enterprise deployments?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "RCT Labs uses a multi-layer verification architecture: the FDIA (Functional Decomposition Intent Architecture) equation decomposes intent into auditable components, the SignedAI genome runs multi-LLM consensus scoring with 8D quality dimensions, and the RCTdb memory layer cross-checks outputs against verified enterprise knowledge. Current benchmark evidence shows 0.3% hallucination rate on controlled workloads."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is JITNA RFC-001 and why does it matter for enterprise AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "JITNA RFC-001 (Just-In-Time Nodal Assembly Request for Comments 001) is an open protocol published by RCT Labs that defines a language-agnostic standard for expressing AI intent as structured, verifiable node graphs. Enterprises benefit because JITNA-compliant systems produce auditable intent trails, enabling compliance teams to trace every AI decision back to its originating intent specification."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is RCT Labs suitable for large enterprise deployments?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. RCT Labs is designed natively for enterprise requirements: 33+ microservices with independent scaling, sub-50ms warm recall via the Intent Loop Engine, 60-75% cost reduction through memory-first routing, multi-LLM governance with provider failover, and a Constitutional AI layer that enforces compliance rules without touching application code. The platform targets regulated industries including finance, legal, and healthcare."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What makes Signed AI different from standard AI output verification?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Signed AI is RCT Labs' multi-model consensus engine that attaches a cryptographically-inspired quality signature to every AI output. It evaluates outputs across 8 quality dimensions — accuracy, relevance, coherence, safety, completeness, timeliness, originality, and enterprise-alignment — and only releases outputs that cross a configurable consensus threshold across multiple LLMs. This creates an auditable chain of verification, not a single-model assertion."
+            }
+          }
+        ]
+      }) }} />
       <main className="min-h-screen bg-background" id="main-content">
         <Navbar />
 

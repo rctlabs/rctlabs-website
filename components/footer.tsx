@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { useTheme } from "next-themes"
 import { toast } from "sonner"
+import { Globe } from "lucide-react"
 import { useMounted } from "@/hooks/use-mounted"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { SITE_VERSION, SOCIAL_LINKS } from "@/lib/site-config"
@@ -19,12 +20,13 @@ import { SITE_VERSION, SOCIAL_LINKS } from "@/lib/site-config"
 const LOGO_PNG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
 
 export function Footer() {
-  const { language, t } = useLanguage()
+  const { language, toggleLanguage, t } = useLanguage()
   const pathname = usePathname()
   const { theme } = useTheme()
   const mounted = useMounted()
   const isDark = (mounted ? theme : "light") === "dark"
   const isTh = language === "th"
+  const locale = resolveLocale(pathname, language)
 
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -88,7 +90,7 @@ export function Footer() {
     ],
     [isTh ? "ผลิตภัณฑ์" : "Products"]: [
       { label: "RCTLabs", href: "/products/rctlabs" },
-      { label: "Artent AI", href: "/products/artent-ai" },
+      { label: "ArtentAI", href: "/products/artent-ai" },
       { label: "SignedAI", href: "/products/signed-ai" },
       { label: isTh ? "ราคา" : "Pricing", href: "/pricing" },
     ],
@@ -295,32 +297,52 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className={`py-4 border-t flex flex-col items-center gap-3 ${
-          isDark ? "border-dark-border" : "border-warm-light-gray"
-        }`}>
-          <div className="flex items-center gap-2">
-            {socialLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-all duration-200 ${
-                  isDark
-                    ? "bg-[#222] border-[#333] text-[#777] hover:text-[#DDD] hover:border-warm-amber/40"
-                    : "bg-white border-warm-light-gray text-warm-gray hover:text-warm-charcoal hover:border-warm-amber/40 hover:shadow-sm"
-                }`}
-                aria-label={link.label}
-              >
-                {link.icon}
-              </a>
-            ))}
+        {/* Bottom bar — 3-column: social | copyright | language toggle (Mistral pattern) */}
+        <div className={`py-4 border-t ${isDark ? "border-dark-border" : "border-warm-light-gray"}`}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+
+            {/* Left: social icons */}
+            <div className="flex items-center gap-2">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-all duration-200 ${
+                    isDark
+                      ? "bg-[#222] border-[#333] text-[#777] hover:text-[#DDD] hover:border-warm-amber/40"
+                      : "bg-white border-warm-light-gray text-warm-gray hover:text-warm-charcoal hover:border-warm-amber/40 hover:shadow-sm"
+                  }`}
+                  aria-label={link.label}
+                >
+                  {link.icon}
+                </a>
+              ))}
+            </div>
+
+            {/* Center: copyright */}
+            <p className={`text-[11px] text-center ${isDark ? "text-[#555]" : "text-warm-secondary"}`}>
+              &copy; {new Date().getFullYear()} RCT Ecosystem — Reverse Component Thinking.{" "}
+              {t("footer.rights")}
+            </p>
+
+            {/* Right: language toggle (Mistral pattern) */}
+            <button
+              onClick={toggleLanguage}
+              suppressHydrationWarning
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-semibold transition-colors ${
+                isDark
+                  ? "text-[#777] hover:text-[#DDD] border-[#333] hover:border-[#555] bg-[#1a1a1a] hover:bg-[#222]"
+                  : "text-warm-secondary hover:text-warm-charcoal border-warm-light-gray hover:border-warm-gray/40 bg-white hover:bg-warm-sand/60"
+              }`}
+              aria-label={locale === "en" ? "Switch to Thai / เปลี่ยนภาษา" : "Switch to English"}
+            >
+              <Globe size={11} className="shrink-0" />
+              <span className="tracking-wide">{locale === "en" ? "EN" : "TH"}</span>
+            </button>
+
           </div>
-          <p className={`text-[11px] text-center ${isDark ? "text-[#555]" : "text-warm-secondary"}`}>
-            &copy; {new Date().getFullYear()} RCT Ecosystem — Reverse Component Thinking.{" "}
-            {t("footer.rights")}
-          </p>
         </div>
       </div>
     </footer>
