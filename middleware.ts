@@ -18,12 +18,32 @@ export function middleware(request: NextRequest) {
   }
 
   // Check if pathname already has a locale prefix
-  const pathnameHasLocale = SUPPORTED_LOCALES.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  const matchedLocale = SUPPORTED_LOCALES.find(
+    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
   )
 
-  if (pathnameHasLocale) {
-    return NextResponse.next()
+  if (matchedLocale) {
+    // Strip the locale prefix and rewrite to the underlying route
+    const strippedPathname =
+      pathname === `/${matchedLocale}` ? "/" : pathname.replace(`/${matchedLocale}`, "") || "/"
+
+    const url = request.nextUrl.clone()
+    url.pathname = strippedPathname
+
+    // Forward x-locale to the rewritten request
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set("x-locale", matchedLocale)
+
+    const response = NextResponse.rewrite(url, {
+      request: {
+        headers: requestHeaders,
+      },
+    })
+
+    // Also expose x-locale on the response
+    response.headers.set("x-locale", matchedLocale)
+
+    return response
   }
 
   // Detect preferred locale from Accept-Language header
