@@ -22,7 +22,7 @@ const rows = [
   { feature: "PDPA/GDPR audit trail (auto-generated)", llm: "no", rct: "yes" },
   { feature: "Multi-model consensus verification", llm: "no", rct: "yes" },
   { feature: "Persistent memory across sessions", llm: "no", rct: "yes" },
-  { feature: "Warm recall <50ms", llm: "no", rct: "yes" },
+  { feature: "Warm recall (\u003c50ms)", llm: "no", rct: "yes" },
   { feature: "Constitutional kill switch (A=0 → F=0)", llm: "no", rct: "yes" },
   { feature: "Thai-language model support (Typhoon v2)", llm: "partial", rct: "yes" },
   { feature: "Vendor-neutral (swap models freely)", llm: "no", rct: "yes" },
@@ -165,7 +165,7 @@ export default async function RCTvsLLMAPIs() {
               <div>
                 <p className="font-bold text-warm-light-gray mb-1">The Hidden Cost of Bare API Access</p>
                 <p className="text-warm-dim text-sm leading-relaxed">
-                  A bare LLM API charges you premium rates for every token — even tokens that retrieve information you already paid for last week. RCT&apos;s Delta Engine + RCTDB warm recall (<50ms) means repeated queries are served from memory, not from an LLM API call. Over a typical enterprise workload, this produces a <strong className="text-warm-amber">3.74x cost reduction</strong> vs always calling Claude Opus directly.
+                  A bare LLM API charges you premium rates for every token — even tokens that retrieve information you already paid for last week. RCT&apos;s Delta Engine + RCTDB warm recall ({"<"}50ms) means repeated queries are served from memory, not from an LLM API call. Over a typical enterprise workload, this produces a <strong className="text-warm-amber">3.74x cost reduction</strong> vs always calling Claude Opus directly.
                 </p>
               </div>
             </div>
