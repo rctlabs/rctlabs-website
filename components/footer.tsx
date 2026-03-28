@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { useTheme } from "next-themes"
 import { toast } from "sonner"
-import { Globe } from "lucide-react"
+import { Globe, ChevronDown } from "lucide-react"
 import { useMounted } from "@/hooks/use-mounted"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { SITE_VERSION, SOCIAL_LINKS } from "@/lib/site-config"
@@ -277,38 +277,77 @@ export function Footer() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 sm:gap-6 text-center sm:text-left">
             {Object.entries(footerLinks).map(([title, links]) => (
               <nav key={title} aria-label={title}>
-                <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2.5 ${
-                  isDark ? "text-warm-subdued" : "text-warm-charcoal"
-                }`}>
-                  {title}
-                </h4>
-                <ul className="space-y-1.5">
-                  {links.map((link) => (
-                    <li key={link.label}>
-                      {"external" in link && link.external ? (
-                        <a
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`text-xs sm:text-sm transition-colors ${
-                            isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
-                          }`}
-                        >
-                          {link.label}
-                        </a>
-                      ) : (
-                        <Link
-                          href={lh(link.href)}
-                          className={`text-xs sm:text-sm transition-colors ${
-                            isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
-                          }`}
-                        >
-                          {link.label}
-                        </Link>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                {/* Mobile: collapsible */}
+                <details className="sm:hidden group">
+                  <summary className={`flex items-center justify-between cursor-pointer text-xs font-semibold uppercase tracking-wider mb-2.5 list-none ${
+                    isDark ? "text-warm-subdued" : "text-warm-charcoal"
+                  }`}>
+                    {title}
+                    <ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <ul className="space-y-1.5 pb-3">
+                    {links.map((link) => (
+                      <li key={link.label}>
+                        {"external" in link && link.external ? (
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`text-xs sm:text-sm transition-colors ${
+                              isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
+                            }`}
+                          >
+                            {link.label}
+                          </a>
+                        ) : (
+                          <Link
+                            href={lh(link.href)}
+                            className={`text-xs sm:text-sm transition-colors ${
+                              isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
+                            }`}
+                          >
+                            {link.label}
+                          </Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+                {/* Desktop: always visible */}
+                <div className="hidden sm:block">
+                  <h4 className={`text-xs font-semibold uppercase tracking-wider mb-2.5 ${
+                    isDark ? "text-warm-subdued" : "text-warm-charcoal"
+                  }`}>
+                    {title}
+                  </h4>
+                  <ul className="space-y-1.5">
+                    {links.map((link) => (
+                      <li key={link.label}>
+                        {"external" in link && link.external ? (
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`text-xs sm:text-sm transition-colors ${
+                              isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
+                            }`}
+                          >
+                            {link.label}
+                          </a>
+                        ) : (
+                          <Link
+                            href={lh(link.href)}
+                            className={`text-xs sm:text-sm transition-colors ${
+                              isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
+                            }`}
+                          >
+                            {link.label}
+                          </Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </nav>
             ))}
           </div>
@@ -326,7 +365,7 @@ export function Footer() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-all duration-200 ${
+                  className={`w-11 h-11 rounded-lg border flex items-center justify-center transition-all duration-200 ${
                     isDark
                       ? "bg-[#222] border-[#333] text-[#777] hover:text-[#DDD] hover:border-warm-amber/40"
                       : "bg-white border-warm-light-gray text-warm-gray hover:text-warm-charcoal hover:border-warm-amber/40 hover:shadow-sm"
@@ -348,7 +387,7 @@ export function Footer() {
             <button
               onClick={toggleLanguage}
               suppressHydrationWarning
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-semibold transition-colors ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 min-h-[44px] min-w-[44px] rounded-lg border text-[11px] font-semibold transition-colors ${
                 isDark
                   ? "text-[#777] hover:text-[#DDD] border-[#333] hover:border-[#555] bg-[#1a1a1a] hover:bg-[#222]"
                   : "text-warm-secondary hover:text-warm-charcoal border-warm-light-gray hover:border-warm-gray/40 bg-white hover:bg-warm-sand/60"

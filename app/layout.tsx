@@ -201,12 +201,14 @@ export default async function RootLayout({
         {/* Skip to main content — accessibility */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-warm-amber focus:text-white focus:rounded-lg focus:text-sm focus:font-medium focus:shadow-lg"
         >
-          Skip to content
+          Skip to main content
         </a>
         <AppProviders initialLocale={locale}>
-          {children}
+          <div id="main-content" tabIndex={-1}>
+            {children}
+          </div>
           <Analytics />
           <Toaster richColors position="bottom-right" />
         </AppProviders>

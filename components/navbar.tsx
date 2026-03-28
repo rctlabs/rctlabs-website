@@ -455,7 +455,7 @@ export function Navbar() {
               {/* Mobile hamburger */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className={`sm:hidden p-2 rounded-lg transition-colors ${
+                className={`sm:hidden p-2 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center ${
                   isDark ? "text-white hover:bg-white/8" : "text-warm-charcoal hover:bg-warm-sand/60"
                 }`}
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -512,7 +512,7 @@ export function Navbar() {
                     <div key={group.id}>
                       <button
                         onClick={() => toggleGroup(group.id)}
-                        className={`flex items-center justify-between w-full px-3 py-2 text-sm font-semibold rounded-lg transition-colors ${
+                        className={`flex items-center justify-between w-full px-3 py-2 min-h-[44px] text-sm font-semibold rounded-lg transition-colors ${
                           isDark ? "text-white hover:bg-white/5" : "text-warm-charcoal hover:bg-warm-sand/50"
                         }`}
                       >
