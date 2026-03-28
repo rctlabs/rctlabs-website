@@ -1,15 +1,38 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { getBreadcrumbSchema } from "@/lib/schema"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
-import { ArrowRight, CheckCircle, XCircle, MinusCircle, Shield, Zap, Database, Code } from "lucide-react"
+import { ArrowRight, CheckCircle, XCircle, MinusCircle, Shield, Zap, Database } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Constitutional AI vs RAG — Hallucination Prevention Comparison | RCT Labs",
   description: "RAG grounds AI responses in documents. Constitutional AI constrains what the system can output. This comparison explains the architectural difference, use cases, and why combining both achieves 0.3% hallucination in the RCT Ecosystem.",
   alternates: { canonical: "https://rctlabs.co/en/compare/constitutional-ai-vs-rag" },
 }
+
+const COMPARE_FAQS = [
+  {
+    question: "What is the difference between Constitutional AI and RAG?",
+    answer: "RAG (Retrieval-Augmented Generation) grounds AI responses in retrieved documents but cannot deterministically prevent unsafe outputs. Constitutional AI constrains what the system can output through mathematical rules — in the RCT Ecosystem, the FDIA equation's Architect gate (A=0→F=0) ensures output is blocked unconditionally when required. RAG is about knowledge quality; Constitutional AI is about behavioral guarantees.",
+  },
+  {
+    question: "Can you use RAG and Constitutional AI together?",
+    answer: "Yes. The RCT Ecosystem combines both approaches. RAG provides factual grounding through RCTDB retrieval, while Constitutional AI (FDIA framework) provides deterministic safety constraints. Together, they achieve a 0.3% hallucination rate — compared to ~3–5% for RAG alone and ~12–15% for unguarded LLMs.",
+  },
+  {
+    question: "Does RAG prevent hallucinations?",
+    answer: "RAG reduces hallucination by grounding responses in retrieved documents, but it does not deterministically prevent them. A model can still ignore retrieved context or confabulate. RAG-only systems typically achieve 3–5% hallucination rates. Constitutional AI adds mathematical safety constraints on top of retrieval to reduce this further.",
+  },
+  {
+    question: "What is a constitutional AI kill switch?",
+    answer: "In the RCT Ecosystem, the FDIA Architect variable (A) acts as a constitutional kill switch. When A=0, the system mathematically guarantees F=0 — no output is produced regardless of what any LLM would generate. This is implemented as a hard gate in core/kernel/fdia.py, not a soft preference.",
+  },
+  {
+    question: "How does Constitutional AI provide a PDPA audit trail?",
+    answer: "Every RCT Ecosystem query writes its full provenance chain to RCTDB — an 8-dimensional memory schema that records the query hash, FDIA scores (D, I, A, F), model chain, consensus result, and provenance trail. This automatically generates the audit evidence required for PDPA Section 33 (right to explanation) and Section 34 (right to object).",
+  },
+]
 
 function CompareIcon({ value }: { value: "yes" | "no" | "partial" }) {
   if (value === "yes") return <CheckCircle className="w-5 h-5 text-green-400 mx-auto" />
@@ -36,10 +59,12 @@ export default async function CompareConstitutionalAIvsRAG() {
     { name: "Compare", url: "https://rctlabs.co/en/compare" },
     { name: "Constitutional AI vs RAG", url: "https://rctlabs.co/en/compare/constitutional-ai-vs-rag" },
   ])
+  const faq = getFAQSchema(COMPARE_FAQS)
 
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />
       <main className="min-h-screen bg-background">
         <Navbar />
 

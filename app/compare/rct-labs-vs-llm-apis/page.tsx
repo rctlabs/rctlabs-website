@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { getBreadcrumbSchema } from "@/lib/schema"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowRight, CheckCircle, XCircle, MinusCircle, Zap, Globe, Shield, DollarSign } from "lucide-react"
 
@@ -10,6 +10,29 @@ export const metadata: Metadata = {
   description: "Bare LLM API access gives you raw model power with no governance, no compliance, and no memory. RCT Labs adds constitutional AI constraints, multi-model consensus, PDPA-compliant memory, and deterministic safety guarantees.",
   alternates: { canonical: "https://rctlabs.co/en/compare/rct-labs-vs-llm-apis" },
 }
+
+const LLM_API_FAQS = [
+  {
+    question: "What is the difference between RCT Labs and a bare LLM API?",
+    answer: "A bare LLM API (OpenAI, Claude, Gemini) gives you raw model access with no governance, no persistent memory, and no compliance guarantees. You are responsible for all safety, audit, and PDPA compliance yourself. RCT Labs is a constitutional AI operating system that adds the FDIA framework (deterministic safety), RCTDB (PDPA-compliant persistent memory), JITNA Protocol (agent orchestration), and HexaCore routing (cost optimization) on top of any LLM.",
+  },
+  {
+    question: "Does RCT Labs replace the LLM API or sit on top of it?",
+    answer: "RCT Labs sits on top of multiple LLM APIs. The HexaCore router includes 7 models (Claude Opus, Kimi K2.5, MiniMax, Gemini Flash, Grok, DeepSeek, and Typhoon v2 for Thai). RCT Labs intelligently routes each query to the appropriate model — you do not need to manage individual API calls. This produces a 3.74x cost reduction compared to always using a premium model.",
+  },
+  {
+    question: "How does RCT Labs achieve PDPA compliance that bare LLM APIs cannot?",
+    answer: "Bare LLM APIs are stateless — they process a request and forget it. PDPA compliance requires persistence: the ability to prove what data was used, when, and why (Section 33), and the ability to permanently delete a person's data on request (Section 34). RCTDB stores every query as an 8-dimensional record with full provenance. When a data subject requests erasure, their subject_uuid is tombstoned — ensuring no retrievable data remains.",
+  },
+  {
+    question: "What is the 3.74x cost reduction from HexaCore routing?",
+    answer: "Instead of routing every query to Claude Opus (the most expensive model), HexaCore analyzes each task and selects the optimal model. Simple retrieval tasks go to faster, cheaper models. Complex synthesis tasks go to premium models only when required. Over a 10,000-query enterprise workload, this produces a 3.74x average cost reduction versus always using Claude Opus.",
+  },
+  {
+    question: "Is vendor lock-in a concern with RCT Labs?",
+    answer: "No. RCT Labs is vendor-neutral by design. The HexaCore router abstracts all 7 models behind a unified interface. If you want to swap Claude Opus for a new model, you update the router configuration — no application code changes required. This is in contrast to building directly on a single LLM API, where switching providers requires significant refactoring.",
+  },
+]
 
 function CompareIcon({ value }: { value: "yes" | "no" | "partial" }) {
   if (value === "yes") return <CheckCircle className="w-5 h-5 text-green-400 mx-auto" />
@@ -72,10 +95,12 @@ export default async function RCTvsLLMAPIs() {
     { name: "Compare", url: "https://rctlabs.co/en/compare" },
     { name: "RCT Labs vs LLM APIs", url: "https://rctlabs.co/en/compare/rct-labs-vs-llm-apis" },
   ])
+  const faq = getFAQSchema(LLM_API_FAQS)
 
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />
       <main className="min-h-screen bg-background">
         <Navbar />
 
