@@ -31,7 +31,7 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 /* Body: Inter */
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
@@ -60,34 +60,49 @@ const notoSansThai = Noto_Sans_Thai({
   display: "swap",
 })
 
-export async function generateMetadata(): Promise<Metadata> {
+/** Resolve locale once and reuse across both generateMetadata and RootLayout */
+async function getLocale(): Promise<"en" | "th"> {
   const headerList = await headers()
-  const locale = (headerList.get("x-locale") === "th" ? "th" : "en") as "en" | "th"
-  const title = locale === "th" ? "RCT Labs - ระบบปฏิบัติการ AI ที่เน้น Intent" : "RCT Labs - Intent Operating System"
-  const description = locale === "th"
-    ? "โครงสร้างพื้นฐาน Constitutional AI พร้อมสถาปัตยกรรม 10 ชั้น Multi-LLM Consensus และ Data Sovereignty สำหรับงานระดับองค์กร"
-    : "Constitutional AI infrastructure with 10-layer architecture, multi-LLM consensus, and data sovereignty for enterprise deployment."
+  return (headerList.get("x-locale") === "th" ? "th" : "en") as "en" | "th"
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale()
+
+  const title =
+    locale === "th"
+      ? "RCT Labs - ระบบปฏิบัติการ AI ที่เน้น Intent"
+      : "RCT Labs - Intent-Driven AI Operating System"
+
+  const description =
+    locale === "th"
+      ? "โครงสร้างพื้นฐาน Constitutional AI พร้อมสถาปัตยกรรม 10 ชั้น Multi-LLM Consensus และ Data Sovereignty สำหรับงานระดับองค์กร"
+      : "Constitutional AI infrastructure with 10-layer architecture, multi-LLM consensus, and data sovereignty for enterprise deployment."
 
   return {
     metadataBase: new URL(SITE_URL),
-    title,
+    title: {
+      default: title,
+      template: "%s | RCT Labs",
+    },
     description,
     keywords: [
       "intent-driven AI",
       "AI alignment",
-      "machine learning",
+      "constitutional AI",
       "intent operating system",
       "FDIA formula",
-      "research",
-      "constitutional AI",
+      "JITNA protocol",
       "multi-LLM consensus",
       "AI verification",
       "SignedAI",
-      "JITNA language",
       "RCT-7 process",
+      "deterministic AI",
+      "enterprise AI governance",
+      "AI hallucination prevention",
     ],
-    authors: [{ name: "RCT Labs" }, { name: "Ittirit Saengow" }],
-    creator: "RCT Labs",
+    authors: [{ name: "Ittirit Saengow", url: `${SITE_URL}/authors/ittirit-saengow` }],
+    creator: "Ittirit Saengow",
     publisher: "RCT Labs",
     formatDetection: {
       email: false,
@@ -124,6 +139,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       creator: SOCIAL_LINKS.twitterHandle,
+      site: SOCIAL_LINKS.twitterHandle,
       images: [`${SITE_OG_IMAGE}?locale=${locale}`],
     },
     robots: {
@@ -146,7 +162,7 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: "/apple-icon.png",
     },
     manifest: "/manifest.webmanifest",
-    generator: "v0.app",
+    // Note: generator field removed — do not expose internal tooling
   }
 }
 
@@ -155,8 +171,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const headersList = await headers()
-  const locale = (headersList.get('x-locale') || 'en') as 'en' | 'th'
+  const locale = await getLocale()
 
   const organizationSchema = getOrganizationSchema(locale)
   const websiteSchema = getWebSiteSchema(locale)
@@ -169,7 +184,7 @@ export default async function RootLayout({
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://rctlabs.co" />
+        <link rel="preconnect" href="https://va.vercel-scripts.com" crossOrigin="anonymous" />
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
@@ -180,10 +195,17 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}>
-        {/* Skip to content for accessibility */}
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded">Skip to content</a>
-        <AppProviders initialLocale={locale as "en" | "th"}>
+      <body
+        className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}
+      >
+        {/* Skip to main content — accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded"
+        >
+          Skip to content
+        </a>
+        <AppProviders initialLocale={locale}>
           {children}
           <Analytics />
           <Toaster richColors position="bottom-right" />
