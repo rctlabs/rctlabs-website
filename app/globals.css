@@ -127,9 +127,10 @@
 
 @theme inline {
   /* Typography: Space Grotesk display, Inter/Kanit body, Space Mono code */
-  --font-sans: "Inter", "Kanit", system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Kanit", system-ui, sans-serif;
+  --font-sans: "Inter", "Kanit", "Noto Sans Thai", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Kanit", "Noto Sans Thai", system-ui, sans-serif;
   --font-mono: "Space Mono", "JetBrains Mono", "Fira Code", "Geist Mono", monospace;
+  --font-thai: var(--rct-font-thai, "Kanit", "Noto Sans Thai", sans-serif);
 
   /* Custom font sizes */
   --font-size-2xs: 0.625rem;   /* 10px */
@@ -216,7 +217,9 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-sans);
+    /* Kanit is included explicitly so Thai glyphs always render in Kanit,
+       regardless of html[lang] attribute value (EN or TH page) */
+    font-family: var(--font-sans), var(--rct-font-thai), "Noto Sans Thai", sans-serif;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     text-rendering: optimizeLegibility;
     -webkit-overflow-scrolling: touch;

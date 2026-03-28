@@ -91,7 +91,7 @@ function ArticleCard({
             <div className="flex items-center gap-4 text-sm text-warm-dim">
               <span className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5" />
-                {post.author}
+                {post.author ?? post.authorId ?? "RCT Labs"}
               </span>
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
@@ -145,7 +145,7 @@ function ArticleCard({
         )}
 
         <div className="flex items-center justify-between pt-3 border-t border-white/8 mt-auto">
-          <span className="text-xs text-warm-dim">{post.author.split(" ").slice(0, 2).join(" ")}</span>
+          <span className="text-xs text-warm-dim">{(post.author ?? post.authorId ?? "RCT Labs").split(" ").slice(0, 2).join(" ")}</span>
           <ArrowRight className="w-4 h-4 text-warm-amber opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200" />
         </div>
       </article>
