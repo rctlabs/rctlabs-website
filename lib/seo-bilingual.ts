@@ -1,6 +1,24 @@
 import { Metadata } from "next"
 import { siteConfig } from "./seo"
 
+/*
+ * seo-bilingual.ts — Bilingual (EN/TH) metadata and schema utilities
+ *
+ * Relationship with lib/schema.ts:
+ * - lib/schema.ts is the SINGLE SOURCE OF TRUTH for all Schema.org structured data.
+ *   Use it directly for non-locale-specific schemas (getBreadcrumbSchema, getFAQSchema, etc.).
+ * - This file extends schema.ts with LOCALE-AWARE variants:
+ *   - getBreadcrumbSchema here accepts a `locale` param and is renamed
+ *     getBilingualBreadcrumbSchema to avoid confusion.
+ *   - getFAQSchema here accepts a `locale` param and is renamed
+ *     getBilingualFAQSchema to avoid confusion.
+ * - createBilingualMetadata is unique to this file and has no equivalent in schema.ts.
+ *
+ * Import guide:
+ * - For locale-agnostic schemas → import from "@/lib/schema"
+ * - For bilingual metadata or locale-specific schemas → import from "@/lib/seo-bilingual"
+ */
+
 export type Locale = "en" | "th"
 
 export const baseKeywords: Record<Locale, string[]> = {
@@ -153,7 +171,7 @@ export const createBilingualMetadata = (
   }
 }
 
-export const getBreadcrumbSchema = (
+export const getBilingualBreadcrumbSchema = (
   locale: Locale,
   items: Array<{ name: string; url: string }>
 ) => {
@@ -169,7 +187,7 @@ export const getBreadcrumbSchema = (
   }
 }
 
-export const getFAQSchema = (
+export const getBilingualFAQSchema = (
   locale: Locale,
   faqs: Array<{ question: string; answer: string }>
 ) => {
@@ -186,6 +204,12 @@ export const getFAQSchema = (
     })),
   }
 }
+
+// Re-export for backwards compatibility — prefer getBilingualBreadcrumbSchema / getBilingualFAQSchema
+/** @deprecated Use getBilingualBreadcrumbSchema (locale-aware) or getBreadcrumbSchema from lib/schema.ts (locale-agnostic) */
+export const getBreadcrumbSchema = getBilingualBreadcrumbSchema
+/** @deprecated Use getBilingualFAQSchema (locale-aware) or getFAQSchema from lib/schema.ts (locale-agnostic) */
+export const getFAQSchema = getBilingualFAQSchema
 
 // SoftwareApplicationSchema — use getSoftwareApplicationSchema from lib/schema.ts (single source of truth)
 export { getSoftwareApplicationSchema } from './schema'

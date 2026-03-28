@@ -1,6 +1,36 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getFAQSchema, getBreadcrumbSchema } from "@/lib/schema"
 import ArchitectureClient from "./ArchitectureClient"
+import { FAQSection } from "@/components/faq-section"
+
+const faqItems = [
+  {
+    question: "What is the RCT Labs 10-Layer AI Architecture?",
+    answer:
+      "The RCT Labs 10-Layer Architecture is a constitutional AI stack spanning from hardware abstraction at layer 1 to self-evolving orchestration at layer 10. Each layer serves a distinct role in ensuring verifiable, auditable, and governed AI execution across enterprise deployments.",
+  },
+  {
+    question: "How does multi-LLM consensus work in the architecture?",
+    answer:
+      "Multi-LLM consensus operates at the orchestration layer, where multiple AI models independently evaluate a request and a consensus mechanism — governed by constitutional rules — determines the final response. This eliminates single-model bias and reduces hallucination rates.",
+  },
+  {
+    question: "What is the role of constitutional AI in RCT's architecture?",
+    answer:
+      "Constitutional AI principles are embedded at every layer of the RCT stack. They define what the AI system can and cannot do, how conflicts are resolved, and how auditability is maintained. This ensures AI decisions remain aligned with organizational policies and ethical constraints.",
+  },
+  {
+    question: "How many runtime components does the architecture include?",
+    answer:
+      "The production architecture includes 50+ runtime components distributed across 10 layers, covering memory, routing, verification, orchestration, and self-evolution. Each component is independently deployable and composable.",
+  },
+  {
+    question: "Can the architecture be deployed on-premise?",
+    answer:
+      "Yes. The RCT Labs architecture supports on-premise, hybrid, and cloud deployment models. Enterprise clients can isolate specific layers for data sovereignty compliance, particularly in regulated markets such as Thailand under PDPA.",
+  },
+]
 
 export async function generateMetadata(): Promise<Metadata> {
   return createBilingualMetadata(
@@ -15,5 +45,18 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ArchitecturePage() {
-  return <ArchitectureClient />
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "https://rctlabs.co/en" },
+    { name: "Architecture", url: "https://rctlabs.co/en/architecture" },
+  ])
+  const faqSchema = getFAQSchema(faqItems)
+
+  return (
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <ArchitectureClient />
+      <FAQSection items={faqItems} />
+    </>
+  )
 }
