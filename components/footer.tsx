@@ -29,6 +29,7 @@ export function Footer() {
   const locale = resolveLocale(pathname, language)
 
   const [email, setEmail] = useState("")
+  const [honeypot, setHoneypot] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [emailError, setEmailError] = useState("")
   const [isSuccess, setIsSuccess] = useState(false)
@@ -55,6 +56,8 @@ export function Footer() {
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    // Honeypot check — silently succeed if bot filled the hidden field
+    if (honeypot) { setIsSuccess(true); setEmail(""); return }
     const err = validateEmail(email)
     if (err) { setEmailError(err); toast.error(err); return }
     setIsSubmitting(true)
@@ -110,9 +113,12 @@ export function Footer() {
       { label: isTh ? "Thailand Trust" : "Thailand Trust", href: "/thailand-enterprise-trust" },
       { label: isTh ? "กรณีศึกษา" : "Use Cases", href: "/use-cases" },
       { label: isTh ? "การเชื่อมต่อ" : "Integration", href: "/integration" },
+      { label: isTh ? "งานวิจัย" : "Research", href: "/research" },
+      { label: isTh ? "บันทึกการเปลี่ยนแปลง" : "Changelog", href: "/changelog" },
     ],
     [isTh ? "บริษัท" : "Company"]: [
       { label: isTh ? "เกี่ยวกับเรา" : "About Us", href: "/about" },
+      { label: isTh ? "ติดต่อเรา" : "Contact", href: "/contact" },
       { label: "FAQ", href: "/faq" },
       { label: isTh ? "นโยบายความเป็นส่วนตัว" : "Privacy Policy", href: "/privacy" },
       { label: isTh ? "ข้อกำหนด" : "Terms", href: "/terms" },
@@ -173,6 +179,17 @@ export function Footer() {
               </p>
             </div>
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col w-full md:w-auto gap-2" noValidate>
+              {/* Honeypot field — hidden from users via off-screen positioning, visible to bots */}
+              <input
+                type="text"
+                name="website"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
               <div className="flex flex-col sm:flex-row gap-2">
                 <div className="flex-1 md:w-64">
                   <input
@@ -323,7 +340,7 @@ export function Footer() {
 
             {/* Center: copyright */}
             <p className={`text-[11px] text-center ${isDark ? "text-[#555]" : "text-warm-secondary"}`}>
-              &copy; {new Date().getFullYear()} RCT Ecosystem — Reverse Component Thinking.{" "}
+              &copy; {mounted ? new Date().getFullYear() : 2026} RCT Ecosystem — Reverse Component Thinking.{" "}
               {t("footer.rights")}
             </p>
 

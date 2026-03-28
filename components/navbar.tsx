@@ -204,6 +204,28 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => { document.body.style.overflow = "" }
+  }, [mobileOpen])
+
+  // Close dropdowns and mobile menu on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpenDropdown(null)
+        setMobileOpen(false)
+      }
+    }
+    document.addEventListener("keydown", handleEscape)
+    return () => document.removeEventListener("keydown", handleEscape)
+  }, [])
+
   useEffect(() => {
     const handleOpenSearch = () => {
       openSearch()
@@ -267,7 +289,7 @@ export function Navbar() {
         }`}
         aria-label="Main navigation"
       >
-        <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8 [padding-left:max(1rem,env(safe-area-inset-left))] [padding-right:max(1rem,env(safe-area-inset-right))]">
           <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
@@ -460,6 +482,17 @@ export function Navbar() {
               <div className="px-4 py-3 space-y-2 max-h-[60vh] overflow-y-auto">
                 {/* Mobile controls row */}
                 <div className="flex items-center gap-2 mb-3">
+                  {/* Mobile search */}
+                  <button
+                    onClick={() => { openSearch(); setMobileOpen(false); }}
+                    className={`flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all flex-1 border ${
+                      isDark ? "text-white bg-white/5 hover:bg-white/10 border-[#333]" : "text-warm-charcoal bg-warm-sand/50 hover:bg-warm-sand border-warm-light-gray"
+                    }`}
+                    aria-label={language === "en" ? "Search" : "ค้นหา"}
+                  >
+                    <Search size={16} />
+                    <span className="text-xs">{language === "en" ? "Search" : "ค้นหา"}</span>
+                  </button>
                   <button
                     onClick={() => setTheme(isDark ? "light" : "dark")}
                     className={`flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all flex-1 border ${

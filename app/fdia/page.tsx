@@ -8,6 +8,63 @@ import { useTheme } from "next-themes"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
 import { Calculator, ArrowRight } from "lucide-react"
+import { FAQSection } from "@/components/faq-section"
+
+const fdiaFaqItemsEn = [
+  {
+    question: "What does FDIA stand for?",
+    answer:
+      "FDIA stands for Future, Data, Intent, and Architect. It is a mathematical framework — F = (D^I) × A — that models how human intent exponentially amplifies raw data to produce deliberate outcomes, with the Architect ensuring ethical governance throughout.",
+  },
+  {
+    question: "How is the FDIA equation applied in AI systems?",
+    answer:
+      "In AI systems, Data represents the knowledge base (code, experiments, real-time signals), Intent is the clarity of purpose that determines which data to amplify, and the Architect is the human-in-the-loop who governs the final output. The equation ensures AI decisions are purposeful rather than probabilistic.",
+  },
+  {
+    question: "Why is A the Architect and not just a multiplier?",
+    answer:
+      "The Architect role goes beyond arithmetic multiplication — it represents human oversight, ethical governance, and strategic direction. Without the Architect, AI systems can produce technically correct but ethically or strategically misaligned results. A = 0 means no output regardless of data quality or intent.",
+  },
+  {
+    question: "What is the difference between FDIA and standard AI prompting?",
+    answer:
+      "Standard prompting relies on the model's training distribution to interpret intent implicitly. FDIA makes intent explicit and structures how data is selected, weighted, and transformed. This results in auditable, reproducible, and governable AI outputs rather than stochastic ones.",
+  },
+  {
+    question: "Is FDIA an open protocol?",
+    answer:
+      "Yes. FDIA is documented as an open protocol under the RCT Labs protocol series. The equation, methodology, and implementation guidelines are publicly available for review, critique, and adoption by the AI research and engineering community.",
+  },
+]
+
+const fdiaFaqItemsTh = [
+  {
+    question: "FDIA ย่อมาจากอะไร?",
+    answer:
+      "FDIA ย่อมาจาก Future (อนาคต), Data (ข้อมูล), Intent (เจตนา) และ Architect (สถาปนิก) เป็นกรอบทางคณิตศาสตร์ F = (D^I) × A ที่อธิบายว่าเจตนาของมนุษย์ขยายข้อมูลดิบแบบเลขชี้กำลังเพื่อสร้างผลลัพธ์ที่มีจุดมุ่งหมาย",
+  },
+  {
+    question: "สมการ FDIA นำไปใช้กับระบบ AI ได้อย่างไร?",
+    answer:
+      "ในระบบ AI — Data คือฐานความรู้ Intent คือความชัดเจนของเป้าหมายที่กำหนดว่าข้อมูลใดควรถูกขยาย และ Architect คือมนุษย์ที่กำกับดูแลผลลัพธ์สุดท้าย สมการนี้ทำให้การตัดสินใจของ AI มีจุดมุ่งหมายแทนที่จะเป็นการสุ่ม",
+  },
+  {
+    question: "ทำไม A ถึงเป็น Architect ไม่ใช่แค่ตัวคูณธรรมดา?",
+    answer:
+      "บทบาท Architect เกินกว่าการคูณเลขธรรมดา — มันแทนการกำกับดูแลของมนุษย์ จริยธรรม และทิศทางเชิงกลยุทธ์ ถ้า A = 0 ผลลัพธ์จะเป็นศูนย์ไม่ว่าคุณภาพข้อมูลหรือ Intent จะดีแค่ไหน",
+  },
+  {
+    question: "FDIA แตกต่างจากการ Prompt AI ทั่วไปอย่างไร?",
+    answer:
+      "การ Prompt ทั่วไปพึ่งพาการแจกแจงจากการฝึกของโมเดลเพื่อตีความเจตนาโดยนัย FDIA ทำให้เจตนาชัดเจนและมีโครงสร้างในการเลือก ถ่วงน้ำหนัก และแปลงข้อมูล ส่งผลให้ผลลัพธ์ AI ตรวจสอบได้และทำซ้ำได้",
+  },
+  {
+    question: "FDIA เป็น Open Protocol หรือไม่?",
+    answer:
+      "ใช่ FDIA ถูกจัดทำเอกสารเป็น Open Protocol ภายใต้ชุดโปรโตคอลของ RCT Labs สมการ วิธีการ และแนวทางการนำไปใช้เปิดเผยต่อสาธารณะสำหรับการตรวจสอบและนำไปใช้งาน",
+  },
+]
 
 const components = [
   {
@@ -299,6 +356,12 @@ export default function FDIADeepPage() {
         </section>
 
       </main>
+      <FAQSection
+        items={isEn ? fdiaFaqItemsEn : fdiaFaqItemsTh}
+        heading="Frequently Asked Questions about FDIA"
+        headingTh="คำถามที่พบบ่อยเกี่ยวกับ FDIA"
+        locale={isEn ? "en" : "th"}
+      />
       <Footer />
     </>
   )
