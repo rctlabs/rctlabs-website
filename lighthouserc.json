@@ -1,7 +1,7 @@
 {
   "ci": {
     "collect": {
-      "startServerCommand": "npm run start:host",
+      "startServerCommand": "npm run start",
       "startServerReadyPattern": "Ready",
       "startServerReadyTimeout": 120000,
       "numberOfRuns": 3,
