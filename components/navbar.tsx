@@ -258,14 +258,12 @@ export function Navbar() {
   return (
     <header role="banner">
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? isDark
-              ? "bg-warm-charcoal/95 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.18)] border-b border-[#333]"
-              : "bg-white/92 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.03)] border-b border-warm-light-gray/60"
+            ? "bg-background/80 backdrop-blur-md shadow-sm border-b"
             : isOnDarkHero
-              ? "bg-linear-to-b from-black/30 to-transparent"
-              : "bg-transparent"
+              ? "bg-linear-to-b from-black/40 to-transparent border-b border-transparent"
+              : "bg-transparent border-b border-transparent"
         }`}
         aria-label="Main navigation"
       >

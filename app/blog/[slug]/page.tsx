@@ -68,7 +68,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
 
   // --- BlogPosting Schema for SEO ---
-  // This schema is injected as a <script type="application/ld+json"> block for rich results
+  // Enhanced with image, about, isPartOf, citation for maximum E-E-A-T and AIO signals
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -81,20 +81,41 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     "dateModified": reviewedDate,
     "wordCount": post.content.split(/\\s+/).length,
     "keywords": post.tags?.join(", "),
+    "image": {
+      "@type": "ImageObject",
+      "url": `${SITE_URL}/opengraph-image.png`,
+    },
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `${SITE_URL}${localePrefix}/blog/${slug}`
     },
+    "isPartOf": {
+      "@type": "Blog",
+      "@id": `${SITE_URL}${localePrefix}/blog`,
+      "name": "RCT Labs Blog",
+    },
+    "about": post.tags?.map((tag: string) => ({
+      "@type": "DefinedTerm",
+      "name": tag,
+      "inDefinedTermSet": `${SITE_URL}/glossary`,
+    })),
     "author": {
       "@type": author?.profileType === "organization" ? "Organization" : "Person",
       "name": author?.name ?? post.author,
-      ...(author ? { "url": `${SITE_URL}${localePrefix}/authors/${author.id}` } : {})
+      ...(author ? { "url": `${SITE_URL}${localePrefix}/authors/${author.id}` } : {}),
+      ...(author?.sameAs ? { "sameAs": author.sameAs } : {}),
     },
     "editor": reviewer ? {
       "@type": reviewer.profileType === "organization" ? "Organization" : "Person",
       "name": reviewer.name,
       ...(reviewer ? { "url": `${SITE_URL}${localePrefix}/authors/${reviewer.id}` } : {})
     } : undefined,
+    ...(post.references?.length ? {
+      "citation": post.references.map((ref: string) => ({
+        "@type": "CreativeWork",
+        "url": ref,
+      })),
+    } : {}),
     "publisher": {
       "@type": "Organization",
       "name": "RCT Labs",

@@ -1,132 +1,332 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { PostCard } from "@/components/blog/post-card"
-import { Button } from "@/components/ui/button"
 import { RESEARCH_CATEGORIES } from "@/lib/constants"
 import type { BlogPost } from "@/lib/blog"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
+import { ArrowRight, BookOpen, Clock, Tag, Search, TrendingUp, FileText, Users, Filter } from "lucide-react"
 
 interface BlogPageClientProps {
   posts: BlogPost[]
 }
 
+const CATEGORY_ICONS: Record<string, string> = {
+  all: "📚",
+  research: "🔬",
+  news: "📰",
+  tutorial: "🛠️",
+  philosophy: "💡",
+  case_study: "📊",
+}
+
+const CATEGORY_COLORS: Record<string, string> = {
+  all: "text-warm-amber border-warm-amber/40 bg-warm-amber/10",
+  research: "text-blue-400 border-blue-400/40 bg-blue-400/10",
+  news: "text-green-400 border-green-400/40 bg-green-400/10",
+  tutorial: "text-purple-400 border-purple-400/40 bg-purple-400/10",
+  philosophy: "text-orange-400 border-orange-400/40 bg-orange-400/10",
+  case_study: "text-cyan-400 border-cyan-400/40 bg-cyan-400/10",
+}
+
+const getCategoryColor = (cat: string) =>
+  CATEGORY_COLORS[cat] ?? "text-warm-amber border-warm-amber/40 bg-warm-amber/10"
+
+function ArticleCard({ post, localePrefix, isFeatured = false }: { post: BlogPost; localePrefix: string; isFeatured?: boolean }) {
+  const catColor = getCategoryColor(post.category)
+
+  if (isFeatured) {
+    return (
+      <Link href={`${localePrefix}/blog/${post.slug}`} className="group block">
+        <article className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-warm-charcoal/80 to-warm-charcoal/40 backdrop-blur-sm p-8 h-full hover:border-warm-amber/30 transition-all duration-300 hover:shadow-[0_0_40px_rgba(191,160,110,0.10)]">
+          {/* Glow accent */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-warm-amber/5 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Featured badge */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold ${catColor}`}>
+              <span>{CATEGORY_ICONS[post.category] ?? "📄"}</span>
+              <span className="capitalize">{post.category}</span>
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-warm-amber/30 bg-warm-amber/10 text-warm-amber text-xs font-bold">
+              ⭐ Featured
+            </span>
+          </div>
+
+          <h2 className="text-2xl md:text-3xl font-bold text-warm-light-gray group-hover:text-warm-amber transition-colors duration-200 leading-tight mb-4 text-balance">
+            {post.title}
+          </h2>
+
+          <p className="text-warm-dim leading-relaxed mb-6 line-clamp-3 text-base">
+            {post.excerpt}
+          </p>
+
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-6">
+              {post.tags.slice(0, 4).map((tag) => (
+                <span key={tag} className="px-2 py-0.5 rounded text-xs bg-white/5 border border-white/10 text-warm-dim">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+            <div className="flex items-center gap-4 text-sm text-warm-dim">
+              <span className="flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5" />
+                {post.author}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5" />
+                {post.readTime} min
+              </span>
+            </div>
+            <span className="flex items-center gap-1.5 text-warm-amber text-sm font-medium group-hover:gap-2.5 transition-all duration-200">
+              Read article <ArrowRight className="w-4 h-4" />
+            </span>
+          </div>
+        </article>
+      </Link>
+    )
+  }
+
+  return (
+    <Link href={`${localePrefix}/blog/${post.slug}`} className="group block h-full">
+      <article className="relative h-full overflow-hidden rounded-xl border border-white/8 bg-warm-charcoal/40 backdrop-blur-sm p-6 flex flex-col hover:border-warm-amber/25 hover:bg-warm-charcoal/60 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+        {/* Subtle top gradient accent */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-warm-amber/20 to-transparent" />
+
+        <div className="flex items-center gap-2 mb-4">
+          <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-xs font-semibold ${catColor}`}>
+            <span>{CATEGORY_ICONS[post.category] ?? "📄"}</span>
+            <span className="capitalize">{post.category}</span>
+          </span>
+          <span className="ml-auto flex items-center gap-1 text-xs text-warm-dim">
+            <Clock className="w-3 h-3" />{post.readTime} min
+          </span>
+        </div>
+
+        <h3 className="text-base font-bold text-warm-light-gray group-hover:text-warm-amber transition-colors duration-200 leading-snug mb-3 line-clamp-2">
+          {post.title}
+        </h3>
+
+        <p className="text-warm-dim text-sm leading-relaxed flex-1 line-clamp-3 mb-4">
+          {post.excerpt}
+        </p>
+
+        {post.tags && post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {post.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="px-2 py-0.5 rounded text-xs bg-white/5 border border-white/8 text-warm-dim/70">
+                {tag}
+              </span>
+            ))}
+            {post.tags.length > 3 && (
+              <span className="px-2 py-0.5 rounded text-xs text-warm-dim/50">+{post.tags.length - 3}</span>
+            )}
+          </div>
+        )}
+
+        <div className="flex items-center justify-between pt-3 border-t border-white/8 mt-auto">
+          <span className="text-xs text-warm-dim">{post.author.split(" ").slice(0, 2).join(" ")}</span>
+          <ArrowRight className="w-4 h-4 text-warm-amber opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200" />
+        </div>
+      </article>
+    </Link>
+  )
+}
+
 export function BlogPageClient({ posts }: BlogPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const [searchQuery, setSearchQuery] = useState<string>("")
   const pathname = usePathname()
   const localePrefix = getLocalePrefix(resolveLocale(pathname, "en"))
-  const localHref = (href: string) => `${localePrefix}${href}`
 
-  const filteredPosts = selectedCategory === "all" ? posts : posts.filter((p) => p.category === selectedCategory)
+  const filteredPosts = useMemo(() => {
+    let result = selectedCategory === "all" ? posts : posts.filter((p) => p.category === selectedCategory)
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
+      result = result.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.excerpt?.toLowerCase().includes(q) ||
+          p.tags?.some((t) => t.toLowerCase().includes(q))
+      )
+    }
+    return result
+  }, [posts, selectedCategory, searchQuery])
+
+  const totalWords = posts.reduce((acc, p) => acc + (p.readTime ?? 5) * 200, 0)
+  const categories = [
+    { id: "all", label: "All Articles" },
+    ...RESEARCH_CATEGORIES,
+  ]
+
+  const categoryCount = (id: string) =>
+    id === "all" ? posts.length : posts.filter((p) => p.category === id).length
 
   return (
     <main className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
-        <div className="space-y-8 text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground text-balance leading-tight">Blog</h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto text-balance">
-            Insights, research, and updates from RCT Labs
-          </p>
+      {/* ── Hero ──────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(191,160,110,0.08),transparent_55%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none" />
+
+        <div className="mx-auto max-w-7xl px-4 py-24 md:py-32">
+          <div className="max-w-3xl space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-warm-amber/30 bg-warm-amber/8 text-warm-amber text-sm font-medium">
+              <BookOpen className="w-4 h-4" />
+              RCT Labs Research & Insights
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-warm-light-gray leading-tight text-balance">
+              Deep-Dives in{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-warm-amber to-orange-400">
+                Constitutional AI
+              </span>
+            </h1>
+            <p className="text-xl text-warm-dim leading-relaxed max-w-2xl">
+              Technical guides, research breakdowns, and verified insights on FDIA, JITNA, HexaCore, and enterprise AI governance — written by the founder.
+            </p>
+
+            {/* Stats bar */}
+            <div className="flex flex-wrap gap-6 pt-2">
+              {[
+                { icon: FileText, label: "Articles", value: posts.length },
+                { icon: TrendingUp, label: "Topics", value: new Set(posts.map(p => p.category)).size },
+                { icon: Clock, label: "Est. reading", value: `${Math.round(totalWords / 1000)}K words` },
+              ].map(({ icon: Icon, label, value }) => (
+                <div key={label} className="flex items-center gap-2 text-sm">
+                  <Icon className="w-4 h-4 text-warm-amber" />
+                  <span className="font-bold text-warm-light-gray">{value}</span>
+                  <span className="text-warm-dim">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Featured Post */}
-      {filteredPosts.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-            <div className="md:col-span-2">
-              <Link href={localHref(`/blog/${filteredPosts[0].slug}`)} className="group block h-full">
-                <div className="bg-card border-2 border-accent rounded-lg overflow-hidden h-full flex flex-col hover:shadow-lg transition">
-                  <div className="h-64 bg-gradient-to-br from-accent/20 to-secondary/20 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-5xl font-bold text-accent/40">{filteredPosts[0].title.charAt(0)}</div>
-                    </div>
-                  </div>
-                  <div className="p-8 flex flex-col flex-grow">
-                    <span className="text-xs font-semibold text-accent uppercase mb-3">
-                      {filteredPosts[0].category}
-                    </span>
-                    <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3 group-hover:text-accent transition line-clamp-3">
-                      {filteredPosts[0].title}
-                    </h2>
-                    <p className="text-muted-foreground flex-grow mb-4 line-clamp-2">{filteredPosts[0].excerpt}</p>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <span>{filteredPosts[0].author}</span>
-                      <span>{filteredPosts[0].readTime} min read</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+      {/* ── Filters + Search ──────────────────────────────────── */}
+      <section className="sticky top-16 z-20 border-y border-white/8 bg-background/80 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          {/* Category pills */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <Filter className="w-3.5 h-3.5 text-warm-dim shrink-0" />
+            {categories.map((cat) => {
+              const count = categoryCount(cat.id)
+              if (count === 0 && cat.id !== "all") return null
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-200 ${
+                    selectedCategory === cat.id
+                      ? getCategoryColor(cat.id)
+                      : "border-white/10 text-warm-dim hover:border-white/20 hover:text-warm-light-gray"
+                  }`}
+                >
+                  {CATEGORY_ICONS[cat.id] && <span className="mr-1">{CATEGORY_ICONS[cat.id]}</span>}
+                  {cat.label}
+                  <span className="ml-1.5 opacity-50">({count})</span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Search */}
+          <div className="sm:ml-auto relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-warm-dim" />
+            <input
+              type="text"
+              placeholder="Search articles..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 pr-4 py-1.5 rounded-lg border border-white/10 bg-white/5 text-sm text-warm-light-gray placeholder:text-warm-dim focus:outline-none focus:border-warm-amber/40 focus:bg-white/8 transition-all w-48 sm:w-56"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Content ───────────────────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 py-16">
+        {filteredPosts.length === 0 ? (
+          <div className="text-center py-24">
+            <div className="text-5xl mb-4">🔍</div>
+            <p className="text-warm-dim text-lg">No articles found for &quot;{searchQuery}&quot;</p>
+            <button
+              onClick={() => { setSearchQuery(""); setSelectedCategory("all") }}
+              className="mt-4 px-4 py-2 rounded-lg border border-white/10 text-sm text-warm-dim hover:border-warm-amber/30 hover:text-warm-amber transition"
+            >
+              Clear filters
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {/* Results count */}
+            <div className="flex items-center justify-between">
+              <p className="text-warm-dim text-sm">
+                Showing <span className="font-semibold text-warm-light-gray">{filteredPosts.length}</span> article{filteredPosts.length !== 1 ? "s" : ""}
+                {selectedCategory !== "all" && <span> in <span className="text-warm-amber capitalize">{selectedCategory}</span></span>}
+              </p>
             </div>
 
-            <div className="flex flex-col gap-4">
-              <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase">Categories</h3>
-                <div className="flex flex-col gap-2">
-                  {RESEARCH_CATEGORIES.map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setSelectedCategory(cat.id)}
-                      className={`text-left px-4 py-2 rounded transition text-sm font-medium ${
-                        selectedCategory === cat.id
-                          ? "bg-accent text-accent-foreground"
-                          : "bg-card border border-border hover:border-accent"
-                      }`}
-                    >
-                      {cat.label}
-                    </button>
+            {/* Featured (first post) */}
+            {filteredPosts.length > 0 && (
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <div className="lg:col-span-3">
+                  <ArticleCard post={filteredPosts[0]} localePrefix={localePrefix} isFeatured />
+                </div>
+                <div className="lg:col-span-2 flex flex-col gap-6">
+                  {filteredPosts.slice(1, 3).map((post) => (
+                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} />
                   ))}
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-      )}
+            )}
 
-      {/* Posts Grid */}
-      <section className="mx-auto max-w-7xl px-4 py-24">
-        <div className="space-y-12">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-bold text-foreground">
-              {selectedCategory === "all"
-                ? "All Posts"
-                : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Posts`}
-            </h2>
-            <p className="text-muted-foreground">{filteredPosts.length} posts</p>
+            {/* Rest grid */}
+            {filteredPosts.length > 3 && (
+              <>
+                <div className="flex items-center gap-4">
+                  <div className="h-px flex-1 bg-gradient-to-r from-warm-amber/20 to-transparent" />
+                  <span className="text-xs text-warm-dim font-semibold uppercase tracking-wider">All Articles</span>
+                  <div className="h-px flex-1 bg-gradient-to-l from-warm-amber/20 to-transparent" />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {filteredPosts.slice(3).map((post) => (
+                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
+        )}
+      </section>
 
-          {filteredPosts.length > 1 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPosts.slice(1).map((post) => (
-                <PostCard
-                  key={post.slug}
-                  title={post.title}
-                  author={post.author}
-                  date={post.date}
-                  category={post.category}
-                  excerpt={post.excerpt}
-                  slug={post.slug}
-                  localePrefix={localePrefix}
-                  readTime={post.readTime}
-                  tags={post.tags ?? []}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">No posts found in this category.</p>
-              <Button variant="outline" onClick={() => setSelectedCategory("all")}>
-                View All Posts
-              </Button>
-            </div>
-          )}
+      {/* ── Newsletter / CTA strip ────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 py-16">
+        <div className="rounded-2xl border border-warm-amber/20 bg-gradient-to-br from-warm-amber/8 to-transparent p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div>
+            <h2 className="text-2xl font-bold text-warm-light-gray mb-2">Explore the Research</h2>
+            <p className="text-warm-dim max-w-md">
+              Every article is written by the founder — with verified metrics, source code references, and full SEO/E-E-A-T compliance.
+            </p>
+          </div>
+          <div className="flex gap-3 shrink-0">
+            <Link
+              href={`${localePrefix}/authors/ittirit-saengow`}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-warm-amber text-background font-semibold text-sm hover:bg-warm-amber/90 transition"
+            >
+              View Author Profile <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 

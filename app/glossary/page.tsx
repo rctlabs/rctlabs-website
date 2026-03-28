@@ -8,22 +8,64 @@ import { getBreadcrumbSchema, getDefinedTermSchema } from "@/lib/schema"
 
 const glossaryTerms = [
   {
+    term: "FDIA Equation",
+    termTh: "สมการ FDIA",
+    definition: "F = (D^I) × A — A constitutional equation where Future output (F) is determined by Data quality (D) raised to the power of Intent (I), multiplied by Architect authorization (A). When A=0, F=0 always.",
+    definitionTh: "F = (D^I) × A — สมการรัฐธรรมนูญที่กำหนดคุณภาพผลลัพธ์ (F) จากคุณภาพข้อมูล (D) ยกกำลัง Intent (I) คูณด้วยการอนุมัติของ Architect (A) เมื่อ A=0 ผลลัพธ์จะเป็นศูนย์เสมอ",
+    entityHref: "/en/entity/fdia-equation",
+  },
+  {
+    term: "JITNA Protocol",
+    termTh: "โปรโตคอล JITNA",
+    definition: "Just In Time Nodal Assembly — an open agent-to-agent communication protocol (RFC-001 v2.0) often called 'the HTTP of Agentic AI.' Defines PROPOSE → COUNTER → ACCEPT negotiation flow with Ed25519 signatures.",
+    definitionTh: "Just In Time Nodal Assembly — โปรโตคอลสื่อสารระหว่าง AI Agents แบบ open standard (RFC-001 v2.0) มักเรียกว่า 'HTTP ของ Agentic AI' กำหนด flow PROPOSE → COUNTER → ACCEPT พร้อมลายเซ็น Ed25519",
+    entityHref: "/en/entity/jitna-protocol",
+  },
+  {
+    term: "SignedAI",
+    termTh: "SignedAI",
+    definition: "The multi-LLM consensus verification system of the RCT Ecosystem. Routes critical queries through 4–8 models simultaneously and requires agreement before releasing results. Achieves 0.3% hallucination rate vs 12–15% industry average.",
+    definitionTh: "ระบบตรวจสอบ consensus หลาย LLM ของ RCT Ecosystem ส่งคำถามสำคัญผ่าน 4–8 โมเดลพร้อมกัน และต้องการ agreement ก่อนส่งผลลัพธ์ ลด hallucination rate เหลือ 0.3%",
+    entityHref: "/en/entity/governance-layer",
+  },
+  {
+    term: "RCTDB",
+    termTh: "RCTDB (ฐานข้อมูลหน่วยความจำ AI)",
+    definition: "Universal memory schema with 8 dimensions: query_hash, fdia_scores, subject_uuid, model_chain, consensus_result, delta_chain, timestamp, provenance. Enables PDPA-compliant right to erasure via UUID tombstone pattern.",
+    definitionTh: "Schema หน่วยความจำ AI ที่ครอบคลุม 8 มิติ: query_hash, fdia_scores, subject_uuid, model_chain, consensus_result, delta_chain, timestamp, provenance รองรับ right to erasure ตาม PDPA",
+    entityHref: "/en/entity/memory-architecture",
+  },
+  {
+    term: "Delta Engine",
+    termTh: "Delta Engine (เครื่องยนต์เดลต้า)",
+    definition: "Memory compression system that stores only incremental state changes (deltas) rather than full state snapshots. Achieves 74% average lossless compression with sub-1ms reconstruction, enabling warm recall under 50ms.",
+    definitionTh: "ระบบบีบอัดหน่วยความจำที่เก็บเฉพาะการเปลี่ยนแปลง (deltas) แทนสถานะเต็ม บีบอัดได้ 74% แบบ lossless พร้อม warm recall ต่ำกว่า 50ms",
+    entityHref: "/en/entity/memory-architecture",
+  },
+  {
+    term: "HexaCore",
+    termTh: "HexaCore (โครงสร้าง 7 โมเดล AI)",
+    definition: "The 7-model AI infrastructure of the RCT Ecosystem: 3 Western models + 3 Eastern models + 1 Thai regional model (Typhoon v2). Provides 3.74x cost reduction vs single-model deployments through intelligent task routing.",
+    definitionTh: "โครงสร้าง AI 7 โมเดลของ RCT Ecosystem: โมเดลตะวันตก 3 ตัว + ตะวันออก 3 ตัว + ไทย 1 ตัว (Typhoon v2) ลดต้นทุน 3.74 เท่าด้วย intelligent routing",
+    entityHref: "/en/entity/governance-layer",
+  },
+  {
     term: "Constitutional AI",
     termTh: "Constitutional AI (AI แบบรัฐธรรมนูญ)",
     definition: "A governance-oriented approach where model behavior and system operation are shaped by explicit rules, review logic, and safety boundaries rather than by output generation alone.",
-    definitionTh: "แนวทางการออกแบบระบบ AI ที่กำหนดพฤติกรรมผ่านกฎ ขอบเขตความปลอดภัย และตรรกะการตรวจทานอย่างชัดเจน ไม่ปล่อยให้ผลลัพธ์พึ่งการ generate เพียงอย่างเดียว",
+    definitionTh: "แนวทางการออกแบบระบบ AI ที่กำหนดพฤติกรรมผ่านกฎ ขอบเขตความปลอดภัย และตรรกะการตรวจทานอย่างชัดเจน",
   },
   {
     term: "Dynamic Routing",
     termTh: "Dynamic Routing (การจัดเส้นทางแบบพลวัต)",
     definition: "Choosing different model or workflow paths depending on risk, complexity, cost, latency, or evaluation requirements rather than sending every request through the same path.",
-    definitionTh: "การเลือกโมเดลหรือ workflow คนละเส้นทางตามระดับความเสี่ยง ความซับซ้อน ต้นทุน latency หรือเงื่อนไขการประเมิน แทนการส่งทุกคำขอผ่าน path เดียวกัน",
+    definitionTh: "การเลือกโมเดลหรือ workflow คนละเส้นทางตามระดับความเสี่ยง ความซับซ้อน ต้นทุน latency หรือเงื่อนไขการประเมิน",
   },
   {
-    term: "Enterprise AI Memory",
-    termTh: "Enterprise AI Memory (หน่วยความจำสำหรับ AI ระดับองค์กร)",
-    definition: "A governed memory model for preserving relevant context, durable knowledge, working state, and audit history across enterprise AI workflows.",
-    definitionTh: "โมเดลหน่วยความจำที่มีการกำกับดูแล สำหรับเก็บบริบทที่เกี่ยวข้อง ความรู้ที่ใช้ต่อเนื่อง working state และประวัติ audit ตลอด workflow ของ AI ระดับองค์กร",
+    term: "Hallucination Control",
+    termTh: "Hallucination Control (การควบคุมการหลอนของ AI)",
+    definition: "The system-level discipline of reducing unsupported or overconfident outputs through retrieval quality, memory design, routing, verification, and evaluation loops.",
+    definitionTh: "วินัยระดับระบบในการลดผลลัพธ์ที่ไร้หลักฐานหรือมั่นใจเกินจริง ผ่าน retrieval quality, memory design, routing, verification และ evaluation loops",
   },
   {
     term: "Verification",
@@ -36,12 +78,6 @@ const glossaryTerms = [
     termTh: "Intent Operations (ปฏิบัติการที่ขับเคลื่อนด้วยเจตนา)",
     definition: "A framing for AI behavior that emphasizes understanding goals, context, and constraints before deciding what actions or outputs should follow.",
     definitionTh: "กรอบคิดสำหรับ AI ที่ให้ความสำคัญกับการเข้าใจเป้าหมาย บริบท และข้อจำกัดก่อนตัดสินใจว่าจะตอบหรือกระทำอะไรต่อ",
-  },
-  {
-    term: "Hallucination Control",
-    termTh: "Hallucination Control (การควบคุมการหลอนของ AI)",
-    definition: "The system-level discipline of reducing unsupported or overconfident outputs through retrieval quality, memory design, routing, verification, and evaluation loops.",
-    definitionTh: "วินัยระดับระบบในการลดผลลัพธ์ที่ไร้หลักฐานหรือมั่นใจเกินจริง ผ่าน retrieval quality, memory design, routing, verification และ evaluation loops",
   },
 ]
 

@@ -184,19 +184,33 @@ export function getDefinedTermSchema(term: string, description: string, url: str
   }
 }
 
-export function getPersonSchema(name: string, jobTitle: string, url: string, description?: string, sameAs?: string[]) {
+export function getPersonSchema(
+  name: string,
+  jobTitle: string,
+  url: string,
+  description?: string,
+  sameAs?: string[],
+  alternateName?: string,
+  knowsAbout?: string[],
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name,
+    ...(alternateName && { alternateName }),
     jobTitle,
     url,
     ...(description && { description }),
     ...(sameAs && { sameAs }),
+    ...(knowsAbout && { knowsAbout }),
+    nationality: {
+      '@type': 'Country',
+      name: 'Thailand',
+    },
     affiliation: {
       '@type': 'Organization',
       name: 'RCT Labs',
-      url: 'https://rctlabs.co'
-    }
+      url: 'https://rctlabs.co',
+    },
   }
 }

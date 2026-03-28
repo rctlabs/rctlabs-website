@@ -4,10 +4,8 @@ import { getBreadcrumbSchema, getOrganizationSchema } from "@/lib/schema"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
 import Link from "next/link"
 import { Shield, Eye, Heart, Sparkles, Target, Zap, ArrowRight, ExternalLink } from "lucide-react"
-import { pixelIcons } from "@/lib/pixel-icons"
 import { headers } from "next/headers"
 import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
 
@@ -35,13 +33,28 @@ export default async function AboutPage() {
     "@type": "Person",
     "name": "Ittirit Saengow",
     "alternateName": "อิทธิฤทธิ์ แซ่โง้ว",
-    "jobTitle": "Architect of Intent",
-    "description": "Solo architect from Khlong Toei, Bangkok. Creator of RCT Labs, FDIA equation, and the 7 Genome System.",
+    "jobTitle": "Founder and Architect, RCT Labs",
+    "description": "Founder and sole developer of RCT Labs — built a constitutional AI operating system (4,849 passing tests, 62 microservices, 41 algorithms) independently in Bangkok, Thailand in 30 days at zero cost.",
     "url": "https://rctlabs.co/about",
     "sameAs": [
-      "https://github.com/rct-ecosystem",
+      "https://github.com/ittirit720",
+      "https://github.com/rctlabs",
       "https://www.linkedin.com/in/ittirit-saengow/"
     ],
+    "knowsAbout": [
+      "constitutional AI system design",
+      "FDIA equation and framework",
+      "JITNA protocol specification",
+      "enterprise AI governance",
+      "full-stack Next.js development",
+      "bilingual AI platform architecture",
+      "AI operating systems",
+      "Thailand enterprise AI deployment"
+    ],
+    "nationality": {
+      "@type": "Country",
+      "name": "Thailand"
+    },
     "affiliation": {
       "@type": "Organization",
       "name": "RCT Labs",
@@ -153,11 +166,11 @@ export default async function AboutPage() {
   ]
 
   const values = [
-    { pixelSrc: pixelIcons.heart, title: isTh ? "Radical Honesty" : "Radical Honesty", desc: isTh ? "เรายอมรับความไม่แน่นอน ทุก Output มี Confidence Score ไม่ใช่ความแน่นอนเทียม" : "We embrace uncertainty. Every system output includes confidence scores, not false certainty." },
-    { pixelSrc: pixelIcons.heart, title: isTh ? "Survivor's Empathy" : "Survivor's Empathy", desc: isTh ? "ออกแบบสำหรับผู้ที่มีทรัพยากรจำกัด ถ้ามันทำงานบนมือถือได้ มันทำงานได้ทุกที่" : "Designed for those with limited resources. If it works on a single phone, it works everywhere." },
-    { pixelSrc: pixelIcons.shield, title: isTh ? "Verifiable Truth" : "Verifiable Truth", desc: isTh ? "ทุก AI Output ต้องตรวจสอบได้ โดยหลักฐาน benchmark ปัจจุบันชี้ไปที่ hallucination ระดับ 0.3% บน controlled workloads และยังอยู่ในช่วงขยายผลเชิงระบบ" : "Every AI output must be verifiable. Current benchmark evidence points to 0.3% hallucination on controlled workloads while the broader system rollout is still maturing." },
-    { pixelSrc: pixelIcons.rocket, title: isTh ? "Human-Centric Power" : "Human-Centric Power", desc: isTh ? "AI ไม่ใช่พระเอก พระเอกตัวจริงคือ Intent และมนุษย์ผู้ลงนามการตัดสินใจสุดท้าย" : "AI is not the hero. The real hero is the Intent behind it, and the human who signs the final decision." },
-    { pixelSrc: pixelIcons.target, title: isTh ? "Long-Term Stewardship" : "Long-Term Stewardship", desc: isTh ? "ทุกบรรทัดโค้ดเป็นส่วนหนึ่งของสิ่งมีชีวิต เราสร้างเพื่อทศวรรษ ไม่ใช่ไตรมาส" : "Every line of code is part of a living organism. We build for decades, not quarters." },
+    { icon: Eye, title: isTh ? "Radical Honesty" : "Radical Honesty", desc: isTh ? "เรายอมรับความไม่แน่นอน ทุก Output มี Confidence Score ไม่ใช่ความแน่นอนเทียม" : "We embrace uncertainty. Every system output includes confidence scores, not false certainty." },
+    { icon: Heart, title: isTh ? "Survivor's Empathy" : "Survivor's Empathy", desc: isTh ? "ออกแบบสำหรับผู้ที่มีทรัพยากรจำกัด ถ้ามันทำงานบนมือถือได้ มันทำงานได้ทุกที่" : "Designed for those with limited resources. If it works on a single phone, it works everywhere." },
+    { icon: Shield, title: isTh ? "Verifiable Truth" : "Verifiable Truth", desc: isTh ? "ทุก AI Output ต้องตรวจสอบได้ โดยหลักฐาน benchmark ปัจจุบันชี้ไปที่ hallucination ระดับ 0.3% บน controlled workloads และยังอยู่ในช่วงขยายผลเชิงระบบ" : "Every AI output must be verifiable. Current benchmark evidence points to 0.3% hallucination on controlled workloads while the broader system rollout is still maturing." },
+    { icon: Sparkles, title: isTh ? "Human-Centric Power" : "Human-Centric Power", desc: isTh ? "AI ไม่ใช่พระเอก พระเอกตัวจริงคือ Intent และมนุษย์ผู้ลงนามการตัดสินใจสุดท้าย" : "AI is not the hero. The real hero is the Intent behind it, and the human who signs the final decision." },
+    { icon: Target, title: isTh ? "Long-Term Stewardship" : "Long-Term Stewardship", desc: isTh ? "ทุกบรรทัดโค้ดเป็นส่วนหนึ่งของสิ่งมีชีวิต เราสร้างเพื่อทศวรรษ ไม่ใช่ไตรมาส" : "Every line of code is part of a living organism. We build for decades, not quarters." },
   ]
 
   const timelineItems = [
@@ -348,13 +361,16 @@ export default async function AboutPage() {
             <h2 className="text-4xl font-bold text-foreground">{isTh ? "สิ่งที่เราเชื่อ" : "What We Believe"}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {values.map((v, i) => (
-              <div key={i} className="p-6 rounded-xl border border-border bg-card hover:border-warm-amber/40 transition-colors">
-                <Image src={v.pixelSrc} alt={v.title} width={56} height={56} className="mb-4 object-contain" unoptimized />
-                <h3 className="text-lg font-bold text-foreground mb-2">{v.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
-              </div>
-            ))}
+            {values.map((v, i) => {
+              const Icon = v.icon
+              return (
+                <div key={i} className="p-6 rounded-xl border border-border bg-card hover:border-warm-amber/40 transition-colors">
+                  <Icon className="w-10 h-10 text-warm-amber mb-4" />
+                  <h3 className="text-lg font-bold text-foreground mb-2">{v.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>

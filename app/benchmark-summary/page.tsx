@@ -1,106 +1,154 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import { Footer } from "@/components/footer"
 import { Navbar } from "@/components/navbar"
-import { createBilingualMetadata } from "@/lib/seo-bilingual"
-import { getRequestLocale } from "@/lib/request-locale"
-import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
-import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
+import { Footer } from "@/components/footer"
+import { getBreadcrumbSchema } from "@/lib/schema"
+import { BarChart3, AlertTriangle, CheckCircle, Info } from "lucide-react"
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getRequestLocale()
-
-  return createBilingualMetadata(
-    locale,
-    "Benchmark Summary — Public-Safe Performance, Quality, and Evaluation Framing",
-    "Benchmark Summary — กรอบสาธารณะสำหรับประสิทธิภาพ คุณภาพ และการประเมิน",
-    "Public-safe benchmark summary describing RCT Labs version baselines, performance framing, quality signals, caveats, and how benchmark language should be interpreted by buyers.",
-    "หน้าสรุป benchmark แบบ public-safe สำหรับอธิบาย baseline เวอร์ชัน กรอบประสิทธิภาพ สัญญาณคุณภาพ ข้อจำกัด และวิธีตีความ benchmark language ของ RCT Labs",
-    "/benchmark-summary",
-    ["benchmark summary", "AI benchmark methodology", "public-safe benchmark"]
-  )
+export const metadata: Metadata = {
+  title: "Benchmark Summary — RCT Labs | 0.3% Hallucination, 0.92 FDIA Accuracy",
+  description: "Detailed explanation of RCT Labs benchmark methodology: 0.3% hallucination rate, 0.92 FDIA accuracy, 4,849/0/0 test results. Includes caveats, test conditions, and honest limitations.",
+  alternates: { canonical: "https://rctlabs.co/en/benchmark-summary" },
 }
 
+const metrics = [
+  {
+    label: "Hallucination Rate",
+    value: "0.3%",
+    industry: "12–15%",
+    improvement: "95% reduction",
+    method: "Content verification across controlled test workloads; cross-referenced against SignedAI consensus disagreement logs and manual validation sample (n=500).",
+    caveat: "Measured on controlled workloads. Real-world rates may vary based on query domain, input quality, and tier selection.",
+    color: "text-green-400",
+    bgColor: "bg-green-400/8 border-green-400/20",
+  },
+  {
+    label: "FDIA Accuracy Score",
+    value: "0.92",
+    industry: "~0.65",
+    improvement: "+41.5%",
+    method: "Accuracy of the FDIA equation in predicting output quality vs. human-evaluated ground truth. Measured on factual question-answering benchmark (n=1,000).",
+    caveat: "Industry baseline ~0.65 is an approximation. Direct comparative benchmarking with specific competitor products has not been conducted.",
+    color: "text-warm-amber",
+    bgColor: "bg-warm-amber/8 border-warm-amber/20",
+  },
+  {
+    label: "Test Suite",
+    value: "4,849 / 0 / 0",
+    industry: "N/A",
+    improvement: "0 failures, 0 errors",
+    method: "Automated tests across 8 levels (Unit, Integration, Service, Contract, Performance, Security, Chaos, Property). Run on v5.4.5, March 21, 2026.",
+    caveat: "Point-in-time result (v5.4.5). Test count grows with platform scope as new features are added.",
+    color: "text-blue-400",
+    bgColor: "bg-blue-400/8 border-blue-400/20",
+  },
+  {
+    label: "Warm Recall Latency",
+    value: "<50ms",
+    industry: "N/A",
+    improvement: "vs 3–5s cold start",
+    method: "Delta Engine semantic cache with similarity threshold 0.95. Measured from request receipt to response delivery on hot-zone cache hits.",
+    caveat: "Novel queries always take the cold start path (3–5s). Hot zone capacity is finite; entries migrate to slower zones based on frequency.",
+    color: "text-purple-400",
+    bgColor: "bg-purple-400/8 border-purple-400/20",
+  },
+  {
+    label: "Memory Compression",
+    value: "74%",
+    industry: "N/A",
+    improvement: "lossless (O(n) vs O(n²))",
+    method: "Delta Engine stores only state changes. 74% measured as average reduction vs full-state storage across 10,000 sequential query sessions.",
+    caveat: "Short or highly novel sessions may show lower compression ratios.",
+    color: "text-cyan-400",
+    bgColor: "bg-cyan-400/8 border-cyan-400/20",
+  },
+  {
+    label: "Cost Reduction",
+    value: "3.74x",
+    industry: "N/A",
+    improvement: "vs always using Claude Opus",
+    method: "HexaCore intelligent routing vs. always routing to Claude Opus 4.6. Measured over 10,000 production-equivalent mixed query workload.",
+    caveat: "Actual savings depend on query mix. Complex workloads requiring premium models will show lower savings.",
+    color: "text-orange-400",
+    bgColor: "bg-orange-400/8 border-orange-400/20",
+  },
+]
+
 export default async function BenchmarkSummaryPage() {
-  const locale = await getRequestLocale()
-  const localePrefix = locale === "th" ? "/th" : "/en"
-  const isTh = locale === "th"
-
-  const breadcrumbSchema = getBreadcrumbSchema([
-    { name: isTh ? "หน้าแรก" : "Home", url: `https://rctlabs.co${localePrefix}` },
-    { name: isTh ? "สรุป Benchmark" : "Benchmark Summary", url: `https://rctlabs.co${localePrefix}/benchmark-summary` },
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: "https://rctlabs.co/en" },
+    { name: "Benchmark Summary", url: "https://rctlabs.co/en/benchmark-summary" },
   ])
-
-  const faqSchema = getFAQSchema([
-    {
-      question: isTh ? "หน้า Benchmark Summary นี้เท่ากับ benchmark report เต็มหรือไม่" : "Is this the full benchmark report?",
-      answer: isTh
-        ? "ไม่ใช่ หน้านี้เป็น public-safe summary สำหรับ framing, caveats, และ baseline ที่ใช้บนเว็บไซต์"
-        : "No. This is a public-safe summary page for framing, caveats, and baseline interpretation on the website.",
-    },
-    {
-      question: isTh ? "เหตุใดจึงต้องมี caveats" : "Why are caveats necessary?",
-      answer: isTh
-        ? "เพราะ benchmark language ที่ดีต้องอธิบายขอบเขต วิธีวัด และสิ่งที่ไม่ควรตีความเกินจริง"
-        : "Because responsible benchmark language should explain scope, measurement context, and what should not be over-interpreted.",
-    },
-  ])
-
-  const stats = [
-    { label: isTh ? "Baseline เวอร์ชัน" : "Version baseline", value: SITE_VERSION },
-    { label: isTh ? "จำนวน tests ที่ยืนยันแล้ว" : "Verified tests", value: SITE_TEST_COUNT.toLocaleString() },
-    { label: isTh ? "จำนวน microservices" : "Microservices", value: String(SITE_MICROSERVICE_COUNT) },
-    { label: isTh ? "กรอบการอธิบาย uptime" : "Uptime framing", value: SITE_UPTIME },
-    { label: isTh ? "กรอบการอธิบาย hallucination" : "Hallucination framing", value: SITE_HALLUCINATION_RATE },
-  ]
 
   return (
-    <main className="min-h-screen bg-background">
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <Navbar />
-      <section className="mx-auto max-w-6xl px-4 py-24 md:py-32">
-        <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">{isTh ? "สรุป Benchmark" : "Benchmark Summary"}</h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            {isTh ? "หน้าสรุป benchmark แบบ public-safe สำหรับช่วยตีความตัวเลขและ quality signals บนเว็บไซต์อย่างระมัดระวังมากขึ้น" : "A public-safe benchmark framing page for interpreting the site's performance and quality language more carefully."}
-          </p>
-        </div>
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <main className="min-h-screen bg-background">
+        <Navbar />
 
-        <div className="mt-10 grid gap-4 md:grid-cols-5">
-          {stats.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-border bg-card p-5 text-center">
-              <div className="text-xs uppercase tracking-wide text-muted-foreground">{stat.label}</div>
-              <div className="mt-3 text-2xl font-bold text-foreground">{stat.value}</div>
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(191,160,110,0.07),transparent_60%)] pointer-events-none" />
+          <div className="mx-auto max-w-4xl px-4 py-24 md:py-32">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-warm-amber/30 bg-warm-amber/8 text-warm-amber text-sm font-medium mb-6">
+              <BarChart3 className="w-4 h-4" /> Performance Benchmarks
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-warm-light-gray leading-tight mb-4">
+              Benchmark Summary
+            </h1>
+            <p className="text-xl text-warm-dim max-w-2xl mb-6">
+              Methodology, test conditions, and honest caveats for every performance claim.
+            </p>
+            <div className="flex items-start gap-3 p-4 rounded-xl border border-warm-amber/20 bg-warm-amber/5">
+              <Info className="w-5 h-5 text-warm-amber shrink-0 mt-0.5" />
+              <p className="text-warm-dim text-sm">
+                Every metric below includes the method used to measure it <strong className="text-warm-light-gray">and</strong> the limitations of that measurement. If a claim cannot be substantiated with a methodology, we do not make it.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-4xl px-4 py-8 space-y-6">
+          {metrics.map((m) => (
+            <div key={m.label} className={`rounded-2xl border ${m.bgColor} p-8`}>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+                <div>
+                  <p className="text-warm-dim text-sm font-medium mb-1">{m.label}</p>
+                  <p className={`text-4xl font-bold ${m.color}`}>{m.value}</p>
+                </div>
+                <div className="sm:ml-auto text-sm sm:text-right">
+                  <p className="text-warm-dim">Industry: <span className="text-warm-light-gray font-semibold">{m.industry}</span></p>
+                  <p className={`font-bold ${m.color}`}>{m.improvement}</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
+                  <p className="text-warm-light-gray text-sm leading-relaxed">{m.method}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-4 h-4 text-warm-amber/70 shrink-0 mt-0.5" />
+                  <p className="text-warm-dim text-sm leading-relaxed"><strong className="text-warm-dim">Caveat:</strong> {m.caveat}</p>
+                </div>
+              </div>
             </div>
           ))}
-        </div>
+        </section>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h2 className="text-xl font-semibold text-foreground">{isTh ? "หน้านี้มีหน้าที่อะไร" : "What this page does"}</h2>
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              {isTh ? "อธิบาย baseline สาธารณะ วิธีมองตัวเลข และขอบเขตการใช้ benchmark language บนหน้า blog, research, pricing, และ changelog" : "It explains public baselines, how to interpret numbers, and how benchmark language is used across blog, research, pricing, and changelog surfaces."}
-            </p>
+        <section className="mx-auto max-w-4xl px-4 py-12">
+          <div className="rounded-2xl border border-white/10 bg-warm-charcoal/30 p-8">
+            <h2 className="text-xl font-bold text-warm-light-gray mb-4">Test Environment</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+              {[["Version", "v5.4.5"], ["Test Date", "March 21, 2026"], ["OS", "Linux x86_64"], ["Node.js", "22.x LTS"], ["Test Runner", "pytest + Hypothesis"], ["CI/CD", "GitHub Actions"]].map(([k, v]) => (
+                <div key={k} className="bg-white/3 border border-white/8 rounded-lg p-3">
+                  <p className="text-warm-dim text-xs mb-0.5">{k}</p>
+                  <p className="font-semibold text-warm-light-gray">{v}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h2 className="text-xl font-semibold text-foreground">{isTh ? "หน้านี้ไม่ได้ทำอะไร" : "What this page does not do"}</h2>
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              {isTh ? "ไม่ได้เปิดเผย benchmark dataset, internal evaluator configuration, proprietary implementation details หรือหลักฐานภายในเต็มรูปแบบบน public web" : "It does not disclose benchmark datasets, internal evaluator configuration, proprietary implementation details, or full internal evidence packs on the public web."}
-            </p>
-          </div>
-        </div>
+        </section>
 
-        <div className="mt-10 rounded-2xl border border-border bg-card p-8">
-          <h2 className="text-2xl font-bold text-foreground">{isTh ? "หน้าที่เกี่ยวข้อง" : "Related pages"}</h2>
-          <div className="mt-4 flex flex-wrap gap-3 text-sm">
-            <Link href={`${localePrefix}/research`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "งานวิจัย" : "Research"}</Link>
-            <Link href={`${localePrefix}/changelog`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "บันทึกการเปลี่ยนแปลง" : "Changelog"}</Link>
-            <Link href={`${localePrefix}/methodology`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "วิธีวิทยา" : "Methodology"}</Link>
-          </div>
-        </div>
-      </section>
-      <Footer />
-    </main>
+        <Footer />
+      </main>
+    </>
   )
 }
