@@ -21,7 +21,7 @@ export default function Error({
           Something went wrong
         </h1>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          An unexpected error occurred. Please try again or contact support if the problem persists.
+          An unexpected error occurred. Our team has been notified.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
