@@ -1,11 +1,13 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import SolutionsClient from "./SolutionsClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
   return createBilingualMetadata(
-    "en",
+    locale,
     "AI Solutions",
     "โซลูชัน AI",
     "Enterprise AI solutions by RCT Labs: AI Hallucination Prevention (99.7% accuracy), Enterprise AI Memory, and Dynamic AI Routing. Constitutional AI pathways for regulated industries with public-safe evaluation framing.",
@@ -15,10 +17,12 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function SolutionsPage() {
+export default async function SolutionsPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Solutions", url: "https://rctlabs.co/en/solutions" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Solutions", url: `https://rctlabs.co${localePrefix}/solutions` },
   ])
 
   const faqSchema = getFAQSchema([
@@ -39,9 +43,9 @@ export default function SolutionsPage() {
     "@type": "ItemList",
     name: "RCT Labs Enterprise AI Solutions",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "AI Hallucination Prevention", url: "https://rctlabs.co/en/solutions/ai-hallucination-prevention" },
-      { "@type": "ListItem", position: 2, name: "Enterprise AI Memory", url: "https://rctlabs.co/en/solutions/enterprise-ai-memory" },
-      { "@type": "ListItem", position: 3, name: "Dynamic AI Routing", url: "https://rctlabs.co/en/solutions/dynamic-ai-routing" },
+      { "@type": "ListItem", position: 1, name: "AI Hallucination Prevention", url: `https://rctlabs.co${localePrefix}/solutions/ai-hallucination-prevention` },
+      { "@type": "ListItem", position: 2, name: "Enterprise AI Memory", url: `https://rctlabs.co${localePrefix}/solutions/enterprise-ai-memory` },
+      { "@type": "ListItem", position: 3, name: "Dynamic AI Routing", url: `https://rctlabs.co${localePrefix}/solutions/dynamic-ai-routing` },
     ],
   }
 

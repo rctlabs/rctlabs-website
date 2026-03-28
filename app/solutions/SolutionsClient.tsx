@@ -303,7 +303,7 @@ export default function SolutionsPage() {
                       </div>
                     ))}
                   </div>
-                  <Link href={localHref(sol.href)} className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3" style={{ color: sol.color }}>
+                  <Link href={localHref(sol.href)} className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:gap-3" style={{ color: sol.color }} aria-label={isTh ? `เรียนรู้เพิ่มเติมเกี่ยวกับ ${sol.titleTh}` : `Learn more about ${sol.titleEn}`}>
                     {isTh ? "เรียนรู้เพิ่มเติม" : "Learn More"} <ArrowRight size={16} />
                   </Link>
                 </div>
