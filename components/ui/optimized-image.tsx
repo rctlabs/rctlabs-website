@@ -1,24 +1,37 @@
 "use client"
 
+/**
+ * OptimizedImage
+ *
+ * A lazy-loading image component that uses a shared singleton IntersectionObserver
+ * to avoid creating one observer per image instance — important on pages with many
+ * images. Each component registers a callback in a WeakMap keyed to its container
+ * element; the observer fires the callback when the container enters the viewport,
+ * then immediately unobserves it.
+ *
+ * Supports: WebP, AVIF progressive upgrade, fallback src, pixel-art mode,
+ * error state with accessible label, and SSR hydration guard.
+ */
+
 import { memo, useCallback, useEffect, useRef, useState } from "react"
 
+// ── Shared singleton observer ─────────────────────────────────────────────────
+
+/** Maps each observed container element to its "enter viewport" callback. */
 const imageObserverCallbacks = new WeakMap<Element, () => void>()
 let sharedImageObserver: IntersectionObserver | null = null
 
-function getSharedImageObserver() {
-  if (typeof window === "undefined") {
-    return null
-  }
+function getSharedImageObserver(): IntersectionObserver | null {
+  if (typeof window === "undefined") return null
 
   if (!sharedImageObserver) {
     sharedImageObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return
-
-          const callback = imageObserverCallbacks.get(entry.target)
-          if (callback) {
-            callback()
+          const cb = imageObserverCallbacks.get(entry.target)
+          if (cb) {
+            cb()
             imageObserverCallbacks.delete(entry.target)
           }
           sharedImageObserver?.unobserve(entry.target)
@@ -30,6 +43,8 @@ function getSharedImageObserver() {
 
   return sharedImageObserver
 }
+
+// ── Types ─────────────────────────────────────────────────────────────────────
 
 interface OptimizedImageProps {
   src: string
@@ -50,6 +65,8 @@ interface OptimizedImageProps {
   onError?: () => void
 }
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 function getImageExtension(src: string): string | null {
   const cleanSrc = src.split("?")[0]?.split("#")[0] ?? src
   const match = cleanSrc.match(/\.([a-zA-Z0-9]+)$/)
@@ -63,6 +80,8 @@ function getAvifSrc(src: string, pixelated: boolean): string | undefined {
   if (src.endsWith(".webp")) return src.replace(/\.webp$/, ".avif")
   return undefined
 }
+
+// ── Component ─────────────────────────────────────────────────────────────────
 
 const OptimizedImage = memo(function OptimizedImage({
   src,
@@ -82,13 +101,16 @@ const OptimizedImage = memo(function OptimizedImage({
   onLoad,
   onError,
 }: OptimizedImageProps) {
-  const shouldLoadImmediately = priority || pixelated || Boolean(width && height && width <= 64 && height <= 64)
+  const shouldLoadImmediately =
+    priority || pixelated || Boolean(width && height && width <= 64 && height <= 64)
+
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isInView, setIsInView] = useState(shouldLoadImmediately)
   const [currentSrc, setCurrentSrc] = useState(src)
   const imgRef = useRef<HTMLDivElement>(null)
 
+  // Reset state whenever the src prop changes
   useEffect(() => {
     setCurrentSrc(src)
     setHasError(false)
@@ -96,6 +118,7 @@ const OptimizedImage = memo(function OptimizedImage({
     setIsInView(shouldLoadImmediately)
   }, [src, shouldLoadImmediately])
 
+  // Register with the shared IntersectionObserver when not yet in view
   useEffect(() => {
     if (shouldLoadImmediately || isInView) return
     const element = imgRef.current
@@ -113,14 +136,15 @@ const OptimizedImage = memo(function OptimizedImage({
     }
   }, [shouldLoadImmediately, isInView])
 
-  // Catch images that loaded during SSR before React hydrated the onLoad handler
+  // Handle images that finished loading during SSR before the React onLoad
+  // handler was hydrated (e.g. cached resources served from disk).
   useEffect(() => {
-    if (!isInView) return
+    if (!isInView || isLoaded) return
     const img = imgRef.current?.querySelector("img")
-    if (img?.complete && img.naturalWidth > 0 && !isLoaded) {
+    if (img?.complete && img.naturalWidth > 0) {
       setIsLoaded(true)
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isInView, isLoaded])
 
   const handleLoad = useCallback(() => {
     setIsLoaded(true)
@@ -145,10 +169,13 @@ const OptimizedImage = memo(function OptimizedImage({
     ...(pixelated ? { imageRendering: "pixelated" as const } : {}),
   }
 
+  // ── Error state ──────────────────────────────────────────────────────────
   if (hasError) {
     return (
       <div
         ref={imgRef}
+        role="img"
+        aria-label={errorLabel}
         className={`flex items-center justify-center rounded-lg bg-warm-light-gray/30 dark:bg-white/10 ${containerClassName}`}
         style={style}
       >
@@ -159,16 +186,27 @@ const OptimizedImage = memo(function OptimizedImage({
     )
   }
 
+  // ── Normal render ────────────────────────────────────────────────────────
   return (
     <div ref={imgRef} className={`relative overflow-hidden ${containerClassName}`} style={style}>
-      {!isLoaded && <div className={`absolute inset-0 rounded-lg ${priority ? "bg-secondary/35" : "bg-secondary/55"}`} aria-hidden="true" />}
+      {/* Skeleton placeholder — shown until image loads */}
+      {!isLoaded && (
+        <div
+          className={`absolute inset-0 rounded-lg animate-pulse ${
+            priority ? "bg-secondary/35" : "bg-secondary/55"
+          }`}
+          aria-hidden="true"
+        />
+      )}
+
       {isInView && (
         <picture style={{ display: "contents" }}>
           {avifSrc && <source type="image/avif" srcSet={avifSrc} sizes={sizes} />}
           {extension === "webp" && <source type="image/webp" srcSet={currentSrc} sizes={sizes} />}
           {extension === "png" && <source type="image/png" srcSet={currentSrc} sizes={sizes} />}
-          {extension === "jpg" && <source type="image/jpeg" srcSet={currentSrc} sizes={sizes} />}
-          {extension === "jpeg" && <source type="image/jpeg" srcSet={currentSrc} sizes={sizes} />}
+          {(extension === "jpg" || extension === "jpeg") && (
+            <source type="image/jpeg" srcSet={currentSrc} sizes={sizes} />
+          )}
           <img
             src={currentSrc}
             alt={alt}
@@ -180,7 +218,9 @@ const OptimizedImage = memo(function OptimizedImage({
             sizes={sizes}
             onLoad={handleLoad}
             onError={handleError}
-            className={`h-full w-full transition-opacity duration-300 ease-out ${isLoaded ? "opacity-100" : "opacity-0"} ${className}`}
+            className={`h-full w-full transition-opacity duration-300 ease-out ${
+              isLoaded ? "opacity-100" : "opacity-0"
+            } ${className}`}
             style={{
               objectFit,
               ...(pixelated ? { imageRendering: "pixelated" as const } : {}),
