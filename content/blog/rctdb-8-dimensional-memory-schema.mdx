@@ -1,0 +1,216 @@
+---
+title: "RCTDB v2.0: The 8-Dimensional Universal Memory Schema for AI Systems"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-03-28"
+lastReviewed: "2026-03-28"
+category: "research"
+excerpt: "RCTDB is the universal memory architecture of the RCT Ecosystem — an 8-dimensional schema designed for structured AI memory, full provenance tracking, and PDPA-compliant right-to-erasure. This article explains the schema, three storage zones, and why traditional vector databases fall short for enterprise AI."
+tags: ["RCTDB", "Memory Architecture", "AI Infrastructure", "Vector Database", "PDPA", "RCT Labs"]
+readTime: 9
+references:
+  - "https://www.pinecone.io/"
+  - "https://weaviate.io/"
+  - "https://redis.io/docs/latest/"
+  - "https://www.postgresql.org/docs/"
+  - "https://arxiv.org/abs/2305.02301"
+---
+
+# RCTDB v2.0: The 8-Dimensional Universal Memory Schema for AI Systems
+
+Memory is the unsolved problem of enterprise AI.
+
+Most AI deployments treat memory as an afterthought — a vector database that stores embeddings for RAG retrieval, or a session store that resets on every conversation. Neither approach is adequate for enterprise AI that needs to:
+
+1. **Reconstruct the reasoning** behind any decision (compliance, audit)
+2. **Delete specific individuals' data** on request (PDPA right to erasure)
+3. **Cache verified responses** for fast recall without re-generation
+4. **Track provenance** of every piece of information used in any output
+
+**RCTDB v2.0** is the RCT Ecosystem's answer to this problem — a universal memory schema designed specifically for constitutional AI systems.
+
+---
+
+## The Problem with Vector Databases
+
+Vector databases (Pinecone, Weaviate, Qdrant) are excellent for semantic search. They store embeddings and enable "find documents semantically similar to this query." They are not designed for:
+
+| Requirement | Vector Database | RCTDB |
+|---|---|---|
+| **Full provenance tracking** | No — stores embeddings, not reasoning chains | Yes — 8 dimensions capture full context |
+| **PDPA right to erasure** | Difficult — cannot easily isolate one person's data | Yes — UUID-linked records with tombstone support |
+| **Structured audit trail** | No — similarity search only | Yes — every field queryable for compliance |
+| **Decision replay** | No | Yes — delta chain enables full reconstruction |
+| **Constitutional constraints** | No | Yes — FDIA scores stored with every record |
+| **Multi-jurisdictional control** | No | Yes — provenance dimension tracks jurisdiction |
+
+RCTDB is not a replacement for vector databases — it is the layer *above* them. RCTDB manages structured record keeping, provenance, and compliance. The native embedding search functions as one dimension within the broader 8-dimensional schema.
+
+---
+
+## The 8 Dimensions
+
+### Dimension 1: query_hash
+
+**Type:** SHA-256 hash of the semantic embedding vector  
+**Purpose:** Enables O(1) exact lookup and near-duplicate detection
+
+For warm recall, the hot zone indexes `query_hash` values in memory. An incoming query is embedded, hashed, and checked against the index in <1ms. If found, the cached response is returned without any LLM call.
+
+The hash is not of the raw text — it is of the semantic embedding vector. This means queries with different wording but the same meaning (semantic similarity > 0.95) may share the same hash bucket, enabling cache hits across paraphrased queries.
+
+### Dimension 2: fdia_scores
+
+**Type:** JSON object containing D, I, A, F values (0.0–1.0 each)  
+**Purpose:** Records the quality gate state at time of storage
+
+Every RCTDB record stores the FDIA scores at the time the record was created. This enables:
+- Filtering records by minimum quality threshold before use in RAG
+- Auditing why the system produced a specific output (what were D, I, A at that moment)
+- Detecting when data quality has degraded over time (the D score of a stored record can be compared to current D score for the same data source)
+
+### Dimension 3: subject_uuid
+
+**Type:** UUID linked to a specific data subject  
+**Purpose:** Enables PDPA-compliant right-to-erasure
+
+All personal data flowing through the RCT Ecosystem is linked to a `subject_uuid` — an internal identifier for the data subject. When a data subject invokes their right to erasure under PDPA Section 33:
+
+1. All RCTDB records with the corresponding `subject_uuid` are retrieved
+2. A `tombstone_timestamp` is set on each record
+3. Future read operations respect the tombstone — the data is effectively erased for all access purposes
+4. The tombstone record itself is retained for the legally required audit trail period
+
+This tombstone pattern satisfies PDPA erasure requirements without requiring deletion of the audit chain (which may itself be required by other regulations).
+
+### Dimension 4: model_chain
+
+**Type:** Array — which AI models processed this record  
+**Purpose:** Enables model performance attribution and bias analysis
+
+For every record, `model_chain` stores the ordered list of models that contributed to the output. Example:
+```json
+["kimi-k2-5", "signedai-tier4", "claude-opus-4-6"]
+```
+
+This means Kimi K2.5 generated the initial response, SignedAI Tier 4 consensus confirmed it, and Claude Opus 4.6 was the final arbiter.
+
+The model chain enables:
+- Attribution of errors to specific models
+- Detection of systematic biases from specific models or model combinations
+- Cost accounting by model
+- Performance comparison across model combinations
+
+### Dimension 5: consensus_result
+
+**Type:** JSON object — SignedAI tier, voting method, agreement percentage, each model's output  
+**Purpose:** Records the consensus process for audit and quality tracking
+
+For Tier 4+ queries, the full consensus result is stored:
+- Which tier was used (4/6/8)
+- Which voting method(s)
+- Agreement percentage
+- Each individual model's output (signed with Ed25519)
+- Whether consensus passed or failed
+
+This record is the basis for Section 33 PDPA explanations: "Your loan application was reviewed by 4 AI models. 3 of 4 agreed the application did not meet the minimum criteria, with the following reasoning..."
+
+### Dimension 6: delta_chain
+
+**Type:** Reference pointer to parent checkpoint or delta  
+**Purpose:** Enables full state reconstruction from incremental storage
+
+The delta_chain dimension implements the Delta Engine compression (74% vs full-state storage). Each non-checkpoint record contains a pointer to its parent delta, forming a linked chain back to the last checkpoint.
+
+Full state reconstruction: traverse the delta chain from oldest to newest, applying each delta in sequence. The final state equals the original full state, with 100% fidelity.
+
+### Dimension 7: timestamp
+
+**Type:** ISO 8601 with timezone and precision to millisecond  
+**Purpose:** Temporal ordering, TTL enforcement, retention policy management
+
+Every RCTDB record has a timestamp that enables:
+- Ordering of delta chain reconstruction
+- TTL enforcement (records older than policy lifetime are migrated to cold storage)
+- Time-range queries for compliance reporting
+- Cache freshness scoring for the D dimension in FDIA
+
+### Dimension 8: provenance
+
+**Type:** JSON object — data sources, lawful bases, jurisdiction zones  
+**Purpose:** Records the legal and factual basis for the information used in the output
+
+The provenance dimension stores:
+```json
+{
+  "sources": ["internal_knowledge_base", "pdpa_consent_log"],
+  "lawful_basis": "consent",
+  "consent_id": "uuid-of-consent-record",
+  "jurisdiction": "TH",
+  "cross_border_authorized": false,
+  "data_classification": "personal"
+}
+```
+
+This record enables:
+- Verification that personal data was processed with a valid lawful basis
+- Detection of unauthorized cross-border transfers
+- Classification-based access control (only authorized roles can read "personal" classified records)
+
+---
+
+## Three Storage Zones
+
+### Hot Zone — In-Memory
+- **Technology:** Redis-compatible in-memory store
+- **Latency:** <1ms
+- **Contents:** Last 10,000 queries by frequency
+- **Eviction:** LRU (Least Recently Used) with size limits
+
+### Warm Zone — Fast SSD
+- **Technology:** NVMe SSD with columnar index
+- **Latency:** 1–5ms
+- **Contents:** Last 30 days of queries
+- **Eviction:** Time-based (>30 days → cold migration)
+
+### Cold Zone — Compressed Archive
+- **Technology:** LZ4-compressed blob with SHA-256 index
+- **Latency:** 10ms–100ms
+- **Contents:** All records older than 30 days
+- **Purpose:** Long-term audit trail, compliance archive
+
+Records automatically migrate between zones based on access frequency and age. The Delta Engine manages all migrations transparently.
+
+---
+
+## RCTDB vs Traditional Vector Databases
+
+| Feature | Pinecone | Weaviate | RCTDB v2.0 |
+|---|---|---|---|
+| Semantic search | ✅ | ✅ | ✅ (via embedding in query_hash) |
+| Full provenance | ❌ | ❌ | ✅ |
+| PDPA erasure | ⚠️ Complex | ⚠️ Complex | ✅ UUID tombstone |
+| Audit trail | ❌ | ⚠️ Partial | ✅ Complete |
+| FDIA integration | ❌ | ❌ | ✅ Native |
+| Delta compression | ❌ | ❌ | ✅ 74% |
+| Multi-jurisdiction | ❌ | ❌ | ✅ |
+| Constitutional constraints | ❌ | ❌ | ✅ |
+
+---
+
+## Summary
+
+RCTDB v2.0 closes the gap between what AI systems need and what traditional databases provide:
+
+- **8 dimensions:** query_hash, fdia_scores, subject_uuid, model_chain, consensus_result, delta_chain, timestamp, provenance
+- **3 storage zones:** Hot (<1ms), Warm (1–5ms), Cold (10ms+)
+- **74% compression** via Delta Engine delta-chain storage
+- **PDPA compliance:** UUID-linked tombstone pattern for right-to-erasure
+- **Full audit trail:** Every AI decision reconstructable with complete context
+
+RCTDB is the memory layer that makes constitutional AI operationally viable at enterprise scale.
+
+---
+
+*This article was written by Ittirit Saengow, founder and sole developer of RCT Labs.*

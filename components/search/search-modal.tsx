@@ -82,10 +82,10 @@ export default function SearchModal({ isOpen, onClose, searchData }: SearchModal
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4">
         <div
-          className="w-full max-w-2xl bg-white dark:bg-warm-charcoal rounded-2xl shadow-2xl overflow-hidden"
+          className="w-full max-w-2xl bg-white/95 dark:bg-background/85 backdrop-blur-2xl border border-warm-light-gray dark:border-border rounded-2xl shadow-2xl overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Search Input */}

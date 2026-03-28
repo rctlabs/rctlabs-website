@@ -1,6 +1,7 @@
 export type AuthorProfile = {
   id: string
   name: string
+  nameLocal?: string
   role: {
     en: string
     th: string
@@ -12,86 +13,59 @@ export type AuthorProfile = {
   expertise: string[]
   sameAs?: string[]
   profileType: "person" | "organization"
+  isSoleDeveloper?: boolean
+  foundingYear?: string
 }
 
 export const authorProfiles: AuthorProfile[] = [
   {
     id: "ittirit-saengow",
     name: "Ittirit Saengow",
+    nameLocal: "อิทธิฤทธิ์ แซ่โง้ว",
     role: {
       en: "Founder and Architect, RCT Labs",
       th: "ผู้ก่อตั้งและสถาปนิกระบบ, RCT Labs",
     },
     bio: {
-      en: "Founder of RCT Labs and architect of the public constitutional AI platform narrative, platform roadmap, and enterprise operating model.",
-      th: "ผู้ก่อตั้ง RCT Labs และผู้ออกแบบภาพรวม constitutional AI, roadmap สาธารณะ และแนวทางการใช้งานระดับองค์กรของแพลตฟอร์ม",
+      en: "Ittirit Saengow (อิทธิฤทธิ์ แซ่โง้ว) is the founder, sole developer, and primary author of RCT Labs — a constitutional AI operating system platform built independently from architecture through publication. He conceived and developed the FDIA equation (F = (D^I) × A), the JITNA protocol specification (RFC-001), the 10-layer architecture, the 7-Genome system, and the RCT-7 process framework. The full platform — including bilingual infrastructure, enterprise SEO systems, 62 microservices, 41 production algorithms, and all published research — was built as a solo project in Bangkok, Thailand.",
+      th: "อิทธิฤทธิ์ แซ่โง้ว คือผู้ก่อตั้ง นักพัฒนาเพียงคนเดียว และผู้เขียนหลักของ RCT Labs — แพลตฟอร์มระบบปฏิบัติการ AI แบบ constitutional ที่สร้างขึ้นอย่างอิสระตั้งแต่สถาปัตยกรรมจนถึงการเผยแพร่ เขาคิดค้นสมการ FDIA (F = (D^I) × A) ข้อกำหนดโปรโตคอล JITNA (RFC-001) สถาปัตยกรรม 10 ชั้น ระบบ 7-Genome และกระบวนการ RCT-7 แพลตฟอร์มทั้งหมด ทั้งโครงสร้างสองภาษา ระบบ SEO ระดับองค์กร ไมโครเซอร์วิส 62 ตัว อัลกอริทึม 41 ชุด และงานวิจัยทั้งหมดที่เผยแพร่ สร้างโดยคนเพียงคนเดียวในกรุงเทพฯ ประเทศไทย",
     },
-    expertise: ["constitutional AI", "platform architecture", "enterprise AI governance", "AI operating systems"],
+    expertise: [
+      "constitutional AI system design",
+      "FDIA equation and framework",
+      "JITNA protocol specification",
+      "enterprise AI governance",
+      "full-stack Next.js development",
+      "bilingual AI platform architecture",
+      "AI operating systems",
+      "Thailand enterprise AI deployment",
+    ],
     sameAs: [
       "https://www.linkedin.com/in/ittirit-saengow/",
+      "https://github.com/ittirit720",
       "https://github.com/rctlabs",
     ],
     profileType: "person",
+    isSoleDeveloper: true,
+    foundingYear: "2025",
   },
   {
     id: "rct-research-desk",
     name: "RCT Labs Research Desk",
     role: {
-      en: "Editorial and Research Team",
-      th: "ทีมบรรณาธิการและวิจัย",
+      en: "Platform Research and Editorial",
+      th: "งานวิจัยและบรรณาธิการของแพลตฟอร์ม",
     },
     bio: {
-      en: "Organization-backed research desk synthesizing external frameworks, public-safe technical analysis, and buyer-facing evaluation guidance for RCT Labs.",
-      th: "ทีมวิจัยที่สังเคราะห์กรอบภายนอก การวิเคราะห์เชิงเทคนิคแบบ public-safe และแนวทางการประเมินสำหรับผู้ซื้อของ RCT Labs",
+      en: "The RCT Labs Research Desk is the editorial voice for platform research, protocol documentation, and enterprise evaluation guidance. All content is produced and reviewed by Ittirit Saengow, founder of RCT Labs.",
+      th: "RCT Labs Research Desk คือเสียงด้านบรรณาธิการสำหรับงานวิจัย เอกสารโปรโตคอล และแนวทางการประเมินระดับองค์กร เนื้อหาทั้งหมดจัดทำและตรวจทานโดย อิทธิฤทธิ์ แซ่โง้ว ผู้ก่อตั้ง RCT Labs",
     },
     expertise: ["AI governance", "editorial review", "benchmark framing", "enterprise evaluation"],
     sameAs: [
       "https://rctlabs.co/research",
-      "https://rctlabs.co/company/press",
+      "https://rctlabs.co/about",
     ],
     profileType: "organization",
-  },
-  {
-    id: "alex-patel",
-    name: "Dr. Alex Patel",
-    role: {
-      en: "Contributing Research Author",
-      th: "ผู้เขียนงานวิจัยร่วม",
-    },
-    bio: {
-      en: "Contributing author focused on intent systems, JITNA framing, and early conceptual material in the RCT Labs blog library.",
-      th: "ผู้เขียนร่วมที่เน้นด้าน intent systems, กรอบคิด JITNA และบทความแนวคิดช่วงต้นของคลังความรู้ RCT Labs",
-    },
-    expertise: ["JITNA", "intent systems", "AI language design"],
-    profileType: "person",
-  },
-  {
-    id: "sarah-chen",
-    name: "Dr. Sarah Chen",
-    role: {
-      en: "Research Contributor",
-      th: "ผู้ร่วมเขียนงานวิจัย",
-    },
-    bio: {
-      en: "Research contributor focused on intent operations, conceptual framing, and enterprise interpretation of RCT methods.",
-      th: "ผู้ร่วมเขียนที่เน้น intent operations กรอบแนวคิด และการตีความ RCT methods ในบริบทธุรกิจ",
-    },
-    expertise: ["intent operations", "AI strategy", "conceptual models"],
-    profileType: "person",
-  },
-  {
-    id: "james-wilson",
-    name: "Prof. James Wilson",
-    role: {
-      en: "Methodology Contributor",
-      th: "ผู้ร่วมพัฒนาด้านวิธีวิทยา",
-    },
-    bio: {
-      en: "Methodology contributor for research-process explanations and structured evaluation guidance in the RCT content library.",
-      th: "ผู้ร่วมพัฒนาด้านวิธีวิทยาสำหรับบทความอธิบาย research process และแนวทางการประเมินอย่างเป็นระบบในคลังเนื้อหา RCT",
-    },
-    expertise: ["research methodology", "evaluation", "process design"],
-    profileType: "person",
   },
 ]
 

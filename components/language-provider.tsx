@@ -107,6 +107,42 @@ const translations: Record<string, Record<Language, string>> = {
   "footer.resources": { en: "Resources",     th: "แหล่งข้อมูล" },
   "footer.connect":   { en: "Connect",        th: "เชื่อมต่อ" },
   "footer.rights":    { en: "All rights reserved.", th: "สงวนลิขสิทธิ์" },
+
+  // Blog Page
+  "blog.badge":       { en: "RCT Labs Research & Insights", th: "งานวิจัย & เชิงลึก RCT Labs" },
+  "blog.title":       { en: "Deep-Dives in Constitutional AI", th: "เจาะลึก Constitutional AI" },
+  "blog.subtitle":    {
+    en: "Technical guides, research breakdowns, and verified insights on FDIA, JITNA, HexaCore, and enterprise AI governance — written by the founder.",
+    th: "คู่มือเทคนิค การวิจัย และข้อมูลเชิงลึกที่ verified แล้ว เกี่ยวกับ FDIA, JITNA, HexaCore และ AI Governance ระดับองค์กร — เขียนโดยผู้ก่อตั้ง",
+  },
+  "blog.stat.articles":    { en: "Articles", th: "บทความ" },
+  "blog.stat.topics":      { en: "Topics",   th: "หัวข้อ" },
+  "blog.stat.reading":     { en: "Est. reading", th: "ประมาณเวลาอ่าน" },
+  "blog.filter.all":       { en: "All Articles", th: "ทุกบทความ" },
+  "blog.search.placeholder": { en: "Search articles...", th: "ค้นหาบทความ..." },
+  "blog.showing":          { en: "Showing", th: "แสดง" },
+  "blog.articles":         { en: "articles", th: "บทความ" },
+  "blog.in":               { en: "in", th: "ใน" },
+  "blog.featured":         { en: "Featured", th: "แนะนำ" },
+  "blog.all.articles":     { en: "All Articles", th: "ทุกบทความ" },
+  "blog.read.article":     { en: "Read article", th: "อ่านบทความ" },
+  "blog.cta.title":        { en: "Explore the Research", th: "สำรวจงานวิจัย" },
+  "blog.cta.desc":         {
+    en: "Every article is written by the founder — with verified metrics, source code references, and full SEO/E-E-A-T compliance.",
+    th: "ทุกบทความเขียนโดยผู้ก่อตั้ง — พร้อมตัวเลขที่ verified แล้ว, อ้างอิง source code และปฏิบัติตามมาตรฐาน SEO/E-E-A-T อย่างสมบูรณ์",
+  },
+  "blog.cta.button":       { en: "View Author Profile", th: "ดูโปรไฟล์ผู้เขียน" },
+  "blog.cat.research":     { en: "Research",   th: "งานวิจัย" },
+  "blog.cat.news":         { en: "News",       th: "ข่าว" },
+  "blog.cat.tutorial":     { en: "Tutorial",   th: "บทเรียน" },
+  "blog.cat.philosophy":   { en: "Philosophy", th: "ปรัชญา" },
+  "blog.cat.case_study":   { en: "Case Study", th: "กรณีศึกษา" },
+  "blog.noResults":        { en: "No articles found for", th: "ไม่พบบทความสำหรับ" },
+  "blog.clearFilters":     { en: "Clear filters", th: "ล้างตัวกรอง" },
+
+  // Common content labels
+  "common.readMore":       { en: "Read article", th: "อ่านเพิ่มเติม" },
+  "common.min":            { en: "min", th: "นาที" },
 }
 
 // ============================================================
@@ -129,9 +165,10 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
     }
   }, [language, pathname])
 
-  // NOTE: html[lang] is set server-side by layout.tsx from x-locale header.
-  // We do NOT set it client-side here to avoid triggering CSS :lang() selector
-  // changes during client-side language toggle (which causes font flickering).
+  useEffect(() => {
+    if (typeof document === "undefined") return
+    document.documentElement.lang = language
+  }, [language])
 
   const setLanguage = useCallback((lang: Language) => {
     if (!pathname || lang === language) return

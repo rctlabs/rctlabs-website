@@ -127,10 +127,9 @@
 
 @theme inline {
   /* Typography: Space Grotesk display, Inter/Kanit body, Space Mono code */
-  --font-sans: "Inter", "Kanit", "Noto Sans Thai", system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Kanit", "Noto Sans Thai", system-ui, sans-serif;
+  --font-sans: "Inter", "Kanit", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Kanit", system-ui, sans-serif;
   --font-mono: "Space Mono", "JetBrains Mono", "Fira Code", "Geist Mono", monospace;
-  --font-thai: var(--rct-font-thai, "Kanit", "Noto Sans Thai", sans-serif);
 
   /* Custom font sizes */
   --font-size-2xs: 0.625rem;   /* 10px */
@@ -190,11 +189,16 @@
   --color-warm-terracotta: #C4745B;
   --color-warm-sage: #7B9E87;
   --color-warm-sage-light: #A3C4AE;
-  --color-warm-charcoal: #1A1A1A;
+  --color-warm-charcoal: oklch(0.15 0.005 60);
   --color-warm-gray: #6B6B6B;
   --color-warm-light-gray: #E8E3DC;
   --color-warm-lavender: #B8A9C9;
   --color-warm-sky: #89B4C8;
+  /* Extended palette for blog/content pages */
+  --color-warm-dim: #888888;
+  --color-warm-dim-alt: #777777;
+  --color-warm-ghost: #BBBBBB;
+  --color-warm-charcoal-deep: oklch(0.11 0.005 60);
 }
 
 @layer base {
@@ -212,15 +216,12 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    /* Kanit is included explicitly so Thai glyphs always render in Kanit,
-       regardless of html[lang] attribute value (EN or TH page) */
-    font-family: var(--font-sans), var(--rct-font-thai), "Noto Sans Thai", sans-serif;
+    font-family: var(--font-sans);
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     text-rendering: optimizeLegibility;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
   }
-
 
   /* Warm Enterprise Typography */
   h1, h2, h3 {

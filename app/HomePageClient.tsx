@@ -10,7 +10,6 @@ import { getLocaleFromPathname, getLocalePrefix } from "@/lib/i18n"
 import HeroSection from "@/components/sections/hero-section"
 import OverviewSection from "@/components/sections/overview-section"
 import FDIASection from "@/components/sections/fdia-section"
-import EvidenceSection from "@/components/sections/evidence-section"
 
 export default function HomePage() {
   const pathname = usePathname()
@@ -85,10 +84,7 @@ export default function HomePage() {
                 className="group flex flex-col sm:flex-row text-left rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-warm-amber/40 gap-6 items-center sm:items-start"
               >
                 <div className="flex flex-col shrink-0 sm:w-[45%]">
-                  <div
-                    className={`mb-2 text-3xl font-bold ${locale === "th" ? "font-display" : "font-mono"}`}
-                    style={{ color: pillar.color }}
-                  >{pillar.stat}</div>
+                  <div className="mb-2 text-3xl font-bold font-mono" style={{ color: pillar.color }}>{pillar.stat}</div>
                   <div className="text-base font-semibold text-foreground group-hover:text-warm-amber transition-colors duration-200">{pillar.title}</div>
                 </div>
                 <div className="flex-1 mt-2 sm:mt-0">
@@ -101,7 +97,6 @@ export default function HomePage() {
       </section>
 
       <FDIASection />
-      <EvidenceSection />
       <OverviewSection />
 
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">

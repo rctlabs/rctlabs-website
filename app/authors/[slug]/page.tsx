@@ -8,6 +8,7 @@ import { getRequestLocale } from "@/lib/request-locale"
 import { getPersonSchema } from "@/lib/schema"
 import { getAllAuthorProfiles, getAuthorProfileById } from "@/lib/authors"
 import { getAllBlogPosts, getResolvedAuthorProfile, getResolvedReviewerProfile } from "@/lib/blog"
+import { SITE_URL } from "@/lib/site-config"
 
 interface AuthorPageProps {
   params: Promise<{ slug: string }>
@@ -52,17 +53,30 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     return resolvedAuthor?.id === author.id || resolvedReviewer?.id === author.id
   })
 
-  const personSchema = getPersonSchema(
-    author.name,
-    author.role[locale],
-    `https://rctlabs.co${localePrefix}/authors/${author.id}`,
-    author.bio[locale],
-    author.sameAs
-  )
+  // Build appropriate JSON-LD schema based on profile type
+  const authorUrl = `${SITE_URL}${localePrefix}/authors/${author.id}`
+  const schema = author.profileType === "organization"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: author.name,
+        url: authorUrl,
+        description: author.bio[locale],
+        ...(author.sameAs && { sameAs: author.sameAs }),
+      }
+    : getPersonSchema(
+        author.name,
+        author.role[locale],
+        authorUrl,
+        author.bio[locale],
+        author.sameAs,
+        author.nameLocal,
+        author.expertise,
+      )
 
   return (
     <main className="min-h-screen bg-background">
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <Navbar />
       <section className="mx-auto max-w-5xl px-4 py-24 md:py-32">
         <Link href={`${localePrefix}/authors`} className="text-sm text-accent hover:underline">
@@ -70,9 +84,17 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         </Link>
 
         <div className="mt-6 rounded-2xl border border-border bg-card p-8">
-          <h1 className="text-4xl font-bold text-foreground">{author.name}</h1>
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="text-4xl font-bold text-foreground">{author.name}</h1>
+            {author.isSoleDeveloper && (
+              <span className="rounded-full bg-warm-amber/15 px-3 py-1 text-xs font-semibold text-warm-amber">Solo Founder & Developer</span>
+            )}
+          </div>
+          {author.nameLocal && (
+            <p className="mt-1 text-lg text-muted-foreground">{author.nameLocal}</p>
+          )}
           <p className="mt-3 text-lg text-accent">{author.role[locale]}</p>
-          <p className="mt-4 max-w-3xl text-muted-foreground">{author.bio[locale]}</p>
+          <p className="mt-4 max-w-3xl leading-relaxed text-muted-foreground">{author.bio[locale]}</p>
 
           <div className="mt-6 flex flex-wrap gap-2">
             {author.expertise.map((item) => (
@@ -82,7 +104,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
           {author.sameAs?.length ? (
             <div className="mt-6 space-y-2">
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{isTh ? "References" : "References"}</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{isTh ? "ลิงก์ยืนยันตัวตน" : "Verified Links"}</div>
               {author.sameAs.map((link) => (
                 <a key={link} href={link} target="_blank" rel="noopener noreferrer" className="block text-sm text-accent hover:underline">{link}</a>
               ))}

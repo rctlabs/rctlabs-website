@@ -57,30 +57,11 @@ export default function SectionPreviewCard({
         <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.14),transparent_40%)]" />
         </div>
-        <div className="flex flex-col sm:flex-row gap-5 items-start h-full">
-          {/* Left Side: Content */}
-          <div className="relative z-10 flex flex-1 h-full flex-col text-left">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground text-left mb-3">
-              {language === "th" ? "Deep Dive" : "Deep Dive"}
-            </span>
-            <h3 className="mb-2 text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-lg">
-              {language === "th" ? titleTh : title}
-            </h3>
-            <p className={`text-sm leading-relaxed text-muted-foreground sm:text-[15px] mb-4 ${language === "th" ? "subtitle-th" : ""}`}>
-              {language === "th" ? descriptionTh : description}
-            </p>
+        <div className="flex flex-col sm:flex-row gap-6 items-start h-full">
+          {/* Left Side: Icon & Meta */}
+          <div className="flex flex-col items-start shrink-0 sm:w-[35%]">
             <div
-              className="relative z-10 mt-auto flex items-center gap-1 pt-1 text-xs font-semibold opacity-80 transition-all duration-200 group-hover:translate-x-1 group-hover:opacity-100"
-              style={{ color }}
-            >
-              {language === "th" ? "เปิดดูรายละเอียด →" : "Open →"}
-            </div>
-          </div>
-
-          {/* Right Side: Icon */}
-          <div className="flex flex-col items-center shrink-0 sm:w-[80px] gap-1">
-            <div
-              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border text-2xl transition-transform duration-300 group-hover:scale-105"
+              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border text-2xl transition-transform duration-300 group-hover:scale-105 mb-3"
               style={{ backgroundColor: isDark ? `${color}20` : bg }}
             >
               {iconSrc ? (
@@ -95,6 +76,25 @@ export default function SectionPreviewCard({
                   height={32}
                 />
               ) : icon}
+            </div>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground text-left">
+              {language === "th" ? "Deep Dive" : "Deep Dive"}
+            </span>
+          </div>
+
+          {/* Right Side: Content */}
+          <div className="relative z-10 flex flex-1 h-full flex-col text-left">
+            <h3 className="mb-2 text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-lg">
+              {language === "th" ? titleTh : title}
+            </h3>
+            <p className={`text-sm leading-relaxed text-muted-foreground sm:text-[15px] mb-4 ${language === "th" ? "subtitle-th" : ""}`}>
+              {language === "th" ? descriptionTh : description}
+            </p>
+            <div
+              className="relative z-10 mt-auto flex items-center gap-1 pt-1 text-xs font-semibold opacity-100 transition-all duration-200 sm:opacity-80 sm:group-hover:translate-x-1 sm:group-hover:opacity-100"
+              style={{ color }}
+            >
+              {language === "th" ? "เปิดดูรายละเอียด →" : "Open the detail path →"}
             </div>
           </div>
         </div>
