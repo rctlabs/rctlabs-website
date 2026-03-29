@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { headers } from "next/headers"
 import { Inter, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
 import { AppProviders } from "@/components/app-providers"
@@ -208,6 +209,7 @@ export default async function RootLayout({
         <AppProviders initialLocale={locale}>
           {children}
           <Analytics />
+          <SpeedInsights />
           <Toaster richColors position="bottom-right" />
         </AppProviders>
       </body>
