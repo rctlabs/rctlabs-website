@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 
 const metrics = [

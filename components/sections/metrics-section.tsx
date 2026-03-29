@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { LazyPerformanceRadarChart } from "@/components/diagrams/lazy-diagram-wrapper"

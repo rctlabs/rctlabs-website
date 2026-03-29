@@ -17,6 +17,9 @@
   --focus-ring-transition: 150ms ease-out;
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
+  --nav-height: 4rem;
+  --article-nav-offset: calc(var(--nav-height) + 2rem);
+  --article-anchor-offset: calc(var(--nav-height) + 1.5rem);
 
   /* Card: Elevated white */
   --card: oklch(1 0 0);
@@ -257,6 +260,10 @@
 
   .font-display { font-family: var(--font-display); }
   .font-thai    { font-family: var(--rct-font-thai, 'Kanit', 'Noto Sans Thai', sans-serif); }
+
+  .article-safe-top {
+    padding-top: var(--article-nav-offset);
+  }
 
   /* Thai subtitle — Kanit ExtraLight for visual contrast vs bold headlines */
   .subtitle-th {

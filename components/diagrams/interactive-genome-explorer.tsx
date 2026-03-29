@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { ChevronRight } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 
 interface GenomeParam {
   name: string

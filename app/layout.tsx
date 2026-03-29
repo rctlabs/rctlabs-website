@@ -10,6 +10,19 @@ import { AppProviders } from "@/components/app-providers"
 import { Toaster } from "sonner"
 import { SITE_OG_IMAGE, SITE_URL, SOCIAL_LINKS } from "@/lib/site-config"
 
+const themeBootstrapScript = `(() => {
+  try {
+    const stored = localStorage.getItem('theme');
+    const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const theme = stored === 'dark' || stored === 'light' ? stored : system;
+    const root = document.documentElement;
+    root.classList.toggle('dark', theme === 'dark');
+    root.classList.toggle('light', theme === 'light');
+    root.setAttribute('data-theme', theme);
+    root.style.colorScheme = theme;
+  } catch {}
+})();`
+
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION
 const bingSiteVerification = process.env.BING_SITE_VERIFICATION
 
@@ -182,6 +195,7 @@ export default async function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="color-scheme" content="light dark" />
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -202,12 +216,14 @@ export default async function RootLayout({
         {/* Skip to main content — accessibility */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-warm-amber text-white px-4 py-2 rounded"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:px-4 focus:py-2 focus:bg-warm-amber focus:text-white focus:rounded-lg focus:text-sm focus:font-medium focus:shadow-lg"
         >
-          Skip to content
+          Skip to main content
         </a>
         <AppProviders initialLocale={locale}>
-          {children}
+          <div id="main-content" tabIndex={-1}>
+            {children}
+          </div>
           <Analytics />
           <SpeedInsights />
           <Toaster richColors position="bottom-right" />

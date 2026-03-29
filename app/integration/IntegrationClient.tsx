@@ -1,209 +1,143 @@
 "use client"
 
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
+import { usePathname } from "next/navigation"
+import { BookOpen, Boxes, Database, Github, MessageCircle, Plug, Server, ShieldCheck, Workflow } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { ArrowRight, Plug } from "lucide-react"
+import { ResourceCardGrid, ResourcePageShell, ResourceSection } from "@/components/resource/resource-shell"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { SITE_UPTIME } from "@/lib/site-config"
 
-const integrations = [
-  { titleEn: "Notion Integration", titleTh: "Notion Integration", descEn: "Full CRUD operations on Notion databases, pages, and blocks. Programmatic content management with MCP.", descTh: "การดำเนินการ CRUD แบบเต็มรูปแบบบน Notion databases, pages และ blocks ผ่าน MCP", features: ["Database CRUD", "Page Management", "Block Operations", "Search & Query"] },
-  { titleEn: "Slack Integration", titleTh: "Slack Integration", descEn: "Channel management, message posting, and real-time event handling. Build AI-powered Slack bots.", descTh: "การจัดการ Channel การโพสต์ข้อความ และการจัดการ Event แบบ Real-Time", features: ["Channel Ops", "Messaging", "Events", "Slash Commands"] },
-  { titleEn: "GitHub Integration", titleTh: "GitHub Integration", descEn: "Repository management, issue tracking, and pull request automation. AI-powered development workflow.", descTh: "การจัดการ Repository การติดตาม Issue และ Pull Request Automation", features: ["Repo Management", "Issue Tracking", "PR Automation", "Code Review"] },
-  { titleEn: "File System Access", titleTh: "File System Access", descEn: "Secure file operations with permission controls. Read, write, and manage files across local and remote systems.", descTh: "การดำเนินการไฟล์ที่ปลอดภัยพร้อมการควบคุมสิทธิ์", features: ["File I/O", "Directory Ops", "Permissions", "Sync"] },
-]
-
-const providers = [
-  { name: "OpenAI", models: ["GPT-4", "GPT-4 Turbo", "GPT-3.5"], color: "#10A37F" },
-  { name: "Anthropic", models: ["Claude 3 Opus", "Claude 3 Sonnet", "Claude 3 Haiku"], color: "#D97757" },
-  { name: "Local LLMs", models: ["Ollama", "LM Studio", "Custom Models"], color: "#7B9E87" },
-]
-
-const deployments = [
-  { titleEn: "Docker Containerization", titleTh: "Docker Containerization", descEn: "All services as Docker containers with optimized images. Multi-stage builds reduce image size by 60%.", descTh: "บริการทั้งหมดถูก Package เป็น Docker Containers Multi-stage Builds ลดขนาด 60%", specs: ["Multi-stage builds", "Alpine base", "Layer caching", "Health checks"] },
-  { titleEn: "Kubernetes Orchestration", titleTh: "Kubernetes Orchestration", descEn: "Auto-scaling, load balancing, and self-healing deployments. Zero-downtime rolling updates.", descTh: "Auto-Scaling, Load Balancing และ Self-Healing Deployments", specs: ["Auto-scaling", "Load balancing", "Rolling updates", "Self-healing"] },
-  { titleEn: "CI/CD Pipeline", titleTh: "CI/CD Pipeline", descEn: "Automated testing, building, and deployment. GitHub Actions integration with quality gates.", descTh: "ทดสอบ สร้าง และ Deploy อัตโนมัติ พร้อม Quality Gates", specs: ["Automated tests", "Build pipeline", "Quality gates", "Auto deploy"] },
-  { titleEn: "Monitoring & Observability", titleTh: "Monitoring & Observability", descEn: "Prometheus metrics, Grafana dashboards, and distributed tracing. Real-time alerting.", descTh: "Prometheus Metrics, Grafana Dashboards และ Distributed Tracing", specs: ["Prometheus", "Grafana", "Tracing", "Alerting"] },
-]
-
-const benefits = [
-  { titleEn: "Vendor Independence", titleTh: "ความเป็นอิสระจากผู้ขาย", descEn: "Switch between providers without code changes", descTh: "เปลี่ยนผู้ขายได้โดยไม่ต้องแก้โค้ด" },
-  { titleEn: "Cost Optimization", titleTh: "การปรับต้นทุน", descEn: "Route requests to most cost-effective models", descTh: "ส่ง Request ไปยังโมเดลที่คุ้มค่าที่สุด" },
-  { titleEn: "Fallback Support", titleTh: "การรองรับ Fallback", descEn: "Automatic failover if primary provider is down", descTh: "Failover อัตโนมัติถ้า Provider หลักล้ม" },
-  { titleEn: "Best-of-Breed", titleTh: "เลือกที่ดีที่สุด", descEn: "Use optimal model for each specific task", descTh: "ใช้โมเดลที่เหมาะสมสำหรับแต่ละงาน" },
-]
-
-export default function IntegrationPage() {
+export default function IntegrationClient() {
+  const pathname = usePathname()
   const { language } = useLanguage()
-  const isTh = language === "th"
+  const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
+
+  const adapters = [
+    {
+      title: language === "th" ? "Notion integration" : "Notion integration",
+      description: language === "th" ? "เชื่อม CRUD, search และ content workflows ผ่าน MCP เพื่อให้ทีมใช้ Notion เป็น data surface หรือ operating layer ได้." : "Connect CRUD, search, and content workflows over MCP so teams can use Notion as a data surface or operating layer.",
+      href: `${localePrefix}/docs`,
+      icon: Database,
+      badge: "MCP",
+      meta: language === "th" ? "Database and page operations" : "Database and page operations",
+      tags: ["CRUD", "Search", "Workflows"],
+    },
+    {
+      title: language === "th" ? "Slack and team comms" : "Slack and team comms",
+      description: language === "th" ? "ใช้ MCP bridge สำหรับ channel actions, operational updates และ event-driven workflows กับทีมภายใน." : "Use MCP bridges for channel actions, operational updates, and event-driven internal workflows.",
+      href: `${localePrefix}/docs`,
+      icon: MessageCircle,
+      badge: "MCP",
+      meta: language === "th" ? "Realtime operational channels" : "Realtime operational channels",
+      tags: ["Events", "Messaging", "Ops"],
+    },
+    {
+      title: language === "th" ? "GitHub and delivery workflows" : "GitHub and delivery workflows",
+      description: language === "th" ? "ผูก repository actions, issue/PR lifecycle และ review support เข้ากับระบบ reasoning และ planning." : "Bind repository actions, issue and PR lifecycles, and review support into reasoning and planning flows.",
+      href: `${localePrefix}/docs`,
+      icon: Github,
+      badge: language === "th" ? "Dev workflow" : "Dev workflow",
+      meta: language === "th" ? "Repositories, issues, pull requests" : "Repositories, issues, pull requests",
+      tags: ["PRs", "Issues", "Automation"],
+    },
+  ]
+
+  const patterns = [
+    {
+      title: language === "th" ? "Multi-provider routing" : "Multi-provider routing",
+      description: language === "th" ? "จัดเส้นทาง LLM หลายค่ายด้วยนโยบายเดียว แทนการผูกระบบกับ provider รายเดียว." : "Route across multiple LLM providers with one policy layer instead of binding the system to a single vendor.",
+      href: `${localePrefix}/solutions/dynamic-ai-routing`,
+      icon: Workflow,
+      tags: ["Providers", "Policies", "Fallback"],
+    },
+    {
+      title: language === "th" ? "Container and runtime architecture" : "Container and runtime architecture",
+      description: language === "th" ? "วางโครง deploy สำหรับ services, adapters และ observability โดยใช้ production-safe runtime boundaries." : "Design deployment boundaries for services, adapters, and observability with production-safe runtime layers.",
+      href: `${localePrefix}/research/v250-infrastructure-layer`,
+      icon: Boxes,
+      tags: ["Containers", "Runtime", "Observability"],
+    },
+    {
+      title: language === "th" ? "Trust and verification controls" : "Trust and verification controls",
+      description: language === "th" ? "เชื่อม verification, disclosure และ governance controls เข้ากับ integration path ตั้งแต่ต้น." : "Connect verification, disclosure, and governance controls into the integration path from the start.",
+      href: `${localePrefix}/methodology`,
+      icon: ShieldCheck,
+      tags: ["Verification", "Disclosure", "Governance"],
+    },
+  ]
+
+  const deployment = [
+    {
+      title: language === "th" ? "Protocol-first build path" : "Protocol-first build path",
+      description: language === "th" ? "เริ่มจาก protocol layer หากทีมต้องกำหนด interface, negotiation และ control plane เอง." : "Start with the protocol layer if your team needs to own interfaces, negotiation, and control-plane logic.",
+      href: `${localePrefix}/protocols`,
+      icon: Plug,
+      tags: ["JITNA", "FDIA", "Control plane"],
+    },
+    {
+      title: language === "th" ? "Operational docs path" : "Operational docs path",
+      description: language === "th" ? "ใช้ docs path เมื่อต้องการวิธีเชื่อมเครื่องมือจริงและ workflow ของทีม implement." : "Use the docs path when you need practical connection steps and implementer workflows.",
+      href: `${localePrefix}/docs`,
+      icon: BookOpen,
+      tags: ["Docs", "Setup", "Implementation"],
+    },
+    {
+      title: language === "th" ? "Enterprise deployment path" : "Enterprise deployment path",
+      description: language === "th" ? "ใช้ research และ benchmark context เพื่อยืนยัน readiness ก่อน rollout ในองค์กร." : "Use research and benchmark context to confirm readiness before enterprise rollout.",
+      href: `${localePrefix}/benchmark-summary`,
+      icon: Server,
+      tags: ["Benchmarks", "Readiness", "Rollout"],
+    },
+  ]
 
   return (
-    <main className="min-h-screen bg-background" id="main-content">
-      <Navbar />
+    <ResourcePageShell
+      eyebrow={language === "th" ? "Build / Integration" : "Build / Integration"}
+      title={language === "th" ? "เส้นทางเชื่อมต่อและ deploy สำหรับทีมที่ต้องลงระบบจริง" : "Integration and deployment paths for teams shipping real systems"}
+      description={language === "th" ? "หน้า Integration ถูกจัดใหม่ให้เป็น build-oriented hub สำหรับ MCP adapters, provider routing, deployment boundaries และ trust controls แทนการเป็นหน้า feature dump." : "The integration page is restructured as a build-oriented hub for MCP adapters, provider routing, deployment boundaries, and trust controls instead of a feature dump."}
+      taxonomy={language === "th" ? ["MCP adapters", "Provider routing", "Deployment patterns", "Trust controls"] : ["MCP adapters", "Provider routing", "Deployment patterns", "Trust controls"]}
+      accent="lavender"
+      actions={[
+        { href: `${localePrefix}/docs`, label: language === "th" ? "เปิด docs" : "Open docs", variant: "primary" },
+        { href: `${localePrefix}/protocols`, label: language === "th" ? "เปิด protocols" : "Open protocols", variant: "secondary" },
+        { href: `${localePrefix}/contact`, label: language === "th" ? "คุยกับทีม implementation" : "Talk to the implementation team", variant: "secondary" },
+      ]}
+      stats={[
+        { label: language === "th" ? "MCP surfaces" : "MCP surfaces", value: "10+", detail: language === "th" ? "tools and adapter families" : "tools and adapter families" },
+        { label: language === "th" ? "AI providers" : "AI providers", value: "3+", detail: language === "th" ? "policy-driven routing options" : "policy-driven routing options" },
+        { label: language === "th" ? "Availability target" : "Availability target", value: SITE_UPTIME, detail: language === "th" ? "deployment readiness target" : "deployment readiness target" },
+        { label: language === "th" ? "Primary audience" : "Primary audience", value: language === "th" ? "Builders + Platform teams" : "Builders + Platform teams", detail: language === "th" ? "integration and rollout ownership" : "integration and rollout ownership" },
+      ]}
+      footerTitle={language === "th" ? "Integration ที่ดีต้องต่อกับ trust และ evaluation ด้วย" : "Good integration work also needs trust and evaluation context"}
+      footerDescription={language === "th" ? "หลังจากกำหนด adapter และ deployment path แล้ว ให้ไปต่อที่ methodology, benchmark summary และ evaluation เพื่อเช็คว่า implementation ตอบโจทย์องค์กรจริงหรือไม่." : "After defining the adapter and deployment path, continue into methodology, benchmark summary, and evaluation to confirm the implementation fits the enterprise decision model."}
+      footerActions={[
+        { href: `${localePrefix}/methodology`, label: language === "th" ? "เปิด methodology" : "Open methodology", variant: "primary" },
+        { href: `${localePrefix}/evaluation`, label: language === "th" ? "ไปหน้า evaluation" : "Go to evaluation", variant: "secondary" },
+      ]}
+    >
+      <ResourceSection
+        eyebrow={language === "th" ? "Adapters" : "Adapters"}
+        title={language === "th" ? "จุดเชื่อม MCP ที่ทีม implement ใช้บ่อยที่สุด" : "The MCP connection surfaces implementation teams use most often"}
+        description={language === "th" ? "ย่อ adapter landscape ให้เห็นบทบาทแต่ละชุดอย่างชัดเจน แทนการแสดงเป็นรายการยาวที่ไม่มี priority." : "The adapter landscape is compressed into the highest-value surfaces instead of a long undifferentiated list."}
+      >
+        <ResourceCardGrid cards={adapters} />
+      </ResourceSection>
 
-      {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
-        <div className="max-w-3xl mx-auto space-y-5">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-lavender/10 border border-warm-lavender/30 text-warm-lavender text-sm font-medium">
-            <Plug className="w-4 h-4" /> {isTh ? "การเชื่อมต่อ" : "Integration"}
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-bold text-foreground">Integration & Deployment</h1>
-          <p className="text-lg text-muted-foreground">
-            {isTh
-              ? "สถาปัตยกรรม MCP-native Integration พร้อม Multi-provider AI Support และ Enterprise Deployment Infrastructure"
-              : "MCP-native integration architecture with multi-provider AI support and enterprise deployment infrastructure."}
-          </p>
-        </div>
-      </section>
+      <ResourceSection
+        eyebrow={language === "th" ? "Build patterns" : "Build patterns"}
+        title={language === "th" ? "รูปแบบการออกแบบที่ควรอ่านก่อนลงระบบ" : "Design patterns worth reading before implementation begins"}
+        description={language === "th" ? "เส้นทางนี้แยกให้เห็นทั้ง provider strategy, runtime architecture และ trust controls." : "This route separates provider strategy, runtime architecture, and trust controls into explicit design choices."}
+      >
+        <ResourceCardGrid cards={patterns} />
+      </ResourceSection>
 
-      {/* MCP Integrations */}
-      <section className="bg-muted/30 py-20">
-        <div className="mx-auto max-w-5xl px-4">
-          <h2 className="text-2xl font-bold text-foreground text-center mb-4">MCP Protocol <span className="text-warm-lavender">Integration</span></h2>
-          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-10">
-            {isTh
-              ? "Model Context Protocol (MCP) เชื่อมต่อกับเครื่องมือและบริการภายนอกผ่าน Interface มาตรฐาน"
-              : "Model Context Protocol (MCP) enables seamless integration with external tools and services through a standardized interface."}
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {integrations.map((integ, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-6 rounded-2xl border border-border bg-card">
-                <h3 className="text-lg font-bold mb-3 text-foreground">{isTh ? integ.titleTh : integ.titleEn}</h3>
-                <p className="text-sm leading-relaxed mb-4 text-muted-foreground">{isTh ? integ.descTh : integ.descEn}</p>
-                <div className="flex flex-wrap gap-2">
-                  {integ.features.map((f, idx) => (
-                    <span key={idx} className="px-3 py-1 rounded-lg text-xs font-semibold bg-warm-lavender/10 text-warm-lavender">{f}</span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Multi-Provider AI */}
-      <section className="mx-auto max-w-4xl px-4 py-20">
-        <h2 className="text-2xl font-bold text-foreground text-center mb-4">Multi-Provider <span className="text-warm-sky">AI Support</span></h2>
-        <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-10">
-          {isTh
-            ? "รองรับ AI Providers หลายรายผ่าน Interface เดียว ทำให้มีความยืดหยุ่นในการเลือกผู้ขาย"
-            : "Multiple AI providers through a unified interface, enabling vendor flexibility and best-of-breed model selection."}
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {providers.map((p, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="p-6 rounded-2xl border border-border bg-card">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: p.color }} />
-                <h3 className="text-lg font-bold text-foreground">{p.name}</h3>
-              </div>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                {p.models.map((model, idx) => (
-                  <li key={idx} className="flex items-center gap-2"><span className="text-xs">✓</span> {model}</li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {benefits.map((b, i) => (
-            <div key={i} className="p-4 rounded-xl bg-card border border-border">
-              <h4 className="text-sm font-bold mb-1 text-foreground">{isTh ? b.titleTh : b.titleEn}</h4>
-              <p className="text-xs text-muted-foreground">{isTh ? b.descTh : b.descEn}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Enterprise Deployment */}
-      <section className="bg-muted/30 py-20">
-        <div className="mx-auto max-w-5xl px-4">
-          <h2 className="text-2xl font-bold text-foreground text-center mb-4">Enterprise <span className="text-warm-terracotta">Deployment</span></h2>
-          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-10">
-            {isTh
-              ? "โครงสร้าง deployment แบบ public-safe พร้อม Docker, Kubernetes และ cloud-native architecture"
-              : "Public-safe deployment infrastructure with Docker, Kubernetes, and cloud-native architecture."}
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {deployments.map((d, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-6 rounded-2xl border border-border bg-card">
-                <h3 className="text-lg font-bold mb-3 text-foreground">{isTh ? d.titleTh : d.titleEn}</h3>
-                <p className="text-sm leading-relaxed mb-4 text-muted-foreground">{isTh ? d.descTh : d.descEn}</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {d.specs.map((spec, idx) => (
-                    <div key={idx} className="px-3 py-2 rounded-lg text-xs font-semibold text-center bg-muted/50 text-muted-foreground">{spec}</div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Technical Specifications */}
-      <section className="mx-auto max-w-4xl px-4 py-20">
-        <h2 className="text-2xl font-bold text-foreground text-center mb-10">
-          {isTh ? "ข้อมูลจำเพาะทาง" : "Technical "}
-          <span className="text-warm-sage">{isTh ? "" : "Specifications"}</span>
-          {isTh && <span className="text-warm-sage"> Technical</span>}
-        </h2>
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="p-8 rounded-2xl border border-border bg-card"
-        >
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-            {[
-              { labelEn: "MCP Servers", labelTh: "MCP Servers", value: "10+" },
-              { labelEn: "AI Providers", labelTh: "AI Providers", value: "3+" },
-              { labelEn: "Deployment Time", labelTh: "เวลา Deploy", value: "< 5 min" },
-              { labelEn: "Availability Target", labelTh: "เป้าหมายความพร้อมใช้งาน", value: SITE_UPTIME },
-              { labelEn: "Auto-scaling", labelTh: "Auto-Scaling", value: "✓ Yes" },
-              { labelEn: "Zero Downtime", labelTh: "Zero Downtime", value: "✓ Yes" },
-            ].map((spec, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="p-4 rounded-xl bg-muted/50"
-              >
-                <div className="text-xs font-semibold mb-1 text-muted-foreground">{isTh ? spec.labelTh : spec.labelEn}</div>
-                <div className="text-lg font-bold font-mono text-foreground">{spec.value}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-muted/30 py-20">
-        <div className="mx-auto max-w-3xl px-4 text-center space-y-6">
-          <h2 className="text-3xl font-bold text-foreground">{isTh ? "พร้อม Integrate?" : "Ready to Integrate?"}</h2>
-          <p className="text-muted-foreground max-w-lg mx-auto">
-            {isTh
-              ? "สถาปัตยกรรม MCP-native Installation ใน 5 นาที Scale อัตโนมัติ ไม่มี Downtime"
-              : "MCP-native architecture. Deploy in under 5 minutes. Auto-scaling with zero-downtime updates."}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
-              {isTh ? "ติดต่อทีม" : "Contact Us"} <ArrowRight size={16} />
-            </Link>
-            <Link href="/docs" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
-              {isTh ? "อ่าน Docs" : "Read Docs"}
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
+      <ResourceSection
+        eyebrow={language === "th" ? "Deployment routes" : "Deployment routes"}
+        title={language === "th" ? "เส้นทางถัดไปตามรูปแบบการ deploy ที่ทีมคุณต้องการ" : "The next route to open based on the deployment model your team needs"}
+        description={language === "th" ? "ใช้ route เหล่านี้เพื่อแยกคนที่ต้องการ protocol ownership, docs-first rollout หรือ readiness validation." : "Use these routes to separate protocol ownership, docs-first rollout, and readiness validation work."}
+      >
+        <ResourceCardGrid cards={deployment} />
+      </ResourceSection>
+    </ResourcePageShell>
   )
 }

@@ -18,7 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function BlogPage() {
-  const posts = getAllBlogPosts()
+export default async function BlogPage() {
+  const locale = await getRequestLocale()
+  const posts = getAllBlogPosts(locale)
   return <BlogPageClient posts={posts} />
 }

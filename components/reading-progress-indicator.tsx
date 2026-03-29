@@ -7,7 +7,7 @@
  */
 import { useState, useEffect } from "react"
 import { motion, useScroll, useSpring } from "framer-motion"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 
 export default function ReadingProgressIndicator() {
   const { scrollYProgress } = useScroll()

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react"
 import { motion } from "framer-motion"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 
 interface Node {

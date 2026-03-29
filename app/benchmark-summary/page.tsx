@@ -1,8 +1,6 @@
 import type { Metadata } from "next"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
+import BenchmarkSummaryClient from "./BenchmarkSummaryClient"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
-import { BarChart3, AlertTriangle, CheckCircle, Info } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Benchmark Summary — RCT Labs | 0.3% Hallucination, 0.92 FDIA Accuracy",
@@ -111,73 +109,7 @@ export default async function BenchmarkSummaryPage() {
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />
-      <main className="min-h-screen bg-background">
-        <Navbar />
-
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(191,160,110,0.07),transparent_60%)] pointer-events-none" />
-          <div className="mx-auto max-w-4xl px-4 py-24 md:py-32">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-warm-amber/30 bg-warm-amber/8 text-warm-amber text-sm font-medium mb-6">
-              <BarChart3 className="w-4 h-4" /> Performance Benchmarks
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-warm-light-gray leading-tight mb-4">
-              Benchmark Summary
-            </h1>
-            <p className="text-xl text-warm-dim max-w-2xl mb-6">
-              Methodology, test conditions, and honest caveats for every performance claim.
-            </p>
-            <div className="flex items-start gap-3 p-4 rounded-xl border border-warm-amber/20 bg-warm-amber/5">
-              <Info className="w-5 h-5 text-warm-amber shrink-0 mt-0.5" />
-              <p className="text-warm-dim text-sm">
-                Every metric below includes the method used to measure it <strong className="text-warm-light-gray">and</strong> the limitations of that measurement. If a claim cannot be substantiated with a methodology, we do not make it.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-4xl px-4 py-8 space-y-6">
-          {metrics.map((m) => (
-            <div key={m.label} className={`rounded-2xl border ${m.bgColor} p-8`}>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-                <div>
-                  <p className="text-warm-dim text-sm font-medium mb-1">{m.label}</p>
-                  <p className={`text-4xl font-bold ${m.color}`}>{m.value}</p>
-                </div>
-                <div className="sm:ml-auto text-sm sm:text-right">
-                  <p className="text-warm-dim">Industry: <span className="text-warm-light-gray font-semibold">{m.industry}</span></p>
-                  <p className={`font-bold ${m.color}`}>{m.improvement}</p>
-                </div>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
-                  <p className="text-warm-light-gray text-sm leading-relaxed">{m.method}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-4 h-4 text-warm-amber/70 shrink-0 mt-0.5" />
-                  <p className="text-warm-dim text-sm leading-relaxed"><strong className="text-warm-dim">Caveat:</strong> {m.caveat}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </section>
-
-        <section className="mx-auto max-w-4xl px-4 py-12">
-          <div className="rounded-2xl border border-white/10 bg-warm-charcoal/30 p-8">
-            <h2 className="text-xl font-bold text-warm-light-gray mb-4">Test Environment</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-              {[["Version", "v5.4.5"], ["Test Date", "March 21, 2026"], ["OS", "Linux x86_64"], ["Node.js", "22.x LTS"], ["Test Runner", "pytest + Hypothesis"], ["CI/CD", "GitHub Actions"]].map(([k, v]) => (
-                <div key={k} className="bg-white/3 border border-white/8 rounded-lg p-3">
-                  <p className="text-warm-dim text-xs mb-0.5">{k}</p>
-                  <p className="font-semibold text-warm-light-gray">{v}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <Footer />
-      </main>
+      <BenchmarkSummaryClient />
     </>
   )
 }

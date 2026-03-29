@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { motion, useReducedMotion } from "framer-motion"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { usePathname } from "next/navigation"
 import { LazyEcosystemOverview } from "@/components/diagrams/lazy-diagram-wrapper"

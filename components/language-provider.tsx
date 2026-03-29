@@ -107,6 +107,57 @@ const translations: Record<string, Record<Language, string>> = {
   "footer.resources": { en: "Resources",     th: "แหล่งข้อมูล" },
   "footer.connect":   { en: "Connect",        th: "เชื่อมต่อ" },
   "footer.rights":    { en: "All rights reserved.", th: "สงวนลิขสิทธิ์" },
+
+  // ── Blog Page ─────────────────────────────────────────────────────────────
+  "blog.badge":          { en: "Research & Insights",    th: "งานวิจัยและข้อมูลเชิงลึก" },
+  "blog.title":          { en: "RCT Labs AI Research & Insights", th: "บทความวิจัย AI และข้อมูลเชิงลึก" },
+  "blog.subtitle":       { en: "Deep dives into constitutional AI, enterprise architecture, hallucination prevention, and the technology powering the future of AI.", th: "บทความเชิงลึกเกี่ยวกับ Constitutional AI, สถาปัตยกรรมระดับองค์กร, การป้องกัน AI Hallucination และเทคโนโลยีที่ขับเคลื่อนอนาคตของ AI" },
+  "blog.stat.articles":  { en: "articles",               th: "บทความ" },
+  "blog.stat.topics":    { en: "topics covered",         th: "หัวข้อที่ครอบคลุม" },
+  "blog.stat.reading":   { en: "total content",          th: "เนื้อหาทั้งหมด" },
+  "blog.stat.words":     { en: "words",                  th: "คำ" },
+  "blog.filter.all":     { en: "All",                    th: "ทั้งหมด" },
+  "blog.cat.release":    { en: "Release",                th: "รีลีส" },
+  "blog.cat.research":   { en: "Research",               th: "งานวิจัย" },
+  "blog.cat.news":       { en: "News",                   th: "ข่าวสาร" },
+  "blog.cat.tutorial":   { en: "Tutorial",               th: "คู่มือ" },
+  "blog.cat.philosophy": { en: "Philosophy",             th: "ปรัชญา" },
+  "blog.cat.case_study": { en: "Case Study",             th: "กรณีศึกษา" },
+  "blog.featured":       { en: "Featured",               th: "เด่น" },
+  "blog.read.article":   { en: "Read article",           th: "อ่านบทความ" },
+  "blog.search.placeholder": { en: "Search articles…",  th: "ค้นหาบทความ…" },
+  "blog.noResults":      { en: "No results for",         th: "ไม่พบผลลัพธ์สำหรับ" },
+  "blog.clearFilters":   { en: "Clear filters",          th: "ล้างตัวกรอง" },
+  "blog.showing":        { en: "Showing",                th: "แสดง" },
+  "blog.articles":       { en: "articles",               th: "บทความ" },
+  "blog.in":             { en: "in",                     th: "ใน" },
+  "blog.all.articles":   { en: "All Articles",           th: "บทความทั้งหมด" },
+  "blog.cta.title":      { en: "Stay Informed on AI Research", th: "ติดตามงานวิจัย AI ล่าสุด" },
+  "blog.cta.desc":       { en: "Get the latest deep-dives on constitutional AI, enterprise architecture, and the FDIA framework from RCT Labs.", th: "รับข้อมูลเชิงลึกล่าสุดเกี่ยวกับ Constitutional AI, สถาปัตยกรรมองค์กร และ FDIA Framework จาก RCT Labs" },
+  "blog.cta.button":     { en: "Meet the Author",        th: "พบกับผู้เขียน" },
+  "blog.share":          { en: "Share",                  th: "แชร์" },
+  "blog.copy.link":      { en: "Copy link",              th: "คัดลอกลิงก์" },
+  "blog.copied":         { en: "Copied!",                th: "คัดลอกแล้ว" },
+  "blog.copy.citation":  { en: "Copy citation",          th: "คัดลอกการอ้างอิง" },
+  "blog.citation.copied": { en: "Citation copied",       th: "คัดลอกการอ้างอิงแล้ว" },
+  "blog.export.pdf":     { en: "Print or save PDF",      th: "พิมพ์หรือบันทึก PDF" },
+  "blog.linkedin":       { en: "LinkedIn",               th: "LinkedIn" },
+  "blog.toc":            { en: "Table of Contents",      th: "สารบัญ" },
+  "blog.reading.progress": { en: "Reading progress",     th: "ความคืบหน้าในการอ่าน" },
+  "blog.trust.author":   { en: "Author",                 th: "ผู้เขียน" },
+  "blog.trust.reviewer": { en: "Reviewer",               th: "ผู้ตรวจทาน" },
+  "blog.trust.reviewed": { en: "Last reviewed",          th: "ตรวจทานล่าสุด" },
+  "blog.trust.references": { en: "Evidence references",  th: "แหล่งอ้างอิง" },
+  "blog.view.reviewer":  { en: "View reviewer profile",  th: "ดูโปรไฟล์ผู้ตรวจทาน" },
+  "blog.english.fallback": { en: "English fallback",     th: "ใช้เนื้อหาอังกฤษชั่วคราว" },
+  "blog.english.fallback.desc": { en: "This article does not have a Thai source file yet, so the English body is shown as a fallback.", th: "บทความนี้ยังไม่มีไฟล์ต้นฉบับภาษาไทย จึงแสดงเนื้อหาภาษาอังกฤษเป็น fallback ชั่วคราว" },
+
+  // ── Common ────────────────────────────────────────────────────────────────
+  "common.min":          { en: "min read",               th: "นาทีอ่าน" },
+  "common.prev.post":    { en: "Previous Post",          th: "บทความก่อนหน้า" },
+  "common.next.post":    { en: "Next Post",              th: "บทความถัดไป" },
+  "common.related":      { en: "Related Articles",       th: "บทความที่เกี่ยวข้อง" },
+  "common.view.author":  { en: "View author profile",    th: "ดูโปรไฟล์ผู้เขียน" },
 }
 
 // ============================================================
@@ -120,14 +171,8 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [language, setLanguageState] = useState<Language>(() => getLocaleFromPathname(pathname || "") ?? initialLocale)
-
-  useEffect(() => {
-    const localeFromPath = getLocaleFromPathname(pathname || "")
-    if (localeFromPath && localeFromPath !== language) {
-      setLanguageState(localeFromPath)
-    }
-  }, [language, pathname])
+  const [languageState, setLanguageState] = useState<Language>(() => getLocaleFromPathname(pathname || "") ?? initialLocale)
+  const language = getLocaleFromPathname(pathname || "") ?? languageState
 
   useEffect(() => {
     if (typeof document === "undefined") return

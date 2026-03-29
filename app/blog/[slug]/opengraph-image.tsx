@@ -1,10 +1,11 @@
 import { ImageResponse } from "next/og"
-import { getBlogPostBySlug } from "@/lib/blog"
+import { getBlogPostBySlug, getBlogCategoryLabel } from "@/lib/blog"
 
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
 const CATEGORY_COLORS: Record<string, string> = {
+  release: "#d946ef",
   research: "#3b82f6",
   news: "#22c55e",
   tutorial: "#a855f7",
@@ -18,13 +19,13 @@ interface OgImageProps {
 
 export default async function BlogOgImage({ params }: OgImageProps) {
   const { slug } = await params
-  const post = getBlogPostBySlug(slug)
+  const post = getBlogPostBySlug(slug, "en")
 
   const title = post?.title ?? "RCT Labs Blog"
   const category = post?.category ?? "research"
   const excerpt = post?.excerpt ?? "Enterprise AI research and insights from RCT Labs."
   const accentColor = CATEGORY_COLORS[category] ?? "#f59e0b"
-  const categoryLabel = category.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())
+  const categoryLabel = getBlogCategoryLabel(category, "en")
 
   // Truncate to ~80 chars for OG display
   const displayTitle = title.length > 72 ? title.slice(0, 70) + "…" : title

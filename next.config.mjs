@@ -1,5 +1,7 @@
 // next.config.mjs
 /** @type {import('next').NextConfig} */
+const isProduction = process.env.NODE_ENV === "production"
+
 const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
@@ -26,7 +28,9 @@ const nextConfig = {
       "@radix-ui/react-tabs",
       "@radix-ui/react-tooltip",
       "lucide-react",
-      "framer-motion",
+      // NOTE: framer-motion intentionally excluded — its `motion` factory uses a
+      // dynamic Proxy/function pattern that Turbopack's tree-shaking mishandles,
+      // causing `motion.div` etc. to become `undefined` after HMR invalidation.
     ],
   },
   async redirects() {
@@ -44,7 +48,7 @@ const nextConfig = {
     ]
   },
   async headers() {
-    return [
+    const headers = [
       {
         source: "/:path*",
         headers: [
@@ -58,11 +62,26 @@ const nextConfig = {
           },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "img-src 'self' data: blob: https://d2xsxph8kpxj0f.cloudfront.net https://rctlabs.co",
+              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://vitals.vercel-insights.com",
+              "frame-ancestors 'none'",
+            ].join("; "),
           },
         ],
       },
-      {
+    ]
+
+    if (isProduction) {
+      headers.push({
         source: "/_next/static/:path*",
         headers: [
           {
@@ -70,8 +89,10 @@ const nextConfig = {
             value: "public, max-age=31536000, immutable",
           },
         ],
-      },
-    ]
+      })
+    }
+
+    return headers
   },
 }
 

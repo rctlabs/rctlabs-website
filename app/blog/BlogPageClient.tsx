@@ -18,6 +18,7 @@ interface BlogPageClientProps {
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   all: BookOpen,
+  release: FileText,
   research: FlaskConical,
   news: Newspaper,
   tutorial: Wrench,
@@ -27,6 +28,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
 
 const CATEGORY_COLORS: Record<string, string> = {
   all: "text-warm-amber border-warm-amber/40 bg-warm-amber/10",
+  release: "text-fuchsia-400 border-fuchsia-400/40 bg-fuchsia-400/10",
   research: "text-blue-400 border-blue-400/40 bg-blue-400/10",
   news: "text-green-400 border-green-400/40 bg-green-400/10",
   tutorial: "text-purple-400 border-purple-400/40 bg-purple-400/10",
@@ -41,20 +43,23 @@ function ArticleCard({
   post,
   localePrefix,
   isFeatured = false,
+  language,
   t,
 }: {
   post: BlogPost
   localePrefix: string
   isFeatured?: boolean
+  language: string
   t: (key: string) => string
 }) {
+  const dateLocale = language === "th" ? "th-TH" : "en-US"
   const catColor = getCategoryColor(post.category)
   const catLabel = t(`blog.cat.${post.category}`) || post.category
 
   if (isFeatured) {
     return (
       <Link href={`${localePrefix}/blog/${post.slug}`} className="group block">
-        <article className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-warm-charcoal/80 to-warm-charcoal/40 backdrop-blur-sm p-8 h-full hover:border-warm-amber/30 transition-all duration-300 hover:shadow-[0_0_40px_rgba(191,160,110,0.10)]">
+        <article className="relative overflow-hidden rounded-2xl border border-border bg-card p-8 h-full hover:border-warm-amber/30 transition-all duration-300 hover:shadow-[0_0_40px_rgba(191,160,110,0.08)]">
           {/* Glow accent */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-warm-amber/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -69,11 +74,11 @@ function ArticleCard({
             </span>
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-bold text-warm-light-gray group-hover:text-warm-amber transition-colors duration-200 leading-tight mb-4 text-balance">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-warm-amber transition-colors duration-200 leading-tight mb-4 text-balance">
             {post.title}
           </h2>
 
-          <p className="text-warm-dim leading-relaxed mb-6 line-clamp-3 text-base">
+          <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-3 text-base">
             {post.excerpt}
           </p>
 
@@ -81,15 +86,15 @@ function ArticleCard({
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
               {post.tags.slice(0, 4).map((tag) => (
-                <span key={tag} className="px-2 py-0.5 rounded text-xs bg-white/5 border border-white/10 text-warm-dim">
+                <span key={tag} className="px-2 py-0.5 rounded text-xs bg-muted/50 border border-border text-muted-foreground">
                   {tag}
                 </span>
               ))}
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
-            <div className="flex items-center gap-4 text-sm text-warm-dim">
+          <div className="flex items-center justify-between pt-4 border-t border-border">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5" />
                 {post.author ?? post.authorId ?? "RCT Labs"}
@@ -110,7 +115,7 @@ function ArticleCard({
 
   return (
     <Link href={`${localePrefix}/blog/${post.slug}`} className="group block h-full">
-      <article className="relative h-full overflow-hidden rounded-xl border border-white/8 bg-warm-charcoal/40 backdrop-blur-sm p-6 flex flex-col hover:border-warm-amber/25 hover:bg-warm-charcoal/60 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+      <article className="relative h-full overflow-hidden rounded-xl border border-border bg-card p-6 flex flex-col hover:border-warm-amber/25 hover:bg-muted/30 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
         {/* Top gradient accent */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-warm-amber/20 to-transparent" />
 
@@ -119,37 +124,37 @@ function ArticleCard({
             {(() => { const CatIcon = CATEGORY_ICONS[post.category] ?? FileIcon; return <CatIcon className="w-3 h-3" /> })()}
             <span className="capitalize">{catLabel}</span>
           </span>
-          <span className="ml-auto flex items-center gap-1 text-xs text-warm-dim">
+          <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
             <Clock className="w-3 h-3" />{post.readTime} {t("common.min")}
           </span>
         </div>
 
-        <h3 className="text-base font-bold text-warm-light-gray group-hover:text-warm-amber transition-colors duration-200 leading-snug mb-3 line-clamp-2">
+        <h3 className="text-base font-bold text-foreground group-hover:text-warm-amber transition-colors duration-200 leading-snug mb-3 line-clamp-2">
           {post.title}
         </h3>
 
-        <p className="text-warm-dim text-sm leading-relaxed flex-1 line-clamp-3 mb-4">
+        <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-3 mb-4">
           {post.excerpt}
         </p>
 
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-4">
             {post.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="px-2 py-0.5 rounded text-xs bg-white/5 border border-white/8 text-warm-dim/70">
+              <span key={tag} className="px-2 py-0.5 rounded text-xs bg-muted/50 border border-border text-muted-foreground/80">
                 {tag}
               </span>
             ))}
             {post.tags.length > 3 && (
-              <span className="px-2 py-0.5 rounded text-xs text-warm-dim/50">+{post.tags.length - 3}</span>
+              <span className="px-2 py-0.5 rounded text-xs text-muted-foreground/50">+{post.tags.length - 3}</span>
             )}
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-3 border-t border-white/8 mt-auto">
-          <span className="text-xs text-warm-dim">{(post.author ?? post.authorId ?? "RCT Labs").split(" ").slice(0, 2).join(" ")}</span>
+        <div className="flex items-center justify-between pt-3 border-t border-border mt-auto">
+          <span className="text-xs text-muted-foreground">{(post.author ?? post.authorId ?? "RCT Labs").split(" ").slice(0, 2).join(" ")}</span>
           {post.date && (
-            <span className="text-xs text-warm-dim/60 tabular-nums">
-              {new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+            <span className="text-xs text-muted-foreground/60 tabular-nums">
+              {new Date(post.date).toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}
             </span>
           )}
           <ArrowRight className="w-4 h-4 text-warm-amber opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200" />
@@ -163,8 +168,9 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState<string>("")
   const pathname = usePathname()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const localePrefix = getLocalePrefix(resolveLocale(pathname, "en"))
+  const hasEnglishFallbacks = language === "th" && posts.some((post) => !post.isLocalized)
 
   const filteredPosts = useMemo(() => {
     let result = selectedCategory === "all" ? posts : posts.filter((p) => p.category === selectedCategory)
@@ -183,7 +189,12 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
   const totalWords = posts.reduce((acc, p) => acc + (p.readTime ?? 5) * 200, 0)
   const categories = [
     { id: "all", label: t("blog.filter.all") },
-    ...RESEARCH_CATEGORIES.map((c) => ({ ...c, label: t(`blog.cat.${c.id}`) || c.label })),
+    ...RESEARCH_CATEGORIES
+      .filter((category) => category.id !== "all")
+      .map((category) => ({
+        ...category,
+        label: t(`blog.cat.${category.id}`) || category.label,
+      })),
   ]
 
   const categoryCount = (id: string) =>
@@ -204,19 +215,10 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
               <BookOpen className="w-4 h-4" />
               {t("blog.badge")}
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-warm-light-gray leading-tight text-balance">
-              {t("blog.title").includes("Constitutional") ? (
-                <>
-                  {t("blog.title").split("Constitutional")[0]}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-warm-amber to-orange-400">
-                    Constitutional AI
-                  </span>
-                </>
-              ) : (
-                t("blog.title")
-              )}
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground leading-tight text-balance">
+              {t("blog.title")}
             </h1>
-            <p className="text-xl text-warm-dim leading-relaxed max-w-2xl">
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
               {t("blog.subtitle")}
             </p>
 
@@ -225,12 +227,12 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
               {[
                 { icon: FileText, label: t("blog.stat.articles"), value: posts.length },
                 { icon: TrendingUp, label: t("blog.stat.topics"), value: new Set(posts.map(p => p.category)).size },
-                { icon: Clock, label: t("blog.stat.reading"), value: `${Math.round(totalWords / 1000)}K words` },
+                { icon: Clock, label: t("blog.stat.reading"), value: `${Math.round(totalWords / 1000)}K ${t("blog.stat.words")}` },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-center gap-2 text-sm">
                   <Icon className="w-4 h-4 text-warm-amber" />
-                  <span className="font-bold text-warm-light-gray">{value}</span>
-                  <span className="text-warm-dim">{label}</span>
+                  <span className="font-bold text-foreground">{value}</span>
+                  <span className="text-muted-foreground">{label}</span>
                 </div>
               ))}
             </div>
@@ -239,7 +241,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
       </section>
 
       {/* ── Filters + Search ──────────────────────────────────── */}
-      <section className="sticky top-16 z-20 border-y border-white/8 bg-background/80 backdrop-blur-md">
+      <section className="sticky top-16 z-20 border-y border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col sm:flex-row items-start sm:items-center gap-3">
           {/* Category pills */}
           <div className="flex items-center gap-1.5 flex-wrap">
@@ -254,7 +256,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
                   className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-200 ${
                     selectedCategory === cat.id
                       ? getCategoryColor(cat.id)
-                      : "border-white/10 text-warm-dim hover:border-white/20 hover:text-warm-light-gray"
+                      : "border-border text-muted-foreground hover:border-border/70 hover:text-foreground"
                   }`}
                 >
                   {(() => { const CatIcon = CATEGORY_ICONS[cat.id]; return CatIcon ? <CatIcon className="inline-block w-3 h-3 mr-1" /> : null })()}
@@ -273,7 +275,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
               placeholder={t("blog.search.placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-4 py-1.5 rounded-lg border border-white/10 bg-white/5 text-sm text-warm-light-gray placeholder:text-warm-dim focus:outline-none focus:border-warm-amber/40 focus:bg-white/8 transition-all w-48 sm:w-56"
+              className="pl-8 pr-4 py-1.5 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-warm-amber/40 focus:bg-muted/30 transition-all w-48 sm:w-56"
             />
           </div>
         </div>
@@ -281,13 +283,20 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
 
       {/* ── Content ───────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-16">
+        {hasEnglishFallbacks ? (
+          <div className="mb-8 rounded-2xl border border-warm-amber/30 bg-warm-amber/10 p-4 text-sm text-muted-foreground">
+            <div className="font-semibold text-foreground">{t("blog.english.fallback")}</div>
+            <p className="mt-1">{t("blog.english.fallback.desc")}</p>
+          </div>
+        ) : null}
+
         {filteredPosts.length === 0 ? (
           <div className="text-center py-24">
             <div className="text-5xl mb-4">🔍</div>
-            <p className="text-warm-dim text-lg">{t("blog.noResults")} &quot;{searchQuery}&quot;</p>
+            <p className="text-muted-foreground text-lg">{t("blog.noResults")} &quot;{searchQuery}&quot;</p>
             <button
               onClick={() => { setSearchQuery(""); setSelectedCategory("all") }}
-              className="mt-4 px-4 py-2 rounded-lg border border-white/10 text-sm text-warm-dim hover:border-warm-amber/30 hover:text-warm-amber transition"
+              className="mt-4 px-4 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:border-warm-amber/30 hover:text-warm-amber transition"
             >
               {t("blog.clearFilters")}
             </button>
@@ -296,8 +305,8 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
           <div className="space-y-12">
             {/* Results count */}
             <div className="flex items-center justify-between">
-              <p className="text-warm-dim text-sm">
-                {t("blog.showing")} <span className="font-semibold text-warm-light-gray">{filteredPosts.length}</span>{" "}
+              <p className="text-muted-foreground text-sm">
+                {t("blog.showing")} <span className="font-semibold text-foreground">{filteredPosts.length}</span>{" "}
                 {t("blog.articles")}
                 {selectedCategory !== "all" && (
                   <span> {t("blog.in")} <span className="text-warm-amber capitalize">{t(`blog.cat.${selectedCategory}`)}</span></span>
@@ -309,11 +318,11 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
             {filteredPosts.length > 0 && (
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <div className="lg:col-span-3">
-                  <ArticleCard post={filteredPosts[0]} localePrefix={localePrefix} isFeatured t={t} />
+                  <ArticleCard post={filteredPosts[0]} localePrefix={localePrefix} isFeatured language={language} t={t} />
                 </div>
                 <div className="lg:col-span-2 flex flex-col gap-6">
                   {filteredPosts.slice(1, 3).map((post) => (
-                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} t={t} />
+                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} language={language} t={t} />
                   ))}
                 </div>
               </div>
@@ -329,7 +338,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {filteredPosts.slice(3).map((post) => (
-                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} t={t} />
+                    <ArticleCard key={post.slug} post={post} localePrefix={localePrefix} language={language} t={t} />
                   ))}
                 </div>
               </>
@@ -342,8 +351,8 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
       <section className="mx-auto max-w-7xl px-4 py-16">
         <div className="rounded-2xl border border-warm-amber/20 bg-gradient-to-br from-warm-amber/8 to-transparent p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
-            <h2 className="text-2xl font-bold text-warm-light-gray mb-2">{t("blog.cta.title")}</h2>
-            <p className="text-warm-dim max-w-md">
+            <h2 className="text-2xl font-bold text-foreground mb-2">{t("blog.cta.title")}</h2>
+            <p className="text-muted-foreground max-w-md">
               {t("blog.cta.desc")}
             </p>
           </div>

@@ -1,10 +1,10 @@
 "use client"
 
 import { motion, useInView, useReducedMotion } from "framer-motion"
-import { ArrowRight, Layers, Brain, Dna, ArrowDown, Zap } from "lucide-react"
+import { ArrowRight, ArrowDown } from "lucide-react"
 import Link from "next/link"
 import { useRef } from "react"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { usePathname } from "next/navigation"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
@@ -12,6 +12,7 @@ import { LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { useMounted } from "@/hooks/use-mounted"
 import { SITE_UPTIME } from "@/lib/site-config"
+import { pixelIcons } from "@/lib/pixel-icons"
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
 const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
@@ -34,10 +35,10 @@ export default function HeroSection() {
   }
 
   const stats = [
-    { value: "41", label: t("hero.stat.algorithms"), icon: Brain },
-    { value: "10", label: t("hero.stat.layers"), icon: Layers },
-    { value: "7", label: t("hero.stat.genomes"), icon: Dna },
-    { value: SITE_UPTIME, label: t("hero.stat.uptime"), icon: Zap },
+    { value: "41", label: t("hero.stat.algorithms"), iconSrc: pixelIcons.brain },
+    { value: "10", label: t("hero.stat.layers"), iconSrc: pixelIcons.layers },
+    { value: "7", label: t("hero.stat.genomes"), iconSrc: pixelIcons.genome },
+    { value: SITE_UPTIME, label: t("hero.stat.uptime"), iconSrc: pixelIcons.cpu },
   ]
 
   const containerVariants = {
@@ -54,7 +55,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section ref={heroRef} aria-label="Hero" className="relative min-h-screen flex items-center overflow-hidden">
+    <section ref={heroRef} aria-label="Hero" className="relative min-h-screen flex items-center overflow-hidden bg-warm-cream dark:bg-[#0D0D0D]">
       <div className="absolute inset-0">
         <OptimizedImage src={HERO_BG} alt="RCT Ecosystem Hero Background" containerClassName="h-full w-full" objectFit="cover" priority sizes="100vw" className={isDark ? "opacity-30" : "opacity-100"} />
       </div>
@@ -144,7 +145,15 @@ export default function HeroSection() {
                     <div className={`flex h-8 w-8 items-center justify-center rounded-lg border shadow-sm ${
                       isDark ? "bg-card/80 border-border" : "bg-white/90 border-warm-light-gray"
                     }`}>
-                      <stat.icon size={15} className="text-warm-amber" />
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={stat.iconSrc}
+                        alt=""
+                        width={18}
+                        height={18}
+                        className="object-contain"
+                        style={{ imageRendering: "pixelated" }}
+                      />
                     </div>
                     <div className={`text-right text-lg font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{stat.value}</div>
                   </div>

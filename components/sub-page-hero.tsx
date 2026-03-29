@@ -6,7 +6,7 @@
  * Migrated from manus-frontend-design: ThemeContext → next-themes, LanguageContext → language-provider
  */
 import { motion } from "framer-motion"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 
 interface SubPageHeroProps {

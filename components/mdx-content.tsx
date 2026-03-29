@@ -1,13 +1,12 @@
 import { MDXRemote } from "next-mdx-remote/rsc"
+import { getMdxArticleComponents } from "@/components/blog/mdx-article-components"
+import type { BlogLocale } from "@/lib/blog"
 
 interface MDXContentProps {
   content: string
+  locale: BlogLocale
 }
 
-export function MDXContent({ content }: MDXContentProps) {
-  return (
-    <div className="prose prose-invert max-w-none">
-      <MDXRemote source={content} />
-    </div>
-  )
+export function MDXContent({ content, locale }: MDXContentProps) {
+  return <MDXRemote source={content} components={getMdxArticleComponents(locale)} />
 }

@@ -28,7 +28,8 @@ export function proxy(request: NextRequest) {
   if (process.env.NODE_ENV === 'production' || process.env.BLOCK_INTERNAL_ROUTES === 'true') {
     const protectedRoute = isProtectedInternalPath(pathname)
     if (protectedRoute) {
-      const url = new URL('/not-found', request.url)
+      const url = request.nextUrl.clone()
+      url.pathname = '/not-found'
       return NextResponse.rewrite(url)
     }
   }
@@ -88,13 +89,14 @@ export function proxy(request: NextRequest) {
   const acceptLanguage = request.headers.get('accept-language')
   const locale = detectLocale(acceptLanguage)
 
-  const newUrl = new URL(`/${locale}${pathname}`, request.url)
+  const newUrl = request.nextUrl.clone()
+  newUrl.pathname = `/${locale}${pathname}`
   return NextResponse.redirect(newUrl)
 }
 
 export const config = {
   matcher: [
     '/api/:path*',
-    '/((?!_next|_vercel|.*\\..*).*)',
+    '/((?!_next/static|_next/image|_vercel|favicon.ico|sitemap.xml|robots.txt|opengraph-image|manifest.json|.*\\..*).*)',
   ],
 }

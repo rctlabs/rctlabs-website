@@ -1,9 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useLanguage } from "@/components/language-provider"
 
 export function ReadingProgress() {
   const [progress, setProgress] = useState(0)
+  const { t } = useLanguage()
 
   useEffect(() => {
     const update = () => {
@@ -26,7 +28,7 @@ export function ReadingProgress() {
       aria-valuenow={Math.round(progress)}
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-label="Reading progress"
+      aria-label={t("blog.reading.progress")}
     />
   )
 }

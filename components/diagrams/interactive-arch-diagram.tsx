@@ -15,7 +15,7 @@ import {
   Briefcase,
   Cloud,
 } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 
 interface LayerItem {
   id: number

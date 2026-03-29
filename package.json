@@ -16,6 +16,7 @@
     "dev:3010": "next dev -H 0.0.0.0 --port 3010",
     "dev:host": "next dev -H 0.0.0.0 --port 3005",
     "lint": "eslint .",
+    "smoke:pages": "node ./scripts/smoke-pages.mjs",
     "start": "next start",
     "start:host": "next start -H 0.0.0.0 -p 3010",
     "verify:public": "bash ./scripts/verify-public-truth.sh"
@@ -67,7 +68,6 @@
     "lucide-react": "^0.454.0",
     "next": "^16.2.1",
     "next-mdx-remote": "^6.0.0",
-    "next-themes": "^0.4.6",
     "react": "19.2.0",
     "react-day-picker": "9.8.0",
     "react-dom": "19.2.0",

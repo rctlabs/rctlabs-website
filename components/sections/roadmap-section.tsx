@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { ArrowRight, CheckCircle2, Circle, Clock, Heart, Users, Scale, Target, Trophy, CalendarClock } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import VersionTimelineGraph from "@/components/diagrams/version-timeline-graph"
 import RoadmapMilestoneCalendar from "@/components/diagrams/roadmap-milestone-calendar"

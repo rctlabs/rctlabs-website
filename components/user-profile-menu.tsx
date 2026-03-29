@@ -92,13 +92,13 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
     <div className="flex items-center gap-1.5">
       <Link
         href={contactHref}
-        className="hidden xl:inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-foreground/60 hover:text-foreground hover:bg-accent transition-colors"
+        className="hidden lg:inline-flex min-h-11 items-center gap-1.5 border border-border/70 bg-white/12 px-4 py-2 text-[13px] font-medium text-foreground transition-colors hover:bg-accent/70"
       >
         {copy.contact}
       </Link>
       <Link
         href={accessHref}
-        className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 text-[12px] font-bold text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap leading-none"
+        className="inline-flex min-h-11 items-center border border-primary/20 bg-primary px-4 py-2 text-[13px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap leading-none"
       >
         {language === "en" ? "Get Access" : "ขอสิทธิ์"}
       </Link>

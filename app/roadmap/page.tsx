@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import RoadmapSection from "@/components/sections/roadmap-section"
+import RoadmapClient from "./RoadmapClient"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import { getRequestLocale } from "@/lib/request-locale"
@@ -55,14 +53,10 @@ export default async function RoadmapPage() {
   ])
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(phasesItemList) }} />
-      <Navbar />
-      <div className="pt-16">
-        <RoadmapSection />
-      </div>
-      <Footer />
-    </main>
+      <RoadmapClient />
+    </>
   )
 }

@@ -1,189 +1,113 @@
 "use client"
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Users, Github, MessageCircle, ArrowRight, BookOpen, FileText, Sparkles } from "lucide-react"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
+import { usePathname } from "next/navigation"
+import { BookOpen, FileText, Github, MessageCircle, Sparkles, Users } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
+import { ResourceCardGrid, ResourcePageShell, ResourceSection } from "@/components/resource/resource-shell"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 export default function CommunityClient() {
+  const pathname = usePathname()
+  const { language } = useLanguage()
+  const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
+
   const channels = [
     {
-      icon: Github,
       title: "GitHub",
-      description: "Open source repositories, code examples, and collaborative development",
+      description: language === "th" ? "รีโพสาธารณะ ตัวอย่างโค้ด การสนทนาเรื่อง implementation และ issue workflow สำหรับทีมเทคนิค." : "Public repositories, implementation examples, issue workflows, and technical discussion for builders.",
       href: "https://github.com/rctlabs",
-      stat: "1,000+",
-      statLabel: "Stars",
-      color: "text-foreground",
+      icon: Github,
+      badge: language === "th" ? "Open source" : "Open source",
+      meta: language === "th" ? "Code, issues, discussions" : "Code, issues, discussions",
+      external: true,
+      tags: ["Repositories", "Examples", "Discussions"],
     },
     {
-      icon: MessageCircle,
       title: "Discord",
-      description: "Real-time chat, discussions, and community support",
+      description: language === "th" ? "ช่องสนทนาแบบ real-time สำหรับถามตอบ implementation, routing, protocol และ deployment patterns." : "Real-time discussion for implementation questions, routing, protocol, and deployment patterns.",
       href: "https://discord.gg/rctlabs",
-      stat: "24/7",
-      statLabel: "Support",
-      color: "text-accent",
+      icon: MessageCircle,
+      badge: language === "th" ? "Live" : "Live",
+      meta: language === "th" ? "Real-time support and discussion" : "Real-time support and discussion",
+      external: true,
+      tags: ["Support", "Realtime", "Builders"],
     },
     {
-      icon: Users,
-      title: "Forum",
-      description: "Threaded discussions, Q&A, and knowledge sharing",
+      title: language === "th" ? "Community forum" : "Community forum",
+      description: language === "th" ? "พื้นที่สำหรับคำถามเชิงลึก การออกแบบระบบ และบทสนทนาที่ต้องการบริบทยาวกว่าการแชตสด." : "A place for deeper questions, system design discussion, and conversations that need more context than live chat.",
       href: "https://github.com/orgs/rctlabs/discussions",
-      stat: "10K+",
-      statLabel: "Discussions",
-      color: "text-secondary",
+      icon: Users,
+      badge: language === "th" ? "Async" : "Async",
+      meta: language === "th" ? "Long-form discussion" : "Long-form discussion",
+      external: true,
+      tags: ["Q&A", "Design", "Knowledge sharing"],
     },
   ]
 
-  const highlights = [
+  const paths = [
     {
-      title: "Research Community",
-      description: "Join researchers and academics pushing the frontier of intent-driven AI",
-      link: "/research",
+      title: language === "th" ? "เข้าฝั่ง research และ releases" : "Enter through research and releases",
+      description: language === "th" ? "เหมาะกับนักวิจัยหรือทีม architecture ที่ต้องการอ่านหลักฐานก่อนเข้าชุมชน." : "Best for researchers and architecture teams who want the evidence trail before joining the conversation.",
+      href: `${localePrefix}/research`,
+      icon: FileText,
+      tags: language === "th" ? ["Research", "Archive", "Evidence"] : ["Research", "Archive", "Evidence"],
     },
     {
-      title: "Developer Community",
-      description: "Build with RCT protocols, solutions, and technical docs across the ecosystem",
-      link: "/docs",
+      title: language === "th" ? "เข้าฝั่ง docs และ integration" : "Enter through docs and integration",
+      description: language === "th" ? "เหมาะกับทีม implement ที่ต้องการเชื่อม MCP tools หรือ deployment patterns เข้าระบบจริง." : "Best for implementation teams integrating MCP tools or deployment patterns into real systems.",
+      href: `${localePrefix}/integration`,
+      icon: BookOpen,
+      tags: language === "th" ? ["Docs", "MCP", "Deployment"] : ["Docs", "MCP", "Deployment"],
     },
     {
-      title: "Learning Hub",
-      description: "Tutorials, guides, and articles on constitutional AI, FDIA, and enterprise deployment",
-      link: "/blog",
+      title: language === "th" ? "เข้าฝั่ง evaluation และ use cases" : "Enter through evaluation and use cases",
+      description: language === "th" ? "เหมาะกับ buyer, operator และ stakeholder ที่ต้องการ context เชิงตัดสินใจก่อนเริ่มทดลอง." : "Best for buyers, operators, and stakeholders who need decision context before trial work begins.",
+      href: `${localePrefix}/evaluation`,
+      icon: Sparkles,
+      tags: language === "th" ? ["Evaluation", "Adoption", "Buyer path"] : ["Evaluation", "Adoption", "Buyer path"],
     },
-  ]
-
-  const jumpLinks = [
-    { icon: FileText, label: "Read Whitepapers", href: "/whitepaper" },
-    { icon: BookOpen, label: "Browse Documentation", href: "/docs" },
-    { icon: Sparkles, label: "Explore Solutions", href: "/solutions" },
   ]
 
   return (
-    <main id="main-content" className="min-h-screen bg-background">
-      <Navbar />
+    <ResourcePageShell
+      eyebrow={language === "th" ? "Adopt / Community" : "Adopt / Community"}
+      title={language === "th" ? "ชุมชนสำหรับนักพัฒนา นักวิจัย และทีม AI ระดับองค์กร" : "A community for developers, researchers, and enterprise AI teams"}
+      description={language === "th" ? "หน้า Community ไม่ใช่ landing page ทั่วไป แต่เป็นจุดเชื่อมระหว่าง evidence, implementation และ adoption paths ของ RCT ecosystem." : "The community page is not a generic landing page. It connects evidence, implementation, and adoption paths across the RCT ecosystem."}
+      taxonomy={language === "th" ? ["Developer community", "Research discussion", "Implementation support", "Adoption path"] : ["Developer community", "Research discussion", "Implementation support", "Adoption path"]}
+      accent="amber"
+      actions={[
+        { href: `${localePrefix}/docs`, label: language === "th" ? "เปิด docs" : "Open docs", variant: "primary" },
+        { href: "https://github.com/rctlabs", label: "GitHub", variant: "secondary", external: true },
+        { href: `${localePrefix}/contact`, label: language === "th" ? "ติดต่อทีม" : "Contact the team", variant: "secondary" },
+      ]}
+      stats={[
+        { label: language === "th" ? "Primary mode" : "Primary mode", value: language === "th" ? "Builder support" : "Builder support", detail: language === "th" ? "implementation and knowledge exchange" : "implementation and knowledge exchange" },
+        { label: language === "th" ? "Discussion surfaces" : "Discussion surfaces", value: "3", detail: language === "th" ? "GitHub, Discord, forum" : "GitHub, Discord, forum" },
+        { label: language === "th" ? "Adjacent routes" : "Adjacent routes", value: "Research / Docs / Eval", detail: language === "th" ? "narrative handoff across the resource system" : "narrative handoff across the resource system" },
+        { label: language === "th" ? "Audience" : "Audience", value: language === "th" ? "Dev + Research + Ops" : "Dev + Research + Ops", detail: language === "th" ? "multi-role enterprise path" : "multi-role enterprise path" },
+      ]}
+      footerTitle={language === "th" ? "ใช้ community เป็น operational layer ของ resource system" : "Use community as the operational layer of the resource system"}
+      footerDescription={language === "th" ? "เริ่มจาก community เพื่อถามและเชื่อมทีม แล้วไปต่อที่ docs, research, evaluation หรือ contact ตามบทบาทของคุณ." : "Start in the community to connect with the right people, then continue into docs, research, evaluation, or contact based on your role."}
+      footerActions={[
+        { href: `${localePrefix}/research`, label: language === "th" ? "ไปหน้า research" : "Go to research", variant: "primary" },
+        { href: `${localePrefix}/whitepaper`, label: language === "th" ? "อ่าน whitepaper" : "Read whitepaper", variant: "secondary" },
+      ]}
+    >
+      <ResourceSection
+        eyebrow={language === "th" ? "Channels" : "Channels"}
+        title={language === "th" ? "ช่องทางหลักที่ควรใช้ตามลักษณะงาน" : "The primary channels to use based on the work you are doing"}
+        description={language === "th" ? "แยกบทบาทของแต่ละช่องให้ชัด เพื่อไม่ให้ Community กลายเป็นเพียงหน้ารวมลิงก์." : "Each channel has a distinct role so the community page does not collapse into a generic link directory."}
+      >
+        <ResourceCardGrid cards={channels} />
+      </ResourceSection>
 
-      <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
-        <div className="mx-auto max-w-4xl space-y-8 text-center">
-          <h1 className="text-5xl font-bold leading-tight text-foreground text-balance md:text-6xl">
-            Join the RCT Community
-          </h1>
-          <p className="mx-auto max-w-2xl text-xl text-muted-foreground text-balance md:text-2xl">
-            Connect with researchers, developers, and operators building constitutional AI, verified intelligence, and enterprise-grade AI infrastructure.
-          </p>
-          <div className="grid gap-3 sm:grid-cols-3">
-            {jumpLinks.map((item) => {
-              const Icon = item.icon
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-                >
-                  <span className="inline-flex items-center gap-2">
-                    <Icon className="h-4 w-4" />
-                    {item.label}
-                  </span>
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-24">
-        <h2 className="mb-12 text-center text-4xl font-bold text-foreground">Connect With Us</h2>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {channels.map((channel) => {
-            const Icon = channel.icon
-            return (
-              <Link key={channel.title} href={channel.href} target="_blank" rel="noopener noreferrer">
-                <div className="group flex h-full flex-col rounded-lg border border-border bg-card p-8 transition hover:border-accent/50 hover:shadow-lg">
-                  <div className="space-y-4">
-                    <Icon className={`h-12 w-12 ${channel.color}`} />
-                    <div>
-                      <h3 className="mb-2 text-2xl font-bold text-foreground transition group-hover:text-accent">
-                        {channel.title}
-                      </h3>
-                      <p className="leading-relaxed text-muted-foreground">{channel.description}</p>
-                    </div>
-                  </div>
-                  <div className="flex-1" />
-                  <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-                    <div>
-                      <p className="text-lg font-bold text-accent">{channel.stat}</p>
-                      <p className="text-xs text-muted-foreground">{channel.statLabel}</p>
-                    </div>
-                    <div className="flex items-center text-accent opacity-0 transition group-hover:opacity-100">
-                      <ArrowRight className="h-4 w-4" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl rounded-lg bg-gradient-to-r from-accent/5 to-secondary/5 px-4 py-24">
-        <h2 className="mb-12 text-center text-4xl font-bold text-foreground">Get Involved</h2>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {highlights.map((highlight) => (
-            <Link key={highlight.title} href={highlight.link}>
-              <div className="group h-full cursor-pointer rounded-lg border border-border bg-background p-8 transition hover:border-accent/50">
-                <h3 className="mb-2 text-lg font-semibold text-foreground transition group-hover:text-accent">
-                  {highlight.title}
-                </h3>
-                <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{highlight.description}</p>
-                <div className="flex items-center text-accent opacity-0 transition group-hover:opacity-100">
-                  <ArrowRight className="h-4 w-4" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-24">
-        <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
-          {[
-            { label: "Community Members", value: "5,000+" },
-            { label: "Active Contributors", value: "100+" },
-            { label: "Publications", value: "24+" },
-            { label: "Organizations", value: "50+" },
-          ].map((stat) => (
-            <div key={stat.label} className="space-y-2">
-              <p className="text-4xl font-bold text-accent">{stat.value}</p>
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-24">
-        <div className="rounded-lg bg-primary p-12 text-center text-primary-foreground space-y-6 md:p-16">
-          <h2 className="text-4xl font-bold">Ready to Join?</h2>
-          <p className="mx-auto max-w-2xl text-lg opacity-90">
-            Start with the RCT community, then continue into whitepapers, documentation, and solution evaluation with the team.
-          </p>
-          <div className="flex flex-col justify-center gap-3 sm:flex-row">
-            <Button size="lg" variant="secondary" asChild>
-              <Link href="/contact" className="gap-2">
-                Get Started <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/whitepaper" className="gap-2">
-                Read Whitepapers <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
+      <ResourceSection
+        eyebrow={language === "th" ? "Entry routes" : "Entry routes"}
+        title={language === "th" ? "ถ้าจะเริ่มจาก resource อื่นก่อน ควรเริ่มที่ไหน" : "If you need another resource before joining, start in one of these routes"}
+        description={language === "th" ? "ชุมชนทำงานได้ดีที่สุดเมื่อเชื่อมกับ archive, docs และ evaluation flows ที่ชัดเจน." : "The community works best when connected to clear archive, docs, and evaluation flows."}
+      >
+        <ResourceCardGrid cards={paths} />
+      </ResourceSection>
+    </ResourcePageShell>
   )
 }

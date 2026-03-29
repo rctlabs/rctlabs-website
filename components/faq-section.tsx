@@ -1,7 +1,7 @@
 "use client"
 
 import { ChevronDown } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import { useMounted } from "@/hooks/use-mounted"
 
 type FAQItem = { question: string; answer: string }
