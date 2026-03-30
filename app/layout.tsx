@@ -9,6 +9,7 @@ import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
 import { AppProviders } from "@/components/app-providers"
 import { Toaster } from "sonner"
 import { SITE_OG_IMAGE, SITE_URL, SOCIAL_LINKS } from "@/lib/site-config"
+import HeroAnimatedBackground from "@/components/ui/hero-animated-background"
 
 const themeBootstrapScript = `(() => {
   try {
@@ -221,6 +222,8 @@ export default async function RootLayout({
           Skip to main content
         </a>
         <AppProviders initialLocale={locale}>
+          {/* Global animated background — position:fixed, mounts once, GPU-composited only */}
+          <HeroAnimatedBackground variant="global" />
           <div id="main-content" tabIndex={-1}>
             {children}
           </div>
