@@ -14,8 +14,8 @@ const PIXEL_BRAIN = pixelIcons.brain
 function InfographicAccordion({ language }: { language: string }) {
   return (
     <div className="mb-6">
-      <details className="group rounded-xl border bg-card border-border overflow-hidden shadow-sm">
-        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 hover:bg-secondary/50 transition-colors duration-200">
+      <details className="main-page-reactive-surface group overflow-hidden rounded-xl border border-border bg-[#fff6ef] shadow-sm dark:bg-card">
+        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 transition-colors duration-200 hover:bg-[#f6ede4] dark:hover:bg-secondary/50">
           <div className="flex items-center gap-3">
             <ImageIcon size={18} className="text-warm-amber" />
             <span className="text-sm font-semibold text-foreground">
@@ -104,7 +104,7 @@ export default function FDIASection() {
     <section
       id="fdia"
       aria-label="FDIA Equation"
-      className="py-16 md:py-24 bg-card/30 border-y border-border transition-colors duration-300"
+      className="border-y border-border bg-transparent py-16 md:py-24 transition-colors duration-300"
     >
       <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -129,7 +129,7 @@ export default function FDIASection() {
                 whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={prefersReducedMotion ? undefined : { duration: 0.3, delay: i * 0.04 }}
-                className="flex-1 p-4 rounded-xl border bg-card border-border hover:shadow-md transition-[box-shadow,transform] duration-200 group"
+                className="main-page-reactive-card group flex-1 rounded-xl border border-border bg-[#fff8f1] p-4 transition-[box-shadow,transform,background-color] duration-200 hover:bg-[#fffdf8] hover:shadow-[0_12px_24px_rgba(84,61,31,0.06)] dark:bg-card dark:hover:bg-card"
               >
                 <div className="flex items-center gap-2.5 mb-2">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-base transition-transform duration-200 group-hover:scale-105 ${stage.toneClass}`}>
@@ -161,7 +161,7 @@ export default function FDIASection() {
               whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={prefersReducedMotion ? undefined : { duration: 0.3, delay: i * 0.04 }}
-              className="p-4 rounded-xl border bg-card border-border hover:shadow-md transition-[box-shadow,transform] duration-200 group"
+              className="main-page-reactive-card group rounded-xl border border-border bg-[#fff8f1] p-4 transition-[box-shadow,transform,background-color] duration-200 hover:bg-[#fffdf8] hover:shadow-[0_12px_24px_rgba(84,61,31,0.06)] dark:bg-card dark:hover:bg-card"
             >
               <div className="flex items-center gap-2.5 mb-2">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-base transition-transform duration-200 group-hover:scale-105 ${stage.toneClass}`}>
@@ -198,7 +198,7 @@ export default function FDIASection() {
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={prefersReducedMotion ? undefined : { duration: 0.3 }}
-          className="mb-5 p-4 rounded-xl border shadow-sm bg-card border-border"
+          className="main-page-reactive-surface mb-5 rounded-xl border border-border bg-[#fff6ee] p-4 shadow-sm dark:bg-card"
         >
           <div className="flex items-start gap-3">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-warm-amber/10">
@@ -226,7 +226,7 @@ export default function FDIASection() {
             whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={prefersReducedMotion ? undefined : { duration: 0.35 }}
-            className="rounded-xl border p-5 shadow-sm bg-card border-border"
+            className="main-page-reactive-surface rounded-xl border border-border bg-[#fff6ee] p-5 shadow-sm dark:bg-card"
           >
             <div className="text-center mb-4">
               <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2 text-muted-foreground">

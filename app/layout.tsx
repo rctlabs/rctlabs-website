@@ -222,9 +222,9 @@ export default async function RootLayout({
           Skip to main content
         </a>
         <AppProviders initialLocale={locale}>
-          {/* Global animated background — position:fixed, mounts once, GPU-composited only */}
+          {/* Global animated background — position:fixed, z-[1], mounts once, GPU-composited only */}
           <HeroAnimatedBackground variant="global" />
-          <div id="main-content" tabIndex={-1}>
+          <div id="main-content" className="relative z-10" tabIndex={-1}>
             {children}
           </div>
           <Analytics />

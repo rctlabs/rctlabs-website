@@ -32,7 +32,9 @@ export default function HeroSection() {
   const shouldAnimate = !prefersReducedMotion && isInView
 
   const scrollTo = (id: string) => {
-    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" })
+    document
+      .querySelector(id)
+      ?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" })
   }
 
   const stats = [
@@ -56,7 +58,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section ref={heroRef} aria-label="Hero" className="relative min-h-screen flex items-center overflow-hidden bg-warm-cream dark:bg-[#0D0D0D]">
+    <section ref={heroRef} id="hero" data-main-section="hero" aria-label="Hero" className="relative min-h-screen flex items-center overflow-hidden bg-warm-cream dark:bg-[#0D0D0D]">
       {/* Hero image (hidden on CDN error) */}
       {!heroBgError && (
         <div className="absolute inset-0">
@@ -67,7 +69,7 @@ export default function HeroSection() {
             objectFit="cover"
             priority
             sizes="100vw"
-            className={isDark ? "opacity-30" : "opacity-100"}
+            className={isDark ? "scale-[1.03] opacity-[0.12]" : "scale-[1.02] opacity-[0.24]"}
             onError={() => setHeroBgError(true)}
           />
         </div>
@@ -76,13 +78,13 @@ export default function HeroSection() {
       <div
         className={`absolute inset-0 ${
           isDark
-            ? "bg-linear-to-r from-[#0D0D0D]/98 via-[#0D0D0D]/90 to-[#0D0D0D]/60"
-            : "bg-linear-to-r from-warm-cream/95 via-warm-cream/80 to-warm-cream/40"
+            ? "bg-linear-to-r from-[#0D0D0D]/94 via-[#0D0D0D]/82 to-[#0D0D0D]/54"
+            : "bg-linear-to-r from-warm-cream/82 via-[#f8efe6]/66 to-[#f7ede3]/34"
         }`}
       />
-      {/* Animated background layers (dot-grid + orbs + pulse dots) rendered above gradient */}
+      {/* Structured background layers rendered above the image blend and below the content */}
       <HeroAnimatedBackground variant="hero" />
-      <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 w-full">
+      <div className="relative z-10 max-w-300 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 w-full">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <motion.div
             variants={shouldAnimate ? containerVariants : undefined}
@@ -93,7 +95,7 @@ export default function HeroSection() {
             <motion.div
               variants={itemVariants}
               className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border shadow-sm ${
-                isDark ? "bg-card/80 border-border" : "bg-white/80 border-warm-light-gray"
+                isDark ? "bg-card/80 border-border" : "border-[#e6ddd0] bg-[#fff8f1]/92"
               }`}
             >
               <OptimizedImage src={LOGO_MARK} alt="RCT Ecosystem Logo" containerClassName="w-5 h-5" objectFit="contain" priority width={20} height={20} />
@@ -122,14 +124,14 @@ export default function HeroSection() {
                 }`}
               >
                 {t("hero.cta.explore")}
-                <ArrowRight size={16} className={shouldAnimate ? "transition-transform group-hover:translate-x-1" : ""} />
+                <ArrowRight size={16} className={shouldAnimate ? "transition-transform group-hover:translate-x-0.5" : ""} />
               </button>
               <Link
                 href={`${localePrefix}/demo/fdia`}
                 className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-medium border rounded-xl transition-[background-color,box-shadow] hover:shadow-sm duration-200 ${
                   isDark
                     ? "text-warm-pale bg-card/80 border-border hover:bg-secondary"
-                    : "text-warm-charcoal bg-white/80 border-warm-light-gray hover:bg-white"
+                    : "text-warm-charcoal border-[#e6ddd0] bg-[#fff8f1]/92 hover:bg-[#fffdf8]"
                 }`}
               >
                 {t("hero.cta.demo")}
@@ -143,11 +145,11 @@ export default function HeroSection() {
                   initial={shouldAnimate ? { opacity: 0, scale: 0.96 } : false}
                   animate={shouldAnimate ? { opacity: 1, scale: 1 } : undefined}
                   transition={shouldAnimate ? { duration: 0.2 } : undefined}
-                  className={`rounded-2xl border px-3 py-3 transition-all duration-300 ${isDark ? "border-border bg-card/55 hover:bg-card/75" : "border-white/60 bg-white/72 hover:bg-white/90"}`}
+                  className={`rounded-2xl border px-3 py-3 transition-all duration-300 ${isDark ? "border-border bg-card/72 hover:bg-card/82" : "border-[#e6ddd0] bg-[#fff7f0]/92 hover:bg-[#fffdf8]"}`}
                 >
                   <div className="mb-2 flex items-center justify-between gap-2">
                     <div className={`flex h-8 w-8 items-center justify-center rounded-lg border shadow-sm ${
-                      isDark ? "bg-card/80 border-border" : "bg-white/90 border-warm-light-gray"
+                      isDark ? "bg-card/80 border-border" : "border-[#e6ddd0] bg-[#fffbf7]"
                     }`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -190,7 +192,7 @@ export default function HeroSection() {
             className={`flex flex-col items-center gap-2 transition-colors group ${isDark ? "text-warm-subtle hover:text-warm-pale" : "text-warm-gray hover:text-warm-charcoal"}`}
           >
             <span className="text-xs font-medium uppercase tracking-widest">{language === "en" ? "Scroll to explore" : "เลื่อนเพื่อสำรวจ"}</span>
-            <motion.div animate={prefersReducedMotion ? { y: 0 } : { y: [0, 3, 0] }} transition={{ duration: 2.8, repeat: prefersReducedMotion ? 0 : Infinity, ease: "easeInOut" }}>
+            <motion.div animate={prefersReducedMotion ? { opacity: 1 } : { opacity: [0.8, 1, 0.8] }} transition={{ duration: 4.2, repeat: prefersReducedMotion ? 0 : Infinity, ease: "easeInOut" }}>
               <ArrowDown className="w-4 h-4" />
             </motion.div>
           </button>

@@ -40,7 +40,7 @@ function ProgressBar({
 }) {
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between text-[11px] font-medium">
+      <div className="flex items-center justify-between text-xs font-medium">
         <span className={isDark ? "text-warm-pale/80" : "text-warm-secondary"}>{label}</span>
         <span className={`tabular-nums ${isDark ? "text-warm-amber/90" : "text-warm-charcoal"}`}>
           {pct}%
@@ -89,10 +89,10 @@ export default function HeroMetricsPanel() {
   return (
     <div
       ref={panelRef}
-      className={`relative rounded-[28px] border shadow-[0_14px_32px_rgba(0,0,0,0.08)] ${
+      className={`relative rounded-[28px] border shadow-[0_14px_32px_rgba(84,61,31,0.07)] ${
         isDark
-          ? "border-border bg-card/84"
-          : "border-white/60 bg-white/84"
+          ? "border-border bg-card/88"
+          : "border-[#eadfce] bg-[#fff7f0]/92"
       } p-4 sm:p-5`}
     >
       {/* ── Header ─────────────────────────────────────────────────── */}
@@ -111,8 +111,8 @@ export default function HeroMetricsPanel() {
           <span className="relative flex h-2 w-2">
             <motion.span
               className="absolute inline-flex h-full w-full rounded-full bg-warm-sage opacity-75"
-              animate={shouldAnimate ? { scale: [1, 2, 1], opacity: [0.75, 0, 0.75] } : {}}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+              animate={shouldAnimate ? { opacity: [0.35, 0.75, 0.35] } : { opacity: 0.45 }}
+              transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
             />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-warm-sage" />
           </span>
@@ -124,7 +124,7 @@ export default function HeroMetricsPanel() {
 
       {/* ── Architecture Foundation ─────────────────────────────────── */}
       <div className="mb-4 space-y-2.5">
-        <div className={`text-[9px] font-bold uppercase tracking-widest ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
+        <div className={`text-[10px] font-bold uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
           {isTH ? "รากฐานสถาปัตยกรรม" : "Architecture Foundation"}
         </div>
         {architectureMetrics.map((m, i) => (
@@ -144,7 +144,7 @@ export default function HeroMetricsPanel() {
 
       {/* ── System Performance ─────────────────────────────────────── */}
       <div className="mb-4 space-y-2.5">
-        <div className={`text-[9px] font-bold uppercase tracking-widest ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
+        <div className={`text-[10px] font-bold uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
           {isTH ? "ประสิทธิภาพระบบ" : "System Performance"}
         </div>
         {performanceMetrics.map((m, i) => (
@@ -164,7 +164,7 @@ export default function HeroMetricsPanel() {
 
       {/* ── FDIA Teaser ─────────────────────────────────────────────── */}
       <div className={`flex items-center justify-between gap-3 rounded-xl border px-3 py-2.5 ${
-        isDark ? "border-border bg-card/60" : "border-warm-light-gray/80 bg-white/60"
+        isDark ? "border-border bg-card/60" : "border-[#eadfce] bg-[#fffaf5]"
       }`}>
         <div>
           <div className={`text-[10px] font-semibold uppercase tracking-wide mb-0.5 ${isDark ? "text-warm-amber/80" : "text-warm-gray"}`}>
@@ -173,7 +173,7 @@ export default function HeroMetricsPanel() {
           <div className={`text-sm font-bold font-mono ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
             F = D<sup className="text-warm-terracotta text-[10px]">I</sup> × A
           </div>
-          <div className={`text-[10px] mt-0.5 ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
+          <div className={`text-[11px] mt-0.5 ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
             {isTH ? "Intent ขยาย Data สู่อนาคต" : "Intent amplifies Data into Future"}
           </div>
         </div>

@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { motion, useReducedMotion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
@@ -87,7 +86,7 @@ export default function OverviewSection() {
   const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
 
   return (
-    <section id="overview" aria-label="System Overview" className={`py-16 md:py-24 transition-colors duration-300 ${isDark ? "bg-[#111111]" : "bg-white"}`}>
+    <section id="overview" aria-label="System Overview" className="bg-transparent py-16 md:py-24 transition-colors duration-300">
       <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           tag={language === "en" ? "What Makes RCT Different" : "อะไรทำให้ RCT แตกต่าง"}
@@ -108,7 +107,7 @@ export default function OverviewSection() {
           <LazyEcosystemOverview />
         </motion.div>
 
-        <div className={`mb-8 rounded-2xl border px-5 py-4 sm:px-6 sm:py-5 ${isDark ? "border-border bg-card/70" : "border-border bg-secondary/40"}`}>
+        <div className={`main-page-reactive-surface mb-8 rounded-2xl border px-5 py-4 sm:px-6 sm:py-5 ${isDark ? "border-border bg-card/70" : "border-[#e6ddd0] bg-[#fff6ee]"}`}>
           <div className="mx-auto max-w-3xl text-center">
             <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-warm-amber">
               {language === "th" ? "เลือกเส้นทางการสำรวจเชิงลึก" : "Choose a Deep-Dive Path"}

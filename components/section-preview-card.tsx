@@ -43,15 +43,15 @@ export default function SectionPreviewCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay }}
-      whileHover={{ y: -6, transition: { duration: 0.2 } }}
+      whileHover={{ y: -3, transition: { duration: 0.24 } }}
       className="h-full"
     >
       <Link
         href={href}
-        className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border p-5 sm:p-6 transition-[transform,border-color,box-shadow] duration-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] ${
+        className={`main-page-reactive-card group relative flex h-full flex-col overflow-hidden rounded-2xl border p-5 sm:p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:shadow-[0_14px_32px_rgba(84,61,31,0.07)] ${
           isDark
             ? "bg-card border-border hover:border-warm-amber/40"
-            : "bg-card border-border hover:border-warm-amber/40"
+            : "border-[#e6ddd0] bg-[#fff8f1] hover:border-warm-amber/40 hover:bg-[#fffdf8]"
         }`}
       >
         <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">

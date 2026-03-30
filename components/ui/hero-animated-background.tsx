@@ -3,46 +3,56 @@
 /**
  * HeroAnimatedBackground
  *
- * 5-layer animated background built entirely with GPU-composited properties
- * (transform + opacity only) to avoid layout reflow and paint.
+ * Enterprise hero background built with restrained structural layers.
+ * Motion is limited to slow signal sweeps so the background supports
+ * the content hierarchy instead of competing with it.
  *
  * Layers:
- *   1. Dot-grid  — static radial-gradient pattern
- *   2. Amber orb — animated scale + opacity, top-left
- *   3. Sage orb  — animated scale + opacity, bottom-right (offset timing)
- *   4. Node dots — 6 pulse dots at fixed positions, staggered opacity
- *   5. Parallax  — mouse-driven subtle layer shift
+ *   1. Field wash      — low-contrast radial/linear atmosphere
+ *   2. Structural grid — restrained matrix pattern
+ *   3. Guide rails     — architectural lines that anchor the layout
+ *   4. Signal sweeps   — slow directional motion on hero only
+ *   5. Anchor nodes    — sparse fixed points that suggest topology
  *
  * Props:
- *   variant="hero"   → position: absolute, full section, high intensity
- *   variant="global" → position: fixed, full viewport, low intensity (Round 2)
+ *   variant="hero"   → position: absolute, z-[2], high intensity
+ *   variant="global" → position: fixed, z-[1], low intensity
  */
 
 import { motion, useReducedMotion } from "framer-motion"
-import { useEffect, useRef, useState } from "react"
+import { useMemo } from "react"
+import { useMainPageOrchestration } from "@/components/main-page/main-page-orchestrator"
 
-// ── Node pulse dot positions (% of container) ──────────────────────────────
+// ── Sparse structural anchor points (% of container) ───────────────────────
 
-const NODE_DOTS = [
-  { x: 15, y: 25, dur: 2.4, delay: 0 },
-  { x: 42, y: 68, dur: 3.1, delay: 0.8 },
-  { x: 72, y: 18, dur: 2.8, delay: 1.4 },
-  { x: 85, y: 55, dur: 3.5, delay: 0.3 },
-  { x: 28, y: 82, dur: 2.2, delay: 1.9 },
-  { x: 60, y: 40, dur: 3.8, delay: 0.6 },
+const ANCHOR_NODES = [
+  { x: 18, y: 28, delay: 0.18 },
+  { x: 34, y: 46, delay: 0.26 },
+  { x: 58, y: 32, delay: 0.34 },
+  { x: 76, y: 58, delay: 0.42 },
 ] as const
 
-// ── Adaptive blur ──────────────────────────────────────────────────────────
+const GUIDE_RAILS = [
+  { top: "24%", left: "12%", width: "36%" },
+  { top: "38%", left: "46%", width: "22%" },
+  { top: "61%", left: "38%", width: "30%" },
+] as const
 
-function getBlurRadius(variant: "hero" | "global"): { big: number; small: number } {
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
+}
+
+// ── Adaptive soft-glow sizing ──────────────────────────────────────────────
+
+function getGlowRadius(variant: "hero" | "global"): { beam: number; node: number } {
   if (typeof navigator === "undefined") {
-    return variant === "global" ? { big: 64, small: 48 } : { big: 88, small: 72 }
+    return variant === "global" ? { beam: 42, node: 14 } : { beam: 58, node: 18 }
   }
   const isLowEnd = navigator.hardwareConcurrency <= 4
   if (variant === "global") {
-    return isLowEnd ? { big: 32, small: 24 } : { big: 64, small: 48 }
+    return isLowEnd ? { beam: 28, node: 10 } : { beam: 42, node: 14 }
   }
-  return isLowEnd ? { big: 44, small: 36 } : { big: 88, small: 72 }
+  return isLowEnd ? { beam: 38, node: 14 } : { beam: 58, node: 18 }
 }
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -56,151 +66,154 @@ interface HeroAnimatedBackgroundProps {
 export default function HeroAnimatedBackground({
   variant = "hero",
 }: HeroAnimatedBackgroundProps) {
-  const prefersReducedMotion = useReducedMotion()
-  // Initialize with SSR-safe fallback; update after mount if low-end device detected
-  const [blur, setBlur] = useState<{ big: number; small: number }>(
-    () => getBlurRadius(variant)
-  )
-  const parallaxRef = useRef<HTMLDivElement>(null)
-  const parallaxPos = useRef({ x: 0, y: 0 })
-  const rafRef = useRef<number | null>(null)
-
-  // Resolve adaptive blur on client only (avoids SSR mismatch)
-  useEffect(() => {
-    setBlur(getBlurRadius(variant))
-  }, [variant])
-
-  // Mouse parallax — only for hero variant, only when motion allowed
-  useEffect(() => {
-    if (variant !== "hero" || prefersReducedMotion) return
-    const FACTOR = 0.018
-
-    const onMove = (e: MouseEvent) => {
-      const cx = window.innerWidth / 2
-      const cy = window.innerHeight / 2
-      const tx = (e.clientX - cx) * FACTOR
-      const ty = (e.clientY - cy) * FACTOR
-
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      rafRef.current = requestAnimationFrame(() => {
-        parallaxPos.current = { x: tx, y: ty }
-        if (parallaxRef.current) {
-          parallaxRef.current.style.transform = `translate(${tx}px, ${ty}px)`
-        }
-      })
-    }
-
-    window.addEventListener("mousemove", onMove, { passive: true })
-    return () => {
-      window.removeEventListener("mousemove", onMove)
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    }
-  }, [variant, prefersReducedMotion])
+  const prefersReducedMotion = useReducedMotion() ?? false
+  const orchestration = useMainPageOrchestration()
+  const glow = useMemo(() => getGlowRadius(variant), [variant])
 
   const isGlobal = variant === "global"
-
-  // Config per variant
-  const orbOpacity = isGlobal ? 0.025 : 0.06
-  const nodeOpacityMin = isGlobal ? 0.015 : 0.04
-  const nodeOpacityMax = isGlobal ? 0.05 : 0.14
-  const orbSizeBig = isGlobal ? "h-64 w-64" : "h-104 w-104"
-  const orbSizeSmall = isGlobal ? "h-48 w-48" : "h-84 w-84"
-  const gridOpacity = isGlobal ? 0.04 : 0.06
-
+  const pageProgress = orchestration?.pageProgress ?? 0
+  const scrollVelocity = orchestration?.scrollVelocity ?? 0
+  const heroPresence = clamp(1.08 - pageProgress * 0.42, 0.66, 1.08)
+  const sectionBias = orchestration && !isGlobal
+    ? orchestration.activeSection === "hero"
+      ? 0.06
+      : orchestration.activeSection === "overview"
+        ? 0.02
+        : orchestration.activeSection === "fdia"
+          ? -0.02
+          : -0.05
+    : 0
+  const contextIntensity = isGlobal
+    ? 1
+    : clamp(heroPresence + sectionBias, 0.62, 1.12)
+  const pointerInfluence = clamp(1 - scrollVelocity * 1.8, 0.35, 1)
+  const fieldOpacity = isGlobal
+    ? "var(--rct-global-field-opacity)"
+    : `calc(var(--rct-hero-field-opacity) * ${contextIntensity.toFixed(3)})`
+  const gridOpacity = isGlobal
+    ? "var(--rct-global-grid-opacity)"
+    : `calc(var(--rct-hero-grid-opacity) * ${contextIntensity.toFixed(3)})`
+  const railOpacity = isGlobal
+    ? "var(--rct-global-rail-opacity)"
+    : `calc(var(--rct-hero-rail-opacity) * ${(contextIntensity + 0.08).toFixed(3)})`
+  const nodeOpacity = isGlobal
+    ? "var(--rct-global-node-opacity)"
+    : `calc(var(--rct-hero-node-opacity) * ${(contextIntensity + 0.05).toFixed(3)})`
   const wrapperClass = isGlobal
-    ? "fixed inset-0 z-0 pointer-events-none overflow-hidden"
-    : "absolute inset-0 pointer-events-none overflow-hidden"
+    ? "fixed inset-0 z-[1] pointer-events-none overflow-hidden"
+    : "absolute inset-0 z-[2] pointer-events-none overflow-hidden"
+  const visibleNodes = isGlobal ? ANCHOR_NODES.slice(0, 2) : ANCHOR_NODES
+  const pointerShiftX = orchestration && !isGlobal && !prefersReducedMotion && !orchestration.isTouchInput
+    ? orchestration.pointerIntent.x * 6 * pointerInfluence
+    : 0
+  const pointerShiftY = orchestration && !isGlobal && !prefersReducedMotion && !orchestration.isTouchInput
+    ? orchestration.pointerIntent.y * 4.5 * pointerInfluence
+    : 0
 
   return (
-    <div className={wrapperClass} aria-hidden="true">
-      {/* ── Layer 1: Dot-grid ─────────────────────────────────────── */}
+    <motion.div
+      className={wrapperClass}
+      aria-hidden="true"
+      animate={{ x: pointerShiftX, y: pointerShiftY }}
+      transition={{ type: "spring", stiffness: 44, damping: 26, mass: 1.1 }}
+    >
+      {/* ── Layer 1: Field wash ────────────────────────────────────── */}
       <div
         className="absolute inset-0"
         style={{
-          opacity: gridOpacity,
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, #D4A853 0.5px, transparent 0.5px)",
-          backgroundSize: "48px 48px",
+          opacity: fieldOpacity,
+          backgroundImage: "var(--rct-hero-field-wash)",
         }}
       />
 
-      {/* ── Layer 2: Amber orb ────────────────────────────────────── */}
-      <motion.div
-          className={`absolute top-20 -left-32 ${orbSizeBig} rounded-full bg-warm-amber`}
-          style={{ filter: `blur(${blur.big}px)` }}
-          animate={
-            prefersReducedMotion
-              ? { opacity: orbOpacity }
-              : {
-                  scale: [1, 1.18, 1],
-                  opacity: [orbOpacity, orbOpacity * 1.6, orbOpacity],
-                }
-          }
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
+      {/* ── Layer 2: Structural grid ──────────────────────────────── */}
+      <div
+        className="absolute inset-0 mask-[radial-gradient(circle_at_center,black_62%,transparent_100%)]"
+        style={{
+          opacity: gridOpacity,
+          backgroundImage: "var(--rct-hero-grid-lines)",
+          backgroundSize: isGlobal ? "96px 96px" : "74px 74px",
+        }}
+      />
 
-      {/* ── Layer 3: Sage orb ─────────────────────────────────────── */}
-      <motion.div
-          className={`absolute bottom-20 -right-28 ${orbSizeSmall} rounded-full bg-warm-sage`}
-          style={{ filter: `blur(${blur.small}px)` }}
-          animate={
-            prefersReducedMotion
-              ? { opacity: orbOpacity * 0.85 }
-              : {
-                  scale: [1, 1.14, 1],
-                  opacity: [
-                    orbOpacity * 0.85,
-                    orbOpacity * 1.4,
-                    orbOpacity * 0.85,
-                  ],
-                }
-          }
-          transition={{
-            duration: 11,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 3,
-          }}
-        />
-
-      {/* ── Layer 4: Node pulse dots ──────────────────────────────── */}
-      {!isGlobal &&
-        NODE_DOTS.map((dot, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-1 w-1 rounded-full bg-warm-amber"
-            style={{ left: `${dot.x}%`, top: `${dot.y}%` }}
-            animate={
-              prefersReducedMotion
-                ? { opacity: nodeOpacityMin }
-                : {
-                    opacity: [nodeOpacityMin, nodeOpacityMax, nodeOpacityMin],
-                    scale: [1, 1.5, 1],
-                  }
-            }
-            transition={{
-              duration: dot.dur,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: dot.delay,
-            }}
-          />
-        ))}
-
-      {/* ── Layer 5: Parallax container (hero only) ───────────────── */}
-      {!isGlobal && (
+      {/* ── Layer 3: Guide rails + beam wash ─────────────────────── */}
+      {GUIDE_RAILS.map((rail, index) => (
         <div
-          ref={parallaxRef}
-          className="absolute inset-0 will-change-transform"
-          style={{ transform: "translate(0px, 0px)" }}
+          key={`${rail.left}-${rail.top}`}
+          className="absolute overflow-hidden rounded-full"
+          style={{
+            top: rail.top,
+            left: rail.left,
+            width: rail.width,
+            height: isGlobal ? "1px" : "1.5px",
+            opacity: railOpacity,
+          }}
         >
-          {/* Subtle parallax accent orb */}
           <div
-            className="absolute top-1/2 left-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-warm-amber"
-            style={{ opacity: 0.015, filter: "blur(48px)" }}
+            className="absolute inset-0"
+            style={{ backgroundImage: "var(--rct-hero-guide-rail)" }}
           />
+          <div
+            className="absolute -inset-y-1.25 left-[20%] right-[35%] rounded-full bg-warm-amber/40"
+            style={{ filter: `blur(${glow.beam}px)` }}
+          />
+          {!isGlobal && (
+            <motion.div
+              className="absolute -inset-y-px w-18"
+              style={{ backgroundImage: "var(--rct-hero-signal-trace)" }}
+              initial={{ x: "-140%", opacity: 0 }}
+              animate={
+                prefersReducedMotion
+                  ? { opacity: 0 }
+                  : { x: ["-140%", "260%"], opacity: [0, 0.5, 0.18, 0] }
+              }
+              transition={{
+                duration: index === 0 ? 18 : index === 1 ? 22 : 24,
+                repeat: Infinity,
+                ease: "linear",
+                delay: 1.2 + index * 2.1,
+              }}
+            />
+          )}
         </div>
-      )}
-    </div>
+      ))}
+
+      <motion.div
+        className="absolute top-[16%] left-[21%] h-[52%] w-px"
+        style={{ backgroundImage: "var(--rct-hero-vertical-guide)" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isGlobal ? 0.18 : 0.3 }}
+        transition={{ duration: 1.4, delay: 0.15 }}
+      />
+
+      <motion.div
+        className="absolute top-[54%] left-[52%] h-px w-[22%]"
+        style={{ backgroundImage: "var(--rct-hero-horizontal-guide)" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isGlobal ? 0.12 : 0.24 }}
+        transition={{ duration: 1.4, delay: 0.24 }}
+      />
+
+      {/* ── Layer 4: Anchor nodes ─────────────────────────────────── */}
+      {visibleNodes.map((node, index) => (
+        <motion.div
+          key={`${node.x}-${node.y}`}
+          className="absolute"
+          style={{ left: `${node.x}%`, top: `${node.y}%` }}
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: nodeOpacity, scale: 1 }}
+          transition={{ duration: 0.8, delay: node.delay + index * 0.08 }}
+        >
+          <div
+            className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-warm-amber/25"
+            style={{ filter: `blur(${glow.node}px)` }}
+          />
+          <div
+            className="relative h-2.5 w-2.5 rounded-full border border-white/40 bg-warm-amber/90"
+            style={{ boxShadow: "var(--rct-hero-anchor-shadow)" }}
+          />
+        </motion.div>
+      ))}
+    </motion.div>
   )
 }

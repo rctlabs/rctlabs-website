@@ -177,7 +177,7 @@ export default function EvidenceSection() {
 
   return (
     <section
-      className="py-16 md:py-24 transition-colors duration-300 bg-background border-t border-border"
+      className="border-t border-border bg-transparent py-16 md:py-24 transition-colors duration-300"
       aria-label="Research Evidence and Partners"
     >
       <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
@@ -229,8 +229,8 @@ export default function EvidenceSection() {
                 viewport={{ once: true }}
                 variants={fadeUp}
                 transition={{ duration: 0.5, delay: i * 0.12 }}
-                whileHover={{ y: -4 }}
-                className="group relative flex h-full flex-col rounded-[24px] border border-border bg-card p-6 transition-[transform,border-color,box-shadow] duration-300 hover:border-warm-amber/30 hover:shadow-[0_14px_34px_rgba(0,0,0,0.08)]"
+                whileHover={{ y: -2 }}
+                className="main-page-reactive-card group relative flex h-full flex-col rounded-3xl border border-border bg-[#fff8f1] p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/30 hover:bg-[#fffdf8] hover:shadow-[0_14px_34px_rgba(84,61,31,0.07)] dark:bg-card dark:hover:bg-card"
               >
                 <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.12),transparent_40%)]" />
@@ -245,7 +245,7 @@ export default function EvidenceSection() {
                       {isTh ? card.tagTh : card.tagEn}
                     </span>
                   </div>
-                  <div className="shrink-0 rounded-2xl border border-border/70 bg-background/70 px-3 py-2 text-right">
+                  <div className="shrink-0 rounded-2xl border border-border/70 bg-[#f7ede4]/92 px-3 py-2 text-right dark:bg-background/70">
                     <div
                       className="text-lg font-bold font-mono leading-none"
                       style={{ color: card.color }}
@@ -313,7 +313,7 @@ export default function EvidenceSection() {
             {partners.map((partner) => (
               <div
                 key={partner.name}
-                className="flex items-center gap-2.5 rounded-xl border border-border bg-card px-4 py-3 transition-colors hover:border-warm-amber/30"
+                className="main-page-reactive-card flex items-center gap-2.5 rounded-xl border border-border bg-[#fff6ef] px-4 py-3 transition-[border-color,background-color,box-shadow] hover:border-warm-amber/30 hover:bg-[#fffdf8] dark:bg-card dark:hover:bg-card"
               >
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors hover:text-foreground">
                   {partner.svg}
