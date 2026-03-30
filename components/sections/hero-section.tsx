@@ -3,15 +3,15 @@
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { ArrowRight, ArrowDown } from "lucide-react"
 import Link from "next/link"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { usePathname } from "next/navigation"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
-import { LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
+import HeroMetricsPanel from "@/components/sections/hero-metrics-panel"
+import HeroAnimatedBackground from "@/components/ui/hero-animated-background"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { useMounted } from "@/hooks/use-mounted"
-import { SITE_UPTIME } from "@/lib/site-config"
 import { pixelIcons } from "@/lib/pixel-icons"
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
@@ -21,6 +21,7 @@ export default function HeroSection() {
   const { language, t } = useLanguage()
   const { resolvedTheme } = useTheme()
   const mounted = useMounted()
+  const [heroBgError, setHeroBgError] = useState(false)
   const pathname = usePathname()
   const locale = resolveLocale(pathname, language)
   const localePrefix = getLocalePrefix(locale)
@@ -38,7 +39,7 @@ export default function HeroSection() {
     { value: "41", label: t("hero.stat.algorithms"), iconSrc: pixelIcons.brain },
     { value: "10", label: t("hero.stat.layers"), iconSrc: pixelIcons.layers },
     { value: "7", label: t("hero.stat.genomes"), iconSrc: pixelIcons.genome },
-    { value: SITE_UPTIME, label: t("hero.stat.uptime"), iconSrc: pixelIcons.cpu },
+    { value: "99.9%", sublabel: "target", label: t("hero.stat.uptime"), iconSrc: pixelIcons.cpu },
   ]
 
   const containerVariants = {
@@ -56,9 +57,24 @@ export default function HeroSection() {
 
   return (
     <section ref={heroRef} aria-label="Hero" className="relative min-h-screen flex items-center overflow-hidden bg-warm-cream dark:bg-[#0D0D0D]">
-      <div className="absolute inset-0">
-        <OptimizedImage src={HERO_BG} alt="RCT Ecosystem Hero Background" containerClassName="h-full w-full" objectFit="cover" priority sizes="100vw" className={isDark ? "opacity-30" : "opacity-100"} />
-      </div>
+      {/* Animated background (always visible) */}
+      <HeroAnimatedBackground variant="hero" />
+
+      {/* Hero image (hidden on CDN error) */}
+      {!heroBgError && (
+        <div className="absolute inset-0">
+          <OptimizedImage
+            src={HERO_BG}
+            alt="RCT Ecosystem Hero Background"
+            containerClassName="h-full w-full"
+            objectFit="cover"
+            priority
+            sizes="100vw"
+            className={isDark ? "opacity-30" : "opacity-100"}
+            onError={() => setHeroBgError(true)}
+          />
+        </div>
+      )}
       <div
         className={`absolute inset-0 ${
           isDark
@@ -66,19 +82,6 @@ export default function HeroSection() {
             : "bg-linear-to-r from-warm-cream/95 via-warm-cream/80 to-warm-cream/40"
         }`}
       />
-      <div className="absolute inset-0 opacity-[0.06]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, #D4A853 0.5px, transparent 0.5px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-      </div>
-
-      <div className="absolute top-20 -left-32 h-104 w-104 rounded-full bg-warm-amber opacity-6 blur-[88px]" />
-      <div className="absolute bottom-20 -right-28 h-84 w-84 rounded-full bg-warm-sage opacity-5 blur-[72px]" />
-
       <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 w-full">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <motion.div
@@ -155,7 +158,12 @@ export default function HeroSection() {
                         style={{ imageRendering: "pixelated" }}
                       />
                     </div>
-                    <div className={`text-right text-lg font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{stat.value}</div>
+                    <div className="text-right">
+                      <div className={`text-lg font-bold leading-none ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{stat.value}</div>
+                      {"sublabel" in stat && stat.sublabel && (
+                        <div className={`text-[9px] font-medium mt-0.5 ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>{stat.sublabel}</div>
+                      )}
+                    </div>
                   </div>
                   <div className={`text-[11px] font-medium leading-snug sm:text-xs ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>
                     {stat.label}
@@ -171,28 +179,7 @@ export default function HeroSection() {
             transition={shouldAnimate ? { duration: 0.26, delay: 0.04 } : undefined}
             className="group relative"
           >
-            <div className="relative rounded-[28px] border border-border bg-white/84 p-4 shadow-[0_14px_32px_rgba(0,0,0,0.08)] sm:p-6 dark:bg-card/84">
-              <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <div className={`text-xs sm:text-sm font-medium mb-0.5 ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>FDIA Framework</div>
-                  <div className={`text-sm font-bold font-mono ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
-                    F = D<sup className="text-warm-terracotta">I</sup> × A
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  <span className={`rounded-full border px-2.5 py-1 ${isDark ? "border-border bg-card/80" : "border-warm-light-gray bg-white/90"}`}>
-                    {language === "en" ? "Hover to preview" : "ชี้เพื่อพรีวิว"}
-                  </span>
-                  <span className={`rounded-full border px-2.5 py-1 ${isDark ? "border-border bg-card/80" : "border-warm-light-gray bg-white/90"}`}>
-                    {language === "en" ? "Click to pin" : "คลิกเพื่อตรึง"}
-                  </span>
-                  <span className={`rounded-full border px-2.5 py-1 ${isDark ? "border-border bg-card/80" : "border-warm-light-gray bg-white/90"}`}>
-                    {language === "en" ? "Esc to clear" : "กด Esc เพื่อล้าง"}
-                  </span>
-                </div>
-              </div>
-              <LazyFDIAFlowchart />
-            </div>
+            <HeroMetricsPanel />
           </motion.div>
         </div>
 

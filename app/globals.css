@@ -302,6 +302,11 @@
     letter-spacing: -0.02em;
   }
 
+  html[lang="th"] h1 {
+    line-height: 1.32;
+    font-weight: 600;
+  }
+
   html[lang="th"] .font-thai,
   html[lang="th"] .subtitle-th {
     font-family: var(--rct-font-thai, 'Kanit', 'Noto Sans Thai', sans-serif);
