@@ -10,6 +10,7 @@ export interface NavLeafItem {
   href: string
   label: LocalizedCopy
   description: LocalizedCopy
+  badge?: string
 }
 
 export interface NavFeature {
@@ -19,32 +20,21 @@ export interface NavFeature {
   description: LocalizedCopy
 }
 
-export type DesktopPanelTier = "S" | "M" | "L"
-export type DesktopPanelAlign = "start" | "center" | "end"
-export type DesktopFeatureWidth = "compact" | "standard"
+export type NavColumnStyle = "primary" | "secondary"
 
-export interface DesktopPanelConfig {
-  tier: DesktopPanelTier
-  align: DesktopPanelAlign
-  maxHeight: number
-  previewItemLimit: number
-  columnCount: 1 | 2
-  featureWidth: DesktopFeatureWidth
-}
-
-export interface ResourcesPanelConfig {
-  taskRailWidth: number
-  contextRailWidth: number
-  maxPrimaryItems: number
-  maxRelatedPaths: number
-  maxHeight: number
+export interface NavColumn {
+  header: LocalizedCopy
+  style: NavColumnStyle
+  items: NavLeafItem[]
+  viewAll?: { href: string; label: LocalizedCopy }
 }
 
 export interface NavGroup {
   id: "solutions" | "products" | "technology" | "resources" | "company"
   label: LocalizedCopy
   summary: LocalizedCopy
-  desktopPanel: DesktopPanelConfig
+  dropdownAlign: "left" | "right"
+  desktopColumns: NavColumn[]
   feature?: NavFeature
   items: NavLeafItem[]
 }
@@ -62,14 +52,6 @@ export interface SearchIndexEntry {
   description: string
   href: string
   category: string
-}
-
-export const resourcesPanelConfig: ResourcesPanelConfig = {
-  taskRailWidth: 180,
-  contextRailWidth: 210,
-  maxPrimaryItems: 2,
-  maxRelatedPaths: 3,
-  maxHeight: 380,
 }
 
 const solutionsItems: NavLeafItem[] = [
@@ -318,6 +300,7 @@ const resourceItems = {
       en: "Current and planned delivery phases across platform and ecosystem work.",
       th: "เฟสการส่งมอบปัจจุบันและถัดไปของแพลตฟอร์มและ ecosystem",
     },
+    badge: "NEW",
   },
   changelog: {
     id: "changelog",
@@ -327,6 +310,7 @@ const resourceItems = {
       en: "Version history and public change tracking.",
       th: "ประวัติเวอร์ชันและการติดตามการเปลี่ยนแปลงฝั่ง public",
     },
+    badge: "NEW",
   },
   research: {
     id: "research",
@@ -361,14 +345,15 @@ export const navigationGroups: NavGroup[] = [
   {
     id: "solutions",
     label: { en: "Solutions", th: "โซลูชัน" },
-    desktopPanel: {
-      tier: "M",
-      align: "start",
-      maxHeight: 360,
-      previewItemLimit: 3,
-      columnCount: 1,
-      featureWidth: "compact",
-    },
+    dropdownAlign: "left",
+    desktopColumns: [
+      {
+        header: { en: "Solutions", th: "โซลูชัน" },
+        style: "primary",
+        items: solutionsItems,
+        viewAll: { href: "/solutions", label: { en: "View all solutions", th: "ดูโซลูชันทั้งหมด" } },
+      },
+    ],
     summary: {
       en: "Outcome-oriented paths for preventing failures and shipping governed AI.",
       th: "เส้นทางเชิงผลลัพธ์สำหรับลดความเสี่ยงและส่งมอบ governed AI",
@@ -387,14 +372,20 @@ export const navigationGroups: NavGroup[] = [
   {
     id: "products",
     label: { en: "Products", th: "ผลิตภัณฑ์" },
-    desktopPanel: {
-      tier: "M",
-      align: "start",
-      maxHeight: 380,
-      previewItemLimit: 4,
-      columnCount: 1,
-      featureWidth: "compact",
-    },
+    dropdownAlign: "left",
+    desktopColumns: [
+      {
+        header: { en: "Platform", th: "แพลตฟอร์ม" },
+        style: "primary",
+        items: productsItems.slice(0, 3),
+        viewAll: { href: "/products", label: { en: "View all products", th: "ดูผลิตภัณฑ์ทั้งหมด" } },
+      },
+      {
+        header: { en: "Commercial", th: "เชิงพาณิชย์" },
+        style: "secondary",
+        items: productsItems.slice(3),
+      },
+    ],
     summary: {
       en: "Platform surfaces for deployment, execution, and commercial rollout.",
       th: "พื้นผิวผลิตภัณฑ์สำหรับ deployment, execution และ commercial rollout",
@@ -413,14 +404,20 @@ export const navigationGroups: NavGroup[] = [
   {
     id: "technology",
     label: { en: "Technology", th: "เทคโนโลยี" },
-    desktopPanel: {
-      tier: "L",
-      align: "center",
-      maxHeight: 380,
-      previewItemLimit: 5,
-      columnCount: 2,
-      featureWidth: "compact",
-    },
+    dropdownAlign: "left",
+    desktopColumns: [
+      {
+        header: { en: "Core Systems", th: "ระบบหลัก" },
+        style: "primary",
+        items: [technologyItems[0], technologyItems[1], technologyItems[3]],
+        viewAll: { href: "/architecture", label: { en: "View architecture", th: "ดูสถาปัตยกรรม" } },
+      },
+      {
+        header: { en: "Explore", th: "สำรวจ" },
+        style: "secondary",
+        items: [technologyItems[2], technologyItems[4]],
+      },
+    ],
     summary: {
       en: "Architecture, algorithms, and protocol surfaces behind the system.",
       th: "สถาปัตยกรรม อัลกอริทึม และพื้นผิวโปรโตคอลที่อยู่เบื้องหลังระบบ",
@@ -439,14 +436,24 @@ export const navigationGroups: NavGroup[] = [
   {
     id: "resources",
     label: { en: "Resources", th: "ทรัพยากร" },
-    desktopPanel: {
-      tier: "L",
-      align: "center",
-      maxHeight: 380,
-      previewItemLimit: 0,
-      columnCount: 1,
-      featureWidth: "compact",
-    },
+    dropdownAlign: "left",
+    desktopColumns: [
+      {
+        header: { en: "Learn & Validate", th: "เรียนรู้ & ตรวจสอบ" },
+        style: "secondary",
+        items: [resourceItems.blog, resourceItems.glossary, resourceItems.methodology, resourceItems.benchmarkSummary],
+      },
+      {
+        header: { en: "Evaluate", th: "ประเมิน" },
+        style: "secondary",
+        items: [resourceItems.whitepaper, resourceItems.evaluation, resourceItems.thailandTrust],
+      },
+      {
+        header: { en: "Build & Track", th: "สร้าง & ติดตาม" },
+        style: "secondary",
+        items: [resourceItems.docs, resourceItems.integration, resourceItems.roadmap, resourceItems.changelog],
+      },
+    ],
     summary: {
       en: "Task-based guidance for learning, evaluating, building, and adoption.",
       th: "เส้นทางแบบ task-based สำหรับการเรียนรู้ ประเมิน ลงมือสร้าง และนำไปใช้",
@@ -456,14 +463,20 @@ export const navigationGroups: NavGroup[] = [
   {
     id: "company",
     label: { en: "Company", th: "บริษัท" },
-    desktopPanel: {
-      tier: "S",
-      align: "end",
-      maxHeight: 340,
-      previewItemLimit: 4,
-      columnCount: 1,
-      featureWidth: "compact",
-    },
+    dropdownAlign: "left",
+    desktopColumns: [
+      {
+        header: { en: "Who We Are", th: "เราคือใคร" },
+        style: "primary",
+        items: companyItems.slice(0, 2),
+        viewAll: { href: "/company", label: { en: "View company", th: "ดูบริษัท" } },
+      },
+      {
+        header: { en: "Connect", th: "ติดต่อ" },
+        style: "secondary",
+        items: companyItems.slice(2),
+      },
+    ],
     summary: {
       en: "Company context, trust signals, and ways to work with the team.",
       th: "บริบทของบริษัท สัญญาณความน่าเชื่อถือ และช่องทางทำงานร่วมกับทีม",

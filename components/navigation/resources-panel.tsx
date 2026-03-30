@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import type { Locale } from "@/lib/i18n"
-import { localizeCopy, resourcesPanelConfig, type ResourceTrack } from "@/lib/navigation"
+import { localizeCopy, type ResourceTrack } from "@/lib/navigation"
 
 interface ResourcesPanelProps {
   locale: Locale
@@ -27,17 +27,14 @@ export function ResourcesPanel({
   isDark,
 }: ResourcesPanelProps) {
   const activeTrack = tracks.find((track) => track.id === activeTrackId) ?? tracks[0]
-  const alternateTracks = tracks
-    .filter((track) => track.id !== activeTrack.id)
-    .slice(0, resourcesPanelConfig.maxRelatedPaths)
-  const primaryItems = activeTrack.items.slice(0, resourcesPanelConfig.maxPrimaryItems)
+  const primaryItems = activeTrack.items.slice(0, 2)
 
   return (
     <div
       className={`grid gap-0 overflow-hidden ${isDark ? "bg-[#111111]" : "bg-warm-cream"}`}
       style={{
-        gridTemplateColumns: `${resourcesPanelConfig.taskRailWidth}px minmax(0, 1fr) ${resourcesPanelConfig.contextRailWidth}px`,
-        maxHeight: `${resourcesPanelConfig.maxHeight}px`,
+        gridTemplateColumns: `160px minmax(0, 1fr)`,
+        maxHeight: "380px",
       }}
     >
       <div className={`px-5 py-5 ${isDark ? "border-r border-white/10" : "border-r border-warm-light-gray"}`}>
@@ -129,7 +126,14 @@ export function ResourcesPanel({
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <div className="text-[15px] font-medium leading-6">{localizeCopy(item.label, locale)}</div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[15px] font-medium leading-6">{localizeCopy(item.label, locale)}</span>
+                    {item.badge ? (
+                      <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-warm-amber">
+                        {item.badge}
+                      </span>
+                    ) : null}
+                  </div>
                     <p className={`mt-1 line-clamp-2 max-w-sm text-sm leading-6 ${isDark ? "text-white/52" : "text-warm-gray"}`}>
                       {localizeCopy(item.description, locale)}
                     </p>
@@ -142,36 +146,6 @@ export function ResourcesPanel({
         </div>
       </div>
 
-      <div className="px-5 py-5">
-        <div className={`text-[11px] font-medium uppercase tracking-[0.18em] ${isDark ? "text-white/48" : "text-warm-gray/80"}`}>
-          {locale === "th" ? "Context" : "Context"}
-        </div>
-        <p className={`mt-3 line-clamp-4 text-[14px] leading-6 ${isDark ? "text-white/60" : "text-warm-gray"}`}>
-          {locale === "th"
-            ? "เส้นทางนี้ช่วยลดภาระการสแกนเมนูขนาดใหญ่ โดยเปิดเฉพาะ resource ที่สัมพันธ์กับงานที่ผู้ใช้กำลังทำจริง"
-            : "This path reduces scanning fatigue by exposing only the resources tied to the job the visitor is actually doing."}
-        </p>
-
-        <div className={`mt-6 pt-5 ${isDark ? "border-t border-white/10" : "border-t border-warm-light-gray"}`}>
-          <div className={`text-[11px] font-medium uppercase tracking-[0.18em] ${isDark ? "text-white/48" : "text-warm-gray/80"}`}>
-            {locale === "th" ? "Related paths" : "Related paths"}
-          </div>
-          <div className="mt-3 space-y-2">
-            {alternateTracks.map((track) => (
-              <button
-                key={track.id}
-                type="button"
-                onMouseEnter={() => onTrackChange(track.id, "hover")}
-                onFocus={() => onTrackChange(track.id, "focus")}
-                onClick={() => onTrackChange(track.id, "click")}
-                className={`block w-full text-left text-[14px] leading-6 transition-colors ${isDark ? "text-white/70 hover:text-white" : "text-warm-charcoal hover:text-warm-amber"}`}
-              >
-                {localizeCopy(track.label, locale)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

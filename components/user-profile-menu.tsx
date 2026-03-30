@@ -6,7 +6,7 @@
  * Props: isAuthenticated, user for when auth is wired
  */
 import { useState } from "react"
-import { User, LogOut, Settings, ChevronDown } from "lucide-react"
+import { User, LogOut, Settings, ChevronDown, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
@@ -89,18 +89,19 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
 
   // ── Unauthenticated state — current live state ─────────────────────────
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-3">
       <Link
         href={contactHref}
-        className="hidden lg:inline-flex min-h-11 items-center gap-1.5 border border-border/70 bg-white/12 px-4 py-2 text-[13px] font-medium text-foreground transition-colors hover:bg-accent/70"
+        className="hidden lg:inline-flex items-center text-[13px] font-medium text-warm-gray/80 transition-colors hover:text-warm-charcoal dark:text-white/55 dark:hover:text-white"
       >
         {copy.contact}
       </Link>
       <Link
         href={accessHref}
-        className="inline-flex min-h-11 items-center border border-primary/20 bg-primary px-4 py-2 text-[13px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap leading-none"
+        className="inline-flex items-center gap-1.5 rounded-full bg-warm-amber px-4 py-1.5 text-[13px] font-semibold text-white transition-all duration-200 hover:bg-warm-amber/90 hover:scale-105 active:scale-95 whitespace-nowrap"
       >
-        {language === "en" ? "Get Access" : "ขอสิทธิ์"}
+        {language === "en" ? "Request Access" : "ขอข้อมูล"}
+        <ArrowRight size={12} />
       </Link>
     </div>
   )

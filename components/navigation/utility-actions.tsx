@@ -99,27 +99,7 @@ export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHe
   }
 
   return (
-    <div className="flex items-center gap-1.5 shrink-0" suppressHydrationWarning>
-      <button
-        type="button"
-        onClick={() => {
-          onTrackedAction?.("search", surface)
-          onOpenSearch()
-        }}
-        className={`hidden md:flex shrink-0 items-center gap-1.5 px-2.5 py-2 text-[13px] font-medium transition-colors ${baseText}`}
-        aria-label="Search"
-        title="Search"
-      >
-        <Search size={16} className="shrink-0" />
-        <span className="hidden xl:inline whitespace-nowrap">Search</span>
-        <kbd className={`hidden xl:inline border px-2 py-0.5 text-[10px] font-mono ${isDark ? "border-white/12 bg-white/4 text-white/45" : "border-warm-light-gray bg-white/70 text-warm-gray/70"}`}>⌘K</kbd>
-      </button>
-
-      <div className={`hidden md:inline-flex items-center border p-1 ${isDark ? "border-white/10 bg-white/5" : "border-warm-light-gray bg-white/90"}`}>
-        <button type="button" onClick={() => { onTrackedAction?.("locale_en", surface); setLanguage("en") }} className={localeButtonClass("en")}>EN</button>
-        <button type="button" onClick={() => { onTrackedAction?.("locale_th", surface); setLanguage("th") }} className={localeButtonClass("th")}>TH</button>
-      </div>
-
+    <div className="flex items-center gap-1 shrink-0" suppressHydrationWarning>
       <button
         type="button"
         onClick={() => {

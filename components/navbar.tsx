@@ -201,7 +201,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
         aria-label="Main navigation"
       >
         <div className="mx-auto max-w-300 px-4 sm:px-6 lg:px-8 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]">
-          <div className="flex h-16 items-center justify-between gap-4">
+          <div className="flex h-14 items-center justify-between gap-4">
             <Link
               href={localHref("/")}
               onClick={() => handleRouteClick("home", "/", "brand")}
@@ -229,14 +229,10 @@ export function Navbar({ variant = "default" }: NavbarProps) {
             <DesktopNav
               locale={locale}
               groups={navigationGroups}
-              resourceTracks={resourceTracks}
               openGroupId={openGroupId}
-              activeResourceTrackId={activeResourceTrackId}
               onOpenGroup={handleOpenGroup}
-              onCloseGroup={() => setOpenGroupId(null)}
               onNavEnter={handleDesktopNavEnter}
               onNavLeave={handleDesktopNavLeave}
-              onResourceTrackChange={handleResourceTrackChange}
               localHref={localHref}
               isActivePath={isActive}
               onNavigate={handleRouteClick}
@@ -245,7 +241,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
               isDark={isDark}
             />
 
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="flex items-center gap-2 shrink-0">
               <UtilityActions
                 mode="desktop"
                 onOpenSearch={openSearch}
