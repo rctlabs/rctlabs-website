@@ -57,7 +57,10 @@ export default function HeroAnimatedBackground({
   variant = "hero",
 }: HeroAnimatedBackgroundProps) {
   const prefersReducedMotion = useReducedMotion()
-  const [blur, setBlur] = useState<{ big: number; small: number } | null>(null)
+  // Initialize with SSR-safe fallback; update after mount if low-end device detected
+  const [blur, setBlur] = useState<{ big: number; small: number }>(
+    () => getBlurRadius(variant)
+  )
   const parallaxRef = useRef<HTMLDivElement>(null)
   const parallaxPos = useRef({ x: 0, y: 0 })
   const rafRef = useRef<number | null>(null)
@@ -122,8 +125,7 @@ export default function HeroAnimatedBackground({
       />
 
       {/* ── Layer 2: Amber orb ────────────────────────────────────── */}
-      {blur && (
-        <motion.div
+      <motion.div
           className={`absolute top-20 -left-32 ${orbSizeBig} rounded-full bg-warm-amber`}
           style={{ filter: `blur(${blur.big}px)` }}
           animate={
@@ -136,11 +138,9 @@ export default function HeroAnimatedBackground({
           }
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
-      )}
 
       {/* ── Layer 3: Sage orb ─────────────────────────────────────── */}
-      {blur && (
-        <motion.div
+      <motion.div
           className={`absolute bottom-20 -right-28 ${orbSizeSmall} rounded-full bg-warm-sage`}
           style={{ filter: `blur(${blur.small}px)` }}
           animate={
@@ -162,7 +162,6 @@ export default function HeroAnimatedBackground({
             delay: 3,
           }}
         />
-      )}
 
       {/* ── Layer 4: Node pulse dots ──────────────────────────────── */}
       {!isGlobal &&

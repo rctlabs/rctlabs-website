@@ -11,7 +11,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { useTheme } from "@/components/theme-provider"
-import { Globe, ChevronDown, ArrowRight } from "lucide-react"
+import { Globe, ChevronDown } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useMounted } from "@/hooks/use-mounted"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
@@ -109,37 +109,6 @@ export function Footer() {
 
   return (
     <>
-      {/* Pre-footer CTA — Enterprise conversion block */}
-      <section className="border-t border-warm-charcoal/20 bg-warm-charcoal py-16 text-center dark:border-white/10 dark:bg-[#111]">
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-warm-amber">
-          {isTh ? "Enterprise AI Governance" : "Enterprise AI Governance"}
-        </p>
-        <h2 className="mx-auto mb-2 max-w-xl text-[1.875rem] font-semibold leading-[1.15] tracking-tight text-white">
-          {isTh ? "ควบคุม AI ของคุณ" : "Govern your AI."}{" "}
-          <span className="text-white/60">{isTh ? "เชื่อมั่นในผลลัพธ์" : "Trust your outcomes."}</span>
-        </h2>
-        <p className={`mx-auto mb-8 max-w-sm text-sm leading-7 text-white/50 ${isTh ? "subtitle-th" : ""}`}>
-          {isTh
-            ? "RCT Ecosystem เป็น governed AI operating layer สำหรับองค์กรที่ต้องการความน่าเชื่อถือในระดับ enterprise"
-            : "RCT Ecosystem is the governed AI operating layer for enterprise teams that can't afford to guess."}
-        </p>
-        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href={lh("/contact")}
-            className="inline-flex items-center gap-2 rounded-full bg-warm-amber px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:scale-105 hover:bg-warm-amber/90 active:scale-95"
-          >
-            {isTh ? "ขอข้อมูล / นัดพบทีมงาน" : "Request Access"}
-            <ArrowRight size={14} />
-          </Link>
-          <Link
-            href={lh("/docs")}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white/75 transition-all duration-200 hover:border-white/40 hover:text-white"
-          >
-            {isTh ? "อ่านเอกสาร" : "Read Documentation"}
-          </Link>
-        </div>
-      </section>
-
       <footer
         className={`border-t transition-colors duration-300 ${
           isDark ? "bg-dark-deep border-dark-border" : "bg-warm-sand border-warm-light-gray"

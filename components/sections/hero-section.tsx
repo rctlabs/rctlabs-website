@@ -57,9 +57,6 @@ export default function HeroSection() {
 
   return (
     <section ref={heroRef} aria-label="Hero" className="relative min-h-screen flex items-center overflow-hidden bg-warm-cream dark:bg-[#0D0D0D]">
-      {/* Animated background (always visible) */}
-      <HeroAnimatedBackground variant="hero" />
-
       {/* Hero image (hidden on CDN error) */}
       {!heroBgError && (
         <div className="absolute inset-0">
@@ -75,6 +72,7 @@ export default function HeroSection() {
           />
         </div>
       )}
+      {/* Gradient overlay blends image into section background */}
       <div
         className={`absolute inset-0 ${
           isDark
@@ -82,6 +80,8 @@ export default function HeroSection() {
             : "bg-linear-to-r from-warm-cream/95 via-warm-cream/80 to-warm-cream/40"
         }`}
       />
+      {/* Animated background layers (dot-grid + orbs + pulse dots) rendered above gradient */}
+      <HeroAnimatedBackground variant="hero" />
       <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 w-full">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <motion.div
@@ -102,8 +102,9 @@ export default function HeroSection() {
             </motion.div>
 
             <motion.div variants={itemVariants} className="space-y-4">
-              <h1 className={`text-4xl sm:text-5xl lg:text-[62px] font-bold tracking-[-0.03em] leading-[1.08] text-balance ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
-                {t("hero.title.line1")}{" "}
+              <h1 className={`text-4xl sm:text-5xl lg:text-[52px] font-bold tracking-[-0.03em] leading-[1.15] ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+                {t("hero.title.line1")}
+                <br />
                 <span className="font-display font-semibold text-warm-amber">{t("hero.title.line2")}</span>
                 <br />
                 {t("hero.title.line3")}

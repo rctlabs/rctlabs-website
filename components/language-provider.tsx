@@ -45,9 +45,9 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Hero Section
   "hero.badge":    { en: "Reverse Component Thinking", th: "Reverse Component Thinking" },
-  "hero.title.line1": { en: "RCT: The World's 1st",   th: "RCT: ระบบปฏิบัติการ" },
+  "hero.title.line1": { en: "RCT: The World's 1st",   th: "RCT: ระบบปฏิบัติการ AI" },
   "hero.title.line2": { en: "Intent-Centric",          th: "Intent-Centric" },
-  "hero.title.line3": { en: "AI Operating System",     th: "AI แห่งอนาคต" },
+  "hero.title.line3": { en: "AI Operating System",     th: "อันดับ 1 ของโลก" },
   "hero.subtitle": {
     en: "Enterprise AI architecture program built around a 10-layer model, a 41-algorithm framework, 7 Genome subsystems, the FDIA equation, and the JITNA Protocol.",
     th: "โครงการสถาปัตยกรรม AI ระดับองค์กรที่สร้างบนโมเดล 10 ชั้น กรอบอัลกอริทึม 41 รายการ 7 Genome Subsystems สมการ FDIA และ JITNA Protocol",
