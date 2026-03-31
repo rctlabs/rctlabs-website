@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import Link from "next/link"
 
 export default function Error({
   error,
@@ -30,12 +31,12 @@ export default function Error({
           >
             Try Again
           </button>
-          <a
+          <Link
             href="/"
             className="px-6 py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
           >
             Go Home
-          </a>
+          </Link>
         </div>
         {error.digest && (
           <p className="text-xs text-muted-foreground/50">

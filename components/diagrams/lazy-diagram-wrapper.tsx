@@ -1,24 +1,35 @@
 "use client"
 
-import { lazy, Suspense, useEffect, useRef, useState, type ComponentType } from "react"
+import { lazy, Suspense, useEffect, useRef, useState, type ComponentType, type LazyExoticComponent, type ReactNode } from "react"
+
+type LazyDiagramComponent = LazyExoticComponent<ComponentType<Record<string, unknown>>>
 
 interface LazyDiagramWrapperProps {
-  importFunc: () => Promise<{ default: ComponentType<any> }>
+  LazyComponent: LazyDiagramComponent
+  preload?: () => Promise<unknown>
   componentProps?: Record<string, unknown>
   useIntersectionObserver?: boolean
   eager?: boolean
   rootMargin?: string
   preloadOnHover?: boolean
-  fallback?: React.ReactNode
+  fallback?: ReactNode
   className?: string
 }
+
+const EcosystemOverviewDiagram = lazy(() => import("@/components/diagrams/ecosystem-overview-diagram"))
+const FDIAFlowchartDiagram = lazy(() => import("@/components/diagrams/fdia-flowchart"))
+const FDIACalculatorPanelDiagram = lazy(() => import("@/components/sections/fdia-calculator-panel"))
+const PerformanceRadarChartDiagram = lazy(() => import("@/components/diagrams/performance-radar-chart"))
+const InteractiveArchDiagram = lazy(() => import("@/components/diagrams/interactive-arch-diagram"))
+const InteractiveGenomeExplorerDiagram = lazy(() => import("@/components/diagrams/interactive-genome-explorer"))
 
 function SkeletonDiagram() {
   return <div className="min-h-70 w-full animate-pulse rounded-xl border border-border bg-card/60" />
 }
 
 export default function LazyDiagramWrapper({
-  importFunc,
+  LazyComponent,
+  preload,
   componentProps = {},
   useIntersectionObserver = true,
   eager = false,
@@ -30,12 +41,6 @@ export default function LazyDiagramWrapper({
   const [shouldLoad, setShouldLoad] = useState(eager || !useIntersectionObserver)
   const [isPreloaded, setIsPreloaded] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const LazyComponent = useRef<ComponentType<any> | null>(null)
-
-  useEffect(() => {
-    if (!eager || shouldLoad) return
-    setShouldLoad(true)
-  }, [eager, shouldLoad])
 
   useEffect(() => {
     if (!useIntersectionObserver || shouldLoad) return
@@ -55,25 +60,18 @@ export default function LazyDiagramWrapper({
   }, [useIntersectionObserver, shouldLoad, rootMargin])
 
   const handleMouseEnter = () => {
-    if (preloadOnHover && !isPreloaded && !shouldLoad) {
-      importFunc().then((module) => {
-        LazyComponent.current = module.default
+    if (preloadOnHover && preload && !isPreloaded && !shouldLoad) {
+      void preload().then(() => {
         setIsPreloaded(true)
       })
     }
   }
 
-  if (!LazyComponent.current && shouldLoad) {
-    LazyComponent.current = lazy(importFunc)
-  }
-
-  const LoadedComponent = LazyComponent.current
-
   return (
     <div ref={wrapperRef} className={className} onMouseEnter={handleMouseEnter} onFocus={handleMouseEnter}>
-      {shouldLoad && LoadedComponent ? (
+      {shouldLoad ? (
         <Suspense fallback={fallback || <SkeletonDiagram />}>
-          <LoadedComponent {...componentProps} />
+          <LazyComponent {...componentProps} />
         </Suspense>
       ) : (
         fallback || <SkeletonDiagram />
@@ -83,16 +81,27 @@ export default function LazyDiagramWrapper({
 }
 
 export const LazyEcosystemOverview = (props: Record<string, unknown>) => (
-  <LazyDiagramWrapper importFunc={() => import("@/components/diagrams/ecosystem-overview-diagram")} componentProps={props} />
+  <LazyDiagramWrapper
+    LazyComponent={EcosystemOverviewDiagram}
+    preload={() => import("@/components/diagrams/ecosystem-overview-diagram")}
+    componentProps={props}
+  />
 )
 
 export const LazyFDIAFlowchart = (props: Record<string, unknown>) => (
-  <LazyDiagramWrapper importFunc={() => import("@/components/diagrams/fdia-flowchart")} componentProps={props} eager useIntersectionObserver={false} />
+  <LazyDiagramWrapper
+    LazyComponent={FDIAFlowchartDiagram}
+    preload={() => import("@/components/diagrams/fdia-flowchart")}
+    componentProps={props}
+    eager
+    useIntersectionObserver={false}
+  />
 )
 
 export const LazyFDIACalculatorPanel = (props: Record<string, unknown>) => (
   <LazyDiagramWrapper
-    importFunc={() => import("@/components/sections/fdia-calculator-panel")}
+    LazyComponent={FDIACalculatorPanelDiagram}
+    preload={() => import("@/components/sections/fdia-calculator-panel")}
     componentProps={props}
     rootMargin="120px"
     preloadOnHover={false}
@@ -102,7 +111,8 @@ export const LazyFDIACalculatorPanel = (props: Record<string, unknown>) => (
 
 export const LazyPerformanceRadarChart = (props: Record<string, unknown>) => (
   <LazyDiagramWrapper
-    importFunc={() => import("@/components/diagrams/performance-radar-chart")}
+    LazyComponent={PerformanceRadarChartDiagram}
+    preload={() => import("@/components/diagrams/performance-radar-chart")}
     componentProps={props}
     preloadOnHover={false}
   />
@@ -110,7 +120,8 @@ export const LazyPerformanceRadarChart = (props: Record<string, unknown>) => (
 
 export const LazyInteractiveArchDiagram = (props: Record<string, unknown>) => (
   <LazyDiagramWrapper
-    importFunc={() => import("@/components/diagrams/interactive-arch-diagram")}
+    LazyComponent={InteractiveArchDiagram}
+    preload={() => import("@/components/diagrams/interactive-arch-diagram")}
     componentProps={props}
     rootMargin="120px"
     preloadOnHover={false}
@@ -119,7 +130,8 @@ export const LazyInteractiveArchDiagram = (props: Record<string, unknown>) => (
 
 export const LazyInteractiveGenomeExplorer = (props: Record<string, unknown>) => (
   <LazyDiagramWrapper
-    importFunc={() => import("@/components/diagrams/interactive-genome-explorer")}
+    LazyComponent={InteractiveGenomeExplorerDiagram}
+    preload={() => import("@/components/diagrams/interactive-genome-explorer")}
     componentProps={props}
     rootMargin="120px"
     preloadOnHover={false}

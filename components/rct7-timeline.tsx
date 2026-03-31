@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { CheckCircle, Circle, ArrowRight } from "lucide-react"
+import { CheckCircle, ArrowRight } from "lucide-react"
 
 interface Step {
   id: number

@@ -10,16 +10,14 @@ import {
   FileText, 
   ArrowRight, 
   Layers, 
+  CheckCircle,
   Shield, 
   Database, 
   Globe, 
   Terminal, 
-  Server,
   GitBranch,
   Key,
-  Workflow,
-  CheckCircle,
-  ExternalLink
+  Workflow
 } from "lucide-react"
 
 export const metadata: Metadata = createBilingualMetadata(

@@ -3,7 +3,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
-import { ArrowRight, CheckCircle, XCircle, MinusCircle, Zap, Globe, Shield, DollarSign } from "lucide-react"
+import { ArrowRight, CheckCircle, XCircle, MinusCircle, Globe, Shield, DollarSign } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "RCT Labs vs LLM APIs — Constitutional AI vs Bare API Access | RCT Labs",

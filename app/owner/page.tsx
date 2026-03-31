@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Users, Key, Activity, AlertTriangle, DollarSign, Server, ChevronRight, RefreshCw, Shield, BarChart3 } from "lucide-react"
+import { Users, Key, Activity, AlertTriangle, Server, ChevronRight, RefreshCw, Shield, BarChart3 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -82,7 +82,13 @@ export default function OwnerConsolePage() {
     setLoading(false)
   }
 
-  useEffect(() => { fetchData() }, [])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void fetchData()
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="min-h-screen bg-[#060910] text-white">

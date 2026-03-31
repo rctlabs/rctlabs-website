@@ -284,7 +284,7 @@ export default function SolutionsPage() {
       {/* Solution Cards */}
       <section className="bg-muted/30 py-20">
         <div className="max-w-5xl mx-auto px-4 space-y-12">
-          {solutions.map((sol, i) => (
+          {solutions.map((sol) => (
             <motion.div key={sol.id} initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
               className="rounded-2xl border border-border bg-card overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-5">

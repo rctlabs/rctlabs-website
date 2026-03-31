@@ -55,8 +55,8 @@ export function AIEngineSelector({
       .then((r) => r.json())
       .then((data) => {
         setModels(data.models ?? [])
-        if (!selected && data.models?.length) {
-          setSelected(data.models[0].id)
+        if (data.models?.length) {
+          setSelected((prev) => prev || data.models[0].id)
         }
       })
       .catch(() => setModels([]))

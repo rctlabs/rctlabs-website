@@ -97,8 +97,21 @@ export function ThemeProvider({
     [attribute]
   )
 
-  const [theme, setThemeState] = useState<Theme>(defaultTheme)
-  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>('light')
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === 'undefined') return defaultTheme
+
+    try {
+      const storedTheme = window.localStorage.getItem(storageKey) as Theme | null
+      if (storedTheme === 'light' || storedTheme === 'dark' || storedTheme === 'system') {
+        return storedTheme
+      }
+    } catch {
+      // Ignore storage failures in privacy-restricted browsers.
+    }
+
+    return defaultTheme
+  })
+  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(() => getSystemTheme())
 
   const resolvedTheme = useMemo<ResolvedTheme>(() => {
     if (forcedTheme) {
@@ -107,22 +120,6 @@ export function ThemeProvider({
 
     return resolveThemeValue(theme, enableSystem)
   }, [enableSystem, forcedTheme, theme])
-
-  useEffect(() => {
-    const nextSystemTheme = getSystemTheme()
-    setSystemTheme(nextSystemTheme)
-
-    try {
-      const storedTheme = window.localStorage.getItem(storageKey) as Theme | null
-      if (storedTheme === 'light' || storedTheme === 'dark' || storedTheme === 'system') {
-        setThemeState(storedTheme)
-      } else {
-        setThemeState(defaultTheme)
-      }
-    } catch {
-      setThemeState(defaultTheme)
-    }
-  }, [defaultTheme, storageKey])
 
   useEffect(() => {
     if (!enableSystem || typeof window === 'undefined') return

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -36,15 +36,12 @@ const NAV_ITEMS = [
 ]
 
 export default function SettingsPage() {
-  const [locale, setLocale] = useState<"en" | "th">("en")
+  const pathname = usePathname()
+  const initialLocale: "en" | "th" = pathname?.startsWith("/th") ? "th" : "en"
+  const [locale, setLocale] = useState<"en" | "th">(initialLocale)
   const [notifications, setNotifications] = useState(true)
   const [privacyMode, setPrivacyMode] = useState(false)
   const [saved, setSaved] = useState(false)
-  const pathname = usePathname()
-
-  useEffect(() => {
-    if (pathname?.startsWith("/th")) setLocale("th")
-  }, [pathname])
 
   const handleSave = async () => {
     try {

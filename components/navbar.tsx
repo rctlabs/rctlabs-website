@@ -200,8 +200,26 @@ export function Navbar({ variant = "default" }: NavbarProps) {
         }`}
         aria-label="Main navigation"
       >
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            className={`navbar-ambient-orb navbar-ambient-orb--amber absolute -left-14 top-[-2.75rem] h-28 w-28 transition-opacity duration-500 ${
+              scrolled ? "opacity-45" : isOnDarkHero ? "opacity-35" : "opacity-20"
+            }`}
+          />
+          <div
+            className={`navbar-ambient-orb navbar-ambient-orb--sage absolute right-[-2.5rem] top-[-1.75rem] h-24 w-24 transition-opacity duration-500 ${
+              scrolled ? "opacity-40" : isOnDarkHero ? "opacity-28" : "opacity-16"
+            }`}
+          />
+          <div
+            className={`absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-warm-amber/40 to-transparent transition-opacity duration-500 ${
+              scrolled ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </div>
+
         <div className="mx-auto max-w-300 px-4 sm:px-6 lg:px-8 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]">
-          <div className="flex h-14 items-center justify-between gap-4">
+          <div className="relative z-10 flex h-14 items-center justify-between gap-4">
             <Link
               href={localHref("/")}
               onClick={() => handleRouteClick("home", "/", "brand")}

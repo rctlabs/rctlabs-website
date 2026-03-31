@@ -3,21 +3,15 @@
 import { useState, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Workflow,
   Play,
-  Pause,
   Plus,
-  Trash2,
   Settings,
-  ArrowRight,
   ChevronRight,
   Layers,
   Zap,
-  Clock,
   CheckCircle,
   XCircle,
   Loader2,

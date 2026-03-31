@@ -117,7 +117,7 @@ function ArticleCard({
     <Link href={`${localePrefix}/blog/${post.slug}`} className="group block h-full">
       <article className="relative h-full overflow-hidden rounded-xl border border-border bg-card p-6 flex flex-col hover:border-warm-amber/25 hover:bg-muted/30 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
         {/* Top gradient accent */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-warm-amber/20 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm-amber/20 to-transparent" />
 
         <div className="flex items-center gap-2 mb-4">
           <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-xs font-semibold ${catColor}`}>
@@ -332,9 +332,9 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
             {filteredPosts.length > 3 && (
               <>
                 <div className="flex items-center gap-4">
-                  <div className="h-px flex-1 bg-gradient-to-r from-warm-amber/20 to-transparent" />
+                  <div className="h-px flex-1 bg-linear-to-r from-warm-amber/20 to-transparent" />
                   <span className="text-xs text-warm-dim font-semibold uppercase tracking-wider">{t("blog.all.articles")}</span>
-                  <div className="h-px flex-1 bg-gradient-to-l from-warm-amber/20 to-transparent" />
+                  <div className="h-px flex-1 bg-linear-to-l from-warm-amber/20 to-transparent" />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {filteredPosts.slice(3).map((post) => (
@@ -349,7 +349,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
 
       {/* ── Newsletter / CTA strip ────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-16">
-        <div className="rounded-2xl border border-warm-amber/20 bg-gradient-to-br from-warm-amber/8 to-transparent p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="rounded-2xl border border-warm-amber/20 bg-linear-to-br from-warm-amber/8 to-transparent p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-2">{t("blog.cta.title")}</h2>
             <p className="text-muted-foreground max-w-md">

@@ -71,6 +71,8 @@ export default function HeroAnimatedBackground({
   const glow = useMemo(() => getGlowRadius(variant), [variant])
 
   const isGlobal = variant === "global"
+  const isTouchInput = orchestration?.isTouchInput ?? false
+  const hasMinimalMotion = prefersReducedMotion || isTouchInput
   const pageProgress = orchestration?.pageProgress ?? 0
   const scrollVelocity = orchestration?.scrollVelocity ?? 0
   const heroPresence = clamp(1.08 - pageProgress * 0.42, 0.66, 1.08)
@@ -86,27 +88,29 @@ export default function HeroAnimatedBackground({
   const contextIntensity = isGlobal
     ? 1
     : clamp(heroPresence + sectionBias, 0.62, 1.12)
+  const densityScale = isTouchInput ? 0.7 : 1
   const pointerInfluence = clamp(1 - scrollVelocity * 1.8, 0.35, 1)
   const fieldOpacity = isGlobal
-    ? "var(--rct-global-field-opacity)"
-    : `calc(var(--rct-hero-field-opacity) * ${contextIntensity.toFixed(3)})`
+    ? `calc(var(--rct-global-field-opacity) * ${densityScale.toFixed(3)})`
+    : `calc(var(--rct-hero-field-opacity) * ${(contextIntensity * densityScale).toFixed(3)})`
   const gridOpacity = isGlobal
-    ? "var(--rct-global-grid-opacity)"
-    : `calc(var(--rct-hero-grid-opacity) * ${contextIntensity.toFixed(3)})`
+    ? `calc(var(--rct-global-grid-opacity) * ${densityScale.toFixed(3)})`
+    : `calc(var(--rct-hero-grid-opacity) * ${(contextIntensity * densityScale).toFixed(3)})`
   const railOpacity = isGlobal
-    ? "var(--rct-global-rail-opacity)"
-    : `calc(var(--rct-hero-rail-opacity) * ${(contextIntensity + 0.08).toFixed(3)})`
+    ? `calc(var(--rct-global-rail-opacity) * ${densityScale.toFixed(3)})`
+    : `calc(var(--rct-hero-rail-opacity) * ${((contextIntensity + 0.08) * densityScale).toFixed(3)})`
   const nodeOpacity = isGlobal
-    ? "var(--rct-global-node-opacity)"
-    : `calc(var(--rct-hero-node-opacity) * ${(contextIntensity + 0.05).toFixed(3)})`
+    ? `calc(var(--rct-global-node-opacity) * ${densityScale.toFixed(3)})`
+    : `calc(var(--rct-hero-node-opacity) * ${((contextIntensity + 0.05) * densityScale).toFixed(3)})`
   const wrapperClass = isGlobal
     ? "fixed inset-0 z-[1] pointer-events-none overflow-hidden"
     : "absolute inset-0 z-[2] pointer-events-none overflow-hidden"
-  const visibleNodes = isGlobal ? ANCHOR_NODES.slice(0, 2) : ANCHOR_NODES
-  const pointerShiftX = orchestration && !isGlobal && !prefersReducedMotion && !orchestration.isTouchInput
+  const visibleNodes = isGlobal ? ANCHOR_NODES.slice(0, 2) : hasMinimalMotion ? ANCHOR_NODES.slice(0, 2) : ANCHOR_NODES
+  const renderedRails = hasMinimalMotion ? GUIDE_RAILS.slice(0, 2) : GUIDE_RAILS
+  const pointerShiftX = orchestration && !isGlobal && !hasMinimalMotion
     ? orchestration.pointerIntent.x * 6 * pointerInfluence
     : 0
-  const pointerShiftY = orchestration && !isGlobal && !prefersReducedMotion && !orchestration.isTouchInput
+  const pointerShiftY = orchestration && !isGlobal && !hasMinimalMotion
     ? orchestration.pointerIntent.y * 4.5 * pointerInfluence
     : 0
 
@@ -132,12 +136,12 @@ export default function HeroAnimatedBackground({
         style={{
           opacity: gridOpacity,
           backgroundImage: "var(--rct-hero-grid-lines)",
-          backgroundSize: isGlobal ? "96px 96px" : "74px 74px",
+          backgroundSize: isGlobal ? "96px 96px" : hasMinimalMotion ? "88px 88px" : "82px 82px",
         }}
       />
 
       {/* ── Layer 3: Guide rails + beam wash ─────────────────────── */}
-      {GUIDE_RAILS.map((rail, index) => (
+      {renderedRails.map((rail, index) => (
         <div
           key={`${rail.left}-${rail.top}`}
           className="absolute overflow-hidden rounded-full"
@@ -157,7 +161,7 @@ export default function HeroAnimatedBackground({
             className="absolute -inset-y-1.25 left-[20%] right-[35%] rounded-full bg-warm-amber/40"
             style={{ filter: `blur(${glow.beam}px)` }}
           />
-          {!isGlobal && (
+          {!isGlobal && !hasMinimalMotion && (
             <motion.div
               className="absolute -inset-y-px w-18"
               style={{ backgroundImage: "var(--rct-hero-signal-trace)" }}
@@ -182,7 +186,7 @@ export default function HeroAnimatedBackground({
         className="absolute top-[16%] left-[21%] h-[52%] w-px"
         style={{ backgroundImage: "var(--rct-hero-vertical-guide)" }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: isGlobal ? 0.18 : 0.3 }}
+        animate={{ opacity: isGlobal ? 0.18 : hasMinimalMotion ? 0.18 : 0.3 }}
         transition={{ duration: 1.4, delay: 0.15 }}
       />
 
@@ -190,7 +194,7 @@ export default function HeroAnimatedBackground({
         className="absolute top-[54%] left-[52%] h-px w-[22%]"
         style={{ backgroundImage: "var(--rct-hero-horizontal-guide)" }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: isGlobal ? 0.12 : 0.24 }}
+        animate={{ opacity: isGlobal ? 0.12 : hasMinimalMotion ? 0.1 : 0.24 }}
         transition={{ duration: 1.4, delay: 0.24 }}
       />
 

@@ -1,11 +1,12 @@
 "use client"
 
 import type { ReactNode } from "react"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { BookOpen, ExternalLink, FlaskConical, BarChart3, Shield } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import Image from "next/image"
 import { pixelIcons } from "@/lib/pixel-icons"
+import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 const evidenceCards = [
   {
@@ -174,13 +175,21 @@ const fadeUp = {
 export default function EvidenceSection() {
   const { language } = useLanguage()
   const isTh = language === "th"
+  const prefersReducedMotion = useReducedMotion()
+  const cardSpotlight = useCardSpotlight<HTMLDivElement>()
 
   return (
     <section
-      className="border-t border-border bg-transparent py-16 md:py-24 transition-colors duration-300"
+      className="relative overflow-hidden border-t border-border bg-transparent py-16 md:py-24 transition-colors duration-300"
       aria-label="Research Evidence and Partners"
     >
-      <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="homepage-ambient-layer absolute inset-0">
+        <div className="homepage-ambient-orb homepage-ambient-orb--sage absolute -left-28 top-12 h-80 w-80 rounded-full" />
+        <div className="homepage-ambient-orb homepage-ambient-orb--terra homepage-ambient-orb--slow absolute right-[4%] bottom-12 h-72 w-72 rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.16),transparent_26%,rgba(196,116,91,0.04)_100%)]" />
+      </div>
+
+      <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section heading */}
         <motion.div
           initial="hidden"
@@ -190,7 +199,7 @@ export default function EvidenceSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 lg:mb-16"
         >
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-4 bg-secondary text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5 mb-4 rounded-full border border-[#eadfd2] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground shadow-[0_8px_18px_rgba(84,61,31,0.04)]">
             <BookOpen size={12} />
             {isTh ? "หลักฐานเชิงวิจัย" : "Research-Backed Evidence"}
           </span>
@@ -203,11 +212,11 @@ export default function EvidenceSection() {
               className="inline-block w-10 h-10 sm:w-12 sm:h-12 object-contain"
               style={{ imageRendering: "pixelated" }}
             />
-            <span>
+            <span className="inline-flex items-baseline gap-2">
               <span className="font-semibold" style={{ color: "#7B9E87" }}>
                 {isTh ? "พิสูจน์แล้ว" : "Proven"}
-              </span>{" "}
-              {isTh ? "ด้วยงานวิจัย" : "by Research"}
+              </span>
+              <span>{isTh ? "ด้วยงานวิจัย" : "by Research"}</span>
             </span>
           </h2>
           <p className="text-sm max-w-2xl mx-auto text-muted-foreground">
@@ -224,13 +233,15 @@ export default function EvidenceSection() {
             return (
               <motion.div
                 key={i}
+                {...cardSpotlight}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeUp}
                 transition={{ duration: 0.5, delay: i * 0.12 }}
-                whileHover={{ y: -2 }}
-                className="main-page-reactive-card group relative flex h-full flex-col rounded-3xl border border-border bg-[#fff8f1] p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/30 hover:bg-[#fffdf8] hover:shadow-[0_14px_34px_rgba(84,61,31,0.07)] dark:bg-card dark:hover:bg-card"
+                whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.008 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.996 }}
+                className="main-page-reactive-card group relative flex h-full flex-col rounded-3xl border border-border bg-white p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/30 hover:bg-white hover:shadow-[0_14px_34px_rgba(84,61,31,0.07)] dark:bg-card dark:hover:bg-card"
               >
                 <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.12),transparent_40%)]" />
@@ -238,14 +249,14 @@ export default function EvidenceSection() {
 
                 <div className="relative z-10 mb-5 flex items-start justify-between gap-4">
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-warm-amber/20 bg-secondary text-muted-foreground transition-transform duration-300 group-hover:scale-105">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-warm-amber/18 bg-[#fffaf6] text-muted-foreground shadow-[0_10px_20px_rgba(84,61,31,0.04)] transition-transform duration-300 group-hover:scale-105">
                       <Icon size={16} />
                     </div>
-                    <span className="inline-flex min-w-0 items-center rounded-full bg-secondary px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    <span className="inline-flex min-w-0 items-center rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                       {isTh ? card.tagTh : card.tagEn}
                     </span>
                   </div>
-                  <div className="shrink-0 rounded-2xl border border-border/70 bg-[#f7ede4]/92 px-3 py-2 text-right dark:bg-background/70">
+                  <div className="shrink-0 rounded-2xl border border-[#eadfd2] bg-white px-3 py-2 text-right shadow-[0_10px_20px_rgba(84,61,31,0.04)] dark:bg-background/70 dark:border-border/70">
                     <div
                       className="text-lg font-bold font-mono leading-none"
                       style={{ color: card.color }}
@@ -266,7 +277,7 @@ export default function EvidenceSection() {
                   {isTh ? card.quoteTh : card.quoteEn}
                 </blockquote>
 
-                <div className="relative z-10 mb-5 rounded-xl bg-secondary/55 px-3.5 py-3 text-[11px] leading-relaxed text-muted-foreground">
+                <div className="relative z-10 mb-5 rounded-xl border border-[#eee2d6] bg-[#fffaf6] px-3.5 py-3 text-[11px] leading-relaxed text-muted-foreground dark:border-border dark:bg-secondary/55">
                   <span className="font-semibold">RCT:</span>{" "}
                   {isTh ? card.relevanceTh : card.relevanceEn}
                 </div>
@@ -311,15 +322,18 @@ export default function EvidenceSection() {
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {partners.map((partner) => (
-              <div
+              <motion.div
                 key={partner.name}
-                className="main-page-reactive-card flex items-center gap-2.5 rounded-xl border border-border bg-[#fff6ef] px-4 py-3 transition-[border-color,background-color,box-shadow] hover:border-warm-amber/30 hover:bg-[#fffdf8] dark:bg-card dark:hover:bg-card"
+                {...cardSpotlight}
+                whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.01 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.995 }}
+                className="main-page-reactive-card flex items-center gap-2.5 rounded-xl border border-border bg-white px-4 py-3 transition-[border-color,background-color,box-shadow] hover:border-warm-amber/30 hover:bg-white dark:bg-card dark:hover:bg-card"
               >
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors hover:text-foreground">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#eee2d6] bg-[#fffaf6] text-muted-foreground transition-colors hover:text-foreground dark:border-border dark:bg-secondary">
                   {partner.svg}
                 </div>
                 <span className="truncate text-sm font-medium text-muted-foreground">{partner.name}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>

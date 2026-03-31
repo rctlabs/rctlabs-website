@@ -61,11 +61,9 @@ const routeLabels: Record<string, { en: string; th: string }> = {
 export default function Breadcrumb() {
   const pathname = usePathname()
   const { language } = useLanguage()
+  const effectivePathname = pathname || ""
 
-  // Don't show breadcrumb on homepage
-  if (!pathname || pathname === "/") return null
-
-  const pathSegments = pathname.split("/").filter(Boolean)
+  const pathSegments = effectivePathname.split("/").filter(Boolean)
 
   const breadcrumbs: BreadcrumbSegment[] = [
     { label: language === "en" ? "Home" : "หน้าแรก", href: "/" },
@@ -95,7 +93,10 @@ export default function Breadcrumb() {
       "item": `https://rctlabs.co${crumb.href}`,
     })),
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), [pathname, language])
+  }), [effectivePathname, language])
+
+  // Don't show breadcrumb on homepage
+  if (effectivePathname === "/") return null
 
   return (
     <>

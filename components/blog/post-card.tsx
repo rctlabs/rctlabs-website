@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowRight, Clock, Users, FlaskConical, Newspaper, Wrench, Lightbulb, BarChart3, FileIcon } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import type { BlogPostMetadata } from "@/lib/blog"
+import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 interface PostCardProps extends BlogPostMetadata {
   slug: string
@@ -28,9 +29,10 @@ export function PostCard({ slug, title, author, date, category, excerpt, readTim
   const catColor = CATEGORY_COLORS[category] ?? "text-warm-amber border-warm-amber/30 bg-warm-amber/8"
   const CatIcon = CATEGORY_ICONS[category] ?? FileIcon
   const formattedDate = date ? new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null
+  const cardSpotlight = useCardSpotlight<HTMLAnchorElement>()
 
   return (
-    <Link href={`${localePrefix}/blog/${slug}`} className="group block h-full">
+    <Link href={`${localePrefix}/blog/${slug}`} {...cardSpotlight} className="main-page-reactive-card group block h-full rounded-xl">
       <article className="relative h-full overflow-hidden rounded-xl border border-white/8 bg-warm-charcoal/40 backdrop-blur-sm p-6 flex flex-col hover:border-warm-amber/25 hover:bg-warm-charcoal/60 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
         {/* Top gradient line */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-warm-amber/20 to-transparent" />

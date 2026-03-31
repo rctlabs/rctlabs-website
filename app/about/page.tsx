@@ -5,7 +5,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Shield, Eye, Heart, Sparkles, Target, Zap, ArrowRight, ExternalLink } from "lucide-react"
+import { Shield, Eye, Heart, Sparkles, Target, ArrowRight, ExternalLink } from "lucide-react"
 import { headers } from "next/headers"
 import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
 

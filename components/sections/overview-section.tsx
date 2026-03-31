@@ -86,8 +86,14 @@ export default function OverviewSection() {
   const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
 
   return (
-    <section id="overview" aria-label="System Overview" className="bg-transparent py-16 md:py-24 transition-colors duration-300">
-      <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="overview" aria-label="System Overview" className="relative overflow-hidden bg-transparent py-16 md:py-24 transition-colors duration-300">
+      <div className="homepage-ambient-layer absolute inset-0">
+        <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute -left-24 top-12 h-72 w-72 rounded-full" />
+        <div className="homepage-ambient-orb homepage-ambient-orb--sage homepage-ambient-orb--slow absolute -right-28 bottom-8 h-80 w-80 rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_26%,rgba(123,158,135,0.04)_100%)]" />
+      </div>
+
+      <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           tag={language === "en" ? "What Makes RCT Different" : "อะไรทำให้ RCT แตกต่าง"}
           tagColor="sage"
@@ -102,12 +108,20 @@ export default function OverviewSection() {
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={prefersReducedMotion ? undefined : { duration: 0.4 }}
-          className="mb-8"
+          className="relative mb-8"
         >
+          <div className="pointer-events-none absolute inset-x-[10%] top-6 h-48 rounded-full bg-white/34 blur-3xl" />
           <LazyEcosystemOverview />
         </motion.div>
 
-        <div className={`main-page-reactive-surface mb-8 rounded-2xl border px-5 py-4 sm:px-6 sm:py-5 ${isDark ? "border-border bg-card/70" : "border-[#e6ddd0] bg-[#fff6ee]"}`}>
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.003 }}
+          viewport={{ once: true }}
+          transition={prefersReducedMotion ? undefined : { duration: 0.28 }}
+          className={`main-page-reactive-surface mb-8 rounded-2xl border px-5 py-4 sm:px-6 sm:py-5 ${isDark ? "border-border bg-card/70" : "border-[#e6ddd0] bg-white"}`}
+        >
           <div className="mx-auto max-w-3xl text-center">
             <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-warm-amber">
               {language === "th" ? "เลือกเส้นทางการสำรวจเชิงลึก" : "Choose a Deep-Dive Path"}
@@ -118,7 +132,7 @@ export default function OverviewSection() {
                 : "Choose the lens that matches your evaluation goal directly, whether that is architecture, protocol, core systems, verification, or deployment. This keeps the homepage shorter and more enterprise-oriented."}
             </p>
           </div>
-        </div>
+        </motion.div>
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {deepDiveCards.map((card, index) => (

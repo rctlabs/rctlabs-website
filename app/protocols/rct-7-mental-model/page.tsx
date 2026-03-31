@@ -77,7 +77,6 @@ export default function RCT7MentalModelPage() {
 
   const bg = isDark ? "#141414" : "#ffffff"
   const bg2 = isDark ? "#1A1A1A" : "#FAF6F0"
-  const cardBg = isDark ? "#1E1E1E" : "#FAF6F0"
   const cardBorder = isDark ? "#2A2A2A" : "#E8E3DC"
   const textPrimary = isDark ? "#E8E3DC" : "#1A1A1A"
   const textSecondary = isDark ? "#999" : "#4A4A4A"

@@ -9,7 +9,6 @@ import {
   Activity,
   Users,
   Key,
-  AlertTriangle,
   Server,
   HardDrive,
   Cpu,
@@ -79,12 +78,6 @@ export function OwnerConsole() {
   const [apiKeys, setApiKeys] = useState<APIKey[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    loadData()
-    const interval = setInterval(loadData, 30000)
-    return () => clearInterval(interval)
-  }, [])
-
   const loadData = async () => {
     setLoading(true)
     try {
@@ -112,6 +105,19 @@ export function OwnerConsole() {
     }
     setLoading(false)
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void loadData()
+    }, 0)
+    const interval = setInterval(() => {
+      void loadData()
+    }, 30000)
+    return () => {
+      clearTimeout(timer)
+      clearInterval(interval)
+    }
+  }, [])
 
   const formatUptime = (seconds: number) => {
     const days = Math.floor(seconds / 86400)

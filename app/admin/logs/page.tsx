@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { FileText, Search, RefreshCw, ChevronLeft, AlertTriangle, AlertCircle, Info, Bug } from "lucide-react"
 import { Navbar } from "@/components/navbar"
@@ -47,13 +47,13 @@ export default function LogsPage() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
   const [levelFilter, setLevelFilter] = useState("all")
-  const [serviceFilter, setServiceFilter] = useState("all")
-  const [limit, setLimit] = useState(50)
+  const [serviceFilter] = useState("all")
+  const [limit] = useState(50)
   const [sinceMinutes, setSinceMinutes] = useState(60)
   const [autoScroll, setAutoScroll] = useState(true)
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  async function fetchLogs() {
+  const fetchLogs = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams({ limit: String(limit), since_minutes: String(sinceMinutes) })
@@ -66,9 +66,15 @@ export default function LogsPage() {
       if (logsRes.status === "fulfilled" && logsRes.value.ok) setLogs(await logsRes.value.json())
       if (summaryRes.status === "fulfilled" && summaryRes.value.ok) setErrorSummary(await summaryRes.value.json())
     } catch { /* offline */ } finally { setLoading(false) }
-  }
+  }, [levelFilter, serviceFilter, limit, sinceMinutes])
 
-  useEffect(() => { fetchLogs() }, [levelFilter, serviceFilter, limit, sinceMinutes])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void fetchLogs()
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [fetchLogs])
 
   useEffect(() => {
     if (autoScroll) bottomRef.current?.scrollIntoView({ behavior: "smooth" })

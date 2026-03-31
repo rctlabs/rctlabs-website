@@ -134,6 +134,7 @@ export default function JitnaClient() {
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 

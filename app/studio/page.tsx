@@ -87,7 +87,13 @@ export default function StudioPage() {
     } catch { /* offline */ } finally { setLoading(false) }
   }
 
-  useEffect(() => { fetchData() }, [])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void fetchData()
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const MOCK_SUMMARY: ResultSummary = {
     total_algorithms: 10,

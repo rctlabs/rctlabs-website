@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Terminal, Play, CheckCircle, XCircle, Clock, ChevronRight, RefreshCw, BarChart3, FileCode } from "lucide-react"
+import { Terminal, Play, Clock, ChevronRight, RefreshCw, BarChart3, FileCode } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_VERSION } from "@/lib/site-config"
@@ -83,7 +83,13 @@ export default function TestConsolePage() {
     setRunning(false)
   }
 
-  useEffect(() => { fetchData() }, [])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void fetchData()
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="min-h-screen bg-[#060910] text-white">

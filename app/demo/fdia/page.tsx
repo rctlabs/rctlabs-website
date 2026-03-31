@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { motion, AnimatePresence } from "framer-motion"
@@ -177,18 +177,9 @@ export default function FDIADemoPage() {
   const [data, setData] = useState(75)
   const [intent, setIntent] = useState(80)
   const [architect, setArchitect] = useState(70)
-  const [result, setResult] = useState<FDIAResult | null>(null)
-  const [isCalculating, setIsCalculating] = useState(false)
   const [activePreset, setActivePreset] = useState<number | null>(null)
-
-  useEffect(() => {
-    setIsCalculating(true)
-    const timer = setTimeout(() => {
-      setResult(calculateFDIA(data, intent, architect))
-      setIsCalculating(false)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [data, intent, architect])
+  const result = useMemo(() => calculateFDIA(data, intent, architect), [data, intent, architect])
+  const isCalculating = false
 
   function loadPreset(idx: number) {
     const p = PRESETS[idx]

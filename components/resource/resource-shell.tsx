@@ -3,9 +3,11 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
 import type { LucideIcon } from "lucide-react"
+import { motion, useReducedMotion } from "framer-motion"
 import { ArrowRight, ExternalLink } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 type AccentTone = "amber" | "sky" | "sage" | "terracotta" | "lavender"
 
@@ -134,6 +136,8 @@ export function ResourcePageShell({
   children,
 }: ResourcePageShellProps) {
   const accentClasses = getAccentClasses(accent)
+  const prefersReducedMotion = useReducedMotion()
+  const statSpotlight = useCardSpotlight<HTMLDivElement>()
 
   return (
     <main className="min-h-screen bg-background">
@@ -142,7 +146,7 @@ export function ResourcePageShell({
       <section className="article-safe-top relative overflow-hidden border-b border-border/70 bg-linear-to-b from-background via-background to-muted/30">
         <div className={`pointer-events-none absolute inset-0 bg-radial ${accentClasses.glow}`} />
         <div className="mx-auto max-w-7xl px-4 pb-12 md:pb-16">
-          <div className="rounded-4xl border border-border/70 bg-card/88 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.05)] md:p-10">
+          <div className="main-page-reactive-surface rounded-4xl border border-[#e6ddd0] bg-white/94 p-6 shadow-[0_24px_80px_rgba(84,61,31,0.06)] dark:border-border/70 dark:bg-card/88 md:p-10">
             <div className="max-w-4xl">
               <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] ${accentClasses.badge}`}>
                 <span>{eyebrow}</span>
@@ -176,11 +180,16 @@ export function ResourcePageShell({
             {stats.length > 0 ? (
               <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 {stats.map((stat) => (
-                  <div key={`${stat.label}-${stat.value}`} className="rounded-2xl border border-border/70 bg-background/75 p-4">
+                  <motion.div
+                    key={`${stat.label}-${stat.value}`}
+                    {...statSpotlight}
+                    whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.006 }}
+                    className="main-page-reactive-card rounded-2xl border border-[#e6ddd0] bg-white p-4 shadow-[0_12px_28px_rgba(84,61,31,0.045)] dark:border-border/70 dark:bg-background/75"
+                  >
                     <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{stat.label}</div>
                     <div className="mt-2 text-2xl font-bold text-foreground">{stat.value}</div>
                     {stat.detail ? <p className="mt-2 text-sm leading-6 text-muted-foreground">{stat.detail}</p> : null}
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             ) : null}
@@ -192,7 +201,7 @@ export function ResourcePageShell({
 
       {footerTitle && footerDescription ? (
         <section className="mx-auto max-w-7xl px-4 pb-16 md:pb-20">
-          <div className="rounded-4xl border border-border/70 bg-card/88 p-8 shadow-[0_24px_80px_rgba(0,0,0,0.05)] md:p-10">
+          <div className="main-page-reactive-surface rounded-4xl border border-[#e6ddd0] bg-white/94 p-8 shadow-[0_24px_80px_rgba(84,61,31,0.06)] dark:border-border/70 dark:bg-card/88 md:p-10">
             <div className="max-w-3xl">
               <h2 className="text-3xl font-bold text-foreground md:text-4xl">{footerTitle}</h2>
               <p className="mt-4 text-base leading-8 text-muted-foreground md:text-lg">{footerDescription}</p>
@@ -227,6 +236,8 @@ export function ResourceSection({ eyebrow, title, description, children }: Resou
 }
 
 export function ResourceCardGrid({ cards, columns = "three" }: { cards: ResourceCard[]; columns?: "two" | "three" | "four" }) {
+  const prefersReducedMotion = useReducedMotion()
+  const cardSpotlight = useCardSpotlight<HTMLDivElement>()
   const gridClass =
     columns === "two"
       ? "grid gap-5 lg:grid-cols-2"
@@ -239,13 +250,18 @@ export function ResourceCardGrid({ cards, columns = "three" }: { cards: Resource
       {cards.map((card) => {
         const Icon = card.icon
         const content = (
-          <div className="group flex h-full flex-col rounded-3xl border border-border/70 bg-card/90 p-6 shadow-[0_12px_32px_rgba(0,0,0,0.04)] transition hover:border-warm-amber/35 hover:shadow-[0_18px_42px_rgba(0,0,0,0.06)]">
+          <motion.div
+            {...cardSpotlight}
+            whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.006 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.996 }}
+            className="main-page-reactive-card group flex h-full flex-col rounded-3xl border border-[#e6ddd0] bg-white p-6 shadow-[0_12px_32px_rgba(84,61,31,0.045)] transition hover:border-warm-amber/35 hover:shadow-[0_18px_42px_rgba(84,61,31,0.07)] dark:border-border/70 dark:bg-card/90"
+          >
             <div className="flex items-start justify-between gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-border bg-background/75 text-warm-amber">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#eee2d6] bg-[#fffaf6] text-warm-amber dark:border-border dark:bg-background/75">
                 <Icon className="h-5 w-5" />
               </div>
               {card.badge ? (
-                <span className="rounded-full border border-border bg-background/75 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                <span className="rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground dark:border-border dark:bg-background/75">
                   {card.badge}
                 </span>
               ) : null}
@@ -260,7 +276,7 @@ export function ResourceCardGrid({ cards, columns = "three" }: { cards: Resource
             {card.tags && card.tags.length > 0 ? (
               <div className="mt-5 flex flex-wrap gap-2">
                 {card.tags.map((tag) => (
-                  <span key={tag} className="rounded-full border border-border bg-background/75 px-3 py-1 text-xs text-muted-foreground">
+                  <span key={tag} className="rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-xs text-muted-foreground dark:border-border dark:bg-background/75">
                     {tag}
                   </span>
                 ))}
@@ -271,7 +287,7 @@ export function ResourceCardGrid({ cards, columns = "three" }: { cards: Resource
               <span>Open resource</span>
               {card.external ? <ExternalLink className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
             </div>
-          </div>
+          </motion.div>
         )
 
         if (card.external) {

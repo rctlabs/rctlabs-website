@@ -2,11 +2,13 @@
 
 import { useMemo, useState } from "react"
 import { Slider } from "@/components/ui/slider"
+import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 export default function FDIACalculatorPanel({ language = "en" }: { language?: "en" | "th" }) {
   const [dataVal, setDataVal] = useState(85)
   const [intentVal, setIntentVal] = useState(7)
   const [architectVal, setArchitectVal] = useState(1.5)
+  const cardSpotlight = useCardSpotlight<HTMLDivElement>()
 
   const result = useMemo(
     () => Math.pow(dataVal, intentVal) * architectVal,
@@ -23,7 +25,7 @@ export default function FDIACalculatorPanel({ language = "en" }: { language?: "e
   }
 
   return (
-    <div className="rounded-xl border bg-card p-5 shadow-sm border-border">
+    <div {...cardSpotlight} className="main-page-reactive-surface rounded-xl border border-border bg-white p-5 shadow-sm dark:bg-card">
       <div className="flex items-center gap-2 mb-3">
         <div className="w-2 h-2 rounded-full bg-warm-amber" />
         <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
@@ -31,7 +33,7 @@ export default function FDIACalculatorPanel({ language = "en" }: { language?: "e
         </h3>
       </div>
 
-      <div className="p-4 rounded-xl border mb-4 bg-secondary/30 border-border">
+      <div className="mb-4 rounded-xl border border-[#eee2d6] bg-[#fffaf6] p-4 dark:border-border dark:bg-secondary/30">
         <div className="font-mono text-2xl sm:text-3xl font-bold text-center py-2">
           <span className="text-warm-amber">F</span>
           <span className="mx-2 text-muted-foreground">=</span>
@@ -55,7 +57,7 @@ export default function FDIACalculatorPanel({ language = "en" }: { language?: "e
       </div>
 
       <div className="space-y-3">
-        <div className="p-3 rounded-lg border bg-secondary/30 border-border">
+        <div className="rounded-lg border border-[#eee2d6] bg-[#fffaf6] p-3 dark:border-border dark:bg-secondary/30">
           <div className="flex items-center justify-between mb-2">
             <div>
               <span className="text-sm font-semibold font-mono" style={{ color: "#89B4C8" }}>
@@ -74,7 +76,7 @@ export default function FDIACalculatorPanel({ language = "en" }: { language?: "e
           <Slider value={[dataVal]} onValueChange={([v]) => setDataVal(v)} min={1} max={100} step={1} />
         </div>
 
-        <div className="p-3 rounded-lg border bg-secondary/30 border-border">
+        <div className="rounded-lg border border-[#eee2d6] bg-[#fffaf6] p-3 dark:border-border dark:bg-secondary/30">
           <div className="flex items-center justify-between mb-2">
             <div>
               <span className="text-sm font-semibold font-mono" style={{ color: "#C4745B" }}>
@@ -96,7 +98,7 @@ export default function FDIACalculatorPanel({ language = "en" }: { language?: "e
           <Slider value={[intentVal]} onValueChange={([v]) => setIntentVal(v)} min={1} max={10} step={1} />
         </div>
 
-        <div className="p-3 rounded-lg border bg-secondary/30 border-border">
+        <div className="rounded-lg border border-[#eee2d6] bg-[#fffaf6] p-3 dark:border-border dark:bg-secondary/30">
           <div className="flex items-center justify-between mb-2">
             <div>
               <span className="text-sm font-semibold font-mono" style={{ color: "#7B9E87" }}>
