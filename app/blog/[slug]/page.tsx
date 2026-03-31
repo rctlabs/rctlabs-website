@@ -6,8 +6,7 @@ import { getRequestLocale } from "@/lib/request-locale"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
-import { Calendar, FlaskConical, Newspaper, Wrench, Lightbulb, BarChart3, UserRound } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
+import { UserRound } from "lucide-react"
 import { MDXContent } from "@/components/mdx-content"
 import { SITE_URL } from "@/lib/site-config"
 import { ArticleTrustSummary } from "@/components/blog/article-trust-summary"
@@ -17,24 +16,6 @@ import { ShareStrip } from "@/components/blog/share-strip"
 import { TableOfContents } from "@/components/blog/table-of-contents"
 import { ArticleHero } from "@/components/blog/article-hero"
 import { StatGrid } from "@/components/blog/mdx-article-components"
-
-const ARTICLE_CATEGORY_ICONS: Record<string, LucideIcon> = {
-  release: Newspaper,
-  research: FlaskConical,
-  news: Newspaper,
-  tutorial: Wrench,
-  philosophy: Lightbulb,
-  case_study: BarChart3,
-}
-
-const ARTICLE_CATEGORY_COLORS: Record<string, string> = {
-  release: "text-fuchsia-400 border-fuchsia-400/40 bg-fuchsia-400/10",
-  research: "text-blue-400 border-blue-400/40 bg-blue-400/10",
-  news: "text-green-400 border-green-400/40 bg-green-400/10",
-  tutorial: "text-purple-400 border-purple-400/40 bg-purple-400/10",
-  philosophy: "text-orange-400 border-orange-400/40 bg-orange-400/10",
-  case_study: "text-cyan-400 border-cyan-400/40 bg-cyan-400/10",
-}
 
 function AuthorAvatar({ name }: { name: string }) {
   const initials = name.split(" ").map((w: string) => w[0]).slice(0, 2).join("").toUpperCase()
@@ -118,7 +99,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
   const headings = extractHeadings(post.content)
-  const CatIcon = ARTICLE_CATEGORY_ICONS[post.category] ?? FlaskConical
   const categoryLabel = getBlogCategoryLabel(post.category, locale)
   const publicationType = getBlogPublicationType(post.category, locale)
   const heroMetrics = getBlogHeroMetrics(post.slug)
@@ -240,11 +220,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Main content */}
           <article className="min-w-0">
             <div className="max-w-[75ch]">
-              <div className="rounded-[2rem] border border-border/70 bg-card/88 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.05)] md:p-10">
+              <div className="rounded-4xl border border-border/70 bg-card/88 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.05)] md:p-10">
                 <MDXContent content={post.content} locale={locale} />
               </div>
 
-              <section className="mt-10 rounded-[1.75rem] border border-border/70 bg-card/90 p-6 md:p-8">
+              <section className="mt-10 rounded-[28px] border border-border/70 bg-card/90 p-6 md:p-8">
                 <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   {locale === "th" ? "Executive takeaway" : "Executive takeaway"}
                 </div>
@@ -283,7 +263,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 {prevPost ? (
                   <Link href={`${localePrefix}/blog/${prevPost.slug}`} className="group">
-                    <div className="rounded-[1.5rem] border border-border/70 bg-card/80 p-5 transition group-hover:border-warm-amber/35 group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
+                    <div className="rounded-3xl border border-border/70 bg-card/80 p-5 transition group-hover:border-warm-amber/35 group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
                       <p className="text-xs font-semibold text-muted-foreground uppercase">{locale === "th" ? "บทความก่อนหน้า" : "Previous Post"}</p>
                       <h3 className="mt-2 text-lg font-bold text-foreground transition group-hover:text-accent">
                         {prevPost.title}
@@ -296,7 +276,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 )}
                 {nextPost ? (
                   <Link href={`${localePrefix}/blog/${nextPost.slug}`} className="group md:text-right">
-                    <div className="rounded-[1.5rem] border border-border/70 bg-card/80 p-5 transition group-hover:border-warm-amber/35 group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
+                    <div className="rounded-3xl border border-border/70 bg-card/80 p-5 transition group-hover:border-warm-amber/35 group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
                       <p className="text-xs font-semibold text-muted-foreground uppercase">{locale === "th" ? "บทความถัดไป" : "Next Post"}</p>
                       <h3 className="mt-2 text-lg font-bold text-foreground transition group-hover:text-accent">
                         {nextPost.title}

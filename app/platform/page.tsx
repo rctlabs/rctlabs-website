@@ -6,14 +6,13 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { headers } from "next/headers"
 import { loadTranslations } from "@/lib/i18n"
-import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
+import { SITE_HALLUCINATION_RATE, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
 import { 
   Shield, 
   Database, 
   Cpu, 
   FileCode, 
   ArrowRight, 
-  Layers, 
   Lock, 
   Zap,
   CheckCircle,
@@ -25,7 +24,6 @@ import {
   Container,
   Network,
   Key,
-  Eye,
   Workflow,
   Brain
 } from "lucide-react"
@@ -54,8 +52,6 @@ export default async function PlatformPage() {
   const headersList = await headers()
   const locale = (headersList.get("x-locale") || "en") as Locale
   const t = await loadTranslations(locale)
-  const runtimeFootprint = `${SITE_MICROSERVICE_COUNT}+`
-
   const p = (key: string) => {
     const platform = (t as Record<string, unknown>)?.platform as Record<string, string> | undefined
     return platform?.[key] || key

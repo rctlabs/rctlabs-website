@@ -55,8 +55,10 @@ function AnimatedCounter({ target, suffix = "", reducedMotion = false }: { targe
   useEffect(() => {
     if (!isInView) return
     if (reducedMotion) {
-      setCount(target)
-      return
+      const frame = requestAnimationFrame(() => {
+        setCount(target)
+      })
+      return () => cancelAnimationFrame(frame)
     }
 
     const duration = 1500

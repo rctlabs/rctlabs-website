@@ -96,9 +96,16 @@ export default function MonitorPage() {
   }
 
   useEffect(() => {
-    fetchAll()
-    const interval = setInterval(fetchAll, 30000)
-    return () => clearInterval(interval)
+    const timer = setTimeout(() => {
+      void fetchAll()
+    }, 0)
+    const interval = setInterval(() => {
+      void fetchAll()
+    }, 30000)
+    return () => {
+      clearTimeout(timer)
+      clearInterval(interval)
+    }
   }, [])
 
   return (

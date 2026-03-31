@@ -5,7 +5,7 @@
  * Features fuzzy search, recent searches, and keyboard navigation
  * Migrated from manus-frontend-design: wouter Link → next/link (no nested <a>), router.push
  */
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Search, X, Clock, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -25,32 +25,42 @@ interface SearchModalProps {
 
 export default function SearchModal({ isOpen, onClose, searchData }: SearchModalProps) {
   const [query, setQuery] = useState("")
-  const [results, setResults] = useState<SearchResult[]>([])
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [recentSearches, setRecentSearches] = useState<string[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
+  const results = useMemo(() => {
+    if (!query.trim()) return []
+    return fuzzySearch(query, searchData).slice(0, 8)
+  }, [query, searchData])
+
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus()
       const stored = localStorage.getItem("rct-recent-searches")
-      if (stored) setRecentSearches(JSON.parse(stored))
+      if (stored) {
+        const timer = setTimeout(() => {
+          setRecentSearches(JSON.parse(stored))
+        }, 0)
+        return () => clearTimeout(timer)
+      }
     } else {
-      setQuery("")
-      setResults([])
-      setSelectedIndex(0)
+      const timer = setTimeout(() => {
+        setQuery("")
+        setSelectedIndex(0)
+      }, 0)
+      return () => clearTimeout(timer)
     }
   }, [isOpen])
 
   useEffect(() => {
-    if (query.trim()) {
-      setResults(fuzzySearch(query, searchData).slice(0, 8))
+    const timer = setTimeout(() => {
       setSelectedIndex(0)
-    } else {
-      setResults([])
-    }
-  }, [query, searchData])
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [query])
 
   const saveRecentSearch = (search: string) => {
     const updated = [search, ...recentSearches.filter((s) => s !== search)].slice(0, 5)

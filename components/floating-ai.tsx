@@ -48,19 +48,6 @@ interface ChatMessage {
 
 type AnalysisMode = "chat" | "analyze" | "mirror"
 
-interface AnalysisResult {
-  status: string
-  analysis?: {
-    intent: string
-    keywords: string[]
-    confidence: number
-    crystallized?: string
-    iterations?: number
-  }
-  source: string
-  error?: string
-}
-
 /* ------------------------------------------------------------------ */
 /* Quick-action scenarios shown on first open                          */
 /* ------------------------------------------------------------------ */
@@ -89,7 +76,7 @@ export function FloatingAI() {
   
   // Analysis mode state
   const [analysisMode, setAnalysisMode] = useState<AnalysisMode>("chat")
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null)
+  const [, setAnalysisResult] = useState<Record<string, unknown> | null>(null)
 
   /* Auto-scroll on new messages */
   useEffect(() => {

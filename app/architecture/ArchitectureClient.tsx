@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
-import { ArrowRight, Layers, Cpu, Brain, Shield, Rocket, Database, Network, Bot, AppWindow, RefreshCw } from "lucide-react"
+import { ArrowRight, Layers, Cpu, Brain, Shield, Database, Network, Bot, AppWindow, RefreshCw } from "lucide-react"
 import { LazyInteractiveArchDiagram } from "@/components/diagrams/lazy-diagram-wrapper"
 import { SITE_MICROSERVICE_COUNT } from "@/lib/site-config"
 

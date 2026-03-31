@@ -36,8 +36,6 @@ export default function FDIAFlowchart() {
   const svgW = 760
   const svgH = 400
   const nodeR = 44
-  const nodeOrder = ["data", "intent", "architect", "future"]
-
   const connections = [
     { from: "data", to: "intent", label: isEn ? "Amplify" : "ขยาย", labelPos: { x: 240, y: 130 } },
     { from: "data", to: "architect", label: isEn ? "Guide" : "กำกับ", labelPos: { x: 240, y: 275 } },

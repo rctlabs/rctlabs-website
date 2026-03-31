@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { Server, Search, RefreshCw, CheckCircle, XCircle, AlertCircle, RotateCcw, ChevronLeft } from "lucide-react"
 import { Navbar } from "@/components/navbar"
@@ -48,19 +48,18 @@ export default function ServicesPage() {
   const [restarting, setRestarting] = useState<Set<string>>(new Set())
   const [lastRefresh, setLastRefresh] = useState("")
 
-  async function fetchServices() {
+  const fetchServices = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
       if (statusFilter !== "all") params.set("status", statusFilter)
-      if (search) params.set("search", search)
       const res = await fetch(`${ADMIN_API}/services?${params}`)
       if (res.ok) setServices(await res.json())
     } catch { /* offline */ } finally {
       setLoading(false)
       setLastRefresh(new Date().toLocaleTimeString())
     }
-  }
+  }, [statusFilter])
 
   async function restartService(name: string) {
     setRestarting((prev) => new Set(prev).add(name))
@@ -72,7 +71,13 @@ export default function ServicesPage() {
     }
   }
 
-  useEffect(() => { fetchServices() }, [statusFilter])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void fetchServices()
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [fetchServices])
 
   const filtered = services.filter((s) =>
     search === "" || s.name.toLowerCase().includes(search.toLowerCase())

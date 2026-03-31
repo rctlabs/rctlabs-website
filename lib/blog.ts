@@ -215,7 +215,7 @@ export function getAllBlogPosts(locale: BlogLocale = "en"): BlogPost[] {
 export function getBlogPostBySlug(slug: string, locale: BlogLocale = "en"): BlogPost | null {
   try {
     return buildBlogPost(slug, locale)
-  } catch (error) {
+  } catch {
     return null
   }
 }

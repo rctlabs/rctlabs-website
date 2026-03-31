@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { BookOpen, ChevronLeft, Search, Play } from "lucide-react"
 import { Navbar } from "@/components/navbar"
@@ -37,18 +37,17 @@ export default function AlgorithmsPage() {
   const [categoryFilter, setCategoryFilter] = useState("all")
   const [selected, setSelected] = useState<Algorithm | null>(null)
 
-  async function fetchAlgorithms() {
+  const fetchAlgorithms = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
       if (categoryFilter !== "all") params.set("category", categoryFilter)
-      if (search) params.set("search", search)
       const res = await fetch(`${STUDIO_API}/algorithms?${params}`)
       if (res.ok) setAlgorithms(await res.json())
     } catch { /* offline */ } finally { setLoading(false) }
-  }
+  }, [categoryFilter])
 
-  useEffect(() => { fetchAlgorithms() }, [categoryFilter])
+  useEffect(() => { void fetchAlgorithms() }, [fetchAlgorithms])
 
   const filtered = algorithms.filter((a) =>
     search === "" ||

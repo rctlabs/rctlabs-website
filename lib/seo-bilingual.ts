@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import { siteConfig } from "./seo"
 
 /*
  * seo-bilingual.ts — Bilingual (EN/TH) metadata and schema utilities

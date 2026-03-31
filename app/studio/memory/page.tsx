@@ -84,8 +84,8 @@ export default function MemoryPage() {
   const pathname = usePathname()
 
   const fetchMemory = useCallback(
-    async (reset: boolean) => {
-      const newOffset = reset ? 0 : offset
+    async ({ reset, offsetValue, query }: { reset: boolean; offsetValue?: number; query?: string }) => {
+      const newOffset = reset ? 0 : offsetValue ?? offset
       if (reset) setLoading(true)
       else setLoadingMore(true)
 
@@ -94,7 +94,7 @@ export default function MemoryPage() {
         url.searchParams.set("limit", String(LIMIT))
         url.searchParams.set("offset", String(newOffset))
         if (filter !== "all") url.searchParams.set("type", filter)
-        if (search) url.searchParams.set("q", search)
+        if (query) url.searchParams.set("q", query)
 
         const res = await fetch(url.toString())
         if (!res.ok) throw new Error("fetch failed")
@@ -116,12 +116,12 @@ export default function MemoryPage() {
         setLoadingMore(false)
       }
     },
-    [offset, filter, search],
+    [LIMIT, filter, offset],
   )
 
   useEffect(() => {
-    fetchMemory(true)
-  }, [filter])
+    void fetchMemory({ reset: true, query: search })
+  }, [fetchMemory, search])
 
   const filtered = entries
 
@@ -168,7 +168,7 @@ export default function MemoryPage() {
               <p className="text-gray-400 mt-1">Browse and search your AI agent&apos;s memory entries</p>
             </div>
             <button
-              onClick={() => fetchMemory(true)}
+              onClick={() => void fetchMemory({ reset: true, query: search })}
               disabled={loading}
               className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-50"
             >
@@ -184,7 +184,7 @@ export default function MemoryPage() {
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && fetchMemory(true)}
+                onKeyDown={(e) => e.key === "Enter" && void fetchMemory({ reset: true, query: search })}
                 placeholder="Search memories…"
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-white/10 bg-black/40 text-sm text-white placeholder:text-gray-600 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 transition-colors"
               />
@@ -227,7 +227,7 @@ export default function MemoryPage() {
               {hasMore && (
                 <div className="mt-6 text-center">
                   <button
-                    onClick={() => fetchMemory(false)}
+                    onClick={() => void fetchMemory({ reset: false, offsetValue: offset, query: search })}
                     disabled={loadingMore}
                     className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-50"
                   >

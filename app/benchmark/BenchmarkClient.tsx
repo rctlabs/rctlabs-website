@@ -111,7 +111,7 @@ function AnimatedStat({ stat, isDark }: { stat: StatItem; isDark: boolean }) {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       className={`relative overflow-hidden rounded-2xl p-6 border group hover:-translate-y-1 transition-all duration-300 ${
-        isDark ? "bg-[#1E1E1E] border-[#2A2A2A] hover:border-[#3A3A3A]" : "bg-white border-[#E8E3DC] hover:shadow-lg"
+        isDark ? "bg-[#1E1E1E] border-[#2A2A2A] hover:border-[#3A3A3A]" : "bg-white border-warm-light-gray hover:shadow-lg"
       }`}
     >
       <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-5 -translate-y-8 translate-x-8" style={{ backgroundColor: stat.color }} />
@@ -119,7 +119,7 @@ function AnimatedStat({ stat, isDark }: { stat: StatItem; isDark: boolean }) {
       <div className="text-3xl sm:text-4xl font-bold tracking-tight mb-1" style={{ color: stat.color }}>
         {stat.prefix ?? ""}{stat.value < 1 ? count.toFixed(1) : Math.round(count)}{stat.suffix}
       </div>
-      <div className={`text-sm font-medium ${isDark ? "text-[#999]" : "text-[#6B6B6B]"}`}>
+      <div className={`text-sm font-medium ${isDark ? "text-[#999]" : "text-warm-gray"}`}>
         {stat.labelEn}
       </div>
     </motion.div>
@@ -140,7 +140,7 @@ export default function BenchmarkPage() {
   const textColor = isDark ? "#999" : "#6B6B6B"
 
   const cellCls = (t: string) => {
-    if (t === "good" || t === "check") return "text-[#7B9E87] font-semibold"
+    if (t === "good" || t === "check") return "text-warm-sage font-semibold"
     if (t === "bad" || t === "cross") return isDark ? "text-[#666]" : "text-[#999]"
     return isDark ? "text-[#AAA]" : "text-[#4A4A4A]"
   }
@@ -148,16 +148,16 @@ export default function BenchmarkPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" className={`min-h-screen transition-colors duration-300 ${isDark ? "bg-[#111]" : "bg-[#FAF6F0]"}`}>
+      <main id="main-content" className={`min-h-screen transition-colors duration-300 ${isDark ? "bg-[#111]" : "bg-warm-cream"}`}>
 
         {/* Hero */}
-        <section className={`py-20 px-4 text-center transition-colors duration-300 ${isDark ? "bg-[#0D0D0D]" : "bg-[#FAF6F0]"}`}>
+        <section className={`py-20 px-4 text-center transition-colors duration-300 ${isDark ? "bg-[#0D0D0D]" : "bg-warm-cream"}`}>
           <div className="max-w-3xl mx-auto space-y-5">
             <motion.span
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#7B9E87]/10 border border-[#7B9E87]/30 text-[#7B9E87] text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-sage/10 border border-warm-sage/30 text-warm-sage text-sm font-medium"
             >
               📊 {isEn ? "Benchmarks" : "เกณฑ์มาตรฐาน"}
             </motion.span>
@@ -165,16 +165,16 @@ export default function BenchmarkPage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className={`text-4xl sm:text-5xl font-bold tracking-tight ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}
+              className={`text-4xl sm:text-5xl font-bold tracking-tight ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}
             >
               {isEn ? "Performance " : "เปรียบเทียบ "}
-              <span className="font-display text-[#7B9E87]">{isEn ? "Comparison" : "ประสิทธิภาพ"}</span>
+              <span className="font-display text-warm-sage">{isEn ? "Comparison" : "ประสิทธิภาพ"}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className={`text-base sm:text-lg max-w-2xl mx-auto ${isDark ? "text-[#888]" : "text-[#6B6B6B]"}`}
+              className={`text-base sm:text-lg max-w-2xl mx-auto ${isDark ? "text-[#888]" : "text-warm-gray"}`}
             >
               {isEn
                 ? "RCT SignedAI achieves 99.7% accuracy vs 85% for single LLM, with 60% cost savings, full audit trails, and cryptographic signing."
@@ -184,7 +184,7 @@ export default function BenchmarkPage() {
         </section>
 
         {/* Animated Counter Stats */}
-        <section className={`py-10 lg:py-14 transition-colors duration-300 ${isDark ? "bg-[#111]" : "bg-[#FAF6F0]"}`} aria-label="Key Stats">
+        <section className={`py-10 lg:py-14 transition-colors duration-300 ${isDark ? "bg-[#111]" : "bg-warm-cream"}`} aria-label="Key Stats">
           <div className="max-w-5xl mx-auto px-4">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               {counterStats.map((stat) => (
@@ -204,11 +204,11 @@ export default function BenchmarkPage() {
               transition={{ duration: 0.6 }}
               className="text-center mb-8 lg:mb-12"
             >
-              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-3 ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}>
-                <span className="font-display text-[#7B9E87]">{isEn ? "Interactive" : "แผนภูมิ"}</span>{" "}
+              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-3 ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+                <span className="font-display text-warm-sage">{isEn ? "Interactive" : "แผนภูมิ"}</span>{" "}
                 {isEn ? "Dashboard" : "เชิงโต้ตอบ"}
               </h2>
-              <p className={`text-sm max-w-xl mx-auto ${isDark ? "text-[#888]" : "text-[#6B6B6B]"}`}>
+              <p className={`text-sm max-w-xl mx-auto ${isDark ? "text-[#888]" : "text-warm-gray"}`}>
                 {isEn
                   ? "Switch between Radar and Bar views to compare RCT SignedAI against Single LLM across key dimensions."
                   : "สลับระหว่างมุมมอง Radar และ Bar เพื่อเปรียบเทียบ RCT SignedAI กับ Single LLM"}
@@ -217,15 +217,15 @@ export default function BenchmarkPage() {
 
             {/* Chart Toggle */}
             <div className="flex justify-center mb-8">
-              <div className={`inline-flex rounded-xl p-1 border ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-[#F5F0E8] border-[#E8E3DC]"}`}>
+              <div className={`inline-flex rounded-xl p-1 border ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-[#F5F0E8] border-warm-light-gray"}`}>
                 {(["radar", "bar"] as ChartView[]).map((view) => (
                   <button
                     key={view}
                     onClick={() => setChartView(view)}
                     className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                       chartView === view
-                        ? "bg-[#7B9E87] text-white shadow-sm"
-                        : isDark ? "text-[#888] hover:text-[#CCC]" : "text-[#6B6B6B] hover:text-[#1A1A1A]"
+                        ? "bg-warm-sage text-white shadow-sm"
+                        : isDark ? "text-[#888] hover:text-[#CCC]" : "text-warm-gray hover:text-warm-charcoal"
                     }`}
                   >
                     {view === "radar" ? (isEn ? "Radar View" : "มุมมอง Radar") : isEn ? "Bar View" : "มุมมอง Bar"}
@@ -240,7 +240,7 @@ export default function BenchmarkPage() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className={`rounded-2xl border p-4 sm:p-6 lg:p-8 ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-[#E8E3DC]"}`}
+              className={`rounded-2xl border p-4 sm:p-6 lg:p-8 ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-warm-light-gray"}`}
             >
               <div className="w-full" style={{ height: 420 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -276,7 +276,7 @@ export default function BenchmarkPage() {
         </section>
 
         {/* Key Metrics Cards */}
-        <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-[#1A1A1A]" : "bg-[#FAF6F0]"}`} aria-label="Key Metrics">
+        <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-warm-charcoal" : "bg-warm-cream"}`} aria-label="Key Metrics">
           <div className="max-w-5xl mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -285,8 +285,8 @@ export default function BenchmarkPage() {
               transition={{ duration: 0.6 }}
               className="text-center mb-10 lg:mb-14"
             >
-              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-4 ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}>
-                <span className="font-display text-[#7B9E87]">{isEn ? "Performance" : "ประสิทธิภาพ"}</span>{" "}
+              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-4 ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+                <span className="font-display text-warm-sage">{isEn ? "Performance" : "ประสิทธิภาพ"}</span>{" "}
                 {isEn ? "Metrics" : "ตัวชี้วัด"}
               </h2>
             </motion.div>
@@ -299,11 +299,11 @@ export default function BenchmarkPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                   whileHover={{ y: -4 }}
-                  className={`p-5 sm:p-6 rounded-2xl border transition-shadow hover:shadow-lg ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-[#E8E3DC]"}`}
+                  className={`p-5 sm:p-6 rounded-2xl border transition-shadow hover:shadow-lg ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-warm-light-gray"}`}
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <bm.icon size={20} style={{ color: bm.color }} />
-                    <span className={`text-sm font-semibold ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}>{isEn ? bm.metricEn : bm.metricTh}</span>
+                    <span className={`text-sm font-semibold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{isEn ? bm.metricEn : bm.metricTh}</span>
                   </div>
                   <div className="space-y-3">
                     <div>
@@ -311,7 +311,7 @@ export default function BenchmarkPage() {
                         <span className="text-xs font-medium" style={{ color: bm.color }}>RCT SignedAI</span>
                         <span className="text-sm font-bold" style={{ color: bm.color }}>{bm.rct}</span>
                       </div>
-                      <div className={`h-2.5 rounded-full overflow-hidden ${isDark ? "bg-[#2A2A2A]" : "bg-[#E8E3DC]"}`}>
+                      <div className={`h-2.5 rounded-full overflow-hidden ${isDark ? "bg-[#2A2A2A]" : "bg-warm-light-gray"}`}>
                         <motion.div
                           initial={{ width: 0 }}
                           whileInView={{ width: `${bm.inverted ? Math.max(5, 100 - bm.rctVal * 3) : Math.min(100, bm.rctVal)}%` }}
@@ -327,7 +327,7 @@ export default function BenchmarkPage() {
                         <span className={`text-xs font-medium ${isDark ? "text-[#666]" : "text-[#999]"}`}>Single LLM</span>
                         <span className={`text-sm font-bold ${isDark ? "text-[#666]" : "text-[#999]"}`}>{bm.single}</span>
                       </div>
-                      <div className={`h-2.5 rounded-full overflow-hidden ${isDark ? "bg-[#2A2A2A]" : "bg-[#E8E3DC]"}`}>
+                      <div className={`h-2.5 rounded-full overflow-hidden ${isDark ? "bg-[#2A2A2A]" : "bg-warm-light-gray"}`}>
                         <motion.div
                           initial={{ width: 0 }}
                           whileInView={{ width: `${bm.inverted ? Math.min(100, bm.singleVal * 3) : bm.singleVal}%` }}
@@ -354,8 +354,8 @@ export default function BenchmarkPage() {
               transition={{ duration: 0.6 }}
               className="text-center mb-10 lg:mb-14"
             >
-              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}>
-                <span className="font-display text-[#D4A853]">{isEn ? "Feature" : "ฟีเจอร์"}</span>{" "}
+              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+                <span className="font-display text-warm-amber">{isEn ? "Feature" : "ฟีเจอร์"}</span>{" "}
                 {isEn ? "Comparison" : "เปรียบเทียบ"}
               </h2>
             </motion.div>
@@ -363,11 +363,11 @@ export default function BenchmarkPage() {
               {isEn ? "← scroll to see more →" : "← เลื่อนเพื่อดูเพิ่มเติม →"}
             </p>
             <div className="overflow-x-auto">
-              <div className="min-w-[400px]">
-                <div className={`rounded-2xl border overflow-hidden ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-[#E8E3DC]"}`}>
-                  <div className={`grid grid-cols-3 px-5 py-3 border-b ${isDark ? "border-[#2A2A2A] bg-[#252525]" : "border-[#E8E3DC] bg-[#F5F0E8]"}`}>
-                    <span className={`text-xs font-semibold uppercase tracking-wider ${isDark ? "text-[#888]" : "text-[#6B6B6B]"}`}>{isEn ? "Feature" : "ฟีเจอร์"}</span>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-center text-[#7B9E87]">RCT</span>
+              <div className="min-w-100">
+                <div className={`rounded-2xl border overflow-hidden ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-warm-light-gray"}`}>
+                  <div className={`grid grid-cols-3 px-5 py-3 border-b ${isDark ? "border-[#2A2A2A] bg-[#252525]" : "border-warm-light-gray bg-[#F5F0E8]"}`}>
+                    <span className={`text-xs font-semibold uppercase tracking-wider ${isDark ? "text-[#888]" : "text-warm-gray"}`}>{isEn ? "Feature" : "ฟีเจอร์"}</span>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-center text-warm-sage">RCT</span>
                     <span className={`text-xs font-semibold uppercase tracking-wider text-center ${isDark ? "text-[#666]" : "text-[#999]"}`}>Single LLM</span>
                   </div>
                   {featureComparison.map((feat, i) => (
@@ -378,15 +378,15 @@ export default function BenchmarkPage() {
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.04 }}
                       className={`grid grid-cols-3 px-5 py-3 border-b last:border-b-0 transition-colors ${
-                        isDark ? "border-[#2A2A2A] hover:bg-[#252525]" : "border-[#F0EBE3] hover:bg-[#FAF6F0]"
+                        isDark ? "border-[#2A2A2A] hover:bg-[#252525]" : "border-warm-sand hover:bg-warm-cream"
                       }`}
                     >
                       <span className={`text-sm ${isDark ? "text-[#CCC]" : "text-[#333]"}`}>{isEn ? feat.featureEn : feat.featureTh}</span>
                       <span className="text-center">
-                        {feat.rct ? <CheckCircle size={18} className="inline text-[#7B9E87]" /> : <X size={18} className="inline text-[#999]" />}
+                        {feat.rct ? <CheckCircle size={18} className="inline text-warm-sage" /> : <X size={18} className="inline text-[#999]" />}
                       </span>
                       <span className="text-center">
-                        {feat.single ? <CheckCircle size={18} className="inline text-[#7B9E87]" /> : <X size={18} className={`inline ${isDark ? "text-[#444]" : "text-[#CCC]"}`} />}
+                        {feat.single ? <CheckCircle size={18} className="inline text-warm-sage" /> : <X size={18} className={`inline ${isDark ? "text-[#444]" : "text-[#CCC]"}`} />}
                       </span>
                     </motion.div>
                   ))}
@@ -397,7 +397,7 @@ export default function BenchmarkPage() {
         </section>
 
         {/* Platform Comparison */}
-        <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-[#1A1A1A]" : "bg-[#FAF6F0]"}`} aria-label="Platform Comparison">
+        <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-warm-charcoal" : "bg-warm-cream"}`} aria-label="Platform Comparison">
           <div className="max-w-4xl mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 24 }}

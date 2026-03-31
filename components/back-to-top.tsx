@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ArrowUp } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
 
+type AIChatToggleEvent = CustomEvent<{ open?: boolean }>
+
 export default function BackToTop() {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
@@ -24,9 +26,13 @@ export default function BackToTop() {
   }, [])
 
   useEffect(() => {
-    const handler = (e: CustomEvent) => setAiChatOpen(e.detail.open)
-    window.addEventListener("rct-ai-chat-toggle" as any, handler)
-    return () => window.removeEventListener("rct-ai-chat-toggle" as any, handler)
+    const handler = (event: Event) => {
+      const customEvent = event as AIChatToggleEvent
+      setAiChatOpen(Boolean(customEvent.detail?.open))
+    }
+
+    window.addEventListener("rct-ai-chat-toggle", handler)
+    return () => window.removeEventListener("rct-ai-chat-toggle", handler)
   }, [])
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" })

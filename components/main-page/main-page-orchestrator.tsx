@@ -65,6 +65,12 @@ function MainPageFieldOverlay() {
   const fdiaBoost = activeSection === "fdia" ? 0.08 : 0
   const settleBoost = activeSection === "cta" ? 0.16 : 0
   const motionSettling = clamp(1 - scrollVelocity * 1.35, 0.42, 1)
+  const amberX = !reducedMotion ? -28 + pointerIntent.x * 18 : -20
+  const amberY = !reducedMotion ? -14 + pageProgress * 22 + pointerIntent.y * 10 : -8
+  const sageX = !reducedMotion ? 16 - pointerIntent.x * 16 : 12
+  const sageY = !reducedMotion ? 18 + sectionProgress * 16 - pointerIntent.y * 8 : 20
+  const terraX = !reducedMotion ? -8 + pointerIntent.x * 10 : -4
+  const terraY = !reducedMotion ? 52 + pageProgress * 16 : 56
 
   return (
     <motion.div
@@ -77,6 +83,26 @@ function MainPageFieldOverlay() {
       }}
       transition={{ type: "spring", stiffness: 42, damping: 24, mass: 1.05 }}
     >
+      <motion.div
+        className="main-page-orchestrated-field__veil"
+        animate={{ opacity: clamp(0.2 + pageProgress * 0.08 + settleBoost * 0.2, 0.18, 0.34) }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      />
+      <motion.div
+        className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--amber"
+        animate={{ x: `${amberX}%`, y: `${amberY}%`, scale: 1 + heroBoost * 0.16 + (1 - motionSettling) * 0.03 }}
+        transition={{ type: "spring", stiffness: 28, damping: 22, mass: 1.2 }}
+      />
+      <motion.div
+        className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--sage"
+        animate={{ x: `${sageX}%`, y: `${sageY}%`, scale: 1 + fdiaBoost * 0.18 + (1 - motionSettling) * 0.02 }}
+        transition={{ type: "spring", stiffness: 26, damping: 24, mass: 1.25 }}
+      />
+      <motion.div
+        className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--terra"
+        animate={{ x: `${terraX}%`, y: `${terraY}%`, scale: 1 + settleBoost * 0.22 + pageProgress * 0.03 }}
+        transition={{ type: "spring", stiffness: 24, damping: 24, mass: 1.3 }}
+      />
       <div
         className="main-page-orchestrated-field__wash"
         style={{ opacity: clamp(0.44 + pageProgress * 0.14 + heroBoost - scrollVelocity * 0.06, 0.34, 0.78) }}
@@ -343,7 +369,15 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
 
   return (
     <MainPageOrchestrationContext.Provider value={value}>
-      <div ref={rootRef} className="main-page-shell">
+      <div
+        ref={rootRef}
+        className="main-page-shell"
+        style={{
+          ["--main-pointer-x" as string]: `${((pointerIntent.x + 1) / 2 * 100).toFixed(1)}%`,
+          ["--main-pointer-y" as string]: `${((pointerIntent.y + 1) / 2 * 100).toFixed(1)}%`,
+          ["--main-page-progress" as string]: pageProgress.toFixed(3),
+        }}
+      >
         <MainPageFieldOverlay />
         <MainPageMotionDebug />
         {children}

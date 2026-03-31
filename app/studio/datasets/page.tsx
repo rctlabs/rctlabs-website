@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { Database, ChevronLeft, Plus, Eye, Tag, Search } from "lucide-react"
 import { Navbar } from "@/components/navbar"
@@ -39,7 +39,7 @@ export default function DatasetsPage() {
   const [form, setForm] = useState({ name: "", description: "", format: "jsonl", language: "th", size_mb: "0", record_count: "0", tags: "", source: "" })
   const [formError, setFormError] = useState("")
 
-  async function fetchDatasets() {
+  const fetchDatasets = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
@@ -47,7 +47,7 @@ export default function DatasetsPage() {
       const res = await fetch(`${STUDIO_API}/datasets?${params}`)
       if (res.ok) setDatasets(await res.json())
     } catch { /* offline */ } finally { setLoading(false) }
-  }
+  }, [tagFilter])
 
   async function previewDataset(id: string) {
     setPreviewTarget(id)
@@ -75,11 +75,11 @@ export default function DatasetsPage() {
       if (!res.ok) { setFormError(`Error: ${res.status}`); return }
       setShowForm(false)
       setForm({ name: "", description: "", format: "jsonl", language: "th", size_mb: "0", record_count: "0", tags: "", source: "" })
-      fetchDatasets()
+      void fetchDatasets()
     } catch { setFormError("Backend offline") }
   }
 
-  useEffect(() => { fetchDatasets() }, [tagFilter])
+  useEffect(() => { void fetchDatasets() }, [fetchDatasets])
 
   const allTags = Array.from(new Set(datasets.flatMap((d) => d.tags)))
   const filtered = datasets.filter((d) =>

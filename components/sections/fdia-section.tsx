@@ -8,14 +8,17 @@ import OptimizedImage from "@/components/ui/optimized-image"
 import { LazyFDIACalculatorPanel, LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
 import SectionHeading from "@/components/section-heading"
 import { pixelIcons } from "@/lib/pixel-icons"
+import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 const PIXEL_BRAIN = pixelIcons.brain
 
 function InfographicAccordion({ language }: { language: string }) {
+  const cardSpotlight = useCardSpotlight<HTMLDetailsElement>()
+
   return (
     <div className="mb-6">
-      <details className="main-page-reactive-surface group overflow-hidden rounded-xl border border-border bg-[#fff6ef] shadow-sm dark:bg-card">
-        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 transition-colors duration-200 hover:bg-[#f6ede4] dark:hover:bg-secondary/50">
+      <details {...cardSpotlight} className="main-page-reactive-surface group overflow-hidden rounded-xl border border-border bg-white shadow-sm dark:bg-card">
+        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 transition-colors duration-200 hover:bg-[#fffdfa] dark:hover:bg-secondary/50">
           <div className="flex items-center gap-3">
             <ImageIcon size={18} className="text-warm-amber" />
             <span className="text-sm font-semibold text-foreground">
@@ -43,6 +46,7 @@ function InfographicAccordion({ language }: { language: string }) {
 export default function FDIASection() {
   const { language } = useLanguage()
   const prefersReducedMotion = useReducedMotion()
+  const cardSpotlight = useCardSpotlight<HTMLDivElement>()
 
   const intentImpact = useMemo(() => {
     const baseData = 85
@@ -104,9 +108,15 @@ export default function FDIASection() {
     <section
       id="fdia"
       aria-label="FDIA Equation"
-      className="border-y border-border bg-transparent py-16 md:py-24 transition-colors duration-300"
+      className="relative overflow-hidden border-y border-border bg-transparent py-16 md:py-24 transition-colors duration-300"
     >
-      <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="homepage-ambient-layer absolute inset-0">
+        <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute -left-20 top-10 h-64 w-64 rounded-full" />
+        <div className="homepage-ambient-orb homepage-ambient-orb--blue homepage-ambient-orb--slow absolute right-[6%] bottom-10 h-72 w-72 rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_24%,rgba(137,180,200,0.04)_100%)]" />
+      </div>
+
+      <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           tag={language === "en" ? "Core Equation" : "สมการหลัก"}
           tagColor="gold"
@@ -126,10 +136,13 @@ export default function FDIASection() {
             <React.Fragment key={stage.letter}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
+                {...cardSpotlight}
                 whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.01 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.995 }}
                 viewport={{ once: true }}
                 transition={prefersReducedMotion ? undefined : { duration: 0.3, delay: i * 0.04 }}
-                className="main-page-reactive-card group flex-1 rounded-xl border border-border bg-[#fff8f1] p-4 transition-[box-shadow,transform,background-color] duration-200 hover:bg-[#fffdf8] hover:shadow-[0_12px_24px_rgba(84,61,31,0.06)] dark:bg-card dark:hover:bg-card"
+                className="main-page-reactive-card group flex-1 rounded-xl border border-border bg-white p-4 transition-[box-shadow,transform,background-color] duration-200 hover:bg-white hover:shadow-[0_12px_24px_rgba(84,61,31,0.06)] dark:bg-card dark:hover:bg-card"
               >
                 <div className="flex items-center gap-2.5 mb-2">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-base transition-transform duration-200 group-hover:scale-105 ${stage.toneClass}`}>
@@ -157,11 +170,14 @@ export default function FDIASection() {
           {stages.map((stage, i) => (
             <motion.div
               key={stage.letter}
+              {...cardSpotlight}
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.01 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.995 }}
               viewport={{ once: true }}
               transition={prefersReducedMotion ? undefined : { duration: 0.3, delay: i * 0.04 }}
-              className="main-page-reactive-card group rounded-xl border border-border bg-[#fff8f1] p-4 transition-[box-shadow,transform,background-color] duration-200 hover:bg-[#fffdf8] hover:shadow-[0_12px_24px_rgba(84,61,31,0.06)] dark:bg-card dark:hover:bg-card"
+              className="main-page-reactive-card group rounded-xl border border-border bg-white p-4 transition-[box-shadow,transform,background-color] duration-200 hover:bg-white hover:shadow-[0_12px_24px_rgba(84,61,31,0.06)] dark:bg-card dark:hover:bg-card"
             >
               <div className="flex items-center gap-2.5 mb-2">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-base transition-transform duration-200 group-hover:scale-105 ${stage.toneClass}`}>
@@ -195,13 +211,15 @@ export default function FDIASection() {
         {/* Key Insight Banner */}
         <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+          {...cardSpotlight}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.003 }}
           viewport={{ once: true }}
           transition={prefersReducedMotion ? undefined : { duration: 0.3 }}
-          className="main-page-reactive-surface mb-5 rounded-xl border border-border bg-[#fff6ee] p-4 shadow-sm dark:bg-card"
+          className="main-page-reactive-surface mb-5 rounded-xl border border-border bg-white p-4 shadow-sm dark:bg-card"
         >
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-warm-amber/10">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border border-warm-amber/15 bg-[#fffaf6]">
               <span className="text-lg font-bold font-mono text-warm-amber">!</span>
             </div>
             <div>
@@ -223,10 +241,12 @@ export default function FDIASection() {
           {/* Equation Display */}
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }}
+            {...cardSpotlight}
             whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+            whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.004 }}
             viewport={{ once: true }}
             transition={prefersReducedMotion ? undefined : { duration: 0.35 }}
-            className="main-page-reactive-surface rounded-xl border border-border bg-[#fff6ee] p-5 shadow-sm dark:bg-card"
+            className="main-page-reactive-surface rounded-xl border border-border bg-white p-5 shadow-sm dark:bg-card"
           >
             <div className="text-center mb-4">
               <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2 text-muted-foreground">
@@ -280,7 +300,7 @@ export default function FDIASection() {
               ].map((v) => (
                 <div
                   key={v.letter}
-                  className="flex items-center gap-2 p-2 rounded-lg bg-secondary/50"
+                  className="flex items-center gap-2 rounded-lg border border-[#eee2d6] bg-[#fffaf6] p-2"
                 >
                   <span
                     className="font-mono font-bold text-lg"
@@ -298,7 +318,7 @@ export default function FDIASection() {
               ))}
             </div>
 
-            <div className="p-4 rounded-xl border bg-secondary/30 border-border">
+            <div className="rounded-xl border border-[#eee2d6] bg-[#fffaf6] p-4">
               <p className="text-sm leading-relaxed text-muted-foreground">
                 <span className="font-semibold text-warm-amber">
                   {language === "en" ? "Key Insight:" : "ข้อมูลสำคัญ:"}

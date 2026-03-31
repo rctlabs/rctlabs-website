@@ -3,7 +3,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
-import { ArrowRight, Download, Mail, Linkedin, Github, ExternalLink, Building2, User, Newspaper } from "lucide-react"
+import { Mail, Linkedin, Github, ExternalLink, Building2, User, Newspaper } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Press & Media — RCT Labs | Constitutional AI from Thailand",

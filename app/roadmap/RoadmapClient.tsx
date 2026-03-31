@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { CalendarClock, FileText, GitBranch, Rocket, Users } from "lucide-react"
+import { FileText, GitBranch, Users } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { ResourceCardGrid, ResourcePageShell, ResourceSection } from "@/components/resource/resource-shell"
 import RoadmapSection from "@/components/sections/roadmap-section"

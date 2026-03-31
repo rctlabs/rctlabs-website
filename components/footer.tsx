@@ -110,12 +110,19 @@ export function Footer() {
   return (
     <>
       <footer
-        className={`border-t transition-colors duration-300 ${
-          isDark ? "bg-dark-deep border-dark-border" : "bg-warm-sand border-warm-light-gray"
+        className={`relative overflow-hidden border-t transition-colors duration-300 ${
+          isDark ? "bg-dark-deep border-dark-border" : "bg-[#f7f1eb] border-warm-light-gray"
         }`}
         role="contentinfo"
       >
-      <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="footer-ambient-orb footer-ambient-orb--amber absolute left-[6%] top-10 h-64 w-64" />
+        <div className="footer-ambient-orb footer-ambient-orb--sage absolute right-[8%] top-20 h-72 w-72" />
+        <div className="footer-ambient-orb footer-ambient-orb--terra absolute left-[38%] -bottom-20 h-60 w-60" />
+        <div className="absolute inset-x-0 top-0 h-16 bg-linear-to-b from-white/14 to-transparent dark:from-white/3" />
+      </div>
+
+      <div className="relative z-10 max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
 
 
         {/* Main footer grid */}

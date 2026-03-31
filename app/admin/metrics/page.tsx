@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
-import { BarChart3, TrendingUp, ChevronLeft, RefreshCw, Cpu, HardDrive, MemoryStick, Clock } from "lucide-react"
+import { BarChart3, TrendingUp, ChevronLeft, RefreshCw, Cpu, MemoryStick, Clock } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -69,7 +69,7 @@ export default function MetricsPage() {
   const [loading, setLoading] = useState(true)
   const [hours, setHours] = useState(1)
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     setLoading(true)
     try {
       const [perfRes, resRes] = await Promise.allSettled([
@@ -79,9 +79,15 @@ export default function MetricsPage() {
       if (perfRes.status === "fulfilled" && perfRes.value.ok) setPerf(await perfRes.value.json())
       if (resRes.status === "fulfilled" && resRes.value.ok) setResources(await resRes.value.json())
     } catch { /* offline */ } finally { setLoading(false) }
-  }
+  }, [hours])
 
-  useEffect(() => { fetchData() }, [hours])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void fetchData()
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [fetchData])
 
   const latest = perf.length > 0 ? perf[perf.length - 1] : null
 

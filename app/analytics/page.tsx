@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
   const [usage, setUsage] = useState<UsageStats | null>(null)
   const [perf, setPerf] = useState<PerformanceMetrics | null>(null)
   const [cost, setCost] = useState<CostSummary | null>(null)
-  const [stats, setStats] = useState<ServiceStats[]>([])
+  const [, setStats] = useState<ServiceStats[]>([])
   const [loading, setLoading] = useState(true)
   const [lastRefresh, setLastRefresh] = useState("")
 
@@ -106,7 +106,11 @@ export default function AnalyticsPage() {
   }
 
   useEffect(() => {
-    fetchAll()
+    const timer = setTimeout(() => {
+      void fetchAll()
+    }, 0)
+
+    return () => clearTimeout(timer)
   }, [])
 
   return (

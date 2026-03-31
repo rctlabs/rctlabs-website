@@ -6,6 +6,7 @@ import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { motion } from "framer-motion"
 import { useMounted } from "@/hooks/use-mounted"
+import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 interface SectionPreviewCardProps {
   icon?: string
@@ -36,6 +37,7 @@ export default function SectionPreviewCard({
   const mounted = useMounted()
   const isDark = mounted && resolvedTheme === "dark"
   const { language } = useLanguage()
+  const cardSpotlight = useCardSpotlight<HTMLAnchorElement>()
 
   return (
     <motion.div
@@ -43,19 +45,22 @@ export default function SectionPreviewCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay }}
-      whileHover={{ y: -3, transition: { duration: 0.24 } }}
+      whileHover={{ y: -4, scale: 1.006, transition: { duration: 0.24 } }}
+      whileTap={{ scale: 0.996 }}
       className="h-full"
     >
       <Link
         href={href}
+        {...cardSpotlight}
         className={`main-page-reactive-card group relative flex h-full flex-col overflow-hidden rounded-2xl border p-5 sm:p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:shadow-[0_14px_32px_rgba(84,61,31,0.07)] ${
           isDark
             ? "bg-card border-border hover:border-warm-amber/40"
-            : "border-[#e6ddd0] bg-[#fff8f1] hover:border-warm-amber/40 hover:bg-[#fffdf8]"
+            : "border-[#e6ddd0] bg-white hover:border-warm-amber/40 hover:bg-white"
         }`}
       >
         <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.14),transparent_40%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),transparent_28%,rgba(212,168,83,0.02)_100%)]" />
         </div>
 
         {/* Icon — absolute top-right */}

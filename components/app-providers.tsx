@@ -10,6 +10,13 @@ const FloatingAIComingSoon = dynamic(
   { ssr: false, loading: () => null },
 )
 
+type IdleHandle = number
+
+type IdleCallbackWindow = Window & {
+  requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => IdleHandle
+  cancelIdleCallback?: (handle: IdleHandle) => void
+}
+
 function DeferredFloatingAI() {
   const [shouldRender, setShouldRender] = useState(false)
 
@@ -17,15 +24,16 @@ function DeferredFloatingAI() {
     if (shouldRender) return
 
     let timeoutId: ReturnType<typeof setTimeout> | null = null
-    let idleId: any = null
+    let idleId: IdleHandle | null = null
+    const idleWindow = window as IdleCallbackWindow
 
     const activate = () => {
       setShouldRender(true)
       if (timeoutId !== null) {
         clearTimeout(timeoutId)
       }
-      if (idleId !== null && "cancelIdleCallback" in window) {
-        (window as any).cancelIdleCallback(idleId)
+      if (idleId !== null && idleWindow.cancelIdleCallback) {
+        idleWindow.cancelIdleCallback(idleId)
       }
       window.removeEventListener("pointerdown", activate)
       window.removeEventListener("keydown", activate)
@@ -36,8 +44,8 @@ function DeferredFloatingAI() {
     window.addEventListener("keydown", activate, { once: true })
     window.addEventListener("touchstart", activate, { once: true, passive: true })
 
-    if ("requestIdleCallback" in window) {
-      idleId = (window as any).requestIdleCallback(activate, { timeout: 1800 })
+    if (idleWindow.requestIdleCallback) {
+      idleId = idleWindow.requestIdleCallback(activate, { timeout: 1800 })
     } else {
       timeoutId = setTimeout(activate, 1200)
     }
@@ -46,8 +54,8 @@ function DeferredFloatingAI() {
       if (timeoutId !== null) {
         clearTimeout(timeoutId)
       }
-      if (idleId !== null && "cancelIdleCallback" in window) {
-        (window as any).cancelIdleCallback(idleId)
+      if (idleId !== null && idleWindow.cancelIdleCallback) {
+        idleWindow.cancelIdleCallback(idleId)
       }
       window.removeEventListener("pointerdown", activate)
       window.removeEventListener("keydown", activate)

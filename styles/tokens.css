@@ -39,15 +39,15 @@
   --rct-warm-faint: #555555;
   --rct-warm-placeholder: #AAAAAA;
   --rct-warm-subdued: #CCCCCC;
-  --rct-warm-surface: #F5F3EF;
-  --rct-warm-tint: #F5EFE6;
+  --rct-warm-surface: #F8F4EE;
+  --rct-warm-tint: #F6EFE7;
   --rct-warm-border-alt: #E5E1DA;
   --rct-warm-dim: #888888;
   --rct-warm-dim-alt: #777777;
   --rct-warm-ghost: #BBBBBB;
   --rct-warm-pale: #DDDDDD;
   --rct-warm-warm-light: #D4D0C8;
-  --rct-warm-surface-alt: #F5F0E8;
+  --rct-warm-surface-alt: #FAF6F1;
   --rct-warm-border-hard: #E8E0D4;
   --rct-warm-taupe: #B0A898;
   --rct-warm-bronze: #8B7355;
@@ -73,8 +73,8 @@
   --rct-tag-terracotta-text: #8B4A3A;
   
   /* ═══ Neutrals - Light Mode ═══ */
-  --rct-bg-primary: #FAF6F0;
-  --rct-bg-secondary: #F0EBE3;
+  --rct-bg-primary: #F7F1EB;
+  --rct-bg-secondary: #F8F3ED;
   --rct-bg-tertiary: #FFFFFF;
   --rct-bg-elevated: #FFFFFF;
   
@@ -83,8 +83,8 @@
   --rct-text-muted: #6B6B6B;
   --rct-text-disabled: #999999;
   
-  --rct-border-primary: #E8E3DC;
-  --rct-border-secondary: #D4D0C8;
+  --rct-border-primary: #E6DDD2;
+  --rct-border-secondary: #D8CEBF;
   --rct-border-focus: #D4A853;
   
   /* Input - Light Mode */
@@ -193,18 +193,18 @@
   --rct-global-rail-opacity: 0.16;
   --rct-global-node-opacity: 0.18;
 
-  --rct-main-surface-base: linear-gradient(180deg, rgba(250,244,239,0.95) 0%, rgba(247,239,231,0.92) 100%);
-  --rct-main-surface-raised: linear-gradient(180deg, rgba(248,241,234,0.96) 0%, rgba(244,235,226,0.92) 100%);
-  --rct-main-surface-elevated: linear-gradient(180deg, rgba(255,249,244,0.95) 0%, rgba(250,242,234,0.92) 100%);
-  --rct-main-surface-settle: linear-gradient(180deg, rgba(252,244,237,0.97) 0%, rgba(244,233,223,0.94) 100%);
-  --rct-main-continuity-border: linear-gradient(90deg, transparent, rgba(212,168,83,0.28), transparent);
-  --rct-main-field-wash: radial-gradient(circle at 16% 16%, rgba(212,168,83,0.12), transparent 32%), radial-gradient(circle at 82% 58%, rgba(123,158,135,0.1), transparent 28%), linear-gradient(180deg, rgba(255,255,255,0.035), transparent 32%, rgba(212,168,83,0.025) 100%);
-  --rct-main-field-grid: linear-gradient(to right, rgba(212,168,83,0.22) 1px, transparent 1px), linear-gradient(to bottom, rgba(212,168,83,0.18) 1px, transparent 1px);
-  --rct-main-field-rail: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
-  --rct-main-field-beam: linear-gradient(to right, transparent, rgba(212,168,83,0.34), transparent);
-  --rct-main-field-guide-vertical: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3), transparent);
-  --rct-main-field-guide-horizontal: linear-gradient(to right, transparent, rgba(123,158,135,0.4), transparent);
-  --rct-main-field-node-shadow: 0 0 18px rgba(212,168,83,0.22);
+  --rct-main-surface-base: linear-gradient(180deg, rgba(247,241,235,0.78) 0%, rgba(247,241,235,0.7) 100%);
+  --rct-main-surface-raised: linear-gradient(180deg, rgba(247,241,235,0.82) 0%, rgba(247,241,235,0.74) 100%);
+  --rct-main-surface-elevated: linear-gradient(180deg, rgba(249,244,238,0.86) 0%, rgba(247,241,235,0.78) 100%);
+  --rct-main-surface-settle: linear-gradient(180deg, rgba(247,241,235,0.88) 0%, rgba(246,239,232,0.8) 100%);
+  --rct-main-continuity-border: linear-gradient(90deg, transparent, rgba(212,168,83,0.1), transparent);
+  --rct-main-field-wash: radial-gradient(circle at 16% 16%, rgba(212,168,83,0.1), transparent 32%), radial-gradient(circle at 82% 58%, rgba(123,158,135,0.09), transparent 28%), linear-gradient(180deg, rgba(255,250,246,0.12), transparent 34%, rgba(212,168,83,0.02) 100%);
+  --rct-main-field-grid: linear-gradient(to right, rgba(212,168,83,0.16) 1px, transparent 1px), linear-gradient(to bottom, rgba(212,168,83,0.12) 1px, transparent 1px);
+  --rct-main-field-rail: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+  --rct-main-field-beam: linear-gradient(to right, transparent, rgba(212,168,83,0.24), transparent);
+  --rct-main-field-guide-vertical: linear-gradient(to bottom, transparent, rgba(255,255,255,0.24), transparent);
+  --rct-main-field-guide-horizontal: linear-gradient(to right, transparent, rgba(123,158,135,0.28), transparent);
+  --rct-main-field-node-shadow: 0 0 18px rgba(212,168,83,0.16);
   
   /* ═══ Z-Index Scale ═══ */
   --rct-z-base: 0;

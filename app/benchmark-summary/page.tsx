@@ -35,69 +35,6 @@ const BENCHMARK_FAQS = [
   },
 ]
 
-const metrics = [
-  {
-    label: "Hallucination Rate",
-    value: "0.3%",
-    industry: "12–15%",
-    improvement: "95% reduction",
-    method: "Content verification across controlled test workloads; cross-referenced against SignedAI consensus disagreement logs and manual validation sample (n=500).",
-    caveat: "Measured on controlled workloads. Real-world rates may vary based on query domain, input quality, and tier selection.",
-    color: "text-green-400",
-    bgColor: "bg-green-400/8 border-green-400/20",
-  },
-  {
-    label: "FDIA Accuracy Score",
-    value: "0.92",
-    industry: "~0.65",
-    improvement: "+41.5%",
-    method: "Accuracy of the FDIA equation in predicting output quality vs. human-evaluated ground truth. Measured on factual question-answering benchmark (n=1,000).",
-    caveat: "Industry baseline ~0.65 is an approximation. Direct comparative benchmarking with specific competitor products has not been conducted.",
-    color: "text-warm-amber",
-    bgColor: "bg-warm-amber/8 border-warm-amber/20",
-  },
-  {
-    label: "Test Suite",
-    value: "4,849 / 0 / 0",
-    industry: "N/A",
-    improvement: "0 failures, 0 errors",
-    method: "Automated tests across 8 levels (Unit, Integration, Service, Contract, Performance, Security, Chaos, Property). Run on v5.4.5, March 21, 2026.",
-    caveat: "Point-in-time result (v5.4.5). Test count grows with platform scope as new features are added.",
-    color: "text-blue-400",
-    bgColor: "bg-blue-400/8 border-blue-400/20",
-  },
-  {
-    label: "Warm Recall Latency",
-    value: "<50ms",
-    industry: "N/A",
-    improvement: "vs 3–5s cold start",
-    method: "Delta Engine semantic cache with similarity threshold 0.95. Measured from request receipt to response delivery on hot-zone cache hits.",
-    caveat: "Novel queries always take the cold start path (3–5s). Hot zone capacity is finite; entries migrate to slower zones based on frequency.",
-    color: "text-purple-400",
-    bgColor: "bg-purple-400/8 border-purple-400/20",
-  },
-  {
-    label: "Memory Compression",
-    value: "74%",
-    industry: "N/A",
-    improvement: "lossless (O(n) vs O(n²))",
-    method: "Delta Engine stores only state changes. 74% measured as average reduction vs full-state storage across 10,000 sequential query sessions.",
-    caveat: "Short or highly novel sessions may show lower compression ratios.",
-    color: "text-cyan-400",
-    bgColor: "bg-cyan-400/8 border-cyan-400/20",
-  },
-  {
-    label: "Cost Reduction",
-    value: "3.74x",
-    industry: "N/A",
-    improvement: "vs always using Claude Opus",
-    method: "HexaCore intelligent routing vs. always routing to Claude Opus 4.6. Measured over 10,000 production-equivalent mixed query workload.",
-    caveat: "Actual savings depend on query mix. Complex workloads requiring premium models will show lower savings.",
-    color: "text-orange-400",
-    bgColor: "bg-orange-400/8 border-orange-400/20",
-  },
-]
-
 export default async function BenchmarkSummaryPage() {
   const breadcrumb = getBreadcrumbSchema([
     { name: "Home", url: "https://rctlabs.co/en" },

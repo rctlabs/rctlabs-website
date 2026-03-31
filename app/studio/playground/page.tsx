@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Play, ChevronLeft, RefreshCw, Zap, Eye, Trash2 } from "lucide-react"
+import { Play, ChevronLeft, Zap, Eye, Trash2 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -91,7 +91,13 @@ export default function PlaygroundPage() {
     } finally { setLoadingHistory(false) }
   }
 
-  useEffect(() => { fetchData() }, [])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void fetchData()
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const selectedAlgoObj = algorithms.find((a) => a.algo_id === selectedAlgo)
 

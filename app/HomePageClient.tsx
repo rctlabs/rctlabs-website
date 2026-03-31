@@ -3,6 +3,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
+import { useState } from "react"
+import { motion, useMotionTemplate, useReducedMotion, useSpring } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -15,6 +17,106 @@ import EvidenceSection from "@/components/sections/evidence-section"
 import { MainPageOrchestrator } from "@/components/main-page/main-page-orchestrator"
 import { MainPageSection } from "@/components/main-page/main-page-section"
 import { pixelIcons } from "@/lib/pixel-icons"
+import { useCardSpotlight } from "@/hooks/use-card-spotlight"
+
+type PillarCardProps = {
+  locale: "en" | "th"
+  pillar: {
+    stat: string
+    title: string
+    desc: string
+    color: string
+    bg: string
+    darkBg: string
+    iconSrc: string
+    href: string
+  }
+}
+
+function PillarCard({ locale, pillar }: PillarCardProps) {
+  const [hovered, setHovered] = useState(false)
+  const prefersReducedMotion = useReducedMotion()
+  const cardSpotlight = useCardSpotlight<HTMLAnchorElement>()
+  const glowX = useSpring(82, { stiffness: 180, damping: 22, mass: 0.4 })
+  const glowY = useSpring(16, { stiffness: 180, damping: 22, mass: 0.4 })
+  const glow = useMotionTemplate`radial-gradient(circle at ${glowX}% ${glowY}%, rgba(212,168,83,0.16), transparent 38%)`
+
+  const handleMove = (event: React.PointerEvent<HTMLAnchorElement>) => {
+    cardSpotlight.onPointerMove(event)
+    const bounds = event.currentTarget.getBoundingClientRect()
+    glowX.set(((event.clientX - bounds.left) / bounds.width) * 100)
+    glowY.set(((event.clientY - bounds.top) / bounds.height) * 100)
+  }
+
+  const handleLeave = (event: React.PointerEvent<HTMLAnchorElement>) => {
+    cardSpotlight.onPointerLeave(event)
+    setHovered(false)
+  }
+
+  return (
+    <motion.div
+      whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.007 }}
+      whileTap={prefersReducedMotion ? undefined : { scale: 0.995 }}
+      transition={{ type: "spring", stiffness: 260, damping: 22, mass: 0.7 }}
+      className="h-full"
+    >
+      <Link
+        href={pillar.href}
+        style={cardSpotlight.style}
+        onFocus={cardSpotlight.onFocus}
+        onBlur={cardSpotlight.onBlur}
+        onPointerMove={handleMove}
+        onMouseEnter={() => setHovered(true)}
+        onPointerLeave={handleLeave}
+        onMouseLeave={() => setHovered(false)}
+        className="main-page-reactive-card group relative flex min-h-40 h-full overflow-hidden rounded-[28px] border border-border bg-white px-4 py-4 sm:min-h-44 sm:px-5 sm:py-5 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/40 hover:bg-white hover:shadow-[0_14px_32px_rgba(84,61,31,0.07)] dark:bg-card dark:hover:bg-card"
+      >
+      <motion.div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ backgroundImage: glow }} />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.84),rgba(255,248,240,0.12))]" />
+
+      <div className="pointer-events-none absolute right-4 top-4 z-10 flex flex-col items-center gap-4 sm:right-5 sm:top-5 sm:gap-5">
+        <div
+          className="flex h-[3.7rem] w-[3.7rem] items-center justify-center rounded-[1.25rem] border shadow-[0_10px_24px_rgba(84,61,31,0.08)] transition-[transform,box-shadow] duration-300 group-hover:scale-[1.04] group-hover:shadow-[0_14px_28px_rgba(84,61,31,0.12)] sm:h-[4.4rem] sm:w-[4.4rem]"
+          style={{ backgroundColor: pillar.bg }}
+        >
+          <Image
+            src={pillar.iconSrc}
+            alt=""
+            width={35}
+            height={35}
+            className="object-contain sm:h-[42px] sm:w-[42px]"
+            style={{ imageRendering: "pixelated" }}
+          />
+        </div>
+
+        <div className="inline-flex h-10 min-w-[4.45rem] items-center justify-center gap-1 rounded-full border border-warm-amber/18 bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-warm-amber shadow-[0_8px_18px_rgba(84,61,31,0.06)] backdrop-blur-sm transition-transform duration-300 group-hover:-translate-y-0.5 sm:min-w-[4.75rem]">
+          <span>{locale === "en" ? "Open" : "ดู"}</span>
+          <ArrowRight className={`h-3.5 w-3.5 transition-transform duration-300 ${hovered ? "translate-x-0.5" : ""}`} />
+        </div>
+      </div>
+
+      <div className="relative z-10 flex min-h-full flex-1 flex-col pr-[7rem] sm:pr-[8.2rem]">
+        <div className="min-w-0 flex-1">
+          <div>
+            <div
+              className={`mb-2 text-[28px] font-bold leading-none sm:text-[33px] ${locale === "th" ? "font-thai" : "font-display"}`}
+              style={{ color: pillar.color }}
+            >
+              {pillar.stat}
+            </div>
+            <div className="mb-2 text-[15px] font-semibold leading-tight text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-[17px]">
+              {pillar.title}
+            </div>
+            <p className={`max-w-[28ch] text-[13px] leading-[1.72] text-muted-foreground sm:max-w-[30ch] sm:text-[14px] ${locale === "th" ? "subtitle-th" : ""}`}>
+              {pillar.desc}
+            </p>
+          </div>
+        </div>
+      </div>
+      </Link>
+    </motion.div>
+  )
+}
 
 export default function HomePage() {
   const pathname = usePathname()
@@ -24,8 +126,14 @@ export default function HomePage() {
 
   return (
     <MainPageOrchestrator>
-      <main id="main-content" className="min-h-screen bg-transparent">
+      <main id="main-content" className="relative min-h-screen overflow-hidden bg-[#f7f1eb]">
         <Navbar />
+        <div className="homepage-global-backdrop" aria-hidden="true">
+          <div className="homepage-global-backdrop__mesh" />
+          <div className="homepage-global-backdrop__orb homepage-global-backdrop__orb--amber" />
+          <div className="homepage-global-backdrop__orb homepage-global-backdrop__orb--sage" />
+          <div className="homepage-global-backdrop__orb homepage-global-backdrop__orb--terra" />
+        </div>
         <HeroSection />
 
         <h1 className="sr-only">
@@ -43,10 +151,17 @@ export default function HomePage() {
         <MainPageSection sectionId="core-pillars" tone="raised" continuityMode="dense">
           <section
             id="core-pillars"
-            className="border-y border-border bg-transparent py-14 md:py-20 transition-colors duration-300"
+            className="relative overflow-hidden border-y border-border bg-transparent py-14 md:py-20 transition-colors duration-300"
           >
-            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-              <div className="mb-10 text-center">
+            <div className="homepage-ambient-layer absolute inset-0">
+              <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute -left-24 top-8 h-60 w-60 rounded-full" />
+              <div className="homepage-ambient-orb homepage-ambient-orb--sage homepage-ambient-orb--slow absolute -right-20 bottom-6 h-72 w-72 rounded-full" />
+              <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#fbf7f2]/42 to-transparent" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,241,235,0.22),transparent_24%,rgba(212,168,83,0.04)_100%)]" />
+            </div>
+
+            <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+              <div className="mb-9 text-center">
                 <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-warm-amber">
                   {locale === "en" ? "Core Intelligence Pillars" : "เสาหลักปัญญาประดิษฐ์"}
                 </p>
@@ -55,7 +170,7 @@ export default function HomePage() {
                 </h2>
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
                 {[
               {
                 stat: locale === "en" ? "7 Models" : "7 โมเดล",
@@ -106,47 +221,7 @@ export default function HomePage() {
                 href: `${localePrefix}/core-systems`,
               },
             ].map((pillar) => (
-              <Link
-                key={pillar.title}
-                href={pillar.href}
-                className="main-page-reactive-card group relative flex flex-row items-start gap-5 overflow-hidden rounded-2xl border border-border bg-[#fff8f1] p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:border-warm-amber/40 hover:bg-[#fffdf8] hover:shadow-[0_14px_32px_rgba(84,61,31,0.07)] dark:bg-card dark:hover:bg-card"
-              >
-                {/* Hover gradient overlay */}
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,168,83,0.10),transparent_50%)]" />
-                </div>
-
-                {/* Pixel Art Icon */}
-                <div
-                  className="relative shrink-0 flex h-14 w-14 items-center justify-center rounded-2xl border transition-transform duration-300 group-hover:scale-105"
-                  style={{ backgroundColor: pillar.bg }}
-                >
-                  <Image
-                    src={pillar.iconSrc}
-                    alt=""
-                    width={36}
-                    height={36}
-                    className="object-contain"
-                    style={{ imageRendering: "pixelated" }}
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10 flex flex-col min-w-0 flex-1">
-                  <div
-                    className={`text-3xl font-bold leading-none mb-1 ${locale === "th" ? "font-thai" : "font-display"}`}
-                    style={{ color: pillar.color }}
-                  >
-                    {pillar.stat}
-                  </div>
-                  <div className="text-sm font-semibold text-foreground mb-2 group-hover:text-warm-amber transition-colors duration-200">
-                    {pillar.title}
-                  </div>
-                  <p className={`text-xs leading-relaxed text-muted-foreground ${locale === "th" ? "subtitle-th" : ""}`}>
-                    {pillar.desc}
-                  </p>
-                </div>
-              </Link>
+              <PillarCard key={pillar.title} locale={locale} pillar={pillar} />
             ))}
               </div>
 
@@ -173,9 +248,20 @@ export default function HomePage() {
         </MainPageSection>
 
         <MainPageSection sectionId="cta" tone="settle" continuityMode="settle">
-          <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-            <div className="main-page-reactive-card main-page-reactive-surface relative overflow-hidden rounded-2xl border border-border bg-[#fff5ec] p-10 md:p-16 dark:bg-card">
+          <section className="relative overflow-hidden py-16 md:py-24">
+            <div className="homepage-ambient-layer absolute inset-0">
+              <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute left-[8%] top-6 h-56 w-56 rounded-full" />
+              <div className="homepage-ambient-orb homepage-ambient-orb--terra homepage-ambient-orb--slow absolute right-[6%] bottom-0 h-64 w-64 rounded-full" />
+            </div>
+
+            <div className="relative mx-auto max-w-6xl px-4">
+            <motion.div
+              whileHover={{ y: -4, scale: 1.004 }}
+              transition={{ type: "spring", stiffness: 220, damping: 24, mass: 0.9 }}
+              className="main-page-reactive-card main-page-reactive-surface relative overflow-hidden rounded-2xl border border-border bg-white p-10 md:p-16 dark:bg-card"
+            >
               <div className="absolute inset-0 grid-background opacity-30" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,241,235,0.2),transparent_32%,rgba(212,168,83,0.04)_100%)]" />
               <div className="relative z-10 mx-auto max-w-2xl space-y-6 text-center">
                 <h2 className={`text-foreground ${locale === "th" ? "font-thai" : ""}`}>
                   {locale === "en" ? "Ready to Build with Intent?" : "พร้อมเริ่มต้นสร้างระบบ AI ที่ขับเคลื่อนด้วยเจตนาหรือยัง?"}
@@ -201,6 +287,7 @@ export default function HomePage() {
                   </Link>
                 </div>
               </div>
+            </motion.div>
             </div>
           </section>
         </MainPageSection>

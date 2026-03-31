@@ -1,9 +1,7 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -14,12 +12,10 @@ import {
   AlertCircle,
   Clock,
   FileCode,
-  BarChart3,
   RefreshCw,
   Loader2,
   ChevronRight,
   Terminal,
-  Eye,
 } from "lucide-react"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8051"
@@ -64,13 +60,7 @@ export function TestConsole() {
   const [selectedService, setSelectedService] = useState<string>("")
   const [testRuns, setTestRuns] = useState<TestRun[]>([])
   const [currentRun, setCurrentRun] = useState<TestRun | null>(null)
-  const [loading, setLoading] = useState(false)
   const [running, setRunning] = useState(false)
-
-  useEffect(() => {
-    fetchServices()
-    fetchRecentRuns()
-  }, [])
 
   const fetchServices = async () => {
     try {
@@ -123,6 +113,15 @@ export function TestConsole() {
       setRunning(false)
     }
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void fetchServices()
+      void fetchRecentRuns()
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const getStatusIcon = (status: string) => {
     switch (status) {

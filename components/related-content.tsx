@@ -7,6 +7,7 @@
  */
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 export interface RelatedItem {
   title: string
@@ -26,6 +27,8 @@ export default function RelatedContent({
   title = "Related Content",
   className = "",
 }: RelatedContentProps) {
+  const cardSpotlight = useCardSpotlight<HTMLAnchorElement>()
+
   if (items.length === 0) return null
 
   return (
@@ -36,7 +39,8 @@ export default function RelatedContent({
           <Link
             key={index}
             href={item.href}
-            className="group block p-5 rounded-xl border border-warm-light-gray dark:border-white/10 bg-white dark:bg-warm-charcoal hover:border-warm-amber dark:hover:border-warm-amber transition-all hover:shadow-md"
+            {...cardSpotlight}
+            className="main-page-reactive-card group block rounded-xl border border-warm-light-gray bg-white p-5 dark:border-white/10 dark:bg-warm-charcoal hover:border-warm-amber dark:hover:border-warm-amber transition-all hover:shadow-md"
           >
             {item.category && (
               <span className="inline-block px-2 py-1 mb-3 text-xs font-semibold rounded-full bg-warm-cream dark:bg-white/5 text-warm-amber">
