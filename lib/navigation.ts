@@ -183,7 +183,7 @@ const companyItems: NavLeafItem[] = [
   },
   {
     id: "press",
-    href: "/company/press",
+    href: "/press",
     label: { en: "Press", th: "ข่าวสารองค์กร" },
     description: {
       en: "Announcements, external mentions, and press materials.",

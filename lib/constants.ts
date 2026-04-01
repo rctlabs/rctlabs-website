@@ -91,7 +91,7 @@ export const FOOTER_LINKS = {
   company: [
     { label: "About", href: "/about" },
     { label: "Careers", href: "/company/careers" },
-    { label: "Press", href: "/company/press" },
+    { label: "Press", href: "/press" },
     { label: "Contact", href: "/contact" },
   ],
   legal: [

@@ -107,17 +107,17 @@ export default function AboutOgImage() {
                 lineHeight: 1.5,
               }}
             >
-              Solo-built from Bangkok · Constitutional AI · 41 Algorithms · 33 Microservices
+              Solo-built from Bangkok · Constitutional AI · 41 Algorithms · 62 Microservices
             </p>
           </div>
 
           {/* Bottom stats row */}
           <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
             {[
-              { value: "389", label: "Verified Tests" },
+              { value: "4,849", label: "Passing Tests" },
               { value: "0.3%", label: "Hallucination Rate" },
-              { value: "7", label: "Genome System" },
-              { value: "99.9%", label: "Uptime Target" },
+              { value: "7", label: "HexaCore Models" },
+              { value: "99.98%", label: "Uptime SLA" },
             ].map((stat) => (
               <div key={stat.label} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <span style={{ fontSize: 28, fontWeight: 700, color: "#f59e0b", lineHeight: 1 }}>

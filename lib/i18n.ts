@@ -75,7 +75,9 @@ export function detectLocale(acceptLanguage: string | null): Locale {
 }
 
 // Get locale from pathname
-export function getLocaleFromPathname(pathname: string): Locale | null {
+export function getLocaleFromPathname(pathname: string | null | undefined): Locale | null {
+  if (!pathname) return null
+
   const segments = pathname.split('/').filter(Boolean)
   const firstSegment = segments[0]
 
@@ -92,7 +94,9 @@ export function resolveLocale(pathname: string | null | undefined, fallback: Loc
 }
 
 // Remove locale from pathname
-export function removeLocaleFromPathname(pathname: string): string {
+export function removeLocaleFromPathname(pathname: string | null | undefined): string {
+  if (!pathname) return '/'
+
   const locale = getLocaleFromPathname(pathname)
   if (!locale) return pathname
 
@@ -100,7 +104,7 @@ export function removeLocaleFromPathname(pathname: string): string {
 }
 
 // Add locale to pathname
-export function addLocaleToPathname(pathname: string, locale: Locale): string {
+export function addLocaleToPathname(pathname: string | null | undefined, locale: Locale): string {
   const cleanPath = removeLocaleFromPathname(pathname)
   return `/${locale}${cleanPath === '/' ? '' : cleanPath}`
 }

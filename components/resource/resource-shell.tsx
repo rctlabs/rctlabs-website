@@ -254,38 +254,46 @@ export function ResourceCardGrid({ cards, columns = "three" }: { cards: Resource
             {...cardSpotlight}
             whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.006 }}
             whileTap={prefersReducedMotion ? undefined : { scale: 0.996 }}
-            className="main-page-reactive-card group flex h-full flex-col rounded-3xl border border-[#e6ddd0] bg-white p-6 shadow-[0_12px_32px_rgba(84,61,31,0.045)] transition hover:border-warm-amber/35 hover:shadow-[0_18px_42px_rgba(84,61,31,0.07)] dark:border-border/70 dark:bg-card/90"
+            className="main-page-reactive-card group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-[#e6ddd0] bg-white p-6 shadow-[0_12px_32px_rgba(84,61,31,0.045)] transition hover:-translate-y-1 hover:border-warm-amber/35 hover:shadow-[0_22px_48px_rgba(84,61,31,0.08)] dark:border-border/70 dark:bg-card/90"
           >
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm-amber/30 to-transparent opacity-70" />
+            <div className="pointer-events-none absolute inset-0 bg-radial from-warm-amber/6 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
             <div className="flex items-start justify-between gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#eee2d6] bg-[#fffaf6] text-warm-amber dark:border-border dark:bg-background/75">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] border border-[#eee2d6] bg-[#fffaf6] text-warm-amber shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] dark:border-border dark:bg-background/75">
                 <Icon className="h-5 w-5" />
               </div>
               {card.badge ? (
-                <span className="rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground dark:border-border dark:bg-background/75">
+                <span className="rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground dark:border-border dark:bg-background/75">
                   {card.badge}
                 </span>
               ) : null}
             </div>
 
-            <div className="mt-5">
-              <h3 className="text-xl font-bold text-foreground transition group-hover:text-warm-amber">{card.title}</h3>
-              {card.meta ? <div className="mt-2 text-sm font-medium text-muted-foreground">{card.meta}</div> : null}
+            <div className="relative mt-5">
+              {card.meta ? <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{card.meta}</div> : null}
+              <h3 className="mt-2 text-xl font-bold leading-tight text-foreground transition group-hover:text-warm-amber">{card.title}</h3>
               <p className="mt-3 text-sm leading-7 text-muted-foreground">{card.description}</p>
             </div>
 
             {card.tags && card.tags.length > 0 ? (
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-6 flex flex-wrap gap-2">
                 {card.tags.map((tag) => (
-                  <span key={tag} className="rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-xs text-muted-foreground dark:border-border dark:bg-background/75">
+                  <span key={tag} className="rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-[11px] font-medium text-muted-foreground dark:border-border dark:bg-background/75">
                     {tag}
                   </span>
                 ))}
               </div>
             ) : null}
 
-            <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-foreground">
-              <span>Open resource</span>
-              {card.external ? <ExternalLink className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+            <div className="mt-auto pt-6">
+              <div className="flex items-center justify-between border-t border-[#eee2d6] pt-4 text-sm font-semibold text-foreground dark:border-border/80">
+                <span className="inline-flex items-center gap-2">
+                  <span>Open resource</span>
+                  {card.external ? <ExternalLink className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Roadmap Pairing</span>
+              </div>
             </div>
           </motion.div>
         )

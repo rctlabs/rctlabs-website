@@ -6,8 +6,7 @@ import Link from "next/link"
 import { useRef, useState } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
-import { usePathname } from "next/navigation"
-import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
+import { getLocalePrefix } from "@/lib/i18n"
 import HeroArchitectureVisual from "@/components/sections/hero-architecture-visual"
 import HeroAnimatedBackground from "@/components/ui/hero-animated-background"
 import OptimizedImage from "@/components/ui/optimized-image"
@@ -18,13 +17,15 @@ import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
 const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
 
-export default function HeroSection() {
+type HeroSectionProps = {
+  locale: "en" | "th"
+}
+
+export default function HeroSection({ locale }: HeroSectionProps) {
   const { language, t } = useLanguage()
   const { resolvedTheme } = useTheme()
   const mounted = useMounted()
   const [heroBgError, setHeroBgError] = useState(false)
-  const pathname = usePathname()
-  const locale = resolveLocale(pathname, language)
   const localePrefix = getLocalePrefix(locale)
   const heroRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(heroRef, { margin: "-100px" })
@@ -43,7 +44,7 @@ export default function HeroSection() {
     { value: "41", label: t("hero.stat.algorithms"), iconSrc: pixelIcons.brain },
     { value: "10", label: t("hero.stat.layers"), iconSrc: pixelIcons.layers },
     { value: "7", label: t("hero.stat.genomes"), iconSrc: pixelIcons.genome },
-    { value: "99.9%", sublabel: "target", label: t("hero.stat.uptime"), iconSrc: pixelIcons.cpu },
+    { value: "99.98%", sublabel: "SLA", label: t("hero.stat.uptime"), iconSrc: pixelIcons.cpu },
   ]
 
   const containerVariants = {
@@ -92,10 +93,10 @@ export default function HeroSection() {
       </div>
       {/* Structured background layers rendered above the image blend and below the content */}
       <HeroAnimatedBackground variant="hero" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-56 bg-[linear-gradient(180deg,transparent_0%,rgba(247,241,235,0.18)_34%,rgba(247,241,235,0.78)_72%,#f7f1eb_100%)] dark:bg-[linear-gradient(180deg,transparent_0%,rgba(13,13,13,0.08)_30%,rgba(13,13,13,0.72)_72%,#0D0D0D_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-3 h-56 bg-[linear-gradient(180deg,transparent_0%,rgba(247,241,235,0.18)_34%,rgba(247,241,235,0.78)_72%,#f7f1eb_100%)] dark:bg-[linear-gradient(180deg,transparent_0%,rgba(13,13,13,0.08)_30%,rgba(13,13,13,0.72)_72%,#0D0D0D_100%)]" />
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-[18%] bottom-10 z-[3] h-24 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(212,168,83,0.1),transparent_70%)]"
+        className="pointer-events-none absolute inset-x-[18%] bottom-10 z-3 h-24 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(212,168,83,0.1),transparent_70%)]"
         animate={prefersReducedMotion ? { opacity: 0.45 } : { opacity: [0.32, 0.55, 0.32], x: [0, 12, 0] }}
         transition={{ duration: 9, repeat: prefersReducedMotion ? 0 : Infinity, ease: "easeInOut" }}
       />

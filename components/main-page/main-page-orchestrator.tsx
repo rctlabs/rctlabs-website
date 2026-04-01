@@ -198,20 +198,8 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
   const [scrollVelocity, setScrollVelocity] = useState(0)
   const [pointerIntent, setPointerIntent] = useState<PointerIntent>({ x: 0, y: 0 })
   const [activeSection, setActiveSection] = useState<MainPageSectionId>("hero")
-  const [isTouchInput, setIsTouchInput] = useState(() => {
-    if (typeof window === "undefined") {
-      return false
-    }
-
-    return window.matchMedia("(pointer: coarse)").matches
-  })
-  const [debugEnabled] = useState(() => {
-    if (typeof window === "undefined") {
-      return false
-    }
-
-    return window.location.search.includes("motionDebug=1")
-  })
+  const [isTouchInput, setIsTouchInput] = useState(false)
+  const [debugEnabled, setDebugEnabled] = useState(false)
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -221,6 +209,8 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
     const coarsePointer = window.matchMedia("(pointer: coarse)")
     const updatePointerMode = () => setIsTouchInput(coarsePointer.matches)
 
+    updatePointerMode()
+    setDebugEnabled(window.location.search.includes("motionDebug=1"))
     coarsePointer.addEventListener("change", updatePointerMode)
 
     return () => coarsePointer.removeEventListener("change", updatePointerMode)

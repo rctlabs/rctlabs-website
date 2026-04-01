@@ -7,9 +7,9 @@ export const SITE_TEST_COUNT = 4849
 export const SITE_MICROSERVICE_COUNT = 62
 export const SITE_ALGORITHM_COUNT = 41
 export const SITE_LAYER_COUNT = 10
-export const SITE_HEXACORE_COUNT = 6
+export const SITE_HEXACORE_COUNT = 7
 export const SITE_CONSENSUS_MODELS = 3
-export const SITE_UPTIME = "99.9% target"
+export const SITE_UPTIME = "99.98% SLA"
 export const SITE_HALLUCINATION_RATE = "0.3% benchmark"
 
 export const SOCIAL_LINKS = {
@@ -45,9 +45,11 @@ export const PUBLIC_ROUTE_PRIORITIES: Record<string, number> = {
   "/roadmap": 0.75,
   "/contact": 0.75,
   "/docs": 0.7,
+  "/press": 0.77,
   "/authors": 0.72,
   "/authors/ittirit-saengow": 0.78,
   "/authors/rct-research-desk": 0.65,
+  "/case-studies/stardew-valley": 0.71,
   "/compare": 0.75,
   "/compare/constitutional-ai-vs-rag": 0.75,
   "/compare/rct-labs-vs-llm-apis": 0.75,
@@ -83,7 +85,6 @@ export const PUBLIC_ROUTES = [
   "/faq",
   "/changelog",
   "/company",
-  "/company/press",
   "/company/careers",
   "/company/partners",
   "/research",
@@ -103,12 +104,14 @@ export const PUBLIC_ROUTES = [
   "/benchmark-summary",
   "/thailand-enterprise-trust",
   "/contact",
+  "/press",
   "/privacy",
   "/terms",
   "/roadmap",
   "/authors",
   "/authors/ittirit-saengow",
   "/authors/rct-research-desk",
+  "/case-studies/stardew-valley",
   "/compare",
   "/compare/constitutional-ai-vs-rag",
   "/compare/rct-labs-vs-llm-apis",

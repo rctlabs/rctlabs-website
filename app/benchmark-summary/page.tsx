@@ -1,11 +1,21 @@
 import type { Metadata } from "next"
 import BenchmarkSummaryClient from "./BenchmarkSummaryClient"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 
-export const metadata: Metadata = {
-  title: "Benchmark Summary — RCT Labs | 0.3% Hallucination, 0.92 FDIA Accuracy",
-  description: "Detailed explanation of RCT Labs benchmark methodology: 0.3% hallucination rate, 0.92 FDIA accuracy, 4,849/0/0 test results. Includes caveats, test conditions, and honest limitations.",
-  alternates: { canonical: "https://rctlabs.co/en/benchmark-summary" },
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
+  return createBilingualMetadata(
+    locale,
+    "Benchmark Summary — 0.3% Hallucination, 0.92 FDIA Accuracy",
+    "สรุป Benchmark — Hallucination 0.3%, FDIA Accuracy 0.92",
+    "Detailed explanation of RCT Labs benchmark methodology: 0.3% hallucination rate, 0.92 FDIA accuracy, 4,849/0/0 test results. Includes caveats, test conditions, and honest limitations.",
+    "คำอธิบายรายละเอียดของ benchmark methodology จาก RCT Labs: hallucination rate 0.3%, FDIA accuracy 0.92 และผลทดสอบ 4,849/0/0 พร้อม caveats เงื่อนไขการทดสอบ และข้อจำกัดอย่างตรงไปตรงมา",
+    "/benchmark-summary",
+    ["AI benchmark summary", "FDIA accuracy", "hallucination benchmark", "enterprise AI evaluation"]
+  )
 }
 
 const BENCHMARK_FAQS = [
@@ -36,9 +46,11 @@ const BENCHMARK_FAQS = [
 ]
 
 export default async function BenchmarkSummaryPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumb = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Benchmark Summary", url: "https://rctlabs.co/en/benchmark-summary" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Benchmark Summary", url: `https://rctlabs.co${localePrefix}/benchmark-summary` },
   ])
   const faq = getFAQSchema(BENCHMARK_FAQS)
 

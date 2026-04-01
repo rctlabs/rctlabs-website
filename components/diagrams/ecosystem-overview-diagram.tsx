@@ -19,7 +19,7 @@ interface Node {
 
 const nodes: Node[] = [
   { id: "fdia", label: "FDIA Equation", labelTh: "สมการ FDIA", color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15", desc: "F = D^I × A — The core equation governing all system behavior", descTh: "F = D^I × A — สมการหลักที่กำกับพฤติกรรมทั้งหมดของระบบ", angle: 0 },
-  { id: "arch", label: "10-Layer Stack", labelTh: "10 Layers", color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", desc: "Hierarchical cognitive architecture with 52+ microservices", descTh: "สถาปัตยกรรมเชิงปัญญาแบบลำดับชั้น 52+ Microservices", angle: 60 },
+  { id: "arch", label: "10-Layer Stack", labelTh: "10 Layers", color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25", desc: "Hierarchical cognitive architecture with 62 microservices", descTh: "สถาปัตยกรรมเชิงปัญญาแบบลำดับชั้น 62 Microservices", angle: 60 },
   { id: "genome", label: "7 Genomes", labelTh: "7 Genomes", color: "#C4745B", bg: "#FEE2E2", darkBg: "#3A1E15", desc: "DNA of the ecosystem — WHY, WHAT, HOW, PROOF, MEASURE, LEARN, IMPROVE", descTh: "DNA ของ Ecosystem — WHY, WHAT, HOW, PROOF, MEASURE, LEARN, IMPROVE", angle: 120 },
   { id: "jitna", label: "JITNA Protocol", labelTh: "JITNA Protocol", color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A", desc: "Just-In-Time Neuro-Adaptive — AI-to-AI negotiation protocol", descTh: "Just-In-Time Neuro-Adaptive — Protocol สำหรับ AI-to-AI Negotiation", angle: 180 },
   { id: "analysearch", label: "Analysearch", labelTh: "Analysearch", color: "#B8A9C9", bg: "#EDE9FE", darkBg: "#2A1E3A", desc: "4-mode research engine: Quick, Standard, Deep, Mirror", descTh: "Research Engine 4 โหมด: Quick, Standard, Deep, Mirror", angle: 240 },

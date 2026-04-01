@@ -27,13 +27,15 @@ export default function SignedAIPage() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const isTh = locale === "th"
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const localHref = (href: string) => `${localePrefix}${href}`
 
   return (
     <main className="min-h-screen bg-background" id="main-content">
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
-        { name: "Home", url: "https://rctlabs.co" },
-        { name: isTh ? "ผลิตภัณฑ์" : "Products", url: "https://rctlabs.co/products" },
-        { name: "SignedAI", url: "https://rctlabs.co/products/signed-ai" },
+        { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+        { name: isTh ? "ผลิตภัณฑ์" : "Products", url: `https://rctlabs.co${localePrefix}/products` },
+        { name: "SignedAI", url: `https://rctlabs.co${localePrefix}/products/signed-ai` },
       ])) }} />
       <Navbar />
 
@@ -149,10 +151,10 @@ console.log(result);
           {isTh ? "สำรวจผลิตภัณฑ์อื่น" : "Explore Other Products"}
         </h2>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/products/rctlabs" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-warm-amber text-white font-semibold text-sm hover:bg-[#C49A48] transition-colors">
+          <Link href={localHref("/products/rctlabs")} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-warm-amber text-white font-semibold text-sm hover:bg-[#C49A48] transition-colors">
             RCTLabs <ArrowRight size={16} />
           </Link>
-          <Link href="/products/artent-ai" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-semibold text-sm hover:bg-muted transition-colors">
+          <Link href={localHref("/products/artent-ai")} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-semibold text-sm hover:bg-muted transition-colors">
             Artent AI
           </Link>
         </div>

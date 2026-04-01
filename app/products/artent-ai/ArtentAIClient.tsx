@@ -20,13 +20,15 @@ export default function ArtentAIPage() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const isTh = locale === "th"
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const localHref = (href: string) => `${localePrefix}${href}`
 
   return (
     <main className="min-h-screen bg-background" id="main-content">
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
-        { name: "Home", url: "https://rctlabs.co" },
-        { name: isTh ? "ผลิตภัณฑ์" : "Products", url: "https://rctlabs.co/products" },
-        { name: "ArtentAI", url: "https://rctlabs.co/products/artent-ai" },
+        { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+        { name: isTh ? "ผลิตภัณฑ์" : "Products", url: `https://rctlabs.co${localePrefix}/products` },
+        { name: "ArtentAI", url: `https://rctlabs.co${localePrefix}/products/artent-ai` },
       ])) }} />
       <Navbar />
 
@@ -125,10 +127,10 @@ export default function ArtentAIPage() {
       {/* CTA */}
       <section className="mx-auto max-w-3xl px-4 py-20 text-center space-y-6">
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/products/signed-ai" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-colors" style={{ backgroundColor: "#7B9E87" }}>
+          <Link href={localHref("/products/signed-ai")} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-colors" style={{ backgroundColor: "#7B9E87" }}>
             SignedAI <ArrowRight size={16} />
           </Link>
-          <Link href="/products/rctlabs" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-semibold text-sm hover:bg-muted transition-colors">
+          <Link href={localHref("/products/rctlabs")} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-semibold text-sm hover:bg-muted transition-colors">
             RCTLabs
           </Link>
         </div>

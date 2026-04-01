@@ -27,3 +27,19 @@ yarn-error.log*
 next-env.d.ts
 # Local Netlify folder
 .netlify
+
+# Lighthouse / audit artifacts
+.lighthouse-*
+.tmp-lh-*.json
+.last-run.json
+.audit/
+
+# Local Chrome debug profiles
+.chrome-debug-*/
+.chrome-lh-*/
+
+# Test output
+test-results/
+
+# Local dev notes / scratch files
+Card design.md

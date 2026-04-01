@@ -1,14 +1,24 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowRight, CheckCircle, XCircle, MinusCircle, Globe, Shield, DollarSign } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "RCT Labs vs LLM APIs — Constitutional AI vs Bare API Access | RCT Labs",
-  description: "Bare LLM API access gives you raw model power with no governance, no compliance, and no memory. RCT Labs adds constitutional AI constraints, multi-model consensus, PDPA-compliant memory, and deterministic safety guarantees.",
-  alternates: { canonical: "https://rctlabs.co/en/compare/rct-labs-vs-llm-apis" },
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
+  return createBilingualMetadata(
+    locale,
+    "RCT Labs vs LLM APIs — Constitutional AI vs Bare API Access",
+    "RCT Labs vs LLM APIs — Constitutional AI เทียบกับ Bare API",
+    "Bare LLM API access gives you raw model power with no governance, no compliance, and no memory. RCT Labs adds constitutional AI constraints, multi-model consensus, PDPA-compliant memory, and deterministic safety guarantees.",
+    "การใช้ LLM API ตรงให้พลังของโมเดลดิบโดยไม่มี governance, compliance และ memory ส่วน RCT Labs เพิ่ม constitutional AI, multi-model consensus, memory ที่รองรับ PDPA และ deterministic safety guarantee",
+    "/compare/rct-labs-vs-llm-apis",
+    ["RCT Labs vs LLM APIs", "constitutional AI platform", "enterprise AI governance"]
+  )
 }
 
 const LLM_API_FAQS = [
@@ -90,10 +100,12 @@ const useCases = [
 ]
 
 export default async function RCTvsLLMAPIs() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumb = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Compare", url: "https://rctlabs.co/en/compare" },
-    { name: "RCT Labs vs LLM APIs", url: "https://rctlabs.co/en/compare/rct-labs-vs-llm-apis" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Compare", url: `https://rctlabs.co${localePrefix}/compare` },
+    { name: "RCT Labs vs LLM APIs", url: `https://rctlabs.co${localePrefix}/compare/rct-labs-vs-llm-apis` },
   ])
   const faq = getFAQSchema(LLM_API_FAQS)
 
@@ -166,7 +178,7 @@ export default async function RCTvsLLMAPIs() {
                 verdictColor: "text-warm-amber",
               },
             ].map(({ icon: Icon, title, color, titleColor, points, verdict, verdictColor }) => (
-              <div key={title} className={`rounded-2xl border bg-gradient-to-br ${color} to-transparent p-6`}>
+              <div key={title} className={`rounded-2xl border bg-linear-to-br ${color} to-transparent p-6`}>
                 <Icon className="w-8 h-8 text-warm-dim mb-4" />
                 <h2 className={`text-lg font-bold ${titleColor} mb-4`}>{title}</h2>
                 <ul className="space-y-2 mb-6">

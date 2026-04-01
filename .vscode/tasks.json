@@ -1,0 +1,81 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build app",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke pages",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"smoke:pages"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "start prod 3005",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"start",
+				"--",
+				"-p",
+				"3005"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "smoke pages rerun",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"smoke:pages"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "build app again",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke pages final",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"smoke:pages"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "start prod 3012",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"start",
+				"--",
+				"-p",
+				"3012"
+			],
+			"isBackground": true
+		}
+	]
+}

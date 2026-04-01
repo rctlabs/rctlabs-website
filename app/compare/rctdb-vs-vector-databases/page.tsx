@@ -1,14 +1,24 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowRight, CheckCircle, XCircle, MinusCircle, Database, Zap, Shield } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "RCTDB vs Vector Databases — AI Memory vs Semantic Search | RCT Labs",
-  description: "Pinecone and Weaviate are great for semantic search. RCTDB is designed for AI memory — full PDPA audit trail, 8-dimensional provenance, UUID tombstone erasure, and Delta Engine 74% compression. Here is the architectural difference.",
-  alternates: { canonical: "https://rctlabs.co/en/compare/rctdb-vs-vector-databases" },
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
+  return createBilingualMetadata(
+    locale,
+    "RCTDB vs Vector Databases — AI Memory vs Semantic Search",
+    "RCTDB vs Vector Databases — AI Memory เทียบกับ Semantic Search",
+    "Pinecone and Weaviate are great for semantic search. RCTDB is designed for AI memory — full PDPA audit trail, 8-dimensional provenance, UUID tombstone erasure, and Delta Engine 74% compression. Here is the architectural difference.",
+    "Pinecone และ Weaviate เหมาะสำหรับ semantic search ส่วน RCTDB ถูกออกแบบเพื่อ AI memory พร้อม PDPA audit trail, provenance 8 มิติ, การลบแบบ UUID tombstone และ Delta Engine compression 74% นี่คือความต่างเชิงสถาปัตยกรรม",
+    "/compare/rctdb-vs-vector-databases",
+    ["RCTDB vs vector databases", "AI memory", "semantic search comparison"]
+  )
 }
 
 function CompareIcon({ value }: { value: "yes" | "no" | "partial" }) {
@@ -94,10 +104,12 @@ const useCases = [
 ]
 
 export default async function RCTDBvsVectorDBs() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumb = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Compare", url: "https://rctlabs.co/en/compare" },
-    { name: "RCTDB vs Vector Databases", url: "https://rctlabs.co/en/compare/rctdb-vs-vector-databases" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Compare", url: `https://rctlabs.co${localePrefix}/compare` },
+    { name: "RCTDB vs Vector Databases", url: `https://rctlabs.co${localePrefix}/compare/rctdb-vs-vector-databases` },
   ])
   const faq = getFAQSchema(RCTDB_FAQS)
 
@@ -183,7 +195,7 @@ export default async function RCTDBvsVectorDBs() {
                 verdictColor: "text-green-400",
               },
             ].map(({ icon: Icon, title, color, titleColor, points, verdict, verdictColor }) => (
-              <div key={title} className={`rounded-2xl border bg-gradient-to-br ${color} to-transparent p-6`}>
+              <div key={title} className={`rounded-2xl border bg-linear-to-br ${color} to-transparent p-6`}>
                 <Icon className="w-8 h-8 text-warm-dim mb-4" />
                 <h2 className={`text-lg font-bold ${titleColor} mb-4`}>{title}</h2>
                 <ul className="space-y-2 mb-6">
@@ -229,7 +241,7 @@ export default async function RCTDBvsVectorDBs() {
               </thead>
               <tbody>
                 {rows.map((row, i) => (
-                  <tr key={`row-${i}`} className={`border-b border-white/5 ${i % 2 !== 0 ? "bg-white/[0.02]" : ""}`}>
+                  <tr key={`row-${i}`} className={`border-b border-white/5 ${i % 2 !== 0 ? "bg-white/2" : ""}`}>
                     <td className="px-6 py-3 text-warm-light-gray">{row.feature}</td>
                     <td className="px-4 py-3"><CompareIcon value={row.pinecone as "yes"|"no"|"partial"} /></td>
                     <td className="px-4 py-3"><CompareIcon value={row.weaviate as "yes"|"no"|"partial"} /></td>

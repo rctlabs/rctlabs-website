@@ -33,7 +33,7 @@ export default function BenchmarkSummaryClient() {
     {
       title: language === "th" ? "Warm recall ต่ำกว่า 50ms" : "Warm recall under 50ms",
       description: language === "th" ? "สรุป latency ฝั่ง hot-zone semantic cache โดยแยกชัดเจนจาก cold-start path ที่ใช้เวลา 3-5 วินาที." : "Summarizes hot-zone semantic cache latency while clearly separating it from the 3-5 second cold-start path.",
-      href: `${localePrefix}/research/rctdb-8d-memory`,
+      href: `${localePrefix}/solutions/enterprise-ai-memory`,
       icon: Gauge,
       badge: "<50ms",
       meta: language === "th" ? "Cache behavior" : "Cache behavior",

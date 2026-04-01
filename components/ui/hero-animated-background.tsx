@@ -20,7 +20,7 @@
  */
 
 import { motion, useReducedMotion } from "framer-motion"
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useMainPageOrchestration } from "@/components/main-page/main-page-orchestrator"
 
 // ── Sparse structural anchor points (% of container) ───────────────────────
@@ -44,11 +44,7 @@ function clamp(value: number, min: number, max: number) {
 
 // ── Adaptive soft-glow sizing ──────────────────────────────────────────────
 
-function getGlowRadius(variant: "hero" | "global"): { beam: number; node: number } {
-  if (typeof navigator === "undefined") {
-    return variant === "global" ? { beam: 42, node: 14 } : { beam: 58, node: 18 }
-  }
-  const isLowEnd = navigator.hardwareConcurrency <= 4
+function getGlowRadius(variant: "hero" | "global", isLowEnd: boolean): { beam: number; node: number } {
   if (variant === "global") {
     return isLowEnd ? { beam: 28, node: 10 } : { beam: 42, node: 14 }
   }
@@ -66,13 +62,22 @@ interface HeroAnimatedBackgroundProps {
 export default function HeroAnimatedBackground({
   variant = "hero",
 }: HeroAnimatedBackgroundProps) {
-  const prefersReducedMotion = useReducedMotion() ?? false
+  const prefersReducedMotion = useReducedMotion()
   const orchestration = useMainPageOrchestration()
-  const glow = useMemo(() => getGlowRadius(variant), [variant])
+  const [hasMounted, setHasMounted] = useState(false)
+  const [isLowEndDevice, setIsLowEndDevice] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+    setIsLowEndDevice((navigator.hardwareConcurrency || 8) <= 4)
+  }, [])
+
+  const glow = useMemo(() => getGlowRadius(variant, isLowEndDevice), [isLowEndDevice, variant])
+  const resolvedReducedMotion = hasMounted ? (prefersReducedMotion ?? false) : false
 
   const isGlobal = variant === "global"
   const isTouchInput = orchestration?.isTouchInput ?? false
-  const hasMinimalMotion = prefersReducedMotion || isTouchInput
+  const hasMinimalMotion = resolvedReducedMotion || isTouchInput
   const pageProgress = orchestration?.pageProgress ?? 0
   const scrollVelocity = orchestration?.scrollVelocity ?? 0
   const heroPresence = clamp(1.08 - pageProgress * 0.42, 0.66, 1.08)
@@ -167,7 +172,7 @@ export default function HeroAnimatedBackground({
               style={{ backgroundImage: "var(--rct-hero-signal-trace)" }}
               initial={{ x: "-140%", opacity: 0 }}
               animate={
-                prefersReducedMotion
+                resolvedReducedMotion
                   ? { opacity: 0 }
                   : { x: ["-140%", "260%"], opacity: [0, 0.5, 0.18, 0] }
               }

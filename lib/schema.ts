@@ -9,6 +9,7 @@ import {
   SITE_VERSION,
   SOCIAL_LINKS,
 } from './site-config'
+import { GENERAL_CONTACT_EMAIL } from './contact'
 
 export function getOrganizationSchema(locale: Locale) {
   return {
@@ -36,7 +37,7 @@ export function getOrganizationSchema(locale: Locale) {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Technical Support',
-      email: 'owner@rctlabs.co',
+      email: GENERAL_CONTACT_EMAIL,
       availableLanguage: ['en', 'th'],
     },
   }

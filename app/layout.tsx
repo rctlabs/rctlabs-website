@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { headers } from "next/headers"
-import { Inter, Noto_Sans_Thai, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
+import { Inter, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
@@ -26,6 +26,7 @@ const themeBootstrapScript = `(() => {
 
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION
 const bingSiteVerification = process.env.BING_SITE_VERIFICATION
+const enableVercelRuntimeInsights = process.env.VERCEL === "1"
 
 const verification = googleSiteVerification || bingSiteVerification
   ? {
@@ -63,15 +64,8 @@ const spaceMono = Space_Mono({
 /* Thai: Kanit (matches Space Grotesk geometric style) */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
-  weight: ["200", "400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
   variable: "--rct-font-thai",
-  display: "swap",
-})
-
-/* Thai fallback: Noto Sans Thai */
-const notoSansThai = Noto_Sans_Thai({
-  subsets: ["thai"],
-  variable: "--font-thai-fallback",
   display: "swap",
 })
 
@@ -197,10 +191,9 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="color-scheme" content="light dark" />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
-        {/* Preconnect to external domains for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://va.vercel-scripts.com" crossOrigin="anonymous" />
+        {/* Preconnect to image CDN for faster LCP */}
+        <link rel="preconnect" href="https://d2xsxph8kpxj0f.cloudfront.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://d2xsxph8kpxj0f.cloudfront.net" />
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
@@ -212,7 +205,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} ${notoSansThai.variable} font-sans antialiased`}
+        className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} font-sans antialiased`}
       >
         {/* Skip to main content — accessibility */}
         <a
@@ -227,8 +220,8 @@ export default async function RootLayout({
           <div id="main-content" className="relative z-10" tabIndex={-1}>
             {children}
           </div>
-          <Analytics />
-          <SpeedInsights />
+          {enableVercelRuntimeInsights ? <Analytics /> : null}
+          {enableVercelRuntimeInsights ? <SpeedInsights /> : null}
           <Toaster richColors position="bottom-right" />
         </AppProviders>
       </body>

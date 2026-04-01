@@ -4,41 +4,40 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
+import { useMounted } from "@/hooks/use-mounted"
 
 interface VersionPoint {
   ver: string
   name: string
   date: string
-  features: number
-  tests: number
+  scope: number
+  verification: number
   status: "stable" | "production" | "latest" | "planned"
 }
 
 const versions: VersionPoint[] = [
-  { ver: "1.0", name: "Foundation", date: "Dec 2025", features: 1, tests: 0, status: "stable" },
-  { ver: "2.0", name: "Test Integration", date: "Jan 9", features: 2, tests: 150, status: "stable" },
-  { ver: "3.0", name: "Cross-chat", date: "Jan 10", features: 4, tests: 200, status: "stable" },
-  { ver: "5.0", name: "Ultimate", date: "Jan 15", features: 8, tests: 520, status: "stable" },
-  { ver: "5.1", name: "Genome", date: "Jan 15", features: 11, tests: 600, status: "production" },
-  { ver: "6.0", name: "Testing", date: "Jan 20", features: 15, tests: 902, status: "production" },
-  { ver: "7.0", name: "Complete", date: "Jan 31", features: 20, tests: 1500, status: "production" },
-  { ver: "8.0", name: "Universal", date: "Feb 2", features: 25, tests: 2000, status: "production" },
-  { ver: "2.7.0", name: "Enterprise", date: "Mar 2026", features: 30, tests: 2210, status: "latest" },
-  { ver: "3.0.0", name: "Public Launch", date: "Apr 2026", features: 35, tests: 2400, status: "planned" },
-  { ver: "3.5.0", name: "Full RCT OS", date: "May 2026", features: 42, tests: 2700, status: "planned" },
-  { ver: "4.0.0", name: "ArtentAI+", date: "Jul 2026", features: 55, tests: 3200, status: "planned" },
-  { ver: "5.0.0", name: "TUI/CLI", date: "Aug 2026", features: 65, tests: 3800, status: "planned" },
+  { ver: "4.0.0", name: "Full Test Pyramid", date: "Mar 15 2026", scope: 22, verification: 1200, status: "stable" },
+  { ver: "5.0.0", name: "Digital Twin", date: "Mar 16 2026", scope: 28, verification: 2105, status: "stable" },
+  { ver: "5.3.0", name: "Thai N-gram Fix", date: "Mar 18 2026", scope: 32, verification: 2105, status: "production" },
+  { ver: "5.4.0", name: "Pre-API Sprint", date: "Mar 19 2026", scope: 36, verification: 4504, status: "production" },
+  { ver: "5.4.2", name: "Deterministic", date: "Mar 20 2026", scope: 38, verification: 4869, status: "production" },
+  { ver: "5.4.4", name: "Flaky Fix", date: "Mar 20 2026", scope: 39, verification: 3429, status: "production" },
+  { ver: "5.4.5", name: "Full Suite Green", date: "Mar 21 2026", scope: 41, verification: 4849, status: "latest" },
+  { ver: "6.0.0", name: "Full API Layer", date: "Q1 2027", scope: 48, verification: 5200, status: "planned" },
+  { ver: "7.0.0", name: "Multi-Cloud", date: "Q2 2027", scope: 56, verification: 6100, status: "planned" },
+  { ver: "8.0.0", name: "Marketplace", date: "H2 2027", scope: 68, verification: 7000, status: "planned" },
 ]
 
-const maxFeatures = 65
-const maxTests = 3800
+const maxScope = 70
+const maxVerification = 7000
 // Index of last "real" version (0-based) — the "NOW" divider sits after this index
-const NOW_INDEX = 8
+const NOW_INDEX = 6
 
 export default function VersionTimelineGraph() {
   const { resolvedTheme } = useTheme()
   const { language } = useLanguage()
-  const isDark = resolvedTheme === "dark"
+  const mounted = useMounted()
+  const isDark = mounted && resolvedTheme === "dark"
   const isEn = language === "en"
   const [hovered, setHovered] = useState<number | null>(null)
 
@@ -63,8 +62,8 @@ export default function VersionTimelineGraph() {
       })
       .join(" ")
 
-  const yF = (v: VersionPoint) => padT + chartH - (v.features / maxFeatures) * chartH
-  const yT = (v: VersionPoint) => padT + chartH - (v.tests / maxTests) * chartH
+  const yF = (v: VersionPoint) => padT + chartH - (v.scope / maxScope) * chartH
+  const yT = (v: VersionPoint) => padT + chartH - (v.verification / maxVerification) * chartH
 
   const featurePathHist = buildPath(versions, 0, NOW_INDEX, yF)
   const featurePathPlan = buildPath(versions, NOW_INDEX, versions.length - 1, yF)
@@ -90,11 +89,11 @@ export default function VersionTimelineGraph() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5">
             <div className="h-1 w-3 rounded bg-warm-amber" />
-            <span className={`text-xs ${isDark ? "text-warm-dim" : "text-warm-gray"}`}>{isEn ? "Features" : "ฟีเจอร์"}</span>
+            <span className={`text-xs ${isDark ? "text-warm-dim" : "text-warm-gray"}`}>{isEn ? "Scope" : "ขอบเขต"}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="h-1 w-3 rounded bg-warm-sage" />
-            <span className={`text-xs ${isDark ? "text-warm-dim" : "text-warm-gray"}`}>{isEn ? "Tests" : "เทสต์"}</span>
+            <span className={`text-xs ${isDark ? "text-warm-dim" : "text-warm-gray"}`}>{isEn ? "Verified tests" : "เทสต์ที่ยืนยันแล้ว"}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-4 border border-dashed border-warm-amber/60 rounded-sm" />
@@ -189,7 +188,7 @@ export default function VersionTimelineGraph() {
                 <g>
                   <rect x={Math.max(5, Math.min(x - 65, svgW - 135))} y={Math.min(fY, tY) - 58} width={130} height={isPlanned ? 54 : 48} rx={6} fill={isDark ? "#333" : "#1A1A1A"} opacity={0.95} />
                   <text x={Math.max(70, Math.min(x, svgW - 70))} y={Math.min(fY, tY) - 40} textAnchor="middle" fontSize={10} fontWeight={700} fill="#D4A853" fontFamily="monospace">{`v${version.ver} — ${version.name}`}</text>
-                  <text x={Math.max(70, Math.min(x, svgW - 70))} y={Math.min(fY, tY) - 24} textAnchor="middle" fontSize={9} fill="#CCC">{`${version.features} ${isEn ? "features" : "ฟีเจอร์"} · ${version.tests.toLocaleString()} ${isEn ? "tests" : "เทสต์"}`}</text>
+                  <text x={Math.max(70, Math.min(x, svgW - 70))} y={Math.min(fY, tY) - 24} textAnchor="middle" fontSize={9} fill="#CCC">{`${version.scope} ${isEn ? "scope" : "ขอบเขต"} · ${version.verification.toLocaleString()} ${isEn ? "verified" : "ยืนยันแล้ว"}`}</text>
                   {isPlanned && <text x={Math.max(70, Math.min(x, svgW - 70))} y={Math.min(fY, tY) - 10} textAnchor="middle" fontSize={8} fill="#D4A853" fontFamily="monospace">{isEn ? "⬡ planned" : "⬡ แผนงาน"}</text>}
                 </g>
               )}
