@@ -2,6 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { useMounted } from "@/hooks/use-mounted"
 import { motion } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
@@ -51,8 +52,9 @@ const routingBenefits = [
 
 export default function DynamicAIRoutingPage() {
   const pathname = usePathname()
-  const { theme } = useTheme()
-  const isDark = theme === "dark"
+  const { resolvedTheme } = useTheme()
+  const mounted = useMounted()
+  const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
 

@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { useMounted } from "@/hooks/use-mounted"
 import { motion, AnimatePresence } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
@@ -168,8 +169,9 @@ function FDIASlider({
 /* ─── PAGE ─── */
 export default function FDIADemoPage() {
   const pathname = usePathname()
-  const { theme } = useTheme()
-  const isDark = theme === "dark"
+  const { resolvedTheme } = useTheme()
+  const mounted = useMounted()
+  const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
 

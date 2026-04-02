@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react"
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion"
+import { useIdleActivation } from "@/hooks/use-idle-activation"
 
 type MainPageSectionId = "hero" | "overview" | "core-pillars" | "fdia" | "evidence" | "cta"
 
@@ -31,14 +32,23 @@ interface MainPageOrchestrationValue {
 
 const SECTION_ORDER: MainPageSectionId[] = ["hero", "overview", "core-pillars", "fdia", "evidence", "cta"]
 
+const MainPageActiveSectionContext = createContext<MainPageSectionId>("hero")
 const MainPageOrchestrationContext = createContext<MainPageOrchestrationValue | null>(null)
 
 export function useMainPageOrchestration() {
   return useContext(MainPageOrchestrationContext)
 }
 
+export function useMainPageActiveSection() {
+  return useContext(MainPageActiveSectionContext)
+}
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
+}
+
+function quantize(value: number, step: number) {
+  return Number((Math.round(value / step) * step).toFixed(4))
 }
 
 function MainPageFieldOverlay() {
@@ -190,16 +200,30 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
   const pointerFrameRef = useRef<number | null>(null)
   const latestPointerRef = useRef<PointerIntent>({ x: 0, y: 0 })
   const activeFrameRef = useRef<number | null>(null)
+  const activeSectionRef = useRef<MainPageSectionId>("hero")
   const lastScrollSampleRef = useRef({ value: 0, time: 0 })
   const reducedMotion = useReducedMotion() ?? false
   const { scrollY, scrollYProgress } = useScroll()
+  const enhancedFieldReady = useIdleActivation({ enabled: !reducedMotion, timeoutMs: 1800 })
 
   const [pageProgress, setPageProgress] = useState(0)
   const [scrollVelocity, setScrollVelocity] = useState(0)
   const [pointerIntent, setPointerIntent] = useState<PointerIntent>({ x: 0, y: 0 })
   const [activeSection, setActiveSection] = useState<MainPageSectionId>("hero")
-  const [isTouchInput, setIsTouchInput] = useState(false)
-  const [debugEnabled, setDebugEnabled] = useState(false)
+  const [isTouchInput, setIsTouchInput] = useState(() => {
+    if (typeof window === "undefined") {
+      return false
+    }
+
+    return window.matchMedia("(pointer: coarse)").matches
+  })
+  const [debugEnabled] = useState(() => {
+    if (typeof window === "undefined") {
+      return false
+    }
+
+    return window.location.search.includes("motionDebug=1")
+  })
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -209,15 +233,14 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
     const coarsePointer = window.matchMedia("(pointer: coarse)")
     const updatePointerMode = () => setIsTouchInput(coarsePointer.matches)
 
-    updatePointerMode()
-    setDebugEnabled(window.location.search.includes("motionDebug=1"))
     coarsePointer.addEventListener("change", updatePointerMode)
 
     return () => coarsePointer.removeEventListener("change", updatePointerMode)
   }, [])
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setPageProgress(clamp(latest, 0, 1))
+    const nextProgress = quantize(clamp(latest, 0, 1), 0.01)
+    setPageProgress((current) => (current === nextProgress ? current : nextProgress))
   })
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -227,7 +250,8 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
     if (previous.time > 0) {
       const deltaValue = Math.abs(latest - previous.value)
       const deltaTime = Math.max(now - previous.time, 16)
-      setScrollVelocity(clamp(deltaValue / deltaTime / 1.5, 0, 1))
+      const nextVelocity = quantize(clamp(deltaValue / deltaTime / 1.5, 0, 1), 0.02)
+      setScrollVelocity((current) => (current === nextVelocity ? current : nextVelocity))
     }
 
     lastScrollSampleRef.current = { value: latest, time: now }
@@ -236,14 +260,15 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === "undefined" || reducedMotion || isTouchInput) {
       const resetFrame = window.requestAnimationFrame(() => {
-        setPointerIntent({ x: 0, y: 0 })
+        setPointerIntent((current) => (current.x === 0 && current.y === 0 ? current : { x: 0, y: 0 }))
       })
 
       return () => window.cancelAnimationFrame(resetFrame)
     }
 
     const commitPointer = () => {
-      setPointerIntent(latestPointerRef.current)
+      const nextPointer = latestPointerRef.current
+      setPointerIntent((current) => (current.x === nextPointer.x && current.y === nextPointer.y ? current : nextPointer))
       pointerFrameRef.current = null
     }
 
@@ -251,8 +276,8 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
       const centeredX = event.clientX / window.innerWidth * 2 - 1
       const centeredY = event.clientY / window.innerHeight * 2 - 1
       latestPointerRef.current = {
-        x: clamp(centeredX, -1, 1),
-        y: clamp(centeredY, -1, 1),
+        x: quantize(clamp(centeredX, -1, 1), 0.04),
+        y: quantize(clamp(centeredY, -1, 1), 0.04),
       }
 
       if (pointerFrameRef.current === null) {
@@ -295,7 +320,7 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
       }
 
       const focusLine = window.innerHeight * 0.38
-      let nextSection: MainPageSectionId = activeSection
+      let nextSection: MainPageSectionId = activeSectionRef.current
       let smallestDistance = Number.POSITIVE_INFINITY
 
       for (const sectionElement of sectionElements) {
@@ -317,7 +342,10 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
         }
       }
 
-      setActiveSection(nextSection)
+      if (nextSection !== activeSectionRef.current) {
+        activeSectionRef.current = nextSection
+        setActiveSection(nextSection)
+      }
       activeFrameRef.current = null
     }
 
@@ -340,7 +368,7 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
         window.cancelAnimationFrame(activeFrameRef.current)
       }
     }
-  }, [activeSection])
+  }, [])
 
   const value = useMemo<MainPageOrchestrationValue>(() => {
     const activeSectionIndex = Math.max(SECTION_ORDER.indexOf(activeSection), 0)
@@ -358,7 +386,8 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
   }, [activeSection, pageProgress, pointerIntent, reducedMotion, isTouchInput, scrollVelocity, debugEnabled])
 
   return (
-    <MainPageOrchestrationContext.Provider value={value}>
+    <MainPageActiveSectionContext.Provider value={activeSection}>
+      <MainPageOrchestrationContext.Provider value={value}>
       <div
         ref={rootRef}
         className="main-page-shell"
@@ -368,10 +397,11 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
           ["--main-page-progress" as string]: pageProgress.toFixed(3),
         }}
       >
-        <MainPageFieldOverlay />
+        {enhancedFieldReady ? <MainPageFieldOverlay /> : null}
         <MainPageMotionDebug />
         {children}
       </div>
-    </MainPageOrchestrationContext.Provider>
+      </MainPageOrchestrationContext.Provider>
+    </MainPageActiveSectionContext.Provider>
   )
 }

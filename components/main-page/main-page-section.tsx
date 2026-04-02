@@ -2,7 +2,7 @@
 
 import { useState, useRef, type ReactNode } from "react"
 import { useMotionValueEvent, useScroll } from "framer-motion"
-import { useMainPageOrchestration } from "@/components/main-page/main-page-orchestrator"
+import { useMainPageActiveSection } from "@/components/main-page/main-page-orchestrator"
 import { cn } from "@/lib/utils"
 
 interface MainPageSectionProps {
@@ -17,6 +17,10 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
 }
 
+function quantize(value: number, step: number) {
+  return Number((Math.round(value / step) * step).toFixed(4))
+}
+
 export function MainPageSection({
   sectionId,
   tone = "base",
@@ -24,7 +28,7 @@ export function MainPageSection({
   className,
   children,
 }: MainPageSectionProps) {
-  const orchestration = useMainPageOrchestration()
+  const activeSection = useMainPageActiveSection()
   const sectionRef = useRef<HTMLDivElement>(null)
   const [localProgress, setLocalProgress] = useState(0)
   const { scrollYProgress } = useScroll({
@@ -33,11 +37,12 @@ export function MainPageSection({
   })
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setLocalProgress(clamp(latest, 0, 1))
+    const nextProgress = quantize(clamp(latest, 0, 1), 0.02)
+    setLocalProgress((current) => (current === nextProgress ? current : nextProgress))
   })
 
   const focus = clamp(1 - Math.abs(localProgress - 0.5) * 2, 0, 1)
-  const isActive = orchestration?.activeSection === sectionId
+  const isActive = activeSection === sectionId
 
   return (
     <div

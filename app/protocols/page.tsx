@@ -1,11 +1,14 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import ProtocolsClient from "./ProtocolsClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
   return createBilingualMetadata(
-    "en",
+    locale,
     "Open Protocols",
     "โปรโตคอลเปิด",
     "Open AI protocols by RCT Labs: JITNA RFC-001 multi-LLM communication standard, FDIA Equation (F = D^I × A) mathematical foundation, and RCT-7 Mental Model cognitive architecture.",
@@ -15,10 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function ProtocolsPage() {
+export default async function ProtocolsPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
+
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Protocols", url: "https://rctlabs.co/en/protocols" },
+    { name: locale === "th" ? "หน้าหลัก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: locale === "th" ? "โปรโตคอล" : "Protocols", url: `https://rctlabs.co${localePrefix}/protocols` },
   ])
 
   const faqSchema = getFAQSchema([
@@ -39,9 +45,9 @@ export default function ProtocolsPage() {
     "@type": "ItemList",
     name: "RCT Open Protocols",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "JITNA RFC-001", url: "https://rctlabs.co/en/protocols/jitna-rfc-001" },
-      { "@type": "ListItem", position: 2, name: "FDIA Equation", url: "https://rctlabs.co/en/protocols/fdia-equation" },
-      { "@type": "ListItem", position: 3, name: "RCT-7 Mental Model", url: "https://rctlabs.co/en/protocols/rct-7-mental-model" },
+      { "@type": "ListItem", position: 1, name: "JITNA RFC-001", url: `https://rctlabs.co${localePrefix}/protocols/jitna-rfc-001` },
+      { "@type": "ListItem", position: 2, name: "FDIA Equation", url: `https://rctlabs.co${localePrefix}/protocols/fdia-equation` },
+      { "@type": "ListItem", position: 3, name: "RCT-7 Mental Model", url: `https://rctlabs.co${localePrefix}/protocols/rct-7-mental-model` },
     ],
   }
 

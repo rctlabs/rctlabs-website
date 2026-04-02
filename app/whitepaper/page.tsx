@@ -1,11 +1,14 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import WhitepaperClient from "./WhitepaperClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
   return createBilingualMetadata(
-    "en",
+    locale,
     "Whitepapers & Technical Documentation",
     "เอกสารทางเทคนิคและ Whitepaper",
     "Technical whitepapers from RCT Labs: RCT Operating System architecture, Constitutional AI design principles, FDIA benchmark methodology, and enterprise integration guides.",
@@ -15,10 +18,15 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function WhitepaperPage() {
+export default async function WhitepaperPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const homeLabel = locale === "th" ? "หน้าหลัก" : "Home"
+  const titleLabel = locale === "th" ? "เอกสารทางเทคนิคและ Whitepaper" : "Whitepapers & Technical Documentation"
+
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Whitepapers & Technical Documentation", url: "https://rctlabs.co/en/whitepaper" },
+    { name: homeLabel, url: `https://rctlabs.co${localePrefix}` },
+    { name: titleLabel, url: `https://rctlabs.co${localePrefix}/whitepaper` },
   ])
 
   const faqSchema = getFAQSchema([
@@ -43,25 +51,25 @@ export default function WhitepaperPage() {
         "@type": "ListItem",
         position: 1,
         name: "RCT Ecosystem: Intent-Centric AI Operating System",
-        url: "https://rctlabs.co/en/architecture",
+        url: `https://rctlabs.co${localePrefix}/architecture`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "JITNA RFC-001: Just-In-Time Neural Allocation Protocol",
-        url: "https://rctlabs.co/en/protocols/jitna-rfc-001",
+        url: `https://rctlabs.co${localePrefix}/protocols/jitna-rfc-001`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "SignedAI: Cryptographic Verification for AI Outputs",
-        url: "https://rctlabs.co/en/solutions/ai-hallucination-prevention",
+        url: `https://rctlabs.co${localePrefix}/solutions/ai-hallucination-prevention`,
       },
       {
         "@type": "ListItem",
         position: 4,
         name: "RCT-7 Genome: Cognitive Architecture for AI Personality",
-        url: "https://rctlabs.co/en/protocols/rct-7-mental-model",
+        url: `https://rctlabs.co${localePrefix}/protocols/rct-7-mental-model`,
       },
     ],
   }

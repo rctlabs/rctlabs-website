@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { motion } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
+import { useMounted } from "@/hooks/use-mounted"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
@@ -65,8 +66,9 @@ const jsonLd = {
 
 export default function RCT7MentalModelPage() {
   const pathname = usePathname()
-  const { theme } = useTheme()
-  const isDark = theme === "dark"
+  const { resolvedTheme } = useTheme()
+  const mounted = useMounted()
+  const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
   const breadcrumbSchema = getBreadcrumbSchema([

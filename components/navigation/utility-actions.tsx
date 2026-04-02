@@ -16,10 +16,10 @@ interface UtilityActionsProps {
 
 export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHero = false }: UtilityActionsProps) {
   const { language, setLanguage } = useLanguage()
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
   const mounted = useMounted()
 
-  const isDark = (mounted ? theme : "light") === "dark"
+  const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const surface = mode === "desktop" ? "desktop" : "mobile"
 
   const baseText = isOnDarkHero && mode === "desktop"

@@ -4,6 +4,13 @@ import tseslint from "typescript-eslint"
 const eslintConfig = [
   ...nextCoreWebVitals,
   {
+    ignores: [
+      ".next/**",
+      ".chrome-debug-home/**",
+      "test-results/**",
+    ],
+  },
+  {
     files: ["**/*.ts", "**/*.tsx"],
     plugins: {
       "@typescript-eslint": tseslint.plugin,

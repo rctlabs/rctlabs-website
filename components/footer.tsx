@@ -10,7 +10,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
-import { useTheme } from "@/components/theme-provider"
 import { Globe, ChevronDown } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useMounted } from "@/hooks/use-mounted"
@@ -26,9 +25,7 @@ type FooterProps = {
 export function Footer({ locale: forcedLocale }: FooterProps) {
   const { language, toggleLanguage, t } = useLanguage()
   const pathname = usePathname()
-  const { theme } = useTheme()
   const mounted = useMounted()
-  const isDark = (mounted ? theme : "light") === "dark"
   const isTh = language === "th"
   const locale = forcedLocale ?? resolveLocale(pathname, language)
 
@@ -114,9 +111,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
   return (
     <>
       <footer
-        className={`relative overflow-hidden border-t transition-colors duration-300 ${
-          isDark ? "bg-dark-deep border-dark-border" : "bg-[#f7f1eb] border-warm-light-gray"
-        }`}
+        className="relative overflow-hidden border-t transition-colors duration-300 bg-[#f7f1eb] dark:bg-[#151515] border-warm-light-gray dark:border-[#2A2A2A]"
         role="contentinfo"
       >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -139,21 +134,15 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                 alt="RCT — Reverse Component Thinking"
                 width={160}
                 height={32}
-                className={`h-8 w-40 object-contain ${isDark ? "brightness-0 invert" : ""}`}
+                className="h-8 w-40 object-contain dark:brightness-0 dark:invert"
               />
             </Link>
-            <p className={`text-xs sm:text-sm leading-relaxed max-w-sm mt-2 text-center ${isTh ? "subtitle-th" : ""} ${
-              isDark ? "text-warm-dim" : "text-warm-secondary"
-            }`}>
+            <p className={`text-xs sm:text-sm leading-relaxed max-w-sm mt-2 text-center text-warm-secondary dark:text-[#888] ${isTh ? "subtitle-th" : ""}`}>
               {t("footer.tagline")}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              <span className={`text-2xs px-2 py-0.5 rounded-full font-medium ${
-                isDark ? "bg-dark-sage-bg text-warm-sage" : "tag-sage"
-              }`}>{SITE_VERSION}</span>
-              <span className={`text-2xs px-2 py-0.5 rounded-full font-medium ${
-                isDark ? "bg-dark-amber-bg text-warm-amber" : "tag-amber"
-              }`}>
+              <span className="text-2xs px-2 py-0.5 rounded-full font-medium tag-sage dark:bg-[rgba(123,158,135,0.12)] dark:text-warm-sage">{SITE_VERSION}</span>
+              <span className="text-2xs px-2 py-0.5 rounded-full font-medium tag-amber dark:bg-[rgba(212,168,83,0.1)] dark:text-warm-amber">
                 {isTh ? "สแนปช็อตสถานะสาธารณะ" : "Public Status Snapshot"}
               </span>
             </div>
@@ -168,9 +157,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                   <button
                     type="button"
                     onClick={() => toggleSection(title)}
-                    className={`flex w-full items-center justify-between text-xs font-semibold uppercase tracking-wider mb-2.5 ${
-                      isDark ? "text-warm-subdued" : "text-warm-charcoal"
-                    }`}
+                    className="flex w-full items-center justify-between text-xs font-semibold uppercase tracking-wider mb-2.5 text-warm-charcoal dark:text-[#CCC]"
                   >
                     {title}
                     <motion.span
@@ -197,18 +184,14 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                                 href={link.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className={`text-xs sm:text-sm transition-colors hover:underline underline-offset-2 ${
-                                  isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
-                                }`}
+                                className="text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                               >
                                 {link.label}
                               </a>
                             ) : (
                               <Link
                                 href={lh(link.href)}
-                                className={`inline-flex items-center gap-1.5 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 ${
-                                  isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
-                                }`}
+                                className="inline-flex items-center gap-1.5 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                               >
                                 {link.label}
                                 {"badge" in link && link.badge ? (
@@ -226,9 +209,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                 </div>
                 {/* Desktop: always visible */}
                 <div className="hidden sm:block">
-                  <h4 className={`text-[11px] font-semibold uppercase tracking-[0.15em] mb-2.5 opacity-50 ${
-                    isDark ? "text-warm-light-gray" : "text-warm-charcoal"
-                  }`}>
+                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.15em] mb-2.5 opacity-50 text-warm-charcoal dark:text-warm-light-gray">
                     {title}
                   </h4>
                   <ul className="space-y-1.5">
@@ -239,18 +220,14 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`text-xs sm:text-sm transition-colors hover:underline underline-offset-2 ${
-                              isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
-                            }`}
+                            className="text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                           >
                             {link.label}
                           </a>
                         ) : (
                           <Link
                             href={lh(link.href)}
-                            className={`inline-flex items-center gap-1.5 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 ${
-                              isDark ? "text-[#777] hover:text-[#DDD]" : "text-warm-secondary hover:text-warm-charcoal"
-                            }`}
+                            className="inline-flex items-center gap-1.5 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                           >
                             {link.label}
                             {"badge" in link && link.badge ? (
@@ -270,7 +247,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
         </div>
 
         {/* Bottom bar — 3-column: social | copyright | language toggle (Mistral pattern) */}
-        <div className={`py-4 border-t ${isDark ? "border-dark-border" : "border-warm-light-gray"}`}>
+        <div className="py-4 border-t border-warm-light-gray dark:border-[#2A2A2A]">
           <div className="flex flex-wrap items-center justify-between gap-3">
 
             {/* Left: social icons + status */}
@@ -282,11 +259,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`w-11 h-11 rounded-lg border flex items-center justify-center transition-all duration-200 ${
-                    isDark
-                      ? "bg-[#222] border-[#333] text-[#777] hover:text-[#DDD] hover:border-warm-amber/40"
-                      : "bg-white border-warm-light-gray text-warm-gray hover:text-warm-charcoal hover:border-warm-amber/40 hover:shadow-sm"
-                  }`}
+                  className="w-11 h-11 rounded-lg border flex items-center justify-center transition-all duration-200 bg-white border-warm-light-gray text-warm-gray hover:text-warm-charcoal hover:border-warm-amber/40 hover:shadow-sm dark:bg-[#222] dark:border-[#333] dark:text-[#777] dark:hover:text-[#DDD] dark:hover:border-warm-amber/40 dark:hover:shadow-none"
                   aria-label={link.label}
                 >
                   {link.icon}
@@ -297,9 +270,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                 href="https://status.rctlabs.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`hidden sm:flex items-center gap-1.5 text-[11px] transition-colors ${
-                  isDark ? "text-[#555] hover:text-[#888]" : "text-warm-secondary hover:text-warm-charcoal"
-                }`}
+                className="hidden sm:flex items-center gap-1.5 text-[11px] transition-colors text-warm-secondary hover:text-warm-charcoal dark:text-[#555] dark:hover:text-[#888]"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-warm-sage" aria-hidden="true" />
                 {isTh ? "ระบบปกติ" : "All systems nominal"}
@@ -307,7 +278,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
             </div>
 
             {/* Center: copyright */}
-            <p className={`text-[11px] text-center ${isDark ? "text-[#555]" : "text-warm-secondary"}`}>
+            <p className="text-[11px] text-center text-warm-secondary dark:text-[#555]">
               &copy; {mounted ? new Date().getFullYear() : 2026} RCT Ecosystem — Reverse Component Thinking.{" "}
               {t("footer.rights")}
             </p>
@@ -316,11 +287,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
             <button
               onClick={toggleLanguage}
               suppressHydrationWarning
-              className={`flex items-center gap-1.5 px-2.5 py-1 min-h-11 min-w-11 rounded-lg border text-[11px] font-semibold transition-colors ${
-                isDark
-                  ? "text-[#777] hover:text-[#DDD] border-[#333] hover:border-[#555] bg-[#1a1a1a] hover:bg-[#222]"
-                  : "text-warm-secondary hover:text-warm-charcoal border-warm-light-gray hover:border-warm-gray/40 bg-white hover:bg-warm-sand/60"
-              }`}
+              className="flex items-center gap-1.5 px-2.5 py-1 min-h-11 min-w-11 rounded-lg border text-[11px] font-semibold transition-colors text-warm-secondary hover:text-warm-charcoal border-warm-light-gray hover:border-warm-gray/40 bg-white hover:bg-warm-sand/60 dark:text-[#777] dark:hover:text-[#DDD] dark:border-[#333] dark:hover:border-[#555] dark:bg-[#1a1a1a] dark:hover:bg-[#222]"
               aria-label={locale === "en" ? "Switch to Thai / เปลี่ยนภาษา" : "Switch to English"}
             >
               <Globe size={11} className="shrink-0" />

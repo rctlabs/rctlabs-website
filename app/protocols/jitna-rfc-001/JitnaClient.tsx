@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { motion } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
+import { useMounted } from "@/hooks/use-mounted"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
 import { FileText, ArrowRight } from "lucide-react"
@@ -120,8 +121,9 @@ const jsonLd = {
 
 export default function JitnaClient() {
   const pathname = usePathname()
-  const { theme } = useTheme()
-  const isDark = theme === "dark"
+  const { resolvedTheme } = useTheme()
+  const mounted = useMounted()
+  const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
 
