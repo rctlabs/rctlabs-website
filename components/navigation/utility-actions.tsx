@@ -16,10 +16,10 @@ interface UtilityActionsProps {
 
 export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHero = false }: UtilityActionsProps) {
   const { language, setLanguage } = useLanguage()
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
   const mounted = useMounted()
 
-  const isDark = (mounted ? theme : "light") === "dark"
+  const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const surface = mode === "desktop" ? "desktop" : "mobile"
 
   const baseText = isOnDarkHero && mode === "desktop"
@@ -106,7 +106,7 @@ export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHe
           onTrackedAction?.("theme_toggle", surface)
           setTheme(isDark ? "light" : "dark")
         }}
-        className={`hidden md:flex p-2 transition-colors ${baseText}`}
+        className={`hidden md:flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 transition-colors ${baseText}`}
         aria-label="Toggle theme"
       >
         <AnimatePresence mode="wait">

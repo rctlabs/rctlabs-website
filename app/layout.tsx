@@ -7,9 +7,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
 import { AppProviders } from "@/components/app-providers"
+import { DeferredGlobalBackground } from "@/components/performance/deferred-global-background"
 import { Toaster } from "sonner"
 import { SITE_OG_IMAGE, SITE_URL, SOCIAL_LINKS } from "@/lib/site-config"
-import HeroAnimatedBackground from "@/components/ui/hero-animated-background"
 
 const themeBootstrapScript = `(() => {
   try {
@@ -210,13 +210,12 @@ export default async function RootLayout({
         {/* Skip to main content — accessibility */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:px-4 focus:py-2 focus:bg-warm-amber focus:text-white focus:rounded-lg focus:text-sm focus:font-medium focus:shadow-lg"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:px-4 focus:py-2 focus:bg-warm-charcoal focus:text-white focus:rounded-lg focus:text-sm focus:font-medium focus:shadow-lg"
         >
           Skip to main content
         </a>
         <AppProviders initialLocale={locale}>
-          {/* Global animated background — position:fixed, z-[1], mounts once, GPU-composited only */}
-          <HeroAnimatedBackground variant="global" />
+          <DeferredGlobalBackground />
           <div id="main-content" className="relative z-10" tabIndex={-1}>
             {children}
           </div>

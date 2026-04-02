@@ -55,8 +55,8 @@ export function DesktopNav({
               onFocus={() => onOpenGroup(group.id, "focus")}
               onClick={() => onOpenGroup(group.id, "click")}
               aria-expanded={isOpen}
-              aria-haspopup="true"
-              className={`group relative flex min-h-11 items-center gap-1 px-2.5 py-2 text-[13px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-warm-amber/50 ${
+              aria-haspopup="menu"
+              className={`group relative flex h-11 min-h-11 items-center gap-1 px-2.5 py-2 text-[13px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-warm-amber/50 ${
                 groupActive
                   ? navTextActiveClass
                   : `${navTextClass} hover:text-warm-charcoal dark:hover:text-white`

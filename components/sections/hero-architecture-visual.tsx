@@ -6,6 +6,7 @@ import { useMemo, useState, type CSSProperties } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { useMounted } from "@/hooks/use-mounted"
+import { useIdleActivation } from "@/hooks/use-idle-activation"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 const orbitNodes = [
@@ -33,6 +34,7 @@ export default function HeroArchitectureVisual() {
   const pathname = usePathname()
   const mounted = useMounted()
   const isDark = mounted && resolvedTheme === "dark"
+  const enhancedVisualReady = useIdleActivation({ timeoutMs: 1500 })
   const isTH = language === "th"
   const locale = resolveLocale(pathname, language)
   const localePrefix = getLocalePrefix(locale)
@@ -53,6 +55,10 @@ export default function HeroArchitectureVisual() {
   )
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!enhancedVisualReady) {
+      return
+    }
+
     if (event.pointerType === "touch") {
       return
     }
@@ -85,7 +91,7 @@ export default function HeroArchitectureVisual() {
         style={panelStyle}
         className={`relative aspect-[1/1.04] overflow-hidden rounded-4xl border shadow-[0_20px_48px_rgba(84,61,31,0.12)] sm:aspect-5/4 sm:rounded-4xl sm:shadow-[0_24px_60px_rgba(84,61,31,0.12)] ${
           isDark ? "border-border bg-card/78" : "border-[#eadfce] bg-white/48"
-        } hero-architecture-panel cursor-default backdrop-blur-xl`}
+        } hero-architecture-panel cursor-default backdrop-blur-md`}
       >
         <div className="pointer-events-none absolute inset-0">
           <div className="hero-architecture-glow absolute inset-0" />
@@ -98,7 +104,7 @@ export default function HeroArchitectureVisual() {
           />
           <div className={`absolute inset-[7%] rounded-[26px] border sm:inset-[8%] sm:rounded-[30px] ${isDark ? "border-white/8" : "border-white/70"}`} />
           <div className={`absolute inset-x-[12%] top-[22%] h-px sm:inset-x-[14%] sm:top-[23%] ${isDark ? "bg-white/10" : "bg-[#eadfce]"}`} />
-          <div className={`absolute inset-x-[14%] bottom-[26%] h-px sm:inset-x-[16%] sm:bottom-[24%] ${isDark ? "bg-white/10" : "bg-[#eadfce]"}`} />
+          {enhancedVisualReady ? <div className={`absolute inset-x-[14%] bottom-[26%] h-px sm:inset-x-[16%] sm:bottom-[24%] ${isDark ? "bg-white/10" : "bg-[#eadfce]"}`} /> : null}
         </div>
 
         <div className="relative z-10 flex h-full flex-col p-3.5 sm:p-5">
@@ -116,8 +122,8 @@ export default function HeroArchitectureVisual() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="hero-architecture-cluster relative h-[74%] w-[74%] max-h-72 max-w-72 sm:h-[78%] sm:w-[78%] sm:max-h-88 sm:max-w-88">
                 <div className={`absolute inset-[11%] rounded-full border sm:inset-[12%] ${isDark ? "border-white/8" : "border-[#eadfce]"}`} />
-                <div className={`absolute inset-[24%] rounded-full border ${isDark ? "border-white/8" : "border-[#eadfce]"}`} />
-                <div className={`absolute left-1/2 top-[12%] h-[76%] w-px -translate-x-1/2 sm:top-[10%] sm:h-[80%] ${isDark ? "bg-white/8" : "bg-[#eadfce]"}`} />
+                {enhancedVisualReady ? <div className={`absolute inset-[24%] rounded-full border ${isDark ? "border-white/8" : "border-[#eadfce]"}`} /> : null}
+                {enhancedVisualReady ? <div className={`absolute left-1/2 top-[12%] h-[76%] w-px -translate-x-1/2 sm:top-[10%] sm:h-[80%] ${isDark ? "bg-white/8" : "bg-[#eadfce]"}`} /> : null}
                 <div className={`absolute left-[12%] top-1/2 h-px w-[76%] -translate-y-1/2 sm:left-[10%] sm:w-[80%] ${isDark ? "bg-white/8" : "bg-[#eadfce]"}`} />
 
                 <div
@@ -146,7 +152,7 @@ export default function HeroArchitectureVisual() {
                   </div>
                 </Link>
 
-                {orbitNodes.map((node, index) => (
+                {(enhancedVisualReady ? orbitNodes : orbitNodes.slice(0, 2)).map((node, index) => (
                   <div
                     key={node.id}
                     className={`hero-architecture-node hero-architecture-node--${(index % 3) + 1} absolute -translate-x-1/2 -translate-y-1/2 ${node.positionClass}`}
@@ -172,7 +178,7 @@ export default function HeroArchitectureVisual() {
                   </div>
                 ))}
 
-                {microBadges.map((badge, index) => (
+                {(enhancedVisualReady ? microBadges : microBadges.slice(0, 1)).map((badge, index) => (
                   <div
                     key={badge.id}
                     className={`hero-architecture-badge hero-architecture-badge--${(index % 3) + 1} absolute ${badge.positionClass}`}

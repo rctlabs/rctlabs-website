@@ -20,8 +20,11 @@
  */
 
 import { motion, useReducedMotion } from "framer-motion"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
+import { usePathname } from "next/navigation"
 import { useMainPageOrchestration } from "@/components/main-page/main-page-orchestrator"
+import { useIdleActivation } from "@/hooks/use-idle-activation"
+import { useMounted } from "@/hooks/use-mounted"
 
 // ── Sparse structural anchor points (% of container) ───────────────────────
 
@@ -63,21 +66,26 @@ export default function HeroAnimatedBackground({
   variant = "hero",
 }: HeroAnimatedBackgroundProps) {
   const prefersReducedMotion = useReducedMotion()
+  const pathname = usePathname()
   const orchestration = useMainPageOrchestration()
-  const [hasMounted, setHasMounted] = useState(false)
-  const [isLowEndDevice, setIsLowEndDevice] = useState(false)
+  const mounted = useMounted()
+  const [isLowEndDevice] = useState(() => {
+    if (typeof navigator === "undefined") {
+      return false
+    }
 
-  useEffect(() => {
-    setHasMounted(true)
-    setIsLowEndDevice((navigator.hardwareConcurrency || 8) <= 4)
-  }, [])
+    return (navigator.hardwareConcurrency || 8) <= 4
+  })
+  const enhancedEffectsReady = useIdleActivation({ enabled: variant === "hero", timeoutMs: 1600 })
 
   const glow = useMemo(() => getGlowRadius(variant, isLowEndDevice), [isLowEndDevice, variant])
-  const resolvedReducedMotion = hasMounted ? (prefersReducedMotion ?? false) : false
+  const resolvedReducedMotion = mounted ? (prefersReducedMotion ?? false) : false
 
   const isGlobal = variant === "global"
+  const isHomePath = pathname === "/" || pathname === "/en" || pathname === "/th"
   const isTouchInput = orchestration?.isTouchInput ?? false
   const hasMinimalMotion = resolvedReducedMotion || isTouchInput
+  const useEnhancedEffects = variant === "hero" ? enhancedEffectsReady && !hasMinimalMotion : !isHomePath
   const pageProgress = orchestration?.pageProgress ?? 0
   const scrollVelocity = orchestration?.scrollVelocity ?? 0
   const heroPresence = clamp(1.08 - pageProgress * 0.42, 0.66, 1.08)
@@ -110,14 +118,18 @@ export default function HeroAnimatedBackground({
   const wrapperClass = isGlobal
     ? "fixed inset-0 z-[1] pointer-events-none overflow-hidden"
     : "absolute inset-0 z-[2] pointer-events-none overflow-hidden"
-  const visibleNodes = isGlobal ? ANCHOR_NODES.slice(0, 2) : hasMinimalMotion ? ANCHOR_NODES.slice(0, 2) : ANCHOR_NODES
-  const renderedRails = hasMinimalMotion ? GUIDE_RAILS.slice(0, 2) : GUIDE_RAILS
+  const visibleNodes = isGlobal ? ANCHOR_NODES.slice(0, 1) : useEnhancedEffects ? ANCHOR_NODES : ANCHOR_NODES.slice(0, 1)
+  const renderedRails = useEnhancedEffects ? GUIDE_RAILS : GUIDE_RAILS.slice(0, 1)
   const pointerShiftX = orchestration && !isGlobal && !hasMinimalMotion
     ? orchestration.pointerIntent.x * 6 * pointerInfluence
     : 0
   const pointerShiftY = orchestration && !isGlobal && !hasMinimalMotion
     ? orchestration.pointerIntent.y * 4.5 * pointerInfluence
     : 0
+
+  if (isGlobal && isHomePath) {
+    return null
+  }
 
   return (
     <motion.div
@@ -141,7 +153,7 @@ export default function HeroAnimatedBackground({
         style={{
           opacity: gridOpacity,
           backgroundImage: "var(--rct-hero-grid-lines)",
-          backgroundSize: isGlobal ? "96px 96px" : hasMinimalMotion ? "88px 88px" : "82px 82px",
+          backgroundSize: isGlobal ? "112px 112px" : useEnhancedEffects ? "82px 82px" : "108px 108px",
         }}
       />
 
@@ -166,7 +178,7 @@ export default function HeroAnimatedBackground({
             className="absolute -inset-y-1.25 left-[20%] right-[35%] rounded-full bg-warm-amber/40"
             style={{ filter: `blur(${glow.beam}px)` }}
           />
-          {!isGlobal && !hasMinimalMotion && (
+          {!isGlobal && useEnhancedEffects && (
             <motion.div
               className="absolute -inset-y-px w-18"
               style={{ backgroundImage: "var(--rct-hero-signal-trace)" }}
@@ -191,7 +203,7 @@ export default function HeroAnimatedBackground({
         className="absolute top-[16%] left-[21%] h-[52%] w-px"
         style={{ backgroundImage: "var(--rct-hero-vertical-guide)" }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: isGlobal ? 0.18 : hasMinimalMotion ? 0.18 : 0.3 }}
+        animate={{ opacity: isGlobal ? 0.16 : useEnhancedEffects ? 0.3 : 0.16 }}
         transition={{ duration: 1.4, delay: 0.15 }}
       />
 
@@ -199,7 +211,7 @@ export default function HeroAnimatedBackground({
         className="absolute top-[54%] left-[52%] h-px w-[22%]"
         style={{ backgroundImage: "var(--rct-hero-horizontal-guide)" }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: isGlobal ? 0.12 : hasMinimalMotion ? 0.1 : 0.24 }}
+        animate={{ opacity: isGlobal ? 0.1 : useEnhancedEffects ? 0.24 : 0.08 }}
         transition={{ duration: 1.4, delay: 0.24 }}
       />
 

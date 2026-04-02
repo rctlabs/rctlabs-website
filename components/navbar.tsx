@@ -1,21 +1,34 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { KeyboardShortcutsDialog } from "@/components/keyboard-shortcuts-dialog"
 import { DesktopNav } from "@/components/navigation/desktop-nav"
-import { MobileNavDrawer } from "@/components/navigation/mobile-nav-drawer"
 import { UtilityActions } from "@/components/navigation/utility-actions"
 import { useNavAnalytics } from "@/components/navigation/use-nav-analytics"
-import SearchModal, { useSearchModal } from "@/components/search/search-modal"
 import { useLanguage } from "@/components/language-provider"
 import { useMounted } from "@/hooks/use-mounted"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { buildSearchIndex, findActiveResourceTrack, navigationGroups, resourceTracks } from "@/lib/navigation"
 import { useTheme } from "@/components/theme-provider"
+
+const SearchModal = dynamic(() => import("@/components/search/search-modal"), {
+  ssr: false,
+  loading: () => null,
+})
+
+const KeyboardShortcutsDialog = dynamic(
+  () => import("@/components/keyboard-shortcuts-dialog").then((module) => module.KeyboardShortcutsDialog),
+  { ssr: false, loading: () => null },
+)
+
+const MobileNavDrawer = dynamic(
+  () => import("@/components/navigation/mobile-nav-drawer").then((module) => module.MobileNavDrawer),
+  { ssr: false, loading: () => null },
+)
 
 const LOGO_HORIZONTAL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
 const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
@@ -27,26 +40,33 @@ interface NavbarProps {
 
 export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProps) {
   const { language } = useLanguage()
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
   const mounted = useMounted()
   const pathname = usePathname()
   const { trackGroupOpen, trackLeafClick, trackResourceTrack, trackUtility } = useNavAnalytics()
 
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [shortcutsOpen, setShortcutsOpen] = useState(false)
+  const [searchPrepared, setSearchPrepared] = useState(false)
   const [openGroupId, setOpenGroupId] = useState<(typeof navigationGroups)[number]["id"] | null>(null)
   const [activeResourceTrackId, setActiveResourceTrackId] = useState(resourceTracks[0].id)
   const closeGroupTimeoutRef = useRef<number | null>(null)
   const scrollFrameRef = useRef<number | null>(null)
   const lastScrolledRef = useRef(false)
-  const { isOpen: searchOpen, open: openSearch, close: closeSearch } = useSearchModal()
+  const [searchOpen, setSearchOpen] = useState(false)
 
   const localePath = pathname?.replace(/^\/(en|th)/, "") || "/"
   const locale = forcedLocale ?? resolveLocale(pathname, language)
   const localePrefix = getLocalePrefix(locale)
   const localHref = (href: string) => `${localePrefix}${href}`
-  const isDark = (mounted ? theme : "light") === "dark"
-  const searchData = useMemo(() => buildSearchIndex(locale), [locale])
+  const isDark = (mounted ? resolvedTheme : "light") === "dark"
+  const searchData = useMemo(() => (searchPrepared ? buildSearchIndex(locale) : []), [locale, searchPrepared])
+
+  const prepareAndOpenSearch = () => {
+    setSearchPrepared(true)
+    setSearchOpen(true)
+  }
 
   useEffect(() => {
     const updateScrolled = () => {
@@ -94,6 +114,7 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
         }
         setOpenGroupId(null)
         setMobileOpen(false)
+        setShortcutsOpen(false)
       }
     }
 
@@ -102,16 +123,49 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
   }, [])
 
   useEffect(() => {
-    const handleOpenSearch = () => openSearch()
+    const handleOpenSearch = () => prepareAndOpenSearch()
 
     window.addEventListener("rct-open-search", handleOpenSearch as EventListener)
     return () => window.removeEventListener("rct-open-search", handleOpenSearch as EventListener)
-  }, [openSearch])
+  }, [])
+
+  useEffect(() => {
+    const handleKeyboardShortcuts = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null
+      const tagName = target?.tagName
+      const isEditing = tagName === "INPUT" || tagName === "TEXTAREA" || Boolean(target?.isContentEditable)
+
+      if (isEditing) {
+        return
+      }
+
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault()
+        prepareAndOpenSearch()
+        return
+      }
+
+      if (event.key === "?" && !event.ctrlKey && !event.metaKey) {
+        event.preventDefault()
+        setShortcutsOpen((current) => !current)
+        return
+      }
+
+      if (event.key === "/" && !event.ctrlKey && !event.metaKey) {
+        event.preventDefault()
+        prepareAndOpenSearch()
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyboardShortcuts)
+    return () => document.removeEventListener("keydown", handleKeyboardShortcuts)
+  }, [])
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- route changes should immediately collapse transient nav UI state.
     setMobileOpen(false)
     setOpenGroupId(null)
+    setShortcutsOpen(false)
     setActiveResourceTrackId(findActiveResourceTrack(localePath))
   }, [localePath])
 
@@ -123,7 +177,13 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
     }
   }, [])
 
-  const isActive = (href: string) => localePath === href || (href !== "/" && localePath.startsWith(href))
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return localePath === "/"
+    }
+
+    return localePath === href || localePath.startsWith(`${href}/`)
+  }
   const isHomeRoute = localePath === "/"
   const darkHeroRoutes = ["/about", "/case-studies"]
   const isArticleVariant = variant === "article"
@@ -277,7 +337,7 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
             <div className="flex items-center gap-2 shrink-0">
               <UtilityActions
                 mode="desktop"
-                onOpenSearch={openSearch}
+                onOpenSearch={prepareAndOpenSearch}
                 onTrackedAction={trackUtility}
                 isOnDarkHero={isOnDarkHero}
               />
@@ -297,25 +357,27 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
           </div>
         </div>
 
-        <MobileNavDrawer
-          isOpen={mobileOpen}
-          locale={locale}
-          groups={navigationGroups}
-          resourceTracks={resourceTracks}
-          activeResourceTrackId={activeResourceTrackId}
-          localHref={localHref}
-          isActivePath={isActive}
-          onNavigate={handleRouteClick}
-          onOpenSearch={openSearch}
-          onClose={() => setMobileOpen(false)}
-          onResourceTrackChange={handleResourceTrackChange}
-          onTrackedUtility={trackUtility}
-          isDark={isDark}
-        />
+        {mobileOpen ? (
+          <MobileNavDrawer
+            isOpen={mobileOpen}
+            locale={locale}
+            groups={navigationGroups}
+            resourceTracks={resourceTracks}
+            activeResourceTrackId={activeResourceTrackId}
+            localHref={localHref}
+            isActivePath={isActive}
+            onNavigate={handleRouteClick}
+            onOpenSearch={prepareAndOpenSearch}
+            onClose={() => setMobileOpen(false)}
+            onResourceTrackChange={handleResourceTrackChange}
+            onTrackedUtility={trackUtility}
+            isDark={isDark}
+          />
+        ) : null}
       </nav>
 
-      <SearchModal isOpen={searchOpen} onClose={closeSearch} searchData={searchData} />
-      <KeyboardShortcutsDialog onOpenSearch={openSearch} />
+      {searchOpen ? <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} searchData={searchData} /> : null}
+      {shortcutsOpen ? <KeyboardShortcutsDialog onOpenSearch={prepareAndOpenSearch} /> : null}
     </header>
   )
 }

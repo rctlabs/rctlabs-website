@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import { createBilingualMetadata, type Locale } from "@/lib/seo-bilingual"
 import { getBreadcrumbSchema, getOrganizationSchema } from "@/lib/schema"
 import { AboutFDIAShowcase } from "@/components/about/about-fdia-showcase"
@@ -7,7 +6,7 @@ import { AboutPageMotionBackdrop } from "@/components/about/about-page-motion-ba
 import { AboutPreviewCard } from "@/components/about/about-preview-card"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { Shield, Eye, Heart, Sparkles, Target, Building2, Handshake, Newspaper, Quote } from "lucide-react"
+import { Shield, Eye, Heart, Sparkles, Target, Quote } from "lucide-react"
 import { headers } from "next/headers"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { SITE_ALGORITHM_COUNT, SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
@@ -414,8 +413,8 @@ export default async function AboutPage() {
           }
         ]
       }) }} />
-      <main className="relative min-h-screen overflow-hidden bg-background" id="main-content">
-        <Navbar />
+      <main className="relative min-h-screen bg-background" id="main-content">
+        <Navbar locale={locale} />
         <div className="about-page-backdrop" aria-hidden="true">
           <div className="about-page-backdrop__mesh" />
           <div className="about-page-backdrop__grid" />
@@ -826,7 +825,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <Footer />
+      <Footer locale={locale} />
     </main>
     </>
   )

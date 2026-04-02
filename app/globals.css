@@ -900,6 +900,50 @@
   transform: rotate(-16deg);
 }
 
+.dark .about-page-backdrop__mesh {
+  background:
+    linear-gradient(180deg, rgba(13, 13, 13, 0.82), rgba(13, 13, 13, 0.28) 18%, rgba(13, 13, 13, 0.9) 100%),
+    radial-gradient(circle at 14% 10%, rgba(212, 168, 83, 0.08), transparent 30%),
+    radial-gradient(circle at 85% 18%, rgba(123, 158, 135, 0.065), transparent 28%),
+    radial-gradient(circle at 58% 45%, rgba(137, 180, 200, 0.05), transparent 24%),
+    radial-gradient(circle at 36% 88%, rgba(196, 116, 91, 0.055), transparent 28%);
+}
+
+.dark .about-page-backdrop__grid {
+  background-image:
+    linear-gradient(rgba(212, 168, 83, 0.024) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 168, 83, 0.022) 1px, transparent 1px);
+  opacity: 0.24;
+}
+
+.dark .about-page-backdrop__orb {
+  opacity: 0.28;
+}
+
+.dark .about-page-backdrop__orb--amber {
+  background: radial-gradient(circle, rgba(212, 168, 83, 0.1), rgba(212, 168, 83, 0.02) 58%, transparent 78%);
+}
+
+.dark .about-page-backdrop__orb--sage {
+  background: radial-gradient(circle, rgba(123, 158, 135, 0.08), rgba(123, 158, 135, 0.016) 58%, transparent 78%);
+}
+
+.dark .about-page-backdrop__orb--terra {
+  background: radial-gradient(circle, rgba(196, 116, 91, 0.075), rgba(196, 116, 91, 0.016) 58%, transparent 78%);
+}
+
+.dark .about-page-backdrop__beam {
+  opacity: 0.28;
+}
+
+.dark .about-page-backdrop__beam--left {
+  background: linear-gradient(90deg, transparent, rgba(212, 168, 83, 0.12), transparent);
+}
+
+.dark .about-page-backdrop__beam--right {
+  background: linear-gradient(90deg, transparent, rgba(196, 116, 91, 0.09), transparent);
+}
+
 .main-page-section[data-active="true"] .main-page-reactive-card,
 .main-page-section[data-active="true"] .main-page-reactive-surface {
   box-shadow: 0 16px 32px rgba(84, 61, 31, 0.055);

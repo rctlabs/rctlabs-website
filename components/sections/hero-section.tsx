@@ -1,5 +1,6 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import { motion, useInView, useReducedMotion } from "framer-motion"
 import { ArrowRight, ArrowDown } from "lucide-react"
 import Link from "next/link"
@@ -7,12 +8,22 @@ import { useRef, useState } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { getLocalePrefix } from "@/lib/i18n"
-import HeroArchitectureVisual from "@/components/sections/hero-architecture-visual"
-import HeroAnimatedBackground from "@/components/ui/hero-animated-background"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { useMounted } from "@/hooks/use-mounted"
+import { useIdleActivation } from "@/hooks/use-idle-activation"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { useCardSpotlight } from "@/hooks/use-card-spotlight"
+
+const HeroArchitectureVisual = dynamic(() => import("@/components/sections/hero-architecture-visual"), {
+  loading: () => (
+    <div className="h-112 w-full rounded-4xl border border-[#e6ddd0] bg-white/50 shadow-[0_20px_48px_rgba(84,61,31,0.08)] dark:border-border dark:bg-card/45" />
+  ),
+})
+
+const HeroAnimatedBackground = dynamic(() => import("@/components/ui/hero-animated-background"), {
+  ssr: false,
+  loading: () => null,
+})
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
 const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
@@ -31,6 +42,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
   const isInView = useInView(heroRef, { margin: "-100px" })
   const prefersReducedMotion = useReducedMotion()
   const isDark = mounted && resolvedTheme === "dark"
+  const deferredHeroAssetsReady = useIdleActivation({ timeoutMs: 1800 })
   const shouldAnimate = !prefersReducedMotion && isInView
   const statCardSpotlight = useCardSpotlight<HTMLDivElement>()
 
@@ -63,14 +75,13 @@ export default function HeroSection({ locale }: HeroSectionProps) {
   return (
     <section ref={heroRef} id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(44rem,100svh)] items-center overflow-hidden bg-[#f7f1eb] dark:bg-[#0D0D0D]">
       {/* Hero image (hidden on CDN error) */}
-      {!heroBgError && (
+      {!heroBgError && deferredHeroAssetsReady && (
         <div className="absolute inset-0">
           <OptimizedImage
             src={HERO_BG}
             alt="RCT Ecosystem Hero Background"
             containerClassName="h-full w-full"
             objectFit="cover"
-            priority
             sizes="100vw"
             className={isDark ? "scale-[1.03] opacity-[0.12]" : "scale-[1.02] opacity-[0.24]"}
             onError={() => setHeroBgError(true)}
@@ -92,14 +103,16 @@ export default function HeroSection({ locale }: HeroSectionProps) {
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,241,235,0.12),transparent_24%,rgba(212,168,83,0.04)_100%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_30%,rgba(212,168,83,0.02)_100%)]" />
       </div>
       {/* Structured background layers rendered above the image blend and below the content */}
-      <HeroAnimatedBackground variant="hero" />
+      {deferredHeroAssetsReady ? <HeroAnimatedBackground variant="hero" /> : null}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-3 h-56 bg-[linear-gradient(180deg,transparent_0%,rgba(247,241,235,0.18)_34%,rgba(247,241,235,0.78)_72%,#f7f1eb_100%)] dark:bg-[linear-gradient(180deg,transparent_0%,rgba(13,13,13,0.08)_30%,rgba(13,13,13,0.72)_72%,#0D0D0D_100%)]" />
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-[18%] bottom-10 z-3 h-24 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(212,168,83,0.1),transparent_70%)]"
-        animate={prefersReducedMotion ? { opacity: 0.45 } : { opacity: [0.32, 0.55, 0.32], x: [0, 12, 0] }}
-        transition={{ duration: 9, repeat: prefersReducedMotion ? 0 : Infinity, ease: "easeInOut" }}
-      />
+      {deferredHeroAssetsReady ? (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-[18%] bottom-10 z-3 h-24 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(212,168,83,0.1),transparent_70%)]"
+          animate={prefersReducedMotion ? { opacity: 0.45 } : { opacity: [0.32, 0.55, 0.32], x: [0, 12, 0] }}
+          transition={{ duration: 9, repeat: prefersReducedMotion ? 0 : Infinity, ease: "easeInOut" }}
+        />
+      ) : null}
       <div className="relative z-10 mx-auto w-full max-w-300 px-4 pt-20 pb-14 sm:px-6 sm:pb-16 lg:px-8 lg:pt-24 lg:pb-20">
         <div className="grid items-center gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(374px,484px)] lg:gap-8 xl:grid-cols-[minmax(0,1.01fr)_minmax(394px,484px)]">
           <motion.div
@@ -114,7 +127,16 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                 isDark ? "bg-card/80 border-border" : "border-[#e6ddd0] bg-white/96 shadow-[0_10px_24px_rgba(84,61,31,0.05)]"
               }`}
             >
-              <OptimizedImage src={LOGO_MARK} alt="RCT Ecosystem Logo" containerClassName="w-5 h-5" objectFit="contain" priority width={20} height={20} />
+              <OptimizedImage
+                src={LOGO_MARK}
+                alt="RCT Ecosystem Logo"
+                containerClassName="w-5 h-5"
+                className={isDark ? "brightness-0 invert" : ""}
+                objectFit="contain"
+                priority
+                width={20}
+                height={20}
+              />
               <span className={`text-xs font-medium ${isDark ? "text-warm-muted" : "text-warm-gray"}`}>{t("hero.badge")}</span>
               <div className="h-1.5 w-1.5 rounded-full bg-warm-sage" />
             </motion.div>
@@ -123,7 +145,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
               <h1 className={`text-4xl font-bold tracking-[-0.03em] leading-[1.12] sm:text-5xl lg:text-[56px] xl:text-[58px] ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
                 {t("hero.title.line1")}
                 <br />
-                <span className="font-display font-semibold text-warm-amber">{t("hero.title.line2")}</span>
+                <span className="font-display font-semibold text-[#8A6914] dark:text-warm-amber">{t("hero.title.line2")}</span>
                 <br />
                 {t("hero.title.line3")}
               </h1>
@@ -205,7 +227,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
             transition={shouldAnimate ? { duration: 0.26, delay: 0.04 } : undefined}
             className="group relative mx-auto w-full max-w-105 lg:-mr-2 lg:ml-0 lg:max-w-none"
           >
-            <HeroArchitectureVisual />
+            {deferredHeroAssetsReady ? <HeroArchitectureVisual /> : <div className="h-112 w-full rounded-4xl border border-[#e6ddd0] bg-white/50 shadow-[0_20px_48px_rgba(84,61,31,0.08)] dark:border-border dark:bg-card/45" />}
           </motion.div>
         </div>
 

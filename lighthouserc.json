@@ -6,9 +6,9 @@
       "startServerReadyTimeout": 120000,
       "numberOfRuns": 3,
       "url": [
-        "http://localhost:3000/",
-        "http://localhost:3000/pricing",
-        "http://localhost:3000/solutions"
+        "http://localhost:3000/en",
+        "http://localhost:3000/en/pricing",
+        "http://localhost:3000/en/solutions"
       ],
       "settings": {
         "formFactor": "mobile",

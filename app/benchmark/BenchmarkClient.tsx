@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion"
 import Link from "next/link"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
+import { useMounted } from "@/hooks/use-mounted"
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -130,8 +131,9 @@ type ChartView = "radar" | "bar"
 
 export default function BenchmarkPage() {
   const { language } = useLanguage()
-  const { theme } = useTheme()
-  const isDark = theme === "dark"
+  const { resolvedTheme } = useTheme()
+  const mounted = useMounted()
+  const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const isEn = language === "en"
   const [chartView, setChartView] = useState<ChartView>("radar")
 
