@@ -102,7 +102,7 @@ export default function HomePage({ locale }: HomePageClientProps) {
                 <div className="flex flex-col justify-center gap-4 sm:flex-row">
                   <Link
                     href={`${localePrefix}/whitepaper`}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-warm-amber px-6 py-3 font-medium text-white transition-colors hover:bg-[#C49A48]"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-warm-amber px-6 py-3 font-medium text-warm-charcoal transition-colors hover:bg-[#C49A48]"
                   >
                     {locale === "en" ? "Read the Whitepaper" : "อ่านเอกสาร Whitepaper"}
                     <ArrowRight className="h-4 w-4" />

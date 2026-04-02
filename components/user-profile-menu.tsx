@@ -98,7 +98,7 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
       </Link>
       <Link
         href={accessHref}
-        className="inline-flex items-center gap-1.5 rounded-full bg-warm-amber px-4 py-1.5 text-[13px] font-semibold text-white transition-all duration-200 hover:bg-warm-amber/90 hover:scale-105 active:scale-95 whitespace-nowrap"
+        className="inline-flex items-center gap-1.5 rounded-full bg-warm-amber px-4 py-1.5 text-[13px] font-semibold text-warm-charcoal transition-all duration-200 hover:bg-warm-amber/90 hover:scale-105 active:scale-95 whitespace-nowrap"
       >
         {language === "en" ? "Request Access" : "ขอข้อมูล"}
         <ArrowRight size={12} />

@@ -48,12 +48,13 @@ export function ResourcesPanel({
               : "Pick the task first, then scan only the resource set that supports that job."}
           </p>
         </div>
-        <div className="mt-4 space-y-1">
+        <div role="tablist" aria-label="Resource tracks" aria-orientation="vertical" className="mt-4 space-y-1">
           {tracks.map((track) => {
             const isSelected = track.id === activeTrack.id
             return (
               <button
                 key={track.id}
+                id={`resource-tab-${track.id}`}
                 type="button"
                 role="tab"
                 aria-selected={isSelected}
@@ -73,7 +74,7 @@ export function ResourcesPanel({
                       : "text-warm-gray hover:text-warm-charcoal"
                 }`}
               >
-                <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-warm-amber">
+                <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#7A5910] dark:text-warm-amber">
                   {localizeCopy(track.label, locale)}
                 </div>
                 <div className="mt-1 line-clamp-2 text-[14px] font-medium leading-6">
@@ -88,6 +89,7 @@ export function ResourcesPanel({
       <div
         id={`resource-panel-${activeTrack.id}`}
         role="tabpanel"
+        aria-labelledby={`resource-tab-${activeTrack.id}`}
         className={`px-5 py-5 ${isDark ? "border-r border-white/10 bg-[#111111]" : "border-r border-warm-light-gray bg-warm-cream"}`}
       >
         <div className={`pb-4 ${isDark ? "border-b border-white/10" : "border-b border-warm-light-gray"}`}>

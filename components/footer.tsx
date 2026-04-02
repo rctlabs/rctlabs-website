@@ -195,7 +195,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                               >
                                 {link.label}
                                 {"badge" in link && link.badge ? (
-                                  <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-warm-amber">
+                                  <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#7A5910] dark:text-warm-amber">
                                     {link.badge}
                                   </span>
                                 ) : null}
@@ -209,7 +209,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                 </div>
                 {/* Desktop: always visible */}
                 <div className="hidden sm:block">
-                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.15em] mb-2.5 opacity-50 text-warm-charcoal dark:text-warm-light-gray">
+                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.15em] mb-2.5 text-[#595959] dark:text-warm-light-gray/60">
                     {title}
                   </h4>
                   <ul className="space-y-1.5">
@@ -231,7 +231,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                           >
                             {link.label}
                             {"badge" in link && link.badge ? (
-                              <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-warm-amber">
+                              <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#7A5910] dark:text-warm-amber">
                                 {link.badge}
                               </span>
                             ) : null}

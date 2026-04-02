@@ -106,7 +106,7 @@ export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHe
           onTrackedAction?.("theme_toggle", surface)
           setTheme(isDark ? "light" : "dark")
         }}
-        className={`hidden md:flex p-2 transition-colors ${baseText}`}
+        className={`hidden md:flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 transition-colors ${baseText}`}
         aria-label="Toggle theme"
       >
         <AnimatePresence mode="wait">

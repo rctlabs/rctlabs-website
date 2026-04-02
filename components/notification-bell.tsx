@@ -32,7 +32,7 @@ export function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-accent hover:text-foreground transition-colors"
+        className="relative flex h-11 w-11 items-center justify-center rounded-full text-foreground/70 hover:bg-accent hover:text-foreground transition-colors"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
         aria-expanded={open}
       >

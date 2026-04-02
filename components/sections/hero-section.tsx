@@ -145,7 +145,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
               <h1 className={`text-4xl font-bold tracking-[-0.03em] leading-[1.12] sm:text-5xl lg:text-[56px] xl:text-[58px] ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
                 {t("hero.title.line1")}
                 <br />
-                <span className="font-display font-semibold text-warm-amber">{t("hero.title.line2")}</span>
+                <span className="font-display font-semibold text-[#8A6914] dark:text-warm-amber">{t("hero.title.line2")}</span>
                 <br />
                 {t("hero.title.line3")}
               </h1>

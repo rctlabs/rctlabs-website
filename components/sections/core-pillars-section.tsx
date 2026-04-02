@@ -20,6 +20,7 @@ type PillarCardProps = {
     title: string
     desc: string
     color: string
+    statClass: string
     bg: string
     darkBg: string
     iconSrc: string
@@ -87,7 +88,7 @@ function PillarCard({ locale, pillar }: PillarCardProps) {
             />
           </div>
 
-          <div className="inline-flex h-10 min-w-[4.45rem] items-center justify-center gap-1 rounded-full border border-warm-amber/18 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-warm-amber shadow-[0_8px_18px_rgba(84,61,31,0.06)] transition-transform duration-300 group-hover:-translate-y-0.5 dark:bg-background/75 sm:min-w-19">
+          <div className="inline-flex h-10 min-w-[4.45rem] items-center justify-center gap-1 rounded-full border border-warm-amber/18 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#7A5910] shadow-[0_8px_18px_rgba(84,61,31,0.06)] transition-transform duration-300 group-hover:-translate-y-0.5 dark:bg-background/75 dark:text-warm-amber sm:min-w-19">
             <span>{locale === "en" ? "Open" : "ดู"}</span>
             <ArrowRight className={`h-3.5 w-3.5 transition-transform duration-300 ${hovered ? "translate-x-0.5" : ""}`} />
           </div>
@@ -97,8 +98,7 @@ function PillarCard({ locale, pillar }: PillarCardProps) {
           <div className="min-w-0 flex-1">
             <div>
               <div
-                className={`mb-2 text-[28px] font-bold leading-none sm:text-[33px] ${locale === "th" ? "font-thai" : "font-display"}`}
-                style={{ color: pillar.color }}
+                className={`mb-2 text-[28px] font-bold leading-none sm:text-[33px] ${locale === "th" ? "font-thai" : "font-display"} ${pillar.statClass}`}
               >
                 {pillar.stat}
               </div>
@@ -128,6 +128,7 @@ export default function CorePillarsSection({ locale }: CorePillarsSectionProps) 
           ? "Western, Eastern, and Typhoon (Thai) LLMs — each task routed to the optimal model automatically."
           : "LLM Western, Eastern และ Typhoon ภาษาไทย — เลือกโมเดลที่เหมาะกับแต่ละงานอัตโนมัติ",
       color: "#D4A853",
+      statClass: "text-[#8A6914] dark:text-warm-amber",
       bg: "#FEF3C7",
       darkBg: "#3D2E0A",
       iconSrc: pixelIcons.brain,
@@ -141,6 +142,7 @@ export default function CorePillarsSection({ locale }: CorePillarsSectionProps) 
           ? "7-state pipeline. Cold start 3–5s → warm recall <50ms. Memory-first routing cuts cost 60–75%."
           : "Pipeline 7 สถานะ: cold start 3–5 วินาที → warm recall <50ms ลดต้นทุน 60–75% ด้วย memory-first routing",
       color: "#7B9E87",
+      statClass: "text-[#3D6951] dark:text-warm-sage",
       bg: "#D1FAE5",
       darkBg: "#0D2B1E",
       iconSrc: pixelIcons.cpu,
@@ -154,6 +156,7 @@ export default function CorePillarsSection({ locale }: CorePillarsSectionProps) 
           ? "Quick, Standard, Deep, Mirror — GIGO protection and cross-disciplinary synthesis on every query."
           : "Quick, Standard, Deep, Mirror — GIGO Protection และ Cross-disciplinary Synthesis ทุก query",
       color: "#89B4C8",
+      statClass: "text-[#2B5A78] dark:text-warm-sky",
       bg: "#DBEAFE",
       darkBg: "#0D1F2D",
       iconSrc: pixelIcons.network,
@@ -167,6 +170,7 @@ export default function CorePillarsSection({ locale }: CorePillarsSectionProps) 
           ? "Stores only state changes, not full snapshots. 74% compression with <1ms state reconstruction."
           : "บันทึกเฉพาะสิ่งที่เปลี่ยนแปลง ลดหน่วยความจำ 74% พร้อม reconstruction <1ms",
       color: "#C4745B",
+      statClass: "text-warm-terracotta",
       bg: "#FEE2E2",
       darkBg: "#2D0E0A",
       iconSrc: pixelIcons.database,
@@ -188,7 +192,7 @@ export default function CorePillarsSection({ locale }: CorePillarsSectionProps) 
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-9 text-center">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-warm-amber">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#7A5910] dark:text-warm-amber">
             {locale === "en" ? "Core Intelligence Pillars" : "เสาหลักปัญญาประดิษฐ์"}
           </p>
           <h2 className={`text-2xl font-bold text-foreground sm:text-3xl ${locale === "th" ? "font-thai" : "font-display"}`}>
@@ -205,7 +209,7 @@ export default function CorePillarsSection({ locale }: CorePillarsSectionProps) 
         <div className="mt-6 text-center">
           <Link
             href={`${localePrefix}/core-systems`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-warm-amber hover:underline transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#7A5910] hover:underline transition-colors dark:text-warm-amber"
           >
             {locale === "en" ? "Explore all core systems" : "สำรวจระบบหลักทั้งหมด"}
             <ArrowRight className="h-4 w-4" />

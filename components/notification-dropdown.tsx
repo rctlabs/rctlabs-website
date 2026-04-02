@@ -38,7 +38,7 @@ export default function NotificationDropdown({
                 Mark all read
               </button>
             ) : null}
-            <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Close notifications">
+            <button onClick={onClose} className="flex items-center justify-center min-h-9 min-w-9 rounded-lg p-1 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors" aria-label="Close notifications">
               <X className="h-4 w-4" />
             </button>
           </div>

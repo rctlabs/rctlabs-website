@@ -125,7 +125,7 @@ export default function OverviewSection({ locale }: OverviewSectionProps) {
           className={`main-page-reactive-surface mb-8 rounded-2xl border px-5 py-4 sm:px-6 sm:py-5 ${isDark ? "border-border bg-card/72" : "border-[#e6ddd0] bg-white/90"}`}
         >
           <div className="mx-auto max-w-3xl text-center">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-warm-amber">
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#7A5910] dark:text-warm-amber">
               {language === "th" ? "เลือกเส้นทางการสำรวจเชิงลึก" : "Choose a Deep-Dive Path"}
             </p>
             <p className={`text-sm leading-relaxed text-muted-foreground sm:text-[15px] ${language === "th" ? "subtitle-th" : ""}`}>

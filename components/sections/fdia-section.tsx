@@ -123,7 +123,7 @@ export default function FDIASection() {
               transition={prefersReducedMotion ? undefined : { duration: 0.28, delay: index * 0.04 }}
               className="main-page-reactive-surface rounded-[20px] border border-[rgba(176,150,111,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.72),rgba(250,244,235,0.56))] p-4 dark:bg-[linear-gradient(180deg,rgba(32,28,25,0.92),rgba(24,22,21,0.94))]"
             >
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-warm-amber">{card.eyebrow}</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7A5910] dark:text-warm-amber">{card.eyebrow}</div>
               <h3 className="mt-2 text-base font-semibold text-foreground sm:text-lg">{card.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-[14px]">{card.body}</p>
             </motion.div>
@@ -246,11 +246,11 @@ export default function FDIASection() {
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,168,83,0.18),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(123,158,135,0.16),transparent_34%)] opacity-80" />
                     <div className="relative z-10">
                       <div className="flex items-center justify-between gap-3">
-                        <div className="inline-flex items-center gap-2 rounded-full border border-warm-amber/25 bg-white/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-warm-amber dark:bg-black/12">
+                        <div className="inline-flex items-center gap-2 rounded-full border border-warm-amber/25 bg-white/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7A5910] dark:text-warm-amber dark:bg-black/12">
                           <Sparkles className="h-3.5 w-3.5" />
                           {isEn ? "Floating FDIA" : "FDIA แบบลอยตัว"}
                         </div>
-                        <div className="rounded-full border border-warm-amber/25 bg-warm-amber/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-warm-amber">
+                        <div className="rounded-full border border-warm-amber/25 bg-warm-amber/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7A5910] dark:text-warm-amber">
                           {isEn ? "Open" : "เปิด"}
                         </div>
                       </div>
@@ -260,12 +260,12 @@ export default function FDIASection() {
                           <div className="absolute inset-[12%] rounded-full border border-warm-amber/18" />
                           <div className="absolute inset-[25%] rounded-full border border-warm-sage/20" />
                           <div className="font-mono text-[38px] font-bold tracking-[0.04em] text-foreground transition-transform duration-300 group-hover:scale-[1.04]">
-                            <span className="text-warm-amber">F</span>
+                            <span className="text-[#8A6914] dark:text-warm-amber">F</span>
                             <span className="mx-2 text-muted-foreground">=</span>
-                            <span style={{ color: "#89B4C8" }}>D</span>
-                            <sup className="text-[0.56em]" style={{ color: "#C4745B" }}>I</sup>
+                            <span className="text-[#2B5A78] dark:text-warm-sky">D</span>
+                            <sup className="text-[0.56em] text-warm-terracotta dark:text-warm-terracotta">I</sup>
                             <span className="mx-2 text-muted-foreground">×</span>
-                            <span style={{ color: "#7B9E87" }}>A</span>
+                            <span className="text-[#3D6951] dark:text-warm-sage">A</span>
                           </div>
                         </div>
                       </div>
