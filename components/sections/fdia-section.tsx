@@ -1,66 +1,21 @@
 "use client"
 
-import React, { useMemo } from "react"
+import React from "react"
 import { motion, useReducedMotion } from "framer-motion"
-import { ChevronDown, Image as ImageIcon } from "lucide-react"
+import { Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
-import OptimizedImage from "@/components/ui/optimized-image"
-import { LazyFDIACalculatorPanel, LazyFDIAFlowchart } from "@/components/diagrams/lazy-diagram-wrapper"
 import SectionHeading from "@/components/section-heading"
+import { FDIAExplorerDialog } from "@/components/sections/fdia-explorer-dialog"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 const PIXEL_BRAIN = pixelIcons.brain
-
-function InfographicAccordion({ language }: { language: string }) {
-  const cardSpotlight = useCardSpotlight<HTMLDetailsElement>()
-
-  return (
-    <div className="mb-6">
-      <details {...cardSpotlight} className="main-page-reactive-surface group overflow-hidden rounded-xl border border-border bg-white/90 shadow-sm dark:bg-card/90">
-        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 transition-colors duration-200 hover:bg-[#fffdfa] dark:hover:bg-secondary/50">
-          <div className="flex items-center gap-3">
-            <ImageIcon size={18} className="text-warm-amber" />
-            <span className="text-sm font-semibold text-foreground">
-              {language === "en"
-                ? "FDIA Equation Infographic Blueprint"
-                : "แผนผัง Infographic สมการ FDIA"}
-            </span>
-          </div>
-          <ChevronDown size={18} className="text-muted-foreground transition-transform duration-200 group-open:rotate-180" />
-        </summary>
-        <div className="overflow-hidden">
-          <OptimizedImage
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-fdia-infographic-FHTXCU98beP8sw6khaiZR4.webp"
-            alt="FDIA Equation Infographic — F = D^I × A Blueprint"
-            containerClassName="w-full"
-            objectFit="contain"
-            sizes="(max-width: 768px) 100vw, 1200px"
-          />
-        </div>
-      </details>
-    </div>
-  )
-}
 
 export default function FDIASection() {
   const { language } = useLanguage()
   const prefersReducedMotion = useReducedMotion()
   const cardSpotlight = useCardSpotlight<HTMLDivElement>()
   const isEn = language === "en"
-
-  const intentImpact = useMemo(() => {
-    const baseData = 85
-    const architectMultiplier = 1.5
-    const low = Math.pow(baseData, 1) * architectMultiplier
-    const high = Math.pow(baseData, 10) * architectMultiplier
-    if (high === 0 || low === 0) return "N/A"
-    const ratio = high / low
-    if (ratio > 1e12) return "> 1 Trillion x"
-    if (ratio > 1e9) return `${(ratio / 1e9).toFixed(0)}B x`
-    if (ratio > 1e6) return `${(ratio / 1e6).toFixed(0)}M x`
-    return `${ratio.toFixed(0)}x`
-  }, [])
 
   const signalCards = [
     {
@@ -83,33 +38,6 @@ export default function FDIASection() {
       body: isEn
         ? "Architect is no longer a decorative label. It is the governance multiplier that keeps AI outputs accountable."
         : "Architect ไม่ใช่ label เชิงตกแต่งอีกต่อไป แต่เป็น governance multiplier ที่ทำให้ผลลัพธ์ AI รับผิดชอบได้",
-    },
-  ]
-
-  const equationLegend = [
-    {
-      letter: "F",
-      label: isEn ? "Future" : "Future",
-      color: "#D4A853",
-      desc: isEn ? "Strategic outcome" : "ผลลัพธ์เชิงกลยุทธ์",
-    },
-    {
-      letter: "D",
-      label: isEn ? "Data" : "Data",
-      color: "#89B4C8",
-      desc: isEn ? "Verified inputs" : "ข้อมูลที่ผ่านการตรวจสอบ",
-    },
-    {
-      letter: "I",
-      label: isEn ? "Intent" : "Intent",
-      color: "#C4745B",
-      desc: isEn ? "Exponential lift" : "แรงยกแบบ exponent",
-    },
-    {
-      letter: "A",
-      label: isEn ? "Architect" : "Architect",
-      color: "#7B9E87",
-      desc: isEn ? "Human oversight" : "มนุษย์กำกับดูแล",
     },
   ]
 
@@ -157,6 +85,7 @@ export default function FDIASection() {
   ]
 
   return (
+    <>
     <section
       id="fdia"
       aria-label="FDIA Equation"
@@ -264,23 +193,13 @@ export default function FDIASection() {
         </div>
 
         <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98 }}
-          whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={prefersReducedMotion ? undefined : { duration: 0.35 }}
-          className="mb-8"
-        >
-          <LazyFDIAFlowchart />
-        </motion.div>
-
-        <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
           {...cardSpotlight}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.003 }}
           viewport={{ once: true }}
           transition={prefersReducedMotion ? undefined : { duration: 0.3 }}
-          className="main-page-reactive-surface mb-5 rounded-3xl border border-[rgba(176,150,111,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.74),rgba(250,244,235,0.58))] p-4.5 shadow-sm dark:bg-[linear-gradient(180deg,rgba(32,28,25,0.92),rgba(24,22,21,0.94))]"
+          className="hidden"
         >
           <div className="flex items-start gap-3.5">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-warm-amber/15 bg-[#fff7ef] dark:bg-[#2b2118]">
@@ -304,92 +223,72 @@ export default function FDIASection() {
           </div>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+        <div className="flex justify-center">
           <motion.div
-            initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }}
-            {...cardSpotlight}
-            whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
-            whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.004 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={prefersReducedMotion ? undefined : { duration: 0.35 }}
-            className="main-page-reactive-surface rounded-3xl border border-[rgba(176,150,111,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.76),rgba(250,244,235,0.6))] p-4.5 shadow-sm dark:bg-[linear-gradient(180deg,rgba(32,28,25,0.92),rgba(24,22,21,0.94))]"
+            transition={prefersReducedMotion ? undefined : { duration: 0.32 }}
+            className="w-full max-w-100"
           >
-            <div className="text-center mb-4">
-              <div className="text-[11px] sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 text-muted-foreground">
-                {language === "en" ? "Operational Readout" : "ภาพอ่านค่าของระบบ"}
-              </div>
-              <div className="font-mono text-3xl md:text-4xl font-bold tracking-wider py-2">
-                <span className="text-warm-amber">F</span>
-                <span className="mx-3 text-muted-foreground">=</span>
-                <span style={{ color: "#89B4C8" }}>D</span>
-                <sup className="text-3xl md:text-4xl" style={{ color: "#C4745B" }}>
-                  I
-                </sup>
-                <span className="mx-3 text-muted-foreground">&times;</span>
-                <span style={{ color: "#7B9E87" }}>A</span>
-              </div>
-              <div className="text-sm mt-2 font-medium text-muted-foreground">
-                Future = Data ^ Intent × Architect
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 mb-4">
-              {equationLegend.map((v) => (
-                <div
-                  key={v.letter}
-                  className="flex items-center gap-2 rounded-[18px] border border-[#eee2d6] bg-[#fffaf6] p-3 dark:border-white/10 dark:bg-white/5"
-                >
-                  <span
-                    className="font-mono font-bold text-lg"
-                    style={{ color: v.color }}
+            <FDIAExplorerDialog
+              language={language}
+              trigger={
+                <div className="contents">
+                  <motion.button
+                    type="button"
+                    whileHover={prefersReducedMotion ? undefined : { y: -6, scale: 1.02, rotate: -1.4 }}
+                    whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
+                    animate={prefersReducedMotion ? undefined : { y: [0, -8, 0], x: [0, 5, 0] }}
+                    transition={prefersReducedMotion ? undefined : { duration: 6.4, repeat: Infinity, ease: "easeInOut" }}
+                    className="group relative flex w-full flex-col overflow-hidden rounded-[30px] border border-warm-amber/25 bg-[linear-gradient(180deg,rgba(255,251,245,0.96),rgba(255,246,233,0.92))] p-5 text-left shadow-[0_20px_48px_rgba(212,168,83,0.18)] transition-[border-color,box-shadow,transform] dark:bg-[linear-gradient(180deg,rgba(38,30,20,0.96),rgba(28,23,18,0.94))]"
                   >
-                    {v.letter}
-                  </span>
-                  <div>
-                    <div className="text-sm font-semibold text-foreground">
-                      {v.label}
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,168,83,0.18),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(123,158,135,0.16),transparent_34%)] opacity-80" />
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="inline-flex items-center gap-2 rounded-full border border-warm-amber/25 bg-white/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-warm-amber dark:bg-black/12">
+                          <Sparkles className="h-3.5 w-3.5" />
+                          {isEn ? "Floating FDIA" : "FDIA แบบลอยตัว"}
+                        </div>
+                        <div className="rounded-full border border-warm-amber/25 bg-warm-amber/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-warm-amber">
+                          {isEn ? "Open" : "เปิด"}
+                        </div>
+                      </div>
+
+                      <div className="mt-5 flex items-center justify-center">
+                        <div className="relative flex h-44 w-44 items-center justify-center rounded-full border border-warm-amber/30 bg-[radial-gradient(circle,rgba(255,255,255,0.94),rgba(255,247,236,0.72))] shadow-[0_26px_54px_rgba(212,168,83,0.18)] dark:bg-[radial-gradient(circle,rgba(31,26,22,0.98),rgba(22,18,16,0.88))]">
+                          <div className="absolute inset-[12%] rounded-full border border-warm-amber/18" />
+                          <div className="absolute inset-[25%] rounded-full border border-warm-sage/20" />
+                          <div className="font-mono text-[38px] font-bold tracking-[0.04em] text-foreground transition-transform duration-300 group-hover:scale-[1.04]">
+                            <span className="text-warm-amber">F</span>
+                            <span className="mx-2 text-muted-foreground">=</span>
+                            <span style={{ color: "#89B4C8" }}>D</span>
+                            <sup className="text-[0.56em]" style={{ color: "#C4745B" }}>I</sup>
+                            <span className="mx-2 text-muted-foreground">×</span>
+                            <span style={{ color: "#7B9E87" }}>A</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-5 space-y-2">
+                        <h3 className="text-lg font-semibold text-foreground sm:text-xl">
+                          {isEn ? "Open the FDIA brief and calculator on demand" : "เปิด FDIA brief และ calculator เมื่อจำเป็น"}
+                        </h3>
+                        <p className="text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
+                          {isEn
+                            ? "The main page keeps FDIA lightweight by default. Open the rebuilt dialog to inspect the blueprint, select each system layer, and run the calculator without layout breakage."
+                            : "หน้า main จะเก็บ FDIA ให้เบาและอ่านง่ายไว้ก่อน เมื่อเปิด dialog ใหม่จะดู blueprint เลือกแต่ละชั้นของระบบ และใช้ calculator ได้โดยไม่เกิดปัญหาเลย์เอาต์พัง"}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground">{v.desc}</div>
-                  </div>
+                  </motion.button>
                 </div>
-              ))}
-            </div>
-
-            <div className="rounded-[20px] border border-[#eee2d6] bg-[#fffaf6] p-4 dark:border-white/10 dark:bg-[rgba(255,255,255,0.04)]">
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                <span className="font-semibold text-warm-amber">
-                  {language === "en" ? "Key Insight:" : "ข้อมูลสำคัญ:"}
-                </span>{" "}
-                {language === "en"
-                  ? "When Intent increases from 1 to 10, the result changes by "
-                  : "เมื่อ Intent เพิ่มจาก 1 เป็น 10 ผลลัพธ์เปลี่ยนไป "}
-                <span
-                  className="font-mono font-bold"
-                  style={{ color: "#C4745B" }}
-                >
-                  {intentImpact}
-                </span>
-                {language === "en"
-                  ? " — this is the power of Exponential Thinking."
-                  : " — นี่คือพลังของ Exponential Thinking"}
-              </p>
-            </div>
+              }
+            />
           </motion.div>
-
-          <motion.div
-            initial={prefersReducedMotion ? false : { opacity: 0, x: 12 }}
-            whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={prefersReducedMotion ? undefined : { duration: 0.35, delay: 0.08 }}
-          >
-            <LazyFDIACalculatorPanel language={language} />
-          </motion.div>
-        </div>
-
-        <div className="mt-6">
-          <InfographicAccordion language={language} />
         </div>
       </div>
     </section>
+    </>
   )
 }
