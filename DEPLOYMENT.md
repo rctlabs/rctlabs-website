@@ -154,4 +154,4 @@ To rollback to previous deployment:
 For deployment support:
 - [Vercel Documentation](https://vercel.com/docs)
 - [Next.js Deployment](https://nextjs.org/docs/deployment)
-- Contact: support@rctlabs.co
+- Contact: founder@rctlabs.co

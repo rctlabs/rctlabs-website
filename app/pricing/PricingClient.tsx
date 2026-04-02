@@ -1,6 +1,5 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { Check, X, Zap, Shield, Brain, ArrowRight, Sparkles } from "lucide-react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
@@ -12,8 +11,6 @@ import { buildContactHref } from "@/lib/funnel"
 import { pricingCheckoutLinks } from "@/lib/payment-links"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { SITE_UPTIME } from "@/lib/site-config"
-
-const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 
 const subscriptionPlans = [
   {
@@ -233,7 +230,7 @@ export default function PricingPage() {
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section className="pt-28 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-300 mx-auto text-center">
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.6 }}>
+          <div>
             {checkoutSuccess ? (
               <div className="mx-auto mb-6 max-w-2xl rounded-2xl border border-warm-sage/30 bg-warm-sage/10 px-5 py-4 text-sm text-warm-charcoal dark:text-warm-light-gray">
                 {isTh
@@ -266,7 +263,7 @@ export default function PricingPage() {
                 {isTh ? "อ่าน Whitepaper ก่อนตัดสินใจ" : "Read the Whitepaper First"}
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -322,21 +319,15 @@ export default function PricingPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {tiers.map((tier, i) => {
+          {tiers.map((tier) => {
             const Icon = tier.icon
             const paymentLink = pricingCheckoutLinks[tier.id as keyof typeof pricingCheckoutLinks]
             const hasHostedCheckout = Boolean(paymentLink)
             const contactHref = buildContactHref(language, `pricing:${tier.id}:sales`)
             return (
-              <motion.div
+              <div
                 key={tier.id}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
-                whileHover={{ y: -6 }}
-                className={`relative flex flex-col rounded-2xl border overflow-hidden transition-shadow hover:shadow-xl ${
+                className={`relative flex flex-col rounded-2xl border overflow-hidden transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-xl ${
                   tier.popular
                     ? "border-warm-amber/40 bg-white dark:bg-[#1E1E1E] ring-1 ring-warm-amber/20"
                     : "border-warm-light-gray dark:border-[#2A2A2A] bg-white dark:bg-[#1E1E1E]"
@@ -438,7 +429,7 @@ export default function PricingPage() {
                     {isTh ? "ขอใบเสนอราคาและนัดคุยกับทีม" : "Request a quote and talk to the team"}
                   </Link>
                 </div>
-              </motion.div>
+              </div>
             )
           })}
           </div>
@@ -448,14 +439,7 @@ export default function PricingPage() {
       {/* ── Feature Comparison ───────────────────────────────────────── */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-[#141414]">
         <div className="max-w-250 mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
+          <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3 text-warm-charcoal dark:text-warm-light-gray">
               {isTh ? "เปรียบเทียบ" : "Compare"}{" "}
               <span className="font-display font-semibold text-warm-sage">{isTh ? "ฟีเจอร์" : "Features"}</span>
@@ -465,16 +449,9 @@ export default function PricingPage() {
                 ? "ดูรายละเอียดความสามารถของแต่ละผลิตภัณฑ์เพื่อเลือกสิ่งที่เหมาะกับองค์กรคุณ"
                 : "See detailed capabilities of each product to find the best fit for your organization."}
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            transition={{ duration: 0.5 }}
-            className="rounded-2xl border border-warm-light-gray dark:border-[#2A2A2A] overflow-hidden"
-          >
+          <div className="rounded-2xl border border-warm-light-gray dark:border-[#2A2A2A] overflow-hidden">
             {/* Table header */}
             <div className="grid grid-cols-4 text-center text-xs font-semibold uppercase tracking-wider py-4 px-4 bg-warm-cream dark:bg-[#1E1E1E] text-warm-gray dark:text-[#888]">
               <div className="text-left">{isTh ? "ฟีเจอร์" : "Feature"}</div>
@@ -501,20 +478,13 @@ export default function PricingPage() {
                 ))}
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ── Bottom CTA ───────────────────────────────────────────────── */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-warm-cream dark:bg-[#0D0D0D]">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-          transition={{ duration: 0.6 }}
-          className="max-w-200 mx-auto text-center"
-        >
+        <div className="max-w-200 mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-warm-charcoal dark:text-warm-light-gray">
             {isTh ? "ต้องการ" : "Need a"}{" "}
             <span className="font-display font-semibold text-warm-amber">
@@ -534,7 +504,7 @@ export default function PricingPage() {
             {isTh ? "พูดคุยกับทีมเรา" : "Talk to Our Team"}
             <ArrowRight size={16} />
           </Link>
-        </motion.div>
+        </div>
       </section>
 
       <Footer />

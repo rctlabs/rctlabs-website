@@ -53,7 +53,7 @@ export default function IntegrationClient() {
     {
       title: language === "th" ? "Container and runtime architecture" : "Container and runtime architecture",
       description: language === "th" ? "วางโครง deploy สำหรับ services, adapters และ observability โดยใช้ production-safe runtime boundaries." : "Design deployment boundaries for services, adapters, and observability with production-safe runtime layers.",
-      href: `${localePrefix}/research/v250-infrastructure-layer`,
+      href: `${localePrefix}/architecture`,
       icon: Boxes,
       tags: ["Containers", "Runtime", "Observability"],
     },

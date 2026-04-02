@@ -341,8 +341,8 @@ export default function SolutionsPage() {
               {[
                 { icon: Shield, t: "0.3% hallucination rate with SignedAI" },
                 { icon: Lock, t: "ED25519 + JWT RS256 + RBAC" },
-                { icon: Users, t: "99.9% availability target" },
-                { icon: Zap, t: "33 Docker containers" },
+                { icon: Users, t: "99.98% uptime SLA" },
+                { icon: Zap, t: "62 microservices" },
               ].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground"><item.icon className="w-4 h-4 text-warm-amber shrink-0" />{item.t}</li>
               ))}

@@ -1,19 +1,18 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useDeferredValue, useMemo, useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { RESEARCH_CATEGORIES } from "@/lib/constants"
 import type { BlogPost } from "@/lib/blog"
-import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { useLanguage } from "@/components/language-provider"
 import { ArrowRight, BookOpen, Clock, Search, TrendingUp, FileText, Users, Filter, FlaskConical, Newspaper, Wrench, Lightbulb, BarChart3, FileIcon, Star } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
 interface BlogPageClientProps {
   posts: BlogPost[]
+  localePrefix: string
 }
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
@@ -164,18 +163,17 @@ function ArticleCard({
   )
 }
 
-export function BlogPageClient({ posts }: BlogPageClientProps) {
+export function BlogPageClient({ posts, localePrefix }: BlogPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState<string>("")
-  const pathname = usePathname()
   const { t, language } = useLanguage()
-  const localePrefix = getLocalePrefix(resolveLocale(pathname, "en"))
+  const deferredSearchQuery = useDeferredValue(searchQuery)
   const hasEnglishFallbacks = language === "th" && posts.some((post) => !post.isLocalized)
 
   const filteredPosts = useMemo(() => {
     let result = selectedCategory === "all" ? posts : posts.filter((p) => p.category === selectedCategory)
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase()
+    if (deferredSearchQuery.trim()) {
+      const q = deferredSearchQuery.toLowerCase()
       result = result.filter(
         (p) =>
           p.title.toLowerCase().includes(q) ||
@@ -184,7 +182,15 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
       )
     }
     return result
-  }, [posts, selectedCategory, searchQuery])
+  }, [deferredSearchQuery, posts, selectedCategory])
+
+  const categoryCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const post of posts) {
+      counts.set(post.category, (counts.get(post.category) ?? 0) + 1)
+    }
+    return counts
+  }, [posts])
 
   const totalWords = posts.reduce((acc, p) => acc + (p.readTime ?? 5) * 200, 0)
   const categories = [
@@ -198,7 +204,7 @@ export function BlogPageClient({ posts }: BlogPageClientProps) {
   ]
 
   const categoryCount = (id: string) =>
-    id === "all" ? posts.length : posts.filter((p) => p.category === id).length
+    id === "all" ? posts.length : (categoryCounts.get(id) ?? 0)
 
   return (
     <main className="min-h-screen bg-background">

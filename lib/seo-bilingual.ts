@@ -20,6 +20,10 @@ import { Metadata } from "next"
 
 export type Locale = "en" | "th"
 
+function normalizeLocalePath(locale: Locale, path: string) {
+  return path === "/" ? `https://rctlabs.co/${locale}` : `https://rctlabs.co/${locale}${path}`
+}
+
 export const baseKeywords: Record<Locale, string[]> = {
   en: [
     "constitutional AI",
@@ -41,7 +45,7 @@ export const baseKeywords: Record<Locale, string[]> = {
     "PDPA AI",
     "production algorithms",
     "41 algorithms",
-    "99.9% availability target",
+    "99.98% uptime SLA",
     "reduce AI hallucination",
     "AI governance framework",
     "constitutional AI platform",
@@ -85,7 +89,7 @@ export const baseKeywords: Record<Locale, string[]> = {
     "ระบบ AI อัจฉริยะ",
     "AI กำกับดูแล",
     "ระบบ AI ธุรกิจไทย",
-    "เป้าหมายความพร้อมใช้งาน 99.9%"
+    "SLA ความพร้อมใช้งาน 99.98%"
   ]
 }
 
@@ -123,17 +127,17 @@ export const createBilingualMetadata = (
     description,
     keywords,
     alternates: {
-      canonical: `https://rctlabs.co/${locale}${path}`,
+      canonical: normalizeLocalePath(locale, path),
       languages: {
-        "en": `https://rctlabs.co/en${path}`,
-        "th": `https://rctlabs.co/th${path}`,
-        "x-default": `https://rctlabs.co/en${path}`,
+        "en": normalizeLocalePath("en", path),
+        "th": normalizeLocalePath("th", path),
+        "x-default": normalizeLocalePath("en", path),
       }
     },
     openGraph: {
       title: `${title} | RCT Labs`,
       description,
-      url: `https://rctlabs.co/${locale}${path}`,
+      url: normalizeLocalePath(locale, path),
       siteName: "RCT Labs",
       locale: locale === "th" ? "th_TH" : "en_US",
       alternateLocale: locale === "th" ? ["en_US"] : ["th_TH"],

@@ -17,94 +17,112 @@ const roadmapData = {
     {
       phase: "Phase 1", title: "Foundations, FDIA, and Core Documentation", status: "done" as const,
       color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25",
-      tasks: ["Define FDIA Equation (F = D^I x A)", "Design the 10-layer architecture model", "Document the 7 Genome system", "Publish core JITNA and architecture references"],
+      summary: "The constitutional base layer was defined before productization began.",
+      tasks: ["FDIA equation defined", "10-layer architecture + 7 Genome references published"],
     },
     {
       phase: "Phase 2", title: "HexaCore Infrastructure", status: "done" as const,
       color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25",
-      tasks: ["Complete HexaCore Phase 1 infrastructure", "Ship key manager, registry, routing, and consensus foundation", "Validate 53 targeted tests at 100% pass", "Prepare the Phase 2 implementation runway"],
+      summary: "Core infrastructure moved from concept into verifiable runtime foundations.",
+      tasks: ["Key manager, registry, routing, and consensus shipped", "53 targeted tests passed at 100%"],
     },
     {
       phase: "Phase 3", title: "Content, Schema & SEO Hardening", status: "done" as const,
       color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25",
-      tasks: ["Published 22 long-form research articles (FDIA, JITNA, RCT-7, SignedAI, PDPA, etc.)", "Enriched BlogPosting schema with image, about[], isPartOf, citation", "Author system: 2 verified entities + full author pages live", "Glossary page with DefinedTerm schemas, editorial policy, methodology"],
+      summary: "Trust, explainability, and discovery surfaces were hardened for public review.",
+      tasks: ["22 research articles + author system published", "Schema, glossary, editorial policy, and methodology hardened"],
     },
     {
       phase: "Phase 4", title: "Website Content-Complete & Pre-Launch Hardening", status: "in-progress" as const,
       color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15",
-      tasks: ["Enterprise blog design: Lucide icons, TOC sidebar, reading progress, share strip", "Schema email standardization + sitemap /authors/* routes", "Compare landing pages for key AI methodology differentiators", "Domain cutover to rctlabs.co — scheduled March 30, 2026"],
+      summary: "Launch-facing surfaces are being refined to look, read, and rank like an enterprise platform.",
+      tasks: ["Enterprise blog + compare surfaces refined", "Schema normalization and domain cutover completed"],
     },
     {
       phase: "Phase 5", title: "Production Launch & SEO Warmup", status: "planned" as const,
       color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A",
-      tasks: ["rctlabs.co DNS live — Early April 2026", "Google Search Console submission + SEO warmup begins", "Early Access program + Lifetime Plan launch", "Market test: first 30-day feedback window", "ArtentAI Product Advisor: static soft launch"],
+      summary: "The public launch window focuses on discovery, monetization, and first feedback loops.",
+      tasks: ["DNS, Search Console, and SEO warmup go live", "Early Access, Lifetime Plan, and public feedback loop open"],
     },
     {
       phase: "Phase 6", title: "Backend Phase 1 — Full RCT OS", status: "planned" as const,
       color: "#C4745B", bg: "#FEE2E2", darkBg: "#3A1E15",
-      tasks: ["ArtentAI Floating Assistant: connected to real HexaCore backend", "Regional LLM integration: Typhoon (Thai-optimized)", "Full RCT OS operational in production", "Live AI responses — not static advisor mode"],
+      summary: "This phase converts the public narrative into a real backend operating state.",
+      tasks: ["ArtentAI connects to live HexaCore backend", "Typhoon integration and GitHub public documentation wave launch"],
     },
     {
-      phase: "Phase 7", title: "Open Source & Community", status: "planned" as const,
+      phase: "Phase 7", title: "Product Launches & Adoption", status: "planned" as const,
       color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A",
-      tasks: ["GitHub Public launch — full RCT Ecosystem repo", "Full Documentation: RCT Ecosystem complete", "GitHub Coffee (Sponsors) plan active", "Community feedback loop begins"],
+      summary: "Productization shifts from system readiness to adoption readiness.",
+      tasks: ["ArtentAI and SignedAI platforms launch", "Enterprise onboarding and adoption optimization begin"],
     },
     {
-      phase: "Phase 8", title: "ArtentAI + SignedAI Platform Launch", status: "planned" as const,
+      phase: "Phase 8", title: "API Layer & Scale-Out", status: "planned" as const,
       color: "#B8A9C9", bg: "#EDE9FE", darkBg: "#2A1E3A",
-      tasks: ["ArtentAI Platform: full product launch", "SignedAI Platform: full product launch", "Complete product suite live", "Enterprise onboarding pipeline open"],
+      summary: "The platform expands from product delivery into API, cloud, and deployment scale.",
+      tasks: ["v6 API layer + OpenAPI hardening", "v7 Helm charts and multi-cloud runway"],
     },
     {
-      phase: "Phase 9", title: "TUI/CLI Developer Mode", status: "planned" as const,
+      phase: "Phase 9", title: "Developer Ecosystem & Marketplace", status: "planned" as const,
       color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25",
-      tasks: ["TUI/CLI Beta: Backend Mode test opens", "TUI/CLI Dev Mode: full developer access", "Power-user workflow toolset available", "Solo developer toolchain complete"],
+      summary: "The final layer broadens the ecosystem around developers, adapters, and marketplace motion.",
+      tasks: ["TUI/CLI beta and power-user toolchain mature", "v8 marketplace + 20+ adapters target within 2027"],
     },
   ],
   th: [
     {
       phase: "Phase 1", title: "Foundation, FDIA และเอกสารแกนหลัก", status: "done" as const,
       color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25",
-      tasks: ["กำหนดสมการ FDIA (F = D^I x A)", "ออกแบบโมเดลสถาปัตยกรรม 10 ชั้น", "จัดทำเอกสารระบบ 7 Genome", "เผยแพร่เอกสาร JITNA และ architecture แกนหลัก"],
+      summary: "ชั้นรัฐธรรมนูญของระบบถูกกำหนดให้ชัดก่อนเริ่ม productization จริง",
+      tasks: ["กำหนด FDIA และโครงสร้าง 10 ชั้น", "เผยแพร่เอกสาร 7 Genome และ JITNA แกนหลัก"],
     },
     {
       phase: "Phase 2", title: "HexaCore Infrastructure", status: "done" as const,
       color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25",
-      tasks: ["ปิดงาน HexaCore Phase 1 infrastructure", "ส่งมอบ key manager, registry, routing และ consensus foundation", "ยืนยัน targeted tests 53 รายการผ่าน 100%", "เตรียม runway สำหรับการขึ้น Phase 2"],
+      summary: "โครงสร้างพื้นฐานหลักขยับจากแนวคิดไปสู่ runtime ที่ตรวจสอบได้จริง",
+      tasks: ["ส่งมอบ key manager, registry, routing และ consensus", "targeted tests 53 รายการผ่าน 100%"],
     },
     {
       phase: "Phase 3", title: "Content, Schema และการเสริมความแข็งแกร่ง SEO", status: "done" as const,
       color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25",
-      tasks: ["เผยแพร่บทความวิจัยเชิงลึก 22 บทความ (FDIA, JITNA, RCT-7, SignedAI, PDPA ฯลฯ)", "เสริม BlogPosting schema ด้วย image, about[], isPartOf, citation", "ระบบ Author: 2 entities ตรวจสอบแล้ว พร้อมหน้า /authors/* ครบถ้วน", "หน้า Glossary พร้อม DefinedTerm schema, editorial policy และ methodology"],
+      summary: "ผิวหน้า trust, explainability และ discovery ถูกเสริมให้พร้อมต่อการตรวจสอบภายนอก",
+      tasks: ["บทความวิจัย 22 ชิ้น + ระบบผู้เขียนเผยแพร่แล้ว", "schema, glossary, editorial policy และ methodology ถูก harden"],
     },
     {
       phase: "Phase 4", title: "เว็บไซต์ Content-Complete และ Pre-Launch Hardening", status: "in-progress" as const,
       color: "#D4A853", bg: "#FEF3C7", darkBg: "#3A2E15",
-      tasks: ["Blog design ระดับองค์กร: Lucide icons, TOC sidebar, reading progress, share strip", "มาตรฐาน schema email + sitemap เส้นทาง /authors/*", "หน้า Compare สำหรับจุดต่างสำคัญของ AI methodology", "Domain cutover ไปยัง rctlabs.co — กำหนด 30 มีนาคม 2026"],
+      summary: "พื้นผิวก่อนเปิดตัวกำลังถูกเก็บให้ดูและอ่านแบบ enterprise platform มากขึ้น",
+      tasks: ["blog และ compare surfaces ถูกยกระดับ", "schema normalization และ domain cutover เสร็จแล้ว"],
     },
     {
       phase: "Phase 5", title: "เปิดตัว Production & SEO Warmup", status: "planned" as const,
       color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A",
-      tasks: ["DNS rctlabs.co เปิดใช้งาน — ต้นเดือน เม.ย. 2026", "ส่ง Google Search Console + เริ่มกระบวนการ SEO warmup", "เปิดแผนงาน Early Access + Lifetime Plan", "Market test: ช่วง feedback 30 วันแรก", "ArtentAI Product Advisor: เปิดตัว static mode รอบแรก"],
+      summary: "ช่วงเปิดตัวสาธารณะจะเน้น discovery, monetization และ feedback loop ชุดแรก",
+      tasks: ["DNS, Search Console และ SEO warmup เปิดใช้งาน", "Early Access, Lifetime Plan และ public feedback loop เริ่มทำงาน"],
     },
     {
       phase: "Phase 6", title: "Backend Phase 1 — Full RCT OS", status: "planned" as const,
       color: "#C4745B", bg: "#FEE2E2", darkBg: "#3A1E15",
-      tasks: ["ArtentAI Floating Assistant: เชื่อมต่อ HexaCore backend จริง", "เชื่อมต่อ Regional LLM: Typhoon (Thai-optimized)", "Full RCT OS เปิดใช้งานในสภาพแวดล้อม production", "Live AI response จริง — ไม่ใช่ static mode อีกต่อไป"],
+      summary: "เฟสนี้คือการย้ายระบบจาก narrative สาธารณะไปสู่ backend operating state ที่ทำงานจริง",
+      tasks: ["ArtentAI เชื่อมต่อ HexaCore backend จริง", "Typhoon integration และคลื่นเอกสาร GitHub Public เปิดตัว"],
     },
     {
-      phase: "Phase 7", title: "Open Source & Community", status: "planned" as const,
+      phase: "Phase 7", title: "Product Launches & Adoption", status: "planned" as const,
       color: "#89B4C8", bg: "#DBEAFE", darkBg: "#152A3A",
-      tasks: ["เปิด GitHub Public — repo RCT Ecosystem ทั้งหมด", "Full Documentation: RCT Ecosystem สมบูรณ์", "GitHub Coffee (Sponsors) เปิดใช้งาน", "วงรอบ Community feedback เริ่มต้น"],
+      summary: "น้ำหนักงานขยับจาก system readiness ไปสู่ adoption readiness",
+      tasks: ["เปิดตัว ArtentAI และ SignedAI Platform", "เริ่ม onboarding และ adoption optimization"],
     },
     {
-      phase: "Phase 8", title: "เปิดตัว ArtentAI + SignedAI Platform", status: "planned" as const,
+      phase: "Phase 8", title: "API Layer & Scale-Out", status: "planned" as const,
       color: "#B8A9C9", bg: "#EDE9FE", darkBg: "#2A1E3A",
-      tasks: ["ArtentAI Platform: เปิดตัวผลิตภัณฑ์เต็มรูปแบบ", "SignedAI Platform: เปิดตัวผลิตภัณฑ์เต็มรูปแบบ", "Product suite ครบ: เปิดใช้งานทั้งหมด", "Enterprise onboarding pipeline เปิดรับ"],
+      summary: "แพลตฟอร์มจะขยายจาก product delivery ไปสู่ API และ deployment scale",
+      tasks: ["v6 API layer + OpenAPI hardening", "v7 Helm charts และ multi-cloud runway"],
     },
     {
-      phase: "Phase 9", title: "TUI/CLI Developer Mode", status: "planned" as const,
+      phase: "Phase 9", title: "Developer Ecosystem & Marketplace", status: "planned" as const,
       color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25",
-      tasks: ["TUI/CLI Beta: เริ่ม Test Backend Mode", "TUI/CLI Dev Mode: เข้าถึงได้เต็มรูปแบบ", "Power-user workflow toolset พร้อมใช้", "Developer toolchain แบบ solo ครบถ้วนสมบูรณ์"],
+      summary: "ชั้นสุดท้ายคือการขยาย ecosystem รอบนักพัฒนา adapter และ marketplace motion",
+      tasks: ["TUI/CLI beta และ power-user toolchain โตเต็มขึ้น", "เป้า v8 marketplace + 20+ adapters ภายในปี 2027"],
     },
   ],
 }
@@ -233,31 +251,53 @@ export default function RoadmapSection() {
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {roadmap.map((item, index) => {
             const StatusIcon = statusIcons[item.status]
+            const statusTone = item.status === "done"
+              ? isDark ? "border-warm-sage/30 bg-warm-sage/10 text-warm-sage" : "border-warm-sage/25 bg-warm-sage/10 text-warm-sage"
+              : item.status === "in-progress"
+                ? isDark ? "border-warm-amber/30 bg-warm-amber/10 text-warm-amber" : "border-warm-amber/25 bg-warm-amber/10 text-[#9a6d1e]"
+                : isDark ? "border-[#27445a] bg-[#162633] text-[#89B4C8]" : "border-[#d8e5ee] bg-[#f4f9fc] text-[#4f7284]"
+
             return (
               <motion.div
                 key={item.phase}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.5, delay: index * 0.06 }}
-                className={`flex h-full flex-col rounded-[24px] border p-6 sm:p-7 transition-all duration-300 ${
+                className={`group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-6 sm:p-7 transition-all duration-300 ${
                   isDark
-                    ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]"
-                    : "bg-white border-warm-light-gray hover:shadow-[0_10px_32px_rgba(0,0,0,0.07)]"
-                } ${item.status === "in-progress" ? "ring-2 ring-warm-amber/30" : ""}`}
+                    ? "border-border/80 bg-card/90 shadow-[0_14px_36px_rgba(0,0,0,0.2)] hover:border-warm-amber/20 hover:shadow-[0_22px_48px_rgba(0,0,0,0.26)]"
+                    : "border-[#e6ddd0] bg-white shadow-[0_12px_32px_rgba(84,61,31,0.05)] hover:border-warm-amber/30 hover:shadow-[0_20px_44px_rgba(84,61,31,0.08)]"
+                } ${item.status === "in-progress" ? "ring-1 ring-warm-amber/25" : ""}`}
               >
-                <div className="mb-5 flex items-start gap-4">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border text-xs font-bold" style={{ backgroundColor: isDark ? item.darkBg : item.bg, color: item.color, borderColor: `${item.color}33` }}>
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm-amber/30 to-transparent opacity-70" />
+                <div className="pointer-events-none absolute inset-0 bg-radial from-warm-amber/6 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                <div className="mb-5 flex items-start justify-between gap-4">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] border text-xs font-bold shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]" style={{ backgroundColor: isDark ? item.darkBg : item.bg, color: item.color, borderColor: `${item.color}33` }}>
                     {item.phase.replace("Phase ", "P")}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className={`text-base font-bold leading-snug ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{item.title}</h3>
-                    <div className="mt-1.5 flex items-center gap-1.5">
-                      <StatusIcon size={12} style={{ color: item.color }} />
-                      <span className="text-xs font-medium" style={{ color: item.color }}>{statusLabels[item.status]}</span>
-                    </div>
+                  <span className={`rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] ${statusTone}`}>
+                    {statusLabels[item.status]}
+                  </span>
+                </div>
+
+                <div className="relative min-w-0 flex-1">
+                  <div className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-muted"}`}>
+                    {isEn ? "Delivery phase" : "ช่วงส่งมอบ"}
+                  </div>
+                  <h3 className={`mt-2 text-xl font-bold leading-tight transition ${isDark ? "text-warm-light-gray group-hover:text-warm-amber" : "text-warm-charcoal group-hover:text-warm-amber"}`}>
+                    {item.title}
+                  </h3>
+                  <p className={`mt-3 text-sm leading-7 ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>
+                    {item.summary}
+                  </p>
+                  <div className="mt-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-medium" style={{ color: item.color, borderColor: `${item.color}2E`, backgroundColor: isDark ? `${item.color}14` : `${item.color}10` }}>
+                    <StatusIcon size={12} />
+                    <span>{item.phase}</span>
                   </div>
                 </div>
-                <div className="mt-1 space-y-2.5">
+
+                <div className="mt-5 space-y-2.5">
                   {item.tasks.map((task, taskIndex) => (
-                    <div key={taskIndex} className="flex items-start gap-2.5">
+                    <div key={taskIndex} className={`flex items-start gap-2.5 rounded-xl border px-3 py-3 ${isDark ? "border-border/70 bg-background/20" : "border-[#eee2d6] bg-[#fffaf6]"}`}>
                       {item.status === "done"
                         ? <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-warm-sage" />
                         : <div className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
@@ -269,6 +309,18 @@ export default function RoadmapSection() {
                       }`}>{task}</span>
                     </div>
                   ))}
+                </div>
+
+                <div className="mt-auto pt-6">
+                  <div className={`flex items-center justify-between border-t pt-4 text-sm font-semibold ${isDark ? "border-border/80 text-warm-light-gray" : "border-[#eee2d6] text-warm-charcoal"}`}>
+                    <span className="inline-flex items-center gap-2">
+                      <span>{isEn ? "Key deliverables" : "สิ่งส่งมอบหลัก"}</span>
+                      <ArrowRight size={16} className="text-warm-amber" />
+                    </span>
+                    <span className={`text-[10px] uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-muted"}`}>
+                      {item.tasks.length} {isEn ? "items" : "รายการ"}
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             )
@@ -299,38 +351,59 @@ export default function RoadmapSection() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {factors.map((factor, index) => {
               const Icon = factor.icon
+              const badgeTone = factor.impactType === "positive"
+                ? isDark ? "border-warm-amber/30 bg-warm-amber/10 text-warm-amber" : "border-warm-amber/25 bg-warm-amber/10 text-[#9a6d1e]"
+                : isDark ? "border-border bg-background/60 text-warm-dim" : "border-[#e6ddd0] bg-[#fffaf6] text-warm-gray"
               return (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: index * 0.08 }}
-                  className={`rounded-[20px] border p-5 sm:p-6 transition-all duration-300 ${
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-5 sm:p-6 transition-all duration-300 ${
                     isDark
-                      ? "bg-warm-charcoal border-border hover:shadow-[0_6px_24px_rgba(0,0,0,0.25)]"
-                      : "bg-white border-warm-light-gray hover:shadow-[0_8px_28px_rgba(0,0,0,0.06)]"
+                      ? "border-border/80 bg-card/90 shadow-[0_12px_30px_rgba(0,0,0,0.18)] hover:border-warm-amber/20 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)]"
+                      : "border-[#e6ddd0] bg-white shadow-[0_12px_28px_rgba(84,61,31,0.045)] hover:border-warm-amber/30 hover:shadow-[0_18px_36px_rgba(84,61,31,0.075)]"
                   } ${factor.highlight ? "ring-1 ring-warm-amber/25" : ""}`}
                 >
-                  <div className="mb-4 flex items-center gap-3">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm-amber/30 to-transparent opacity-70" />
+                  <div className="pointer-events-none absolute inset-0 bg-radial from-warm-amber/6 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                  <div className="mb-5 flex items-start justify-between gap-3">
+                    <div className={`flex h-14 w-14 items-center justify-center rounded-[18px] border shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] ${
                       factor.impactType === "positive"
-                        ? isDark ? "bg-dark-amber-bg" : "bg-amber-50"
-                        : isDark ? "bg-warm-charcoal/80 border border-border" : "bg-warm-cream border border-warm-light-gray"
+                        ? isDark ? "border-warm-amber/25 bg-dark-amber-bg" : "border-[#eee2d6] bg-[#fffaf6]"
+                        : isDark ? "border-border bg-background/70" : "border-[#eee2d6] bg-[#fffaf6]"
                     }`}>
                       <Icon size={18} className={factor.impactType === "positive" ? "text-warm-amber" : isDark ? "text-warm-dim" : "text-warm-gray"} />
                     </div>
-                    <div>
-                      <h3 className={`text-sm font-bold leading-tight ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
-                        {factor.title}
-                      </h3>
-                      <span className={`mt-0.5 inline-block text-[10px] font-semibold uppercase tracking-wider ${
-                        factor.impactType === "positive" ? "text-warm-amber" : isDark ? "text-warm-dim" : "text-warm-gray"
-                      }`}>
-                        {factor.impactType === "positive" ? "⚡ " : "⚠ "}{factor.impact}
+                    <span className={`rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] ${badgeTone}`}>
+                      {factor.impact}
+                    </span>
+                  </div>
+
+                  <div className="relative flex-1">
+                    <div className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-muted"}`}>
+                      {isEn ? "Timeline variable" : "ตัวแปรของไทม์ไลน์"}
+                    </div>
+                    <h3 className={`mt-2 text-xl font-bold leading-tight transition ${isDark ? "text-warm-light-gray group-hover:text-warm-amber" : "text-warm-charcoal group-hover:text-warm-amber"}`}>
+                      {factor.title}
+                    </h3>
+                  </div>
+
+                  <p className={`mt-4 text-sm leading-7 ${isEn ? "" : "subtitle-th"} ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>
+                    {factor.description}
+                  </p>
+
+                  <div className="mt-auto pt-6">
+                    <div className={`flex items-center justify-between border-t pt-4 text-sm font-semibold ${isDark ? "border-border/80 text-warm-light-gray" : "border-[#eee2d6] text-warm-charcoal"}`}>
+                      <span className="inline-flex items-center gap-2">
+                        <span>{isEn ? "Timeline influence" : "ผลต่อไทม์ไลน์"}</span>
+                        <ArrowRight size={16} className="text-warm-amber" />
+                      </span>
+                      <span className={`text-[10px] uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-muted"}`}>
+                        {factor.impactType === "positive" ? (isEn ? "accelerator" : "ตัวเร่ง") : (isEn ? "risk factor" : "ปัจจัยเสี่ยง")}
                       </span>
                     </div>
                   </div>
-                  <p className={`text-sm leading-relaxed ${isEn ? "" : "subtitle-th"} ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>
-                    {factor.description}
-                  </p>
                 </motion.div>
               )
             })}
@@ -342,13 +415,13 @@ export default function RoadmapSection() {
           initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
           className="mt-10"
         >
-          <div className={`relative overflow-hidden rounded-[24px] border p-7 sm:p-8 ${
+          <div className={`relative overflow-hidden rounded-3xl border p-7 sm:p-8 ${
             isDark
               ? "bg-warm-charcoal border-warm-amber/20 shadow-[0_0_60px_rgba(212,168,83,0.06)]"
               : "bg-white border-warm-amber/30 shadow-[0_8px_40px_rgba(212,168,83,0.08)]"
           }`}>
             {/* Amber left accent bar */}
-            <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-[24px] bg-gradient-to-b from-warm-amber/80 via-warm-amber to-warm-amber/40" />
+            <div className="absolute bottom-0 left-0 top-0 w-1 rounded-l-3xl bg-linear-to-b from-warm-amber/80 via-warm-amber to-warm-amber/40" />
 
             <div className="pl-2">
               <div className="mb-4 flex items-center gap-2">
@@ -360,8 +433,8 @@ export default function RoadmapSection() {
 
               <blockquote className={`mb-6 text-base sm:text-lg font-medium italic leading-relaxed ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
                 {isEn
-                  ? "\"Regardless of external support, funding, or feedback — this project will be completed. The target is end of 2026 to early 2027, even as a fully solo endeavour.\""
-                  : "\"ไม่ว่าจะมีใครสนับสนุนหรือไม่ ไม่ว่าจะมีเสียงตอบรับหรือเปล่า — งานนี้จะแล้วเสร็จ เป้าหมายคือสิ้นปี 2026 ถึงต้นปี 2027 แม้จะพัฒนาคนเดียวทั้งหมด\""}
+                  ? "\"Regardless of external support, funding, or feedback — this project will be completed. The target is within 2027, even as a fully solo endeavour.\""
+                  : "\"ไม่ว่าจะมีใครสนับสนุนหรือไม่ ไม่ว่าจะมีเสียงตอบรับหรือเปล่า — งานนี้จะแล้วเสร็จ เป้าหมายคือภายในปี 2027 แม้จะพัฒนาคนเดียวทั้งหมด\""}
               </blockquote>
 
               <div className={`grid gap-4 sm:grid-cols-2 mb-6 p-4 rounded-2xl border ${isDark ? "bg-dark-900/50 border-border" : "bg-warm-cream border-warm-light-gray"}`}>
@@ -397,8 +470,8 @@ export default function RoadmapSection() {
                 <div className="h-1.5 w-1.5 rounded-full bg-warm-amber/60" />
                 <span className={isEn ? "" : "subtitle-th"}>
                   {isEn
-                    ? "Timeline accounts for legal, team, and external factors — target remains end of 2026 regardless."
-                    : "กำหนดการคำนวณจากปัจจัยกฎหมาย ทีม และสิ่งแวดล้อมภายนอกแล้ว — เป้าหมายสิ้นปี 2026 ยังคงอยู่"}
+                    ? "The schedule already accounts for legal, staffing, and external variables — the completion target remains within 2027."
+                    : "กำหนดการคำนวณจากปัจจัยกฎหมาย ทีม และสิ่งแวดล้อมภายนอกแล้ว — เป้าหมายการปิดงานยังอยู่ภายในปี 2027"}
                 </span>
               </div>
             </div>

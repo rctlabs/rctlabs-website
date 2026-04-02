@@ -9,28 +9,29 @@ import { getLocaleFromPathname } from "@/lib/i18n"
 import { FlaskConical, ArrowRight } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import OptimizedImage from "@/components/ui/optimized-image"
+import { pixelIcons } from "@/lib/pixel-icons"
 
 const features = [
   {
-    iconSrc: "/images/pixel-art-doc.png", color: "#D4A853",
+    iconSrc: pixelIcons.document, color: "#D4A853",
     titleEn: "62,205+ Test Cases", titleTh: "62,205+ Test Cases",
     descEn: "Comprehensive test suite covering all 9 tiers of the algorithm architecture — from basic intent parsing to self-evolving orchestration.",
     descTh: "ชุดทดสอบครอบคลุมทั้ง 9 Tiers ของสถาปัตยกรรม Algorithm — ตั้งแต่ Basic Intent Parsing ถึง Self-Evolving Orchestration",
   },
   {
-    iconSrc: "/images/pixel-art-puzzle.png", color: "#7B9E87",
+    iconSrc: pixelIcons.layers, color: "#7B9E87",
     titleEn: "9-Tier Validation", titleTh: "9-Tier Validation",
     descEn: "Each algorithm tier has dedicated test suites ensuring correctness, performance, and integration compatibility.",
     descTh: "แต่ละ Algorithm Tier มีชุดทดสอบเฉพาะเพื่อรับรองความถูกต้อง ประสิทธิภาพ และความเข้ากันได้",
   },
   {
-    iconSrc: "/images/pixel-art-chat.png", color: "#C4745B",
+    iconSrc: pixelIcons.chart, color: "#C4745B",
     titleEn: "Performance Benchmarking", titleTh: "Performance Benchmarking",
     descEn: "Automated benchmarking against industry standards — latency, throughput, accuracy, and resource utilization metrics.",
     descTh: "Benchmarking อัตโนมัติเทียบกับมาตรฐานอุตสาหกรรม — Latency, Throughput, Accuracy และ Resource Utilization",
   },
   {
-    iconSrc: "/images/pixel-art-shield.png", color: "#89B4C8",
+    iconSrc: pixelIcons.shield, color: "#89B4C8",
     titleEn: "Regression Testing", titleTh: "Regression Testing",
     descEn: "Continuous regression testing ensures new updates don't break existing functionality across the entire ecosystem.",
     descTh: "Regression Testing อย่างต่อเนื่องรับประกันว่าอัปเดตใหม่ไม่ทำลายฟังก์ชันที่มีอยู่ทั้ง Ecosystem",
@@ -41,13 +42,15 @@ export default function RCTLabsPage() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const isTh = locale === "th"
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const localHref = (href: string) => `${localePrefix}${href}`
 
   return (
     <main className="min-h-screen bg-background" id="main-content">
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
-        { name: "Home", url: "https://rctlabs.co" },
-        { name: isTh ? "ผลิตภัณฑ์" : "Products", url: "https://rctlabs.co/products" },
-        { name: "RCTLabs", url: "https://rctlabs.co/products/rctlabs" },
+        { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+        { name: isTh ? "ผลิตภัณฑ์" : "Products", url: `https://rctlabs.co${localePrefix}/products` },
+        { name: "RCTLabs", url: `https://rctlabs.co${localePrefix}/products/rctlabs` },
       ])) }} />
       <Navbar />
 
@@ -129,10 +132,10 @@ export default function RCTLabsPage() {
             {isTh ? "สำรวจผลิตภัณฑ์อื่น" : "Explore Other Products"}
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/products/artent-ai" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-colors" style={{ backgroundColor: "#B8A9C9" }}>
+            <Link href={localHref("/products/artent-ai")} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-colors" style={{ backgroundColor: "#B8A9C9" }}>
               Artent AI <ArrowRight size={16} />
             </Link>
-            <Link href="/products/signed-ai" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-semibold text-sm hover:bg-muted transition-colors">
+            <Link href={localHref("/products/signed-ai")} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-semibold text-sm hover:bg-muted transition-colors">
               SignedAI
             </Link>
           </div>

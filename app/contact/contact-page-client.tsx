@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import ContactForm from "@/components/contact-form"
 import { useLanguage } from "@/components/language-provider"
 import { buildContactHref, getFunnelIntent } from "@/lib/funnel"
+import { GENERAL_CONTACT_EMAIL, GENERAL_CONTACT_MAILTO } from "@/lib/contact"
 import Link from "next/link"
 import { Mail, MessageSquare, MapPin } from "lucide-react"
 import { useSearchParams } from "next/navigation"
@@ -20,8 +21,8 @@ export default function ContactPageClient() {
     {
       icon: Mail,
       label: isTh ? "อีเมล" : "Email",
-      value: "owner@rctlabs.co",
-      href: "mailto:owner@rctlabs.co",
+      value: GENERAL_CONTACT_EMAIL,
+      href: GENERAL_CONTACT_MAILTO,
     },
     {
       icon: MapPin,
@@ -100,7 +101,7 @@ export default function ContactPageClient() {
           <div className="text-center space-y-4">
             <h3 className="text-xl font-semibold text-foreground">{isTh ? "สอบถามทั่วไป" : "General Inquiries"}</h3>
             <p className="text-muted-foreground">{isTh ? "สำหรับคำถามทั่วไปและข้อมูลเกี่ยวกับ RCT Labs" : "For general questions and information about RCT Labs"}</p>
-            <p className="text-sm font-medium text-accent">owner@rctlabs.co</p>
+            <p className="text-sm font-medium text-accent">{GENERAL_CONTACT_EMAIL}</p>
           </div>
           <div className="text-center space-y-4">
             <h3 className="text-xl font-semibold text-foreground">{isTh ? "พาร์ตเนอร์" : "Partnership"}</h3>

@@ -1,19 +1,31 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import { Shield, Clock, RefreshCw, Brain, FileText } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "Editorial Policy — RCT Labs | AI Disclosure, Review Process & Update Cadence",
-  description: "RCT Labs editorial policy: all articles written by verified authors with first-hand expertise. Includes AI disclosure policy, review process, update cadence, and factual accuracy commitment.",
-  alternates: { canonical: "https://rctlabs.co/en/editorial-policy" },
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
+  return createBilingualMetadata(
+    locale,
+    "Editorial Policy — AI Disclosure, Review Process & Update Cadence",
+    "นโยบายบรรณาธิการ — การเปิดเผยการใช้ AI กระบวนการรีวิว และรอบการอัปเดต",
+    "RCT Labs editorial policy: all articles written by verified authors with first-hand expertise. Includes AI disclosure policy, review process, update cadence, and factual accuracy commitment.",
+    "นโยบายบรรณาธิการของ RCT Labs: ทุกบทความเขียนโดยผู้เขียนที่ยืนยันตัวตนและมีประสบการณ์ตรง ครอบคลุมการเปิดเผยการใช้ AI กระบวนการรีวิว รอบการอัปเดต และความมุ่งมั่นด้านความถูกต้องของข้อมูล",
+    "/editorial-policy",
+    ["editorial policy", "AI disclosure", "review process", "content governance"]
+  )
 }
 
 export default async function EditorialPolicyPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumb = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Editorial Policy", url: "https://rctlabs.co/en/editorial-policy" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Editorial Policy", url: `https://rctlabs.co${localePrefix}/editorial-policy` },
   ])
 
   return (
@@ -130,7 +142,7 @@ export default async function EditorialPolicyPage() {
             </div>
             <p className="text-warm-dim text-sm mt-4">
               Report outdated information to{" "}
-              <a href="mailto:editorial@rctlabs.co" className="text-warm-amber hover:underline">editorial@rctlabs.co</a>
+              <a href="mailto:founder@rctlabs.co" className="text-warm-amber hover:underline">founder@rctlabs.co</a>
             </p>
           </div>
 

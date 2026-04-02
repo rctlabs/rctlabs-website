@@ -1,14 +1,24 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowRight, CheckCircle, XCircle, MinusCircle, Shield, Zap, Database } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "Constitutional AI vs RAG — Hallucination Prevention Comparison | RCT Labs",
-  description: "RAG grounds AI responses in documents. Constitutional AI constrains what the system can output. This comparison explains the architectural difference, use cases, and why combining both achieves 0.3% hallucination in the RCT Ecosystem.",
-  alternates: { canonical: "https://rctlabs.co/en/compare/constitutional-ai-vs-rag" },
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
+  return createBilingualMetadata(
+    locale,
+    "Constitutional AI vs RAG — Hallucination Prevention Comparison",
+    "Constitutional AI vs RAG — เปรียบเทียบการลด Hallucination",
+    "RAG grounds AI responses in documents. Constitutional AI constrains what the system can output. This comparison explains the architectural difference, use cases, and why combining both achieves 0.3% hallucination in the RCT Ecosystem.",
+    "RAG ช่วยยึดคำตอบกับเอกสาร ส่วน Constitutional AI ควบคุมสิ่งที่ระบบสามารถปล่อยออกมาได้ หน้านี้อธิบายความต่างเชิงสถาปัตยกรรม use cases และเหตุผลที่การรวมทั้งสองแนวทางช่วยให้ RCT Ecosystem ทำ hallucination ได้เพียง 0.3%",
+    "/compare/constitutional-ai-vs-rag",
+    ["constitutional AI vs RAG", "hallucination prevention", "AI safety comparison"]
+  )
 }
 
 const COMPARE_FAQS = [
@@ -54,10 +64,12 @@ const comparison = [
 ]
 
 export default async function CompareConstitutionalAIvsRAG() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumb = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Compare", url: "https://rctlabs.co/en/compare" },
-    { name: "Constitutional AI vs RAG", url: "https://rctlabs.co/en/compare/constitutional-ai-vs-rag" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Compare", url: `https://rctlabs.co${localePrefix}/compare` },
+    { name: "Constitutional AI vs RAG", url: `https://rctlabs.co${localePrefix}/compare/constitutional-ai-vs-rag` },
   ])
   const faq = getFAQSchema(COMPARE_FAQS)
 
@@ -136,7 +148,7 @@ export default async function CompareConstitutionalAIvsRAG() {
                 verdictColor: "text-green-400",
               },
             ].map(({ icon: Icon, title, color, points, verdict, verdictColor }) => (
-              <div key={title} className={`rounded-2xl border bg-gradient-to-br ${color} to-transparent p-6`}>
+              <div key={title} className={`rounded-2xl border bg-linear-to-br ${color} to-transparent p-6`}>
                 <Icon className="w-8 h-8 text-warm-dim mb-4" />
                 <h2 className="text-lg font-bold text-warm-light-gray mb-4">{title}</h2>
                 <ul className="space-y-2 mb-6">

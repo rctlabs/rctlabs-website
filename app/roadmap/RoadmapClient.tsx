@@ -56,7 +56,7 @@ export default function RoadmapClient() {
       ]}
       stats={[
         { label: language === "th" ? "Planned phases" : "Planned phases", value: "9", detail: language === "th" ? "public roadmap sequence" : "public roadmap sequence" },
-        { label: language === "th" ? "Current emphasis" : "Current emphasis", value: language === "th" ? "Phase 4" : "Phase 4", detail: language === "th" ? "content-complete and pre-launch hardening" : "content-complete and pre-launch hardening" },
+        { label: language === "th" ? "Current emphasis" : "Current emphasis", value: language === "th" ? "Phase 4 → 5" : "Phase 4 → 5", detail: language === "th" ? "launch hardening, trust surfaces, and early rollout" : "launch hardening, trust surfaces, and early rollout" },
         { label: language === "th" ? "Primary role" : "Primary role", value: language === "th" ? "Track" : "Track", detail: language === "th" ? "movement and milestones" : "movement and milestones" },
         { label: language === "th" ? "Connected layers" : "Connected layers", value: "Research / Changelog / Community", detail: language === "th" ? "evidence, history, feedback" : "evidence, history, feedback" },
       ]}
@@ -70,7 +70,7 @@ export default function RoadmapClient() {
       <ResourceSection
         eyebrow={language === "th" ? "Connected routes" : "Connected routes"}
         title={language === "th" ? "หน้าที่ควรเปิดคู่กับ roadmap" : "The pages that make the roadmap more useful"}
-        description={language === "th" ? "Roadmap มีค่ามากขึ้นเมื่อดูร่วมกับประวัติการส่งมอบ หลักฐานรีลีส และ feedback จากชุมชน." : "The roadmap becomes more useful when paired with delivery history, release evidence, and community feedback."}
+        description={language === "th" ? "Roadmap มีค่ามากขึ้นเมื่อดูร่วมกับประวัติการส่งมอบ หลักฐานรีลีส และ feedback จากชุมชน ส่วน card ชุดนี้ถูกยกระดับให้เป็น pattern ตั้งต้นสำหรับ resource cards ชุดอื่นต่อไปด้วย" : "The roadmap becomes more useful when paired with delivery history, release evidence, and community feedback. This card set is also upgraded as the starting pattern for broader resource-card reuse."}
       >
         <ResourceCardGrid cards={routes} />
       </ResourceSection>

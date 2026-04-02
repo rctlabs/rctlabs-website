@@ -233,7 +233,7 @@ Contributions welcome! Please follow these guidelines:
 
 ## Support
 
-For support, visit `/contact` or email hello@rctlabs.co
+For support, visit `/contact` or email founder@rctlabs.co
 
 ---
 

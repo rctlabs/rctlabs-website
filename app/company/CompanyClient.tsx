@@ -18,8 +18,8 @@ export default function CompanyClient() {
       icon: Briefcase,
       title: isTh ? "Careers" : "Careers",
       description: isTh
-        ? "ร่วมงานกับทีมที่กำลังสร้าง intent-driven AI infrastructure"
-        : "Join the team shaping intent-driven AI infrastructure.",
+        ? "เปิดบทสนทนาเรื่อง collaboration, advisory และ future opportunities กับ RCT Labs"
+        : "Open collaboration, advisory, and future-opportunity conversations with RCT Labs.",
       href: `${localePrefix}/company/careers`,
     },
     {
@@ -28,7 +28,7 @@ export default function CompanyClient() {
       description: isTh
         ? "ดูข่าวสาร company facts และ media references ของ RCT Labs"
         : "Review news, company facts, and media references about RCT Labs.",
-      href: `${localePrefix}/company/press`,
+      href: `${localePrefix}/press`,
     },
     {
       icon: Users,
@@ -78,7 +78,7 @@ export default function CompanyClient() {
       description: isTh ? "ดูว่าคำอ้างอิงด้าน performance และ reliability ถูกสนับสนุนอย่างไร" : "See how performance and reliability claims are supported.",
     },
     {
-      href: `${localePrefix}/company/press`,
+      href: `${localePrefix}/press`,
       title: isTh ? "ดู Press & Media" : "Open Press & Media",
       description: isTh ? "ดู company facts และ reference links สำหรับสื่อและ analyst" : "Review company facts and reference links for media and analysts.",
     },

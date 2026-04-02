@@ -3,13 +3,12 @@
 import { motion, useReducedMotion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
-import { usePathname } from "next/navigation"
 import { LazyEcosystemOverview } from "@/components/diagrams/lazy-diagram-wrapper"
 import SectionPreviewCard from "@/components/section-preview-card"
 import SectionHeading from "@/components/section-heading"
 import { useMounted } from "@/hooks/use-mounted"
 import { pixelIcons as pixelIconPaths } from "@/lib/pixel-icons"
-import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
+import { getLocalePrefix } from "@/lib/i18n"
 
 const PIXEL_ARCH = pixelIconPaths.architecture
 
@@ -76,21 +75,24 @@ const deepDiveCards = [
   },
 ]
 
-export default function OverviewSection() {
+type OverviewSectionProps = {
+  locale: "en" | "th"
+}
+
+export default function OverviewSection({ locale }: OverviewSectionProps) {
   const { language } = useLanguage()
-  const pathname = usePathname()
   const { resolvedTheme } = useTheme()
   const mounted = useMounted()
   const isDark = mounted && resolvedTheme === "dark"
   const prefersReducedMotion = useReducedMotion()
-  const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
+  const localePrefix = getLocalePrefix(locale)
 
   return (
     <section id="overview" aria-label="System Overview" className="relative overflow-hidden bg-transparent py-16 md:py-24 transition-colors duration-300">
       <div className="homepage-ambient-layer absolute inset-0">
         <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute -left-24 top-12 h-72 w-72 rounded-full" />
         <div className="homepage-ambient-orb homepage-ambient-orb--sage homepage-ambient-orb--slow absolute -right-28 bottom-8 h-80 w-80 rounded-full" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_26%,rgba(123,158,135,0.04)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_26%,rgba(123,158,135,0.04)_100%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_28%,rgba(123,158,135,0.028)_100%)]" />
       </div>
 
       <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,7 +112,7 @@ export default function OverviewSection() {
           transition={prefersReducedMotion ? undefined : { duration: 0.4 }}
           className="relative mb-8"
         >
-          <div className="pointer-events-none absolute inset-x-[10%] top-6 h-48 rounded-full bg-white/34 blur-3xl" />
+          <div className="pointer-events-none absolute inset-x-[10%] top-6 h-48 rounded-full bg-white/34 blur-3xl dark:bg-warm-amber/10" />
           <LazyEcosystemOverview />
         </motion.div>
 
@@ -120,7 +122,7 @@ export default function OverviewSection() {
           whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.003 }}
           viewport={{ once: true }}
           transition={prefersReducedMotion ? undefined : { duration: 0.28 }}
-          className={`main-page-reactive-surface mb-8 rounded-2xl border px-5 py-4 sm:px-6 sm:py-5 ${isDark ? "border-border bg-card/70" : "border-[#e6ddd0] bg-white"}`}
+          className={`main-page-reactive-surface mb-8 rounded-2xl border px-5 py-4 sm:px-6 sm:py-5 ${isDark ? "border-border bg-card/72" : "border-[#e6ddd0] bg-white/90"}`}
         >
           <div className="mx-auto max-w-3xl text-center">
             <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-warm-amber">

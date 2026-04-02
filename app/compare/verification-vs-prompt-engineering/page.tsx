@@ -1,14 +1,24 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowRight, CheckCircle, XCircle, MinusCircle, Lock, AlertTriangle } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "Verification vs Prompt Engineering — Which Ensures AI Safety? | RCT Labs",
-  description: "Prompt engineering tells models what to do. Constitutional AI verification ensures the system cannot violate constraints. Learn why verification is deterministic and why that matters for enterprise AI compliance.",
-  alternates: { canonical: "https://rctlabs.co/en/compare/verification-vs-prompt-engineering" },
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
+  return createBilingualMetadata(
+    locale,
+    "Verification vs Prompt Engineering — Which Ensures AI Safety?",
+    "Verification vs Prompt Engineering — อะไรทำให้ AI ปลอดภัยกว่า",
+    "Prompt engineering tells models what to do. Constitutional AI verification ensures the system cannot violate constraints. Learn why verification is deterministic and why that matters for enterprise AI compliance.",
+    "Prompt engineering คือการบอกโมเดลว่าควรทำอะไร ส่วน constitutional AI verification คือการทำให้ระบบไม่สามารถละเมิดข้อจำกัดได้ เรียนรู้ว่าทำไมแนวทาง verification จึง deterministic และสำคัญต่อ compliance ระดับองค์กร",
+    "/compare/verification-vs-prompt-engineering",
+    ["verification vs prompt engineering", "AI safety", "constitutional AI verification"]
+  )
 }
 
 function CompareIcon({ value }: { value: "yes" | "no" | "partial" }) {
@@ -31,10 +41,12 @@ const rows = [
 ]
 
 export default async function VerificationVsPromptEngineering() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumb = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Compare", url: "https://rctlabs.co/en/compare" },
-    { name: "Verification vs Prompt Engineering", url: "https://rctlabs.co/en/compare/verification-vs-prompt-engineering" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Compare", url: `https://rctlabs.co${localePrefix}/compare` },
+    { name: "Verification vs Prompt Engineering", url: `https://rctlabs.co${localePrefix}/compare/verification-vs-prompt-engineering` },
   ])
 
   return (
@@ -108,7 +120,7 @@ export default async function VerificationVsPromptEngineering() {
                 verdictColor: "text-warm-amber",
               },
             ].map(({ title, subtitle, color, titleColor, points, verdict, verdictColor }) => (
-              <div key={title} className={`rounded-2xl border bg-gradient-to-br ${color} to-transparent p-6`}>
+              <div key={title} className={`rounded-2xl border bg-linear-to-br ${color} to-transparent p-6`}>
                 <h2 className={`text-xl font-bold ${titleColor} mb-1`}>{title}</h2>
                 <p className="text-warm-dim text-sm mb-5">{subtitle}</p>
                 <ul className="space-y-2.5 mb-6">

@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
-import { MapPin, X } from "lucide-react"
+import { MapPin } from "lucide-react"
+import { useMounted } from "@/hooks/use-mounted"
 
 interface Milestone {
   label: string
@@ -12,10 +12,11 @@ interface Milestone {
   type: "launch" | "feature" | "community" | "product" | "dev"
 }
 
-interface MonthData {
-  monthEn: string
-  monthTh: string
-  year: number
+interface TimelineWindow {
+  periodEn: string
+  periodTh: string
+  yearLabelEn: string
+  yearLabelTh: string
   isCurrent: boolean
   milestones: Milestone[]
 }
@@ -28,22 +29,24 @@ const milestoneTypeColors: Record<Milestone["type"], { color: string; bg: string
   dev:       { color: "#7B9E87", bg: "#D1FAE5", darkBg: "#1E3A25" },
 }
 
-const calendarData: MonthData[] = [
+const calendarData: TimelineWindow[] = [
   {
-    monthEn: "Mar",
-    monthTh: "มี.ค.",
-    year: 2026,
+    periodEn: "Mar",
+    periodTh: "มี.ค.",
+    yearLabelEn: "2026",
+    yearLabelTh: "2569",
     isCurrent: true,
     milestones: [
       { label: "Frontend SEO complete", labelTh: "จบงาน Frontend + SEO", type: "launch" },
       { label: "Website soft launch", labelTh: "เปิดตัวเว็บไซต์รอบแรก", type: "launch" },
-      { label: "Domain cutover → rctlabs.co", labelTh: "โอย Domain → rctlabs.co", type: "launch" },
+      { label: "Primary domain routed to rctlabs.co", labelTh: "โยกโดเมนหลักไปยัง rctlabs.co", type: "launch" },
     ],
   },
   {
-    monthEn: "Apr",
-    monthTh: "เม.ย.",
-    year: 2026,
+    periodEn: "Apr",
+    periodTh: "เม.ย.",
+    yearLabelEn: "2026",
+    yearLabelTh: "2569",
     isCurrent: false,
     milestones: [
       { label: "rctlabs.co DNS live", labelTh: "DNS rctlabs.co เปิดใช้งาน", type: "launch" },
@@ -54,9 +57,10 @@ const calendarData: MonthData[] = [
     ],
   },
   {
-    monthEn: "May",
-    monthTh: "พ.ค.",
-    year: 2026,
+    periodEn: "May–Jun",
+    periodTh: "พ.ค.–มิ.ย.",
+    yearLabelEn: "2026",
+    yearLabelTh: "2569",
     isCurrent: false,
     milestones: [
       { label: "Backend Phase 1: Full RCT OS", labelTh: "Backend Phase 1: Full RCT OS", type: "feature" },
@@ -68,35 +72,66 @@ const calendarData: MonthData[] = [
     ],
   },
   {
-    monthEn: "Jun",
-    monthTh: "มิ.ย.",
-    year: 2026,
+    periodEn: "Jul–Aug",
+    periodTh: "ก.ค.–ส.ค.",
+    yearLabelEn: "2026",
+    yearLabelTh: "2569",
     isCurrent: false,
     milestones: [
       { label: "ArtentAI Platform launch", labelTh: "เปิดตัว ArtentAI Platform", type: "product" },
       { label: "SignedAI Platform launch", labelTh: "เปิดตัว SignedAI Platform", type: "product" },
       { label: "Product suite: all core products live", labelTh: "Product suite ครบ: เปิดใช้งานทั้งหมด", type: "product" },
-    ],
-  },
-  {
-    monthEn: "Jul",
-    monthTh: "ก.ค.",
-    year: 2026,
-    isCurrent: false,
-    milestones: [
       { label: "Enterprise onboarding pipeline", labelTh: "Enterprise onboarding pipeline เปิด", type: "product" },
       { label: "Platform optimization cycle", labelTh: "รอบ optimization แพลตฟอร์ม", type: "feature" },
     ],
   },
   {
-    monthEn: "Aug",
-    monthTh: "ส.ค.",
-    year: 2026,
+    periodEn: "Sep–Dec",
+    periodTh: "ก.ย.–ธ.ค.",
+    yearLabelEn: "2026",
+    yearLabelTh: "2569",
     isCurrent: false,
     milestones: [
       { label: "TUI/CLI Beta — Backend Mode test", labelTh: "TUI/CLI Beta: เริ่ม Test Backend Mode", type: "dev" },
       { label: "TUI/CLI Dev Mode: full access", labelTh: "TUI/CLI Dev Mode: เข้าถึงได้เต็มรูปแบบ", type: "dev" },
-      { label: "Developer toolchain complete", labelTh: "Developer toolchain ครบถ้วน", type: "dev" },
+      { label: "Developer toolchain hardening", labelTh: "จัดระเบียบ developer toolchain ให้เสถียร", type: "dev" },
+      { label: "Operational trust surfaces refined", labelTh: "ปรับพื้นผิวความน่าเชื่อถือเชิงปฏิบัติการ", type: "feature" },
+    ],
+  },
+  {
+    periodEn: "Q1",
+    periodTh: "ไตรมาส 1",
+    yearLabelEn: "2027",
+    yearLabelTh: "2570",
+    isCurrent: false,
+    milestones: [
+      { label: "v6.0.0 — Full API Layer", labelTh: "v6.0.0 — Full API Layer", type: "feature" },
+      { label: "OpenAPI 3.1 documentation", labelTh: "เอกสาร OpenAPI 3.1", type: "feature" },
+      { label: "API trust and governance review", labelTh: "ทบทวน trust และ governance ของ API", type: "community" },
+    ],
+  },
+  {
+    periodEn: "Q2",
+    periodTh: "ไตรมาส 2",
+    yearLabelEn: "2027",
+    yearLabelTh: "2570",
+    isCurrent: false,
+    milestones: [
+      { label: "v7.0.0 — Kubernetes Helm Charts", labelTh: "v7.0.0 — Kubernetes Helm Charts", type: "dev" },
+      { label: "Multi-cloud deployment runway", labelTh: "เตรียม runway สำหรับ multi-cloud deployment", type: "dev" },
+      { label: "AWS, GCP, Azure deployment patterns", labelTh: "รูปแบบ deployment สำหรับ AWS, GCP, Azure", type: "dev" },
+    ],
+  },
+  {
+    periodEn: "H2",
+    periodTh: "ครึ่งหลังปี",
+    yearLabelEn: "2027",
+    yearLabelTh: "2570",
+    isCurrent: false,
+    milestones: [
+      { label: "v8.0.0 — 20+ Universal Adapters", labelTh: "v8.0.0 — 20+ Universal Adapters", type: "product" },
+      { label: "Community marketplace foundation", labelTh: "วางฐาน community marketplace", type: "community" },
+      { label: "Product and developer ecosystem expansion", labelTh: "ขยาย product และ developer ecosystem", type: "product" },
     ],
   },
 ]
@@ -104,31 +139,22 @@ const calendarData: MonthData[] = [
 export default function RoadmapMilestoneCalendar() {
   const { resolvedTheme } = useTheme()
   const { language } = useLanguage()
-  const isDark = resolvedTheme === "dark"
+  const mounted = useMounted()
+  const isDark = mounted && resolvedTheme === "dark"
   const isEn = language === "en"
 
-  const [activeTooltip, setActiveTooltip] = useState<{ month: number; milestone: number } | null>(null)
-
-  const handleMilestoneClick = (monthIdx: number, mIdx: number) => {
-    if (activeTooltip?.month === monthIdx && activeTooltip?.milestone === mIdx) {
-      setActiveTooltip(null)
-    } else {
-      setActiveTooltip({ month: monthIdx, milestone: mIdx })
-    }
-  }
-
   return (
-    <div className={`rounded-xl border p-4 sm:p-5 ${isDark ? "bg-warm-charcoal border-border" : "bg-white border-warm-light-gray"}`}>
+    <div className={`rounded-[24px] border p-4 sm:p-5 lg:p-6 ${isDark ? "bg-warm-charcoal border-border shadow-[0_12px_40px_rgba(0,0,0,0.22)]" : "bg-white border-warm-light-gray shadow-[0_12px_36px_rgba(84,61,31,0.06)]"}`}>
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-warm-amber" />
           <h3 className={`text-sm font-semibold uppercase tracking-wider ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
-            {isEn ? "2026 Milestone Calendar" : "ปฏิทินหมุดหมาย 2026"}
+            {isEn ? "2026–2027 Milestone Calendar" : "ปฏิทินหมุดหมาย 2026 - 2027"}
           </h3>
         </div>
         <span className={`text-xs ${isDark ? "text-warm-dim" : "text-warm-gray"}`}>
-          {isEn ? "Mar — Aug 2026" : "มี.ค. — ส.ค. 2569"}
+          {isEn ? "Mar 2026 — H2 2027" : "มี.ค. 2569 — ครึ่งหลังปี 2570"}
         </span>
       </div>
 
@@ -154,28 +180,34 @@ export default function RoadmapMilestoneCalendar() {
         })}
       </div>
 
-      {/* Calendar strip — horizontally scrollable */}
-      <div className="overflow-x-auto pb-2">
-        <div className="flex gap-3 min-w-[680px]">
-          {calendarData.map((month, monthIdx) => (
+      <div className="mb-4 max-w-3xl text-sm leading-7 text-muted-foreground">
+        {isEn
+          ? "The milestone calendar is reorganized into stronger windows so long Thai and English labels stay readable, time horizons are clearer, and the roadmap reads more like an executive operating plan than a narrow strip calendar."
+          : "ปฏิทินถูกจัดใหม่เป็นช่วงเวลาที่ชัดขึ้น เพื่อให้ข้อความไทยและอังกฤษอ่านได้เต็ม ไม่โดนตัด และทำให้ภาพรวม roadmap ดูเป็น executive operating plan มากกว่าปฏิทินแถบแคบ"}
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {calendarData.map((month, monthIdx) => (
             <motion.div
-              key={month.monthEn}
+              key={`${month.periodEn}-${month.yearLabelEn}`}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: monthIdx * 0.06 }}
-              className={`relative flex-1 min-w-[100px] rounded-xl border p-3 transition-colors
+              whileHover={{ y: -4 }}
+              className={`relative flex h-full flex-col rounded-[22px] border p-4 transition-colors
                 ${month.isCurrent
                   ? isDark
-                    ? "border-warm-amber/50 bg-dark-amber-bg"
-                    : "border-warm-amber/40 bg-amber-50/60"
+                    ? "border-warm-amber/50 bg-dark-amber-bg shadow-[0_8px_28px_rgba(212,168,83,0.12)]"
+                    : "border-warm-amber/40 bg-amber-50/60 shadow-[0_8px_28px_rgba(212,168,83,0.10)]"
                   : isDark
-                    ? "border-border bg-warm-charcoal/50"
-                    : "border-warm-light-gray bg-white"
+                    ? "border-border bg-warm-charcoal/50 hover:border-warm-amber/25"
+                    : "border-warm-light-gray bg-white hover:border-warm-amber/20"
                 }`}
             >
-              {/* Month header */}
-              <div className="mb-2.5 flex items-center justify-between">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm-amber/25 to-transparent" />
+
+              <div className="mb-4 flex items-start justify-between gap-3">
                 <div>
                   <div
                     className={`text-sm font-bold ${
@@ -186,10 +218,10 @@ export default function RoadmapMilestoneCalendar() {
                           : "text-warm-charcoal"
                     }`}
                   >
-                    {isEn ? month.monthEn : month.monthTh}
+                    {isEn ? month.periodEn : month.periodTh}
                   </div>
-                  <div className={`text-[10px] font-mono ${isDark ? "text-warm-subtle" : "text-warm-muted"}`}>
-                    {month.year}
+                  <div className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-muted"}`}>
+                    {isEn ? month.yearLabelEn : month.yearLabelTh}
                   </div>
                 </div>
                 {month.isCurrent && (
@@ -200,100 +232,36 @@ export default function RoadmapMilestoneCalendar() {
                 )}
               </div>
 
-              {/* Milestones */}
-              <div className="space-y-1.5">
+              <div className="space-y-2.5">
                 {month.milestones.map((milestone, mIdx) => {
                   const c = milestoneTypeColors[milestone.type]
-                  const isActive = activeTooltip?.month === monthIdx && activeTooltip?.milestone === mIdx
                   return (
-                    <div key={mIdx} className="relative">
-                      <button
-                        type="button"
-                        onClick={() => handleMilestoneClick(monthIdx, mIdx)}
-                        className="flex w-full items-start gap-1.5 rounded-md px-1.5 py-1 text-left transition-all hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-warm-amber/50"
-                        style={{
-                          backgroundColor: isActive
-                            ? isDark ? c.darkBg : c.bg
-                            : "transparent",
-                        }}
-                      >
+                    <div key={mIdx} className={`rounded-xl border px-3 py-2.5 ${isDark ? "border-border/80 bg-background/25" : "border-warm-light-gray/80 bg-background/70"}`}>
+                      <div className="flex items-start gap-2">
                         <div
-                          className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full"
+                          className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
                           style={{ backgroundColor: c.color }}
                         />
                         <span
-                          className={`text-[10px] leading-tight ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}
+                          className={`text-[13px] leading-6 ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}
                         >
                           {isEn ? milestone.label : milestone.labelTh}
                         </span>
-                      </button>
+                      </div>
                     </div>
                   )
                 })}
               </div>
 
-              {/* Milestone count badge for months with many items */}
-              {month.milestones.length >= 4 && (
-                <div
-                  className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold text-white"
-                  style={{ backgroundColor: milestoneTypeColors[month.milestones[0].type].color }}
-                >
-                  {month.milestones.length}
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Active tooltip overlay */}
-      <AnimatePresence>
-        {activeTooltip !== null && (() => {
-          const m = calendarData[activeTooltip.month]
-          const milestone = m.milestones[activeTooltip.milestone]
-          const c = milestoneTypeColors[milestone.type]
-          return (
-            <motion.div
-              key="tooltip"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 6 }}
-              transition={{ duration: 0.18 }}
-              className={`mt-3 flex items-start justify-between gap-3 rounded-xl border p-3 ${
-                isDark ? "border-border bg-warm-charcoal" : "border-warm-light-gray bg-white shadow-sm"
-              }`}
-            >
-              <div className="flex items-start gap-2.5">
-                <div
-                  className="mt-0.5 h-2 w-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: c.color }}
-                />
-                <div>
-                  <div className={`text-xs font-semibold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
-                    {isEn ? m.monthEn : m.monthTh} {m.year}
-                  </div>
-                  <div className={`text-sm mt-0.5 ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>
-                    {isEn ? milestone.label : milestone.labelTh}
-                  </div>
-                  <div
-                    className="mt-1.5 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold"
-                    style={{ backgroundColor: isDark ? c.darkBg : c.bg, color: c.color }}
-                  >
-                    {milestone.type.charAt(0).toUpperCase() + milestone.type.slice(1)}
-                  </div>
+              <div className="mt-auto pt-4">
+                <div className={`flex items-center justify-between border-t pt-3 text-[11px] font-semibold uppercase tracking-[0.18em] ${isDark ? "border-border/80 text-warm-subtle" : "border-warm-light-gray text-warm-muted"}`}>
+                  <span>{month.milestones.length} {isEn ? "items" : "รายการ"}</span>
+                  <span>{month.isCurrent ? (isEn ? "current window" : "ช่วงปัจจุบัน") : (isEn ? "planned window" : "ช่วงแผนงาน")}</span>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setActiveTooltip(null)}
-                className={`shrink-0 rounded-md p-1 transition-colors ${isDark ? "text-warm-dim hover:text-warm-light-gray" : "text-warm-muted hover:text-warm-charcoal"}`}
-              >
-                <X size={12} />
-              </button>
             </motion.div>
-          )
-        })()}
-      </AnimatePresence>
+        ))}
+      </div>
     </div>
   )
 }

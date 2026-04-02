@@ -22,9 +22,10 @@ const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmG
 
 interface NavbarProps {
   variant?: "default" | "article"
+  locale?: "en" | "th"
 }
 
-export function Navbar({ variant = "default" }: NavbarProps) {
+export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProps) {
   const { language } = useLanguage()
   const { theme } = useTheme()
   const mounted = useMounted()
@@ -41,7 +42,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
   const { isOpen: searchOpen, open: openSearch, close: closeSearch } = useSearchModal()
 
   const localePath = pathname?.replace(/^\/(en|th)/, "") || "/"
-  const locale = resolveLocale(pathname, language)
+  const locale = forcedLocale ?? resolveLocale(pathname, language)
   const localePrefix = getLocalePrefix(locale)
   const localHref = (href: string) => `${localePrefix}${href}`
   const isDark = (mounted ? theme : "light") === "dark"
@@ -123,6 +124,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
   }, [])
 
   const isActive = (href: string) => localePath === href || (href !== "/" && localePath.startsWith(href))
+  const isHomeRoute = localePath === "/"
   const darkHeroRoutes = ["/about", "/case-studies"]
   const isArticleVariant = variant === "article"
   const isOnDarkHero = !isArticleVariant && !scrolled && darkHeroRoutes.some((route) => localePath.startsWith(route))
@@ -184,6 +186,19 @@ export function Navbar({ variant = "default" }: NavbarProps) {
     trackResourceTrack(trackId, trigger)
   }
 
+  const handleBrandClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    trackLeafClick("home", "/", "brand")
+    setMobileOpen(false)
+    setOpenGroupId(null)
+
+    if (!isHomeRoute) {
+      return
+    }
+
+    event.preventDefault()
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   return (
     <header role="banner">
       <nav
@@ -202,12 +217,12 @@ export function Navbar({ variant = "default" }: NavbarProps) {
       >
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
-            className={`navbar-ambient-orb navbar-ambient-orb--amber absolute -left-14 top-[-2.75rem] h-28 w-28 transition-opacity duration-500 ${
+            className={`navbar-ambient-orb navbar-ambient-orb--amber absolute -left-14 -top-11 h-28 w-28 transition-opacity duration-500 ${
               scrolled ? "opacity-45" : isOnDarkHero ? "opacity-35" : "opacity-20"
             }`}
           />
           <div
-            className={`navbar-ambient-orb navbar-ambient-orb--sage absolute right-[-2.5rem] top-[-1.75rem] h-24 w-24 transition-opacity duration-500 ${
+            className={`navbar-ambient-orb navbar-ambient-orb--sage absolute -right-10 -top-7 h-24 w-24 transition-opacity duration-500 ${
               scrolled ? "opacity-40" : isOnDarkHero ? "opacity-28" : "opacity-16"
             }`}
           />
@@ -222,7 +237,7 @@ export function Navbar({ variant = "default" }: NavbarProps) {
           <div className="relative z-10 flex h-14 items-center justify-between gap-4">
             <Link
               href={localHref("/")}
-              onClick={() => handleRouteClick("home", "/", "brand")}
+              onClick={handleBrandClick}
               className="flex shrink-0 items-center gap-2"
               aria-label="RCT Ecosystem Home"
             >

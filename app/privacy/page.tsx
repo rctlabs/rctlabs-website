@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { GENERAL_CONTACT_EMAIL } from "@/lib/contact"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
@@ -60,11 +61,11 @@ export default function PrivacyPage() {
     {
       title: "9. PDPA Compliance (Thailand)",
       content:
-        "For users in Thailand, RCT Labs complies with the Personal Data Protection Act (PDPA) B.E. 2562 (2019). We collect and process personal data only with your consent or when permitted by law. You have the right to access, rectify, erase, restrict processing, and port your data. To exercise these rights, contact our Data Protection Officer at privacy@rctlabs.co.",
+        `For users in Thailand, RCT Labs complies with the Personal Data Protection Act (PDPA) B.E. 2562 (2019). We collect and process personal data only with your consent or when permitted by law. You have the right to access, rectify, erase, restrict processing, and port your data. To exercise these rights, contact our Data Protection Officer at ${GENERAL_CONTACT_EMAIL}.`,
     },
     {
       title: "10. Contact Us",
-      content: "If you have questions or concerns about this Privacy Policy, please contact us at owner@rctlabs.co or privacy@rctlabs.co.",
+      content: `If you have questions or concerns about this Privacy Policy, please contact us at ${GENERAL_CONTACT_EMAIL}.`,
     },
   ]
 

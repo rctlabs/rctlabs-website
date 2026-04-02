@@ -1,14 +1,24 @@
 import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
 import { Mail, Linkedin, Github, ExternalLink, Building2, User, Newspaper } from "lucide-react"
 
-export const metadata: Metadata = {
-  title: "Press & Media — RCT Labs | Constitutional AI from Thailand",
-  description: "Press kit, fact sheet, story angles, and media contact for RCT Labs — a constitutional AI operating system built by a solo developer in Bangkok, Thailand. 62 microservices, 4,849 passing tests, 0.3% hallucination rate.",
-  alternates: { canonical: "https://rctlabs.co/en/press" },
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+
+  return createBilingualMetadata(
+    locale,
+    "Press & Media — Constitutional AI from Thailand",
+    "สื่อมวลชนและข่าวประชาสัมพันธ์ — Constitutional AI จากประเทศไทย",
+    "Press kit, fact sheet, story angles, and media contact for RCT Labs — a constitutional AI operating system built by a solo developer in Bangkok, Thailand. 62 microservices, 4,849 passing tests, 0.3% hallucination rate.",
+    "Press kit, fact sheet, มุมข่าว และข้อมูลติดต่อสื่อสำหรับ RCT Labs — constitutional AI operating system ที่สร้างโดยผู้พัฒนาคนเดียวจากกรุงเทพฯ ประเทศไทย พร้อม 62 microservices, 4,849 passing tests และ hallucination rate 0.3%",
+    "/press",
+    ["press kit", "media contact", "constitutional AI Thailand", "RCT Labs press"]
+  )
 }
 
 const facts = [
@@ -59,9 +69,11 @@ const storyAngles = [
 ]
 
 export default async function PressPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
   const breadcrumb = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Press", url: "https://rctlabs.co/en/press" },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Press", url: `https://rctlabs.co${localePrefix}/press` },
   ])
 
   return (
@@ -87,10 +99,10 @@ export default async function PressPage() {
             {/* Media contact */}
             <div className="inline-flex flex-col sm:flex-row gap-3">
               <a
-                href="mailto:press@rctlabs.co"
+                href="mailto:founder@rctlabs.co"
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-warm-amber text-background font-semibold text-sm hover:bg-warm-amber/90 transition"
               >
-                <Mail className="w-4 h-4" /> press@rctlabs.co
+                <Mail className="w-4 h-4" /> founder@rctlabs.co
               </a>
               <a
                 href="https://www.linkedin.com/in/ittirit-saengow/"
@@ -111,7 +123,7 @@ export default async function PressPage() {
           </h2>
           <div className="rounded-2xl border border-white/10 bg-warm-charcoal/40 p-8">
             <div className="flex flex-col md:flex-row gap-8">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-warm-amber/20 to-warm-amber/5 border border-warm-amber/30 flex items-center justify-center text-2xl font-bold text-warm-amber shrink-0">IS</div>
+              <div className="w-20 h-20 rounded-full bg-linear-to-br from-warm-amber/20 to-warm-amber/5 border border-warm-amber/30 flex items-center justify-center text-2xl font-bold text-warm-amber shrink-0">IS</div>
               <div>
                 <h3 className="text-xl font-bold text-warm-light-gray mb-1">Ittirit Saengow (อิทธิฤทธิ์ แซ่โง้ว)</h3>
                 <p className="text-warm-amber text-sm font-medium mb-4">Founder & Sole Developer, RCT Labs · Bangkok, Thailand</p>

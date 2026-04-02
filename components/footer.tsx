@@ -19,18 +19,22 @@ import { SITE_VERSION, SOCIAL_LINKS } from "@/lib/site-config"
 
 const LOGO_PNG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
 
-export function Footer() {
+type FooterProps = {
+  locale?: "en" | "th"
+}
+
+export function Footer({ locale: forcedLocale }: FooterProps) {
   const { language, toggleLanguage, t } = useLanguage()
   const pathname = usePathname()
   const { theme } = useTheme()
   const mounted = useMounted()
   const isDark = (mounted ? theme : "light") === "dark"
   const isTh = language === "th"
-  const locale = resolveLocale(pathname, language)
+  const locale = forcedLocale ?? resolveLocale(pathname, language)
 
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
 
-  const localePrefix = getLocalePrefix(resolveLocale(pathname, language))
+  const localePrefix = getLocalePrefix(locale)
   const lh = (href: string) => `${localePrefix}${href}`
 
   const toggleSection = (title: string) => setOpenSections(prev => ({ ...prev, [title]: !prev[title] }))

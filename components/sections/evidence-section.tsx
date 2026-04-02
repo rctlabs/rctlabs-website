@@ -186,7 +186,7 @@ export default function EvidenceSection() {
       <div className="homepage-ambient-layer absolute inset-0">
         <div className="homepage-ambient-orb homepage-ambient-orb--sage absolute -left-28 top-12 h-80 w-80 rounded-full" />
         <div className="homepage-ambient-orb homepage-ambient-orb--terra homepage-ambient-orb--slow absolute right-[4%] bottom-12 h-72 w-72 rounded-full" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.16),transparent_26%,rgba(196,116,91,0.04)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.16),transparent_26%,rgba(196,116,91,0.04)_100%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.035),transparent_28%,rgba(196,116,91,0.03)_100%)]" />
       </div>
 
       <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
@@ -199,7 +199,7 @@ export default function EvidenceSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 lg:mb-16"
         >
-          <span className="inline-flex items-center gap-1.5 mb-4 rounded-full border border-[#eadfd2] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground shadow-[0_8px_18px_rgba(84,61,31,0.04)]">
+          <span className="inline-flex items-center gap-1.5 mb-4 rounded-full border border-[#eadfd2] bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground shadow-[0_8px_18px_rgba(84,61,31,0.04)] dark:border-border/70 dark:bg-card/75">
             <BookOpen size={12} />
             {isTh ? "หลักฐานเชิงวิจัย" : "Research-Backed Evidence"}
           </span>
@@ -241,7 +241,7 @@ export default function EvidenceSection() {
                 transition={{ duration: 0.5, delay: i * 0.12 }}
                 whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.008 }}
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.996 }}
-                className="main-page-reactive-card group relative flex h-full flex-col rounded-3xl border border-border bg-white p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/30 hover:bg-white hover:shadow-[0_14px_34px_rgba(84,61,31,0.07)] dark:bg-card dark:hover:bg-card"
+                className="main-page-reactive-card group relative flex h-full flex-col rounded-3xl border border-border bg-white/90 p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/30 hover:bg-white dark:bg-card/90 dark:hover:bg-card"
               >
                 <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.12),transparent_40%)]" />
@@ -249,14 +249,14 @@ export default function EvidenceSection() {
 
                 <div className="relative z-10 mb-5 flex items-start justify-between gap-4">
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-warm-amber/18 bg-[#fffaf6] text-muted-foreground shadow-[0_10px_20px_rgba(84,61,31,0.04)] transition-transform duration-300 group-hover:scale-105">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-warm-amber/18 bg-[#fffaf6] text-muted-foreground shadow-[0_10px_20px_rgba(84,61,31,0.04)] transition-transform duration-300 group-hover:scale-105 dark:bg-[#241c14]">
                       <Icon size={16} />
                     </div>
-                    <span className="inline-flex min-w-0 items-center rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    <span className="inline-flex min-w-0 items-center rounded-full border border-[#eee2d6] bg-[#fffaf6] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground dark:border-border dark:bg-secondary/55">
                       {isTh ? card.tagTh : card.tagEn}
                     </span>
                   </div>
-                  <div className="shrink-0 rounded-2xl border border-[#eadfd2] bg-white px-3 py-2 text-right shadow-[0_10px_20px_rgba(84,61,31,0.04)] dark:bg-background/70 dark:border-border/70">
+                  <div className="shrink-0 rounded-2xl border border-[#eadfd2] bg-white/92 px-3 py-2 text-right shadow-[0_10px_20px_rgba(84,61,31,0.04)] dark:bg-background/70 dark:border-border/70">
                     <div
                       className="text-lg font-bold font-mono leading-none"
                       style={{ color: card.color }}
