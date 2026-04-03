@@ -1,6 +1,8 @@
-import { Metadata } from "next"
+﻿import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
+import { SITE_URL } from "@/lib/site-config"
 import ArtentAIPage from "./ArtentAIClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,5 +19,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  return <ArtentAIPage />
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: SITE_URL },
+    { name: "Products", url: `/products` },
+    { name: "Artent AI", url: `/products/artent-ai` },
+  ])
+  const productSchema = { "@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Artent AI", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "description": "Architecture-driven creative AI combining intent understanding with artistic generation.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "featureList": "Multi-Modal Generation, Brand Consistency Engine, Intent-Driven Creativity, FDIA", "url": `/products/artent-ai`, "publisher": { "@type": "Organization", "name": "RCT Labs", "url": SITE_URL } }
+  return (
+    <>
+      <script type={"application/ld+json"} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type={"application/ld+json"} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+      <ArtentAIPage />
+    </>
+  )
 }

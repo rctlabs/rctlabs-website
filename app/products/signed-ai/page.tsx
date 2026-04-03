@@ -1,6 +1,8 @@
-import { Metadata } from "next"
+﻿import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
+import { SITE_URL } from "@/lib/site-config"
 import SignedAIPage from "./SignedAIClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,5 +19,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  return <SignedAIPage />
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: SITE_URL },
+    { name: "Products", url: `/products` },
+    { name: "SignedAI", url: `/products/signed-ai` },
+  ])
+  const productSchema = { "@context": "https://schema.org", "@type": "SoftwareApplication", "name": "SignedAI", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "description": "Multi-LLM verification consensus API. Reduces hallucination to 0.3% with cryptographic signing and complete audit trails.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "featureList": "Multi-LLM Consensus, Cryptographic Signing, 0.3% Hallucination Rate, Complete Audit Trails, 99.7% Accuracy", "url": `/products/signed-ai`, "publisher": { "@type": "Organization", "name": "RCT Labs", "url": SITE_URL } }
+  return (
+    <>
+      <script type={"application/ld+json"} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type={"application/ld+json"} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+      <SignedAIPage />
+    </>
+  )
 }

@@ -28,6 +28,8 @@ const themeBootstrapScript = `(() => {
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION
 const bingSiteVerification = process.env.BING_SITE_VERIFICATION
 const enableVercelRuntimeInsights = process.env.VERCEL === "1"
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID
+const ga4Id = process.env.NEXT_PUBLIC_GA4_ID
 
 const verification = googleSiteVerification || bingSiteVerification
   ? {
@@ -195,15 +197,21 @@ export default async function RootLayout({
         {/* Preconnect to image CDN for faster LCP */}
         <link rel="preconnect" href="https://d2xsxph8kpxj0f.cloudfront.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://d2xsxph8kpxj0f.cloudfront.net" />
-        {/* Google Analytics 4 */}
-        {process.env.NEXT_PUBLIC_GA4_ID && (
+        {/* Google Tag Manager */}
+        {gtmId && (
+          <Script id="gtm-head" strategy="afterInteractive">
+            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f)})(window,document,'script','dataLayer','${gtmId}');`}
+          </Script>
+        )}
+        {/* Google Analytics 4 (direct, fallback when GTM not active) */}
+        {!gtmId && ga4Id && (
           <>
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_ID}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
               strategy="afterInteractive"
             />
             <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA4_ID}',{page_path:window.location.pathname});`}
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}',{page_path:window.location.pathname});`}
             </Script>
           </>
         )}
@@ -220,6 +228,17 @@ export default async function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} font-sans antialiased`}
       >
+        {/* GTM noscript fallback */}
+        {gtmId && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
         {/* Skip to main content — accessibility */}
         <a
           href="#main-content"
