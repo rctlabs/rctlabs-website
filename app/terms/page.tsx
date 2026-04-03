@@ -1,21 +1,25 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-export const metadata: Metadata = createBilingualMetadata(
-  "en",
-  "Terms of Service — RCT Labs",
-  "ข้อกำหนดการให้บริการ — RCT Labs",
-  "Terms of Service for RCT Labs website and services. Open-source components under Apache 2.0.",
-  "ข้อกำหนดการให้บริการของ RCT Labs เว็บไซต์และบริการ ส่วนประกอบ Open-source ภายใต้ Apache 2.0",
-  "/terms",
-  ["terms of service", "RCT Labs terms", "Apache 2.0", "open source license"]
-)
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return createBilingualMetadata(
+    locale,
+    "Terms of Service — RCT Labs",
+    "ข้อกำหนดการให้บริการ — RCT Labs",
+    "Terms of Service for RCT Labs website and services. Open-source components under Apache 2.0.",
+    "ข้อกำหนดการให้บริการของ RCT Labs เว็บไซต์และบริการ ส่วนประกอบ Open-source ภายใต้ Apache 2.0",
+    "/terms",
+    ["terms of service", "RCT Labs terms", "Apache 2.0", "open source license"]
+  )
+}
 
-export default function TermsPage() {
+export default async function TermsPage() {
   const sections = [
     {
       title: "1. Acceptance of Terms",

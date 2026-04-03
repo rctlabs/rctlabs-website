@@ -1,10 +1,12 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import UseCasesClient from "./UseCasesClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
   return createBilingualMetadata(
-    "en",
+    locale,
     "Use Cases",
     "กรณีการใช้งาน",
     "Real-world AI use cases powered by RCT Labs: fintech compliance, healthcare AI, legal document analysis, creative automation, and enterprise workflow intelligence. Proven across 11 industries.",
@@ -14,6 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function UseCasesPage() {
+export default async function UseCasesPage() {
   return <UseCasesClient />
 }

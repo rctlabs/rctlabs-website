@@ -82,6 +82,15 @@ const solutionsItems: NavLeafItem[] = [
       th: "กำหนดเส้นทางงานตามความสามารถของโมเดล นโยบาย และสถานะ runtime",
     },
   },
+  {
+    id: "regional-ai",
+    href: "/solutions/regional-ai",
+    label: { en: "Regional AI", th: "Regional AI" },
+    description: {
+      en: "Plug in Typhoon v2 and other regional LLMs for Thai and Southeast Asian workloads.",
+      th: "เชื่อมต่อ Typhoon v2 และ LLM ระดับภูมิภาคอื่นๆ สำหรับงาน Thai และ SEA",
+    },
+  },
 ]
 
 const productsItems: NavLeafItem[] = [
@@ -167,6 +176,42 @@ const technologyItems: NavLeafItem[] = [
     description: {
       en: "Interactive walkthrough of the falsifiability-driven workflow.",
       th: "เดโมแบบโต้ตอบของ workflow ที่ขับด้วย falsifiability",
+    },
+  },
+  {
+    id: "jitna",
+    href: "/technology/jitna",
+    label: { en: "JITNA Protocol", th: "JITNA Protocol" },
+    description: {
+      en: "The intelligent routing engine that selects models, algorithms, and voting methods per task.",
+      th: "Routing Engine อัจฉริยะที่เลือกโมเดล อัลกอริทึม และ Voting Method ต่องาน",
+    },
+  },
+  {
+    id: "rct-7",
+    href: "/technology/rct-7",
+    label: { en: "RCT-7 Mental OS", th: "RCT-7 Mental OS" },
+    description: {
+      en: "The 7-state IntentLoop engine governing every agent action in the RCT Ecosystem.",
+      th: "Intloop Engine 7 สถานะที่ควบคุมทุก Action ของ Agent ใน RCT Ecosystem",
+    },
+  },
+  {
+    id: "rct-7-thinking",
+    href: "/technology/rct-7-thinking",
+    label: { en: "RCT-7 Thinking", th: "RCT-7 Thinking" },
+    description: {
+      en: "The 7-step cognitive reasoning protocol: Observe → Analyze → Deconstruct → Reverse Reason → Identify Intent → Reconstruct → Compare.",
+      th: "Cognitive Reasoning Protocol 7 ขั้นตอน: Observe → Analyze → Deconstruct → Reverse Reason → Identify Intent → Reconstruct → Compare",
+    },
+  },
+  {
+    id: "constitutional-ai",
+    href: "/technology/constitutional-ai",
+    label: { en: "Constitutional AI", th: "Constitutional AI" },
+    description: {
+      en: "The FDIA equation F=(D^I)×A — when A=0, output collapses regardless of capability.",
+      th: "สมการ FDIA F=(D^I)×A — เมื่อ A=0 Output จะเป็น 0 โดยไม่คำนึงถึงความสามารถ",
     },
   },
 ]
@@ -413,9 +458,9 @@ export const navigationGroups: NavGroup[] = [
         viewAll: { href: "/architecture", label: { en: "View architecture", th: "ดูสถาปัตยกรรม" } },
       },
       {
-        header: { en: "Explore", th: "สำรวจ" },
+        header: { en: "Deep Dive", th: "เจาะลึก" },
         style: "secondary",
-        items: [technologyItems[2], technologyItems[4]],
+        items: [technologyItems[5], technologyItems[6], technologyItems[7], technologyItems[2], technologyItems[4]],
       },
     ],
     summary: {

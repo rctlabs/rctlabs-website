@@ -482,6 +482,56 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* ── SignedAI API Pricing ─────────────────────────────────────── */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-[#141414]" aria-label="SignedAI API pricing">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-10 text-center">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-semibold mb-4"
+              style={{ color: "#7B9E87", borderColor: "rgba(123,158,135,0.3)", background: "rgba(123,158,135,0.07)" }}>
+              <Shield size={14} /> SignedAI
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-warm-charcoal dark:text-warm-light-gray">
+              {isTh ? "ราคา API (ต่อการรีวิว)" : "API Pricing — Per Review"}
+            </h2>
+            <p className="mt-3 text-sm max-w-2xl mx-auto text-warm-gray dark:text-[#888]">
+              {isTh
+                ? "จ่ายเฉพาะ Review ที่คุณใช้ — เลือก Tier ตามความสำคัญของ Task เชื่อมต่อผ่าน SignedAI REST API"
+                : "Pay only for what you use — pick the verification tier that matches your task criticality and connect via the SignedAI REST API."}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {([
+              { tier: "S", label: "Solo", price: "$0.10", models: 1, voting: "N/A", color: "#7B9E87", descEn: "Single best-fit model. Best for non-critical queries that need fast SignedAI attribution.", descTh: "โมเดลเดียวที่เหมาะสมที่สุด เร็วและคุ้มค่า" },
+              { tier: "4", label: "Standard", price: "$0.75", models: 4, voting: "MAJORITY", color: "#D4A853", descEn: "4-model majority consensus. Ideal for production workflows requiring trusted AI output.", descTh: "4 โมเดล Majority Consensus — สมดุลระหว่างความแม่นยำและต้นทุน" },
+              { tier: "6", label: "Advanced", price: "$2.00", models: 6, voting: "WEIGHTED", color: "#C4745B", descEn: "6-model weighted consensus for regulated sectors needing high-confidence AI decisions.", descTh: "6 โมเดล Weighted Consensus — ความเชื่อมั่นสูงสำหรับอุตสาหกรรมที่มีกฎระเบียบ" },
+              { tier: "8", label: "Supreme", price: "$5.00", models: 8, voting: "UNANIMOUS 75%", color: "#9B7BB8", descEn: "All 8 HexaCore models, 75% consensus. Maximum trust for legal, medical, and financial AI.", descTh: "8 โมเดล ต้องการฉันทามติ 75% — ความเชื่อมั่นสูงสุดสำหรับกฎหมาย การแพทย์ การเงิน" },
+            ] as const).map((t, i) => (
+              <div key={t.tier} className="flex flex-col gap-3 p-6 rounded-2xl border-2"
+                style={{ borderColor: `${t.color}40`, background: `${t.color}08` }}>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded font-mono" style={{ color: t.color, background: `${t.color}18` }}>Tier {t.tier}</span>
+                  <span className="text-xs font-medium text-warm-gray dark:text-[#888]">{t.label}</span>
+                </div>
+                <div className="text-3xl font-bold text-warm-charcoal dark:text-warm-light-gray">{t.price}</div>
+                <div className="text-xs text-warm-gray dark:text-[#888]">{isTh ? "ต่อการรีวิว" : "per review"}</div>
+                <div className="text-xs font-medium text-warm-charcoal dark:text-[#ccc]">
+                  {t.models} {isTh ? "โมเดล" : "model"}{t.models > 1 ? "s" : ""} · {t.voting}
+                </div>
+                <p className="text-xs leading-relaxed text-warm-gray dark:text-[#999] flex-1">{isTh ? t.descTh : t.descEn}</p>
+                <Link href={buildContactHref(language, `pricing:signed-ai:tier-${t.tier}`)}
+                  className="inline-flex items-center justify-center gap-1 px-4 py-2 rounded-lg text-white text-xs font-semibold"
+                  style={{ background: t.color }}>
+                  {isTh ? "เริ่มต้นใช้งาน" : "Get started"} <ArrowRight size={12} />
+                </Link>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-xs text-warm-gray dark:text-[#666] mt-6">
+            {isTh ? "ราคาสำหรับองค์กรที่ต้องการปริมาณสูงให้ติดต่อฝ่ายขาย" : "Volume pricing for enterprise contracts — contact sales."}
+          </p>
+        </div>
+      </section>
+
       {/* ── Bottom CTA ───────────────────────────────────────────────── */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-warm-cream dark:bg-[#0D0D0D]">
         <div className="max-w-200 mx-auto text-center">

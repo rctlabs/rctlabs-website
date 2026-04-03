@@ -11,22 +11,22 @@ import InteractiveGenomeExplorer from "@/components/diagrams/interactive-genome-
 
 const genomes = {
   en: [
-    { id: "G1", name: "WHY Genome", color: "#D4A853", desc: "Defines the foundational purpose and intent behind every AI decision. Ensures all system actions trace back to a meaningful user goal, preventing aimless computation." },
-    { id: "G2", name: "WHAT Genome", color: "#89B4C8", desc: "Determines what knowledge and data are needed to fulfill an intent. Manages structured and unstructured data retrieval, ensuring the right information reaches the right algorithm." },
-    { id: "G3", name: "HOW Genome", color: "#C4745B", desc: "Orchestrates execution strategies using the FDIA Equation and 41 proprietary algorithms. Selects optimal processing paths, balancing speed, accuracy, and cost across multiple LLM providers." },
-    { id: "G4", name: "WHO Genome", color: "#7B9E87", desc: "Manages identity, authentication, and role-based access control. Decides which agents, services, and users have permission to access specific resources." },
-    { id: "G5", name: "WHEN Genome", color: "#B8A9C9", desc: "Handles temporal coordination, scheduling, and time-sensitive operations. Ensures tasks execute at optimal times and time-dependent data remains fresh." },
-    { id: "G6", name: "WHERE Genome", color: "#D4A853", desc: "Controls deployment topology, regional routing, and infrastructure placement. Optimizes latency by routing requests to the nearest available service instance." },
-    { id: "G7", name: "IMPROVEMENT Genome", color: "#C4745B", desc: "Drives continuous self-improvement through feedback loops, performance monitoring, and adaptive learning. Connects back to G1, creating a perpetual cycle of refinement." },
+    { id: "G1", name: "Architect's Genome", color: "#D4A853", desc: "The master blueprint of the RCT Ecosystem. Defines the foundational knowledge scaffold — mapping every domain, concept, and relationship that the system understands. All other genomes derive their structure from G1.", link: "/architecture" },
+    { id: "G2", name: "RCT Codex Genome", color: "#89B4C8", desc: "The living knowledge base of Reverse Component Thinking methodology. Encodes the 41 proprietary algorithms, the FDIA equation, decision trees, and the full reasoning framework that powers RCT's intelligence layer.", link: "/algorithms" },
+    { id: "G3", name: "JITNA Genome", color: "#C4745B", desc: "Just-in-Time Neural Architecture — the dynamic routing engine. Selects the optimal LLM, algorithm tier, and processing path for every task in real time, balancing speed, accuracy, and cost across the HexaCore 7-model roster.", link: "/technology/jitna" },
+    { id: "G4", name: "ARTENT Genome", color: "#7B9E87", desc: "The Personal Agent OS genome. Powers the Intent Omnibox (classify any input), Memory Timeline (persistent cross-session recall), and Sovereignty Vault (user-owned memory). Drives L1 Chatbot through L5 Evolution intelligence.", link: "/products/artent-ai" },
+    { id: "G5", name: "SignedAI Genome", color: "#B8A9C9", desc: "The multi-model attestation and consensus genome. Orchestrates the 6-stage SignedAI pipeline — INTAKE → ROUTER → SIGNERS → ATTESTATION → CONSENSUS → REPORT — across 4 verification tiers from single-model ($0.10) to 75% consensus ($5.00).", link: "/products/signed-ai" },
+    { id: "G6", name: "Vault Genome", color: "#9B7BB8", desc: "The sovereignty and data-protection genome. Manages Constitutional AI constraints (A=0 absolute prohibitions), user-owned memory encryption, selective disclosure, and audit trails across all 9 RCTDB dimensions.", link: "/technology/constitutional-ai" },
+    { id: "G7", name: "RCT-7 Genome", color: "#C4745B", desc: "The Mental OS and self-evolution genome. Runs the 7-state IntentLoop (IDLE → RECEIVE → PARSE → ROUTE → EXECUTE → VERIFY → ADAPT), feeds performance signals back to G1, and drives the continuous improvement cycle.", link: "/technology/rct-7" },
   ],
   th: [
-    { id: "G1", name: "WHY Genome", color: "#D4A853", desc: "กำหนดจุดประสงค์พื้นฐานและเจตนาเบื้องหลังทุกการตัดสินใจของ AI ทำให้มั่นใจว่าทุกการกระทำกลับไปยังเป้าหมายที่มีความหมาย" },
-    { id: "G2", name: "WHAT Genome", color: "#89B4C8", desc: "กำหนดว่าต้องการความรู้และข้อมูลอะไรเพื่อตอบสนองเจตนา จัดการการดึงข้อมูลทั้งแบบมีโครงสร้างและไม่มีโครงสร้าง" },
-    { id: "G3", name: "HOW Genome", color: "#C4745B", desc: "ประสานงานกลยุทธ์การทำงานโดยใช้สมการ FDIA และอัลกอริทึม 41 ตัว เลือกเส้นทางที่เหมาะสมที่สุดสมดุลความเร็ว ความแม่นยำ และต้นทุน" },
-    { id: "G4", name: "WHO Genome", color: "#7B9E87", desc: "จัดการตัวตน การยืนยันตัวตน และการควบคุมการเข้าถึงตามบทบาท ตัดสินใจว่าใครมีสิทธิ์เข้าถึงทรัพยากร" },
-    { id: "G5", name: "WHEN Genome", color: "#B8A9C9", desc: "จัดการการประสานงานด้านเวลา การจัดกำหนดการ และการดำเนินการที่ขึ้นกับเวลาให้เหมาะสม" },
-    { id: "G6", name: "WHERE Genome", color: "#D4A853", desc: "ควบคุมโทโพโลยีการ Deploy การกำหนดเส้นทางภูมิภาค และการวางโครงสร้างพื้นฐาน ปรับ Latency ให้เหมาะสม" },
-    { id: "G7", name: "IMPROVEMENT Genome", color: "#C4745B", desc: "ขับเคลื่อนการปรับปรุงตัวเองอย่างต่อเนื่องผ่าน Feedback Loops การติดตามประสิทธิภาพ เชื่อมกลับไป G1 สร้างวงจรปรับปรุง" },
+    { id: "G1", name: "Architect's Genome", color: "#D4A853", desc: "พิมพ์เขียวหลักของ RCT Ecosystem กำหนด Knowledge Scaffold พื้นฐาน — แมปทุก Domain, Concept และความสัมพันธ์ที่ระบบเข้าใจ Genomes อื่นทั้งหมดได้รับโครงสร้างจาก G1", link: "/architecture" },
+    { id: "G2", name: "RCT Codex Genome", color: "#89B4C8", desc: "ฐานความรู้ที่มีชีวิตของ Reverse Component Thinking เข้ารหัส 41 Algorithms, สมการ FDIA, Decision Trees และ Reasoning Framework ที่ขับเคลื่อน Intelligence Layer", link: "/algorithms" },
+    { id: "G3", name: "JITNA Genome", color: "#C4745B", desc: "Just-in-Time Neural Architecture — Routing Engine แบบ Dynamic เลือก LLM, Algorithm Tier และเส้นทางประมวลผลที่เหมาะสมที่สุดสำหรับทุก Task แบบ Real-time สมดุลความเร็ว ความแม่นยำ และต้นทุน", link: "/technology/jitna" },
+    { id: "G4", name: "ARTENT Genome", color: "#7B9E87", desc: "Personal Agent OS Genome ขับเคลื่อน Intent Omnibox (จำแนก Input ทุกประเภท), Memory Timeline (จดจำข้ามเซสชัน) และ Sovereignty Vault (ความจำที่เจ้าของเป็นผู้ครอบครอง) สร้างระดับปัญญา L1 ถึง L5", link: "/products/artent-ai" },
+    { id: "G5", name: "SignedAI Genome", color: "#B8A9C9", desc: "Genome การรับรองและฉันทามติหลายโมเดล ประสาน SignedAI Pipeline 6 ขั้นตอน — INTAKE→ROUTER→SIGNERS→ATTESTATION→CONSENSUS→REPORT — ผ่าน 4 Verification Tiers ตั้งแต่ $0.10 ถึง $5.00", link: "/products/signed-ai" },
+    { id: "G6", name: "Vault Genome", color: "#9B7BB8", desc: "Genome ด้านอธิปไตย์และการปกป้องข้อมูล จัดการ Constitutional AI Constraints (A=0), การเข้ารหัสความจำที่ผู้ใช้เป็นเจ้าของ, Selective Disclosure และ Audit Trails ใน 9 มิติ RCTDB", link: "/technology/constitutional-ai" },
+    { id: "G7", name: "RCT-7 Genome", color: "#C4745B", desc: "Mental OS และ Self-Evolution Genome รัน IntentLoop 7 สถานะ (IDLE→RECEIVE→PARSE→ROUTE→EXECUTE→VERIFY→ADAPT) ส่ง Performance Signals กลับไป G1 สร้างวงจรปรับปรุงต่อเนื่อง", link: "/technology/rct-7" },
   ],
 }
 
@@ -50,7 +50,7 @@ export default function GenomePage() {
           <p className="text-lg text-muted-foreground">
             {isTh
               ? "7 Genomes ที่เชื่อมต่อกันสร้างวงจรปรับปรุงต่อเนื่อง — จาก WHY ถึง IMPROVEMENT แล้ววนกลับ"
-              : "Seven interconnected genomes forming a continuous improvement cycle — from WHY to IMPROVEMENT and back."}
+              : "Seven interconnected genomes forming a continuous improvement cycle — from Architect’s Blueprint to RCT-7 Mental OS and back."}
           </p>
         </div>
       </section>
@@ -94,12 +94,17 @@ export default function GenomePage() {
         <div className="space-y-5">
           {localGenomes.map((g, i) => (
             <motion.div key={g.id} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="p-6 rounded-2xl border border-border bg-card">
+              className="p-6 rounded-2xl border border-border bg-card hover:border-warm-amber/40 transition-all">
               <div className="flex items-center gap-3 mb-3">
                 <span className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold font-mono" style={{ backgroundColor: `${g.color}15`, color: g.color }}>{g.id}</span>
                 <h3 className="text-lg font-bold text-foreground">{g.name}</h3>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">{g.desc}</p>
+              {g.link && (
+                <Link href={g.link} className="inline-flex items-center gap-1 mt-3 text-xs font-medium" style={{ color: g.color }}>
+                  {isTh ? "เรียนรู้เพิ่มเติม" : "Learn more"} <ArrowRight size={12} />
+                </Link>
+              )}
             </motion.div>
           ))}
         </div>
@@ -121,7 +126,7 @@ export default function GenomePage() {
               <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-warm-amber/10 text-warm-amber">↻ G1</span>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground mt-6">{isTh ? "วงจรต่อเนื่อง: G7 ป้อนข้อมูลกลับไป G1 เพื่อปรับปรุงอย่างไม่สิ้นสุด" : "Continuous cycle: G7 feeds back into G1 for perpetual improvement."}</p>
+          <p className="text-sm text-muted-foreground mt-6">{isTh ? "วงจรต่อเนื่อง: G7 (RCT-7 Mental OS) ป้อน Performance Signals กลับไป G1 (Architect) เพื่อวิวัฒนาการอย่างไม่สิ้นสุด" : "Continuous cycle: G7 (RCT-7 Mental OS) feeds performance signals back into G1 (Architect) for perpetual evolution."}</p>
         </div>
       </section>
 
@@ -131,8 +136,8 @@ export default function GenomePage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { href: "/architecture", icon: "🏗️", label: isTh ? "สถาปัตยกรรม 10 ชั้น" : "10-Layer Architecture", desc: isTh ? "ดูว่า Genomes เชื่อมต่อกับสถาปัตยกรรมอย่างไร" : "How genomes map to the 10-layer cognitive stack" },
-            { href: "/fdia", icon: "📐", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "รากฐานทางคณิตศาสตร์ที่ขับเคลื่อน HOW Genome" : "The mathematical foundation powering HOW Genome" },
-            { href: "/algorithms", icon: "⚡", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "เครื่องยนต์อัลกอริทึมภายใน HOW Genome" : "The algorithmic engine within HOW Genome" },
+            { href: "/fdia", icon: "📐", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "รากฐานทางคณิตศาสตร์ที่ขับเคลื่อน JITNA Genome" : "The mathematical foundation powering the JITNA Genome" },
+            { href: "/algorithms", icon: "⚡", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "เครื่องยนต์อัลกอริทึมภายใน JITNA Genome" : "The algorithmic engine within the JITNA Genome" },
           ].map((link) => (
             <Link key={link.href} href={link.href} className="block p-4 rounded-xl border border-border bg-card hover:border-warm-amber/50 transition-all">
               <span className="text-2xl mb-2 block">{link.icon}</span>

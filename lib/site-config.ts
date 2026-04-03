@@ -55,6 +55,11 @@ export const PUBLIC_ROUTE_PRIORITIES: Record<string, number> = {
   "/compare/rct-labs-vs-llm-apis": 0.75,
   "/compare/verification-vs-prompt-engineering": 0.75,
   "/compare/rctdb-vs-vector-databases": 0.75,
+  "/solutions/regional-ai": 0.78,
+  "/technology/constitutional-ai": 0.78,
+  "/technology/jitna": 0.78,
+  "/technology/rct-7": 0.78,
+  "/technology/rct-7-thinking": 0.78,
 }
 
 export const PUBLIC_ROUTES = [
@@ -69,6 +74,7 @@ export const PUBLIC_ROUTES = [
   "/solutions/ai-hallucination-prevention",
   "/solutions/enterprise-ai-memory",
   "/solutions/dynamic-ai-routing",
+  "/solutions/regional-ai",
   "/core-systems",
   "/architecture",
   "/genome",
@@ -80,6 +86,10 @@ export const PUBLIC_ROUTES = [
   "/protocols/jitna-rfc-001",
   "/protocols/fdia-equation",
   "/protocols/rct-7-mental-model",
+  "/technology/constitutional-ai",
+  "/technology/jitna",
+  "/technology/rct-7",
+  "/technology/rct-7-thinking",
   "/whitepaper",
   "/use-cases",
   "/faq",

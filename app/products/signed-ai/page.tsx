@@ -1,10 +1,12 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import SignedAIPage from "./SignedAIClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
   return createBilingualMetadata(
-    "en",
+    locale,
     "SignedAI — Multi-LLM Verification Consensus API | 99.7% Accuracy",
     "SignedAI — Multi-LLM Verification Consensus API | ความแม่นยำ 99.7%",
     "Multi-LLM verification consensus API with cryptographically signed responses from up to 8 LLMs. Reduce hallucination to 0.3% with complete audit trails for regulated industries.",
@@ -14,6 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function Page() {
+export default async function Page() {
   return <SignedAIPage />
 }

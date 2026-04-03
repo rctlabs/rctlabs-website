@@ -1,10 +1,12 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import BenchmarkClient from "./BenchmarkClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
   return createBilingualMetadata(
-    "en",
+    locale,
     "AI Benchmark Results",
     "ผลลัพธ์ Benchmark AI",
     "Independent benchmark results: RCT Labs vs LangChain vs LlamaIndex vs AutoGen. RCT achieves 99.7% accuracy, 0.3% hallucination rate, and 47ms average latency at enterprise scale.",
@@ -14,6 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function BenchmarkPage() {
+export default async function BenchmarkPage() {
   return <BenchmarkClient />
 }

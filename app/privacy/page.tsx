@@ -1,22 +1,26 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { GENERAL_CONTACT_EMAIL } from "@/lib/contact"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-export const metadata: Metadata = createBilingualMetadata(
-  "en",
-  "Privacy Policy — RCT Labs",
-  "นโยบายความเป็นส่วนตัว — RCT Labs",
-  "Privacy policy for RCT Labs website and services. PDPA-compliant data handling for Thailand and international users.",
-  "นโยบายความเป็นส่วนตัวของ RCT Labs เว็บไซต์และบริการ สอดคล้องกับ PDPA สำหรับผู้ใช้ในประเทศไทยและต่างประเทศ",
-  "/privacy",
-  ["privacy policy", "PDPA", "data protection", "RCT Labs privacy"]
-)
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return createBilingualMetadata(
+    locale,
+    "Privacy Policy — RCT Labs",
+    "นโยบายความเป็นส่วนตัว — RCT Labs",
+    "Privacy policy for RCT Labs website and services. PDPA-compliant data handling for Thailand and international users.",
+    "นโยบายความเป็นส่วนตัวของ RCT Labs เว็บไซต์และบริการ สอดคล้องกับ PDPA สำหรับผู้ใช้ในประเทศไทยและต่างประเทศ",
+    "/privacy",
+    ["privacy policy", "PDPA", "data protection", "RCT Labs privacy"]
+  )
+}
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
   const sections = [
     {
       title: "1. Introduction",
