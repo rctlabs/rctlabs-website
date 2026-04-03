@@ -1,5 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
+import Script from "next/script"
 import { headers } from "next/headers"
 import { Inter, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
@@ -194,6 +195,18 @@ export default async function RootLayout({
         {/* Preconnect to image CDN for faster LCP */}
         <link rel="preconnect" href="https://d2xsxph8kpxj0f.cloudfront.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://d2xsxph8kpxj0f.cloudfront.net" />
+        {/* Google Analytics 4 */}
+        {process.env.NEXT_PUBLIC_GA4_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA4_ID}',{page_path:window.location.pathname});`}
+            </Script>
+          </>
+        )}
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
