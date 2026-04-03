@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -20,17 +21,20 @@ import {
   Workflow
 } from "lucide-react"
 
-export const metadata: Metadata = createBilingualMetadata(
-  "en",
-  "Documentation — RCT Labs Ecosystem 2026.03 Snapshot",
-  "เอกสารประกอบ — RCT Labs Ecosystem 2026.03 Snapshot",
-  "RCT Ecosystem documentation — 10-Layer Architecture, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema, and deployment guides for enterprise AI governance.",
-  "เอกสาร RCT Ecosystem — สถาปัตยกรรม 10 ชั้น, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema และคู่มือ Deploy สำหรับ AI Governance ระดับองค์กร",
-  "/docs",
-  ["RCT documentation", "AI architecture docs", "JITNA RFC", "API reference", "deployment guide"]
-)
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return createBilingualMetadata(
+    locale,
+    "Documentation — RCT Labs Ecosystem 2026.03 Snapshot",
+    "เอกสารประกอบ — RCT Labs Ecosystem 2026.03 Snapshot",
+    "RCT Ecosystem documentation — 10-Layer Architecture, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema, and deployment guides for enterprise AI governance.",
+    "เอกสาร RCT Ecosystem — สถาปัตยกรรม 10 ชั้น, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema และคู่มือ Deploy สำหรับ AI Governance ระดับองค์กร",
+    "/docs",
+    ["RCT documentation", "AI architecture docs", "JITNA RFC", "API reference", "deployment guide"]
+  )
+}
 
-export default function DocsPage() {
+export default async function DocsPage() {
   return (
     <main className="min-h-screen bg-background dark">
       <Navbar />

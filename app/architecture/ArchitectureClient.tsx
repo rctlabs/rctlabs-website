@@ -15,9 +15,9 @@ const layers = {
     { num: "L1", name: "Hardware Abstraction", desc: "GPU/TPU management, resource allocation, and infrastructure orchestration across cloud and edge deployments.", icon: Cpu, color: "#89B4C8" },
     { num: "L2", name: "Data Ingestion", desc: "Multi-modal data pipeline supporting text, images, audio, video, and structured datasets with real-time streaming.", icon: Database, color: "#7B9E87" },
     { num: "L3", name: "Knowledge Engine", desc: "Semantic indexing, vector search, and knowledge graph construction for intelligent information retrieval.", icon: Brain, color: "#D4A853" },
-    { num: "L4", name: "Memory & Context", desc: "RCTDB v2.0 with 8-dimensional universal memory schema for persistent context across sessions and agents.", icon: Database, color: "#C4745B" },
+    { num: "L4", name: "Memory & Context", desc: "RCTDB v2.0 with the 9-dimensional universal memory schema — Identity, Sovereignty, Context, Payload, Value, Social, Delta, Verification, Evolution — for persistent context across sessions and agents.", icon: Database, color: "#C4745B" },
     { num: "L5", name: "Reasoning Core", desc: "Multi-strategy reasoning including chain-of-thought, tree-of-thought, and hybrid approaches powered by the FDIA Equation.", icon: Brain, color: "#B8A9C9" },
-    { num: "L6", name: "Multi-LLM Orchestration", desc: "Dynamic model selection and routing across global, regional, and task-specific model families.", icon: Network, color: "#D4A853" },
+    { num: "L6", name: "Multi-LLM Orchestration", desc: "HexaCore 7-model roster (3 Western: Claude/Gemini/Grok · 3 Eastern: Kimi/MiniMax/DeepSeek · 1 Regional: Typhoon G38 for Thai) with JITNA dynamic routing across all task types.", icon: Network, color: "#D4A853" },
     { num: "L7", name: "Agent Framework", desc: "Autonomous agent lifecycle management with JITNA Protocol for inter-agent communication and consensus.", icon: Bot, color: "#89B4C8" },
     { num: "L8", name: "Safety & Verification", desc: "Consensus-based verification, traceability, and policy controls designed to hold hallucination risk to 0.3% on benchmarked workloads.", icon: Shield, color: "#7B9E87" },
     { num: "L9", name: "Application Layer", desc: "Domain-specific assistants, enterprise workflows, and solution packages built on the shared platform core.", icon: AppWindow, color: "#C4745B" },
@@ -27,9 +27,9 @@ const layers = {
     { num: "L1", name: "Hardware Abstraction", desc: "การจัดการ GPU/TPU การจัดสรรทรัพยากร และการจัดสรร Infrastructure ทั้ง Cloud และ Edge", icon: Cpu, color: "#89B4C8" },
     { num: "L2", name: "Data Ingestion", desc: "Data Pipeline แบบ Multi-modal รองรับ Text, Images, Audio, Video และ Structured Datasets พร้อม Real-time Streaming", icon: Database, color: "#7B9E87" },
     { num: "L3", name: "Knowledge Engine", desc: "Semantic Indexing, Vector Search และ Knowledge Graph สำหรับการดึงข้อมูลอัจฉริยะ", icon: Brain, color: "#D4A853" },
-    { num: "L4", name: "Memory & Context", desc: "RCTDB v2.0 พร้อม Schema หน่วยความจำ 8 มิติ สำหรับการเก็บ Context ถาวรข้าม Sessions และ Agents", icon: Database, color: "#C4745B" },
+    { num: "L4", name: "Memory & Context", desc: "RCTDB v2.0 พร้อม Schema หน่วยความจำ 9 มิติ — Identity, Sovereignty, Context, Payload, Value, Social, Delta, Verification, Evolution — สำหรับการเก็บ Context ถาวรข้าม Sessions และ Agents", icon: Database, color: "#C4745B" },
     { num: "L5", name: "Reasoning Core", desc: "การให้เหตุผลหลายกลยุทธ์รวม Chain-of-Thought, Tree-of-Thought กับเคลื่อนด้วยสมการ FDIA", icon: Brain, color: "#B8A9C9" },
-    { num: "L6", name: "Multi-LLM Orchestration", desc: "การเลือกและกำหนดเส้นทาง model แบบ dynamic ข้ามตระกูลโมเดลระดับโลก ระดับภูมิภาค และเฉพาะงาน", icon: Network, color: "#D4A853" },
+    { num: "L6", name: "Multi-LLM Orchestration", desc: "HexaCore 7-Model Roster (3 Western: Claude/Gemini/Grok · 3 Eastern: Kimi/MiniMax/DeepSeek · 1 Regional: Typhoon G38 สำหรับภาษาไทย) คู่กับ JITNA Dynamic Routing", icon: Network, color: "#D4A853" },
     { num: "L7", name: "Agent Framework", desc: "การจัดการ Lifecycle ของ Agent อัตโนมัติพร้อม JITNA Protocol สำหรับการสื่อสารระหว่าง Agent", icon: Bot, color: "#89B4C8" },
     { num: "L8", name: "Safety & Verification", desc: "ชั้น consensus-based verification, traceability และ policy controls ที่ทำให้ hallucination risk เหลือ 0.3% ใน benchmark workloads", icon: Shield, color: "#7B9E87" },
     { num: "L9", name: "Application Layer", desc: "ชั้นสำหรับ assistants, enterprise workflows และ solution packages ที่สร้างบน platform core เดียวกัน", icon: AppWindow, color: "#C4745B" },
@@ -40,7 +40,7 @@ const layers = {
 const comparisons = {
   en: [
     { feature: "Architecture", rct: "10-Layer Cognitive Stack", others: "Monolithic / 2-3 layers" },
-    { feature: "Memory", rct: "RCTDB v2.0 — 8D Schema", others: "No persistent memory" },
+    { feature: "Memory", rct: "RCTDB v2.0 — 9D Schema", others: "No persistent memory" },
     { feature: "Hallucination", rct: "0.3% (SignedAI)", others: "12-15% typical" },
     { feature: "Multi-LLM", rct: "8+ providers, dynamic routing", others: "Single provider lock-in" },
     { feature: "Self-Improvement", rct: "L10 autonomous evolution", others: "Manual updates only" },
@@ -48,7 +48,7 @@ const comparisons = {
   ],
   th: [
     { feature: "Architecture", rct: "10-Layer Cognitive Stack", others: "Monolithic / 2-3 ชั้น" },
-    { feature: "Memory", rct: "RCTDB v2.0 — 8D Schema", others: "ไม่มี Persistent Memory" },
+    { feature: "Memory", rct: "RCTDB v2.0 — 9D Schema", others: "ไม่มี Persistent Memory" },
     { feature: "Hallucination", rct: "0.3% (SignedAI)", others: "12-15% ทั่วไป" },
     { feature: "Multi-LLM", rct: "8+ Providers, Dynamic Routing", others: "ผูกกับ Provider เดียว" },
     { feature: "Self-Improvement", rct: "L10 Autonomous Evolution", others: "อัปเดตด้วยมือเท่านั้น" },
@@ -183,6 +183,28 @@ export default function ArchitecturePage() {
               <span className="font-semibold text-sm block mb-1 text-foreground">{link.label}</span>
               <span className="text-xs text-muted-foreground">{link.desc}</span>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Test Infrastructure v5.4.5 */}
+      <section className="mx-auto max-w-4xl px-4 py-16">
+        <h2 className="text-2xl font-bold text-foreground text-center mb-2">{isTh ? "Test Infrastructure v5.4.5" : "Test Infrastructure v5.4.5"}</h2>
+        <p className="text-sm text-muted-foreground text-center mb-8">
+          {isTh ? "First ever 0-failure milestone — Mar 21, 2026" : "First ever 0-failure milestone — Mar 21, 2026"}
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[
+            { value: "4,849", label: isTh ? "Tests Passed" : "Tests Passed", color: "#7B9E87" },
+            { value: "0", label: isTh ? "Failures" : "Failures", color: "#C4745B" },
+            { value: "6,738+", label: isTh ? "Total Tests" : "Total Tests", color: "#D4A853" },
+            { value: "62", label: isTh ? "Microservices" : "Microservices", color: "#89B4C8" },
+          ].map((s, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+              className="p-5 rounded-2xl border border-border bg-card text-center">
+              <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{s.label}</div>
+            </motion.div>
           ))}
         </div>
       </section>

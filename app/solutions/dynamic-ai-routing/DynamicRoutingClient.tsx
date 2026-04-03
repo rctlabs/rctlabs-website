@@ -8,8 +8,25 @@ import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
-import { GitBranch, Zap, Target, Cpu, Network, ArrowRight } from "lucide-react"
+import { GitBranch, Zap, Target, Cpu, Network, ArrowRight, Globe, Scale } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
+
+const models = [
+  { id: "G1", role: "Supreme Architect", origin: "US", provider: "Claude Opus 4.6", color: "#D4A853", badge: "US" },
+  { id: "G2", role: "Lead Builder", origin: "CN", provider: "Kimi K2.5", color: "#7B9E87", badge: "CN" },
+  { id: "G3", role: "Junior Builder", origin: "CN", provider: "MiniMax M2.1", color: "#89B4C8", badge: "CN" },
+  { id: "G4", role: "Specialist", origin: "US", provider: "Gemini 3 Flash", color: "#C4745B", badge: "US" },
+  { id: "G5", role: "Librarian", origin: "US", provider: "Grok 4.1 Fast", color: "#B8A9C9", badge: "US" },
+  { id: "G6", role: "Humanizer", origin: "CN", provider: "DeepSeek V3.2", color: "#7B9E87", badge: "CN" },
+  { id: "G38", role: "Regional Thai", origin: "TH", provider: "Typhoon v2 70B", color: "#9B7BB8", badge: "TH" },
+]
+
+const votingMethods = [
+  { method: "MAJORITY", descEn: "Simple majority — fastest consensus for standard tasks.", descTh: "เสียงข้างมาก — หาฉันทามติเร็วสำหรับ Task มาตรฐาน", color: "#7B9E87" },
+  { method: "WEIGHTED", descEn: "Models weighted by domain proficiency — specialist gets higher vote share.", descTh: "โมเดลถูกถ่วงน้ำหนักตามความชำนาญในโดเมนนั้นๆ — Specialist ได้สัดส่วนสูงกว่า", color: "#D4A853" },
+  { method: "RANKED", descEn: "Models rank each other's outputs — best answer by peer evaluation wins.", descTh: "โมเดลจัดอันดับผลลัพธ์ของกันเอง — คำตอบที่ดีที่สุดโดย Peer Evaluation ชนะ", color: "#C4745B" },
+  { method: "UNANIMOUS", descEn: "75% consensus required — highest trust, slowest, used for critical SignedAI verification.", descTh: "ต้องการฉันทามติ 75% — ความเชื่อถือสูงสุด ใช้ใน SignedAI Tier 8", color: "#B8A9C9" },
+]
 
 const tiers = [
   { tier: "S", nameEn: "Supervisor", nameTh: "Supervisor", descEn: "System-level orchestration and resource management", descTh: "การจัดการระดับระบบและทรัพยากร", count: 3, color: "#C4745B" },
@@ -92,8 +109,8 @@ export default function DynamicAIRoutingPage() {
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-10" style={{ color: textSecondary }}>
               {isEn
-                ? "Intelligent Multi-LLM routing across 9 tiers of 41 algorithms — from basic intent parsing to self-evolving orchestration. Sub-50ms with 60% cost savings."
-                : "Routing Multi-LLM อัจฉริยะผ่าน 9 Tiers ของ 41 Algorithms — ตั้งแต่การแยกวิเคราะห์ Intent พื้นฐานถึง Self-Evolving Orchestration ต่ำกว่า 50ms ประหยัดต้นทุน 60%"}
+                ? "Intelligent Multi-LLM routing across 41 algorithms and 7 specialized AI models — from intent parsing to self-evolving orchestration. Sub-50ms with 60% cost savings."
+                : "Routing Multi-LLM อัจฉริยะผ่าน 41 Algorithms และ 7 โมเดล AI พิเศษ — ผ่าน Intent Parsing ถึง Self-Evolving Orchestration ต่ำกว่า 50ms ประหยัดต้นทุน 60%"}
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -199,6 +216,62 @@ export default function DynamicAIRoutingPage() {
                 {isEn ? "Total Algorithms across 9 Tiers" : "Algorithms ทั้งหมดใน 9 Tiers"}
               </span>
             </motion.div>
+          </div>
+        </section>
+
+        {/* HexaCore Model Roster */}
+        <section className="py-16 px-4" style={{ background: bg }}>
+          <div className="max-w-5xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
+                <span style={{ color: "#D4A853" }}>HexaCore</span>
+                {isEn ? " — The 7-Model Roster" : " — 7-Model Roster"}
+              </h2>
+              <p className="text-base max-w-2xl mx-auto" style={{ color: textSecondary }}>
+                {isEn
+                  ? "3 Western : 3 Eastern : 1 Regional — balanced global intelligence, including Typhoon G38 powered by SCB10X for Thai-language sovereignty."
+                  : "3 Western : 3 Eastern : 1 Regional \u2014 ปัญญาระดับโลกที่สมดุล รวมถึง Typhoon G38 จาก SCB10X สำหรับอธิปไตยภาษาไทย"}
+              </p>
+            </motion.div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {models.map((m, i) => (
+                <motion.div key={m.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+                  className="p-5 rounded-xl border" style={{ background: cardBg, borderColor: cardBorder }}>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded font-mono" style={{ color: m.color, background: `${m.color}18` }}>{m.id}</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: m.color, background: `${m.color}18`, border: `1px solid ${m.color}40` }}>{m.badge}</span>
+                  </div>
+                  <div className="text-xs font-semibold mb-0.5" style={{ color: textMuted }}>{m.role}</div>
+                  <div className="text-sm font-bold" style={{ color: textPrimary }}>{m.provider}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Voting Methods */}
+        <section className="py-16 px-4" style={{ background: bg2 }}>
+          <div className="max-w-5xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
+                {isEn ? "4 " : "4 "}
+                <span style={{ color: "#D4A853" }}>{isEn ? "Consensus Methods" : "Consensus Methods"}</span>
+              </h2>
+              <p className="text-base max-w-2xl mx-auto" style={{ color: textSecondary }}>
+                {isEn
+                  ? "JITNA selects the voting method based on task criticality — from fast majority polling to SignedAI's 75% unanimous consensus."
+                  : "JITNA เลือก Voting Method ตามความสำคัญของ Task \u2014 ตั้งแต่ Majority Polling ที่เร็วจนถึง SignedAI Unanimous 75%"}
+              </p>
+            </motion.div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {votingMethods.map((v, i) => (
+                <motion.div key={v.method} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  className="p-5 rounded-xl border flex items-start gap-4" style={{ background: cardBg, borderColor: cardBorder }}>
+                  <span className="w-24 shrink-0 text-xs font-bold px-2 py-1 rounded text-center mt-0.5 font-mono" style={{ color: v.color, background: `${v.color}18` }}>{v.method}</span>
+                  <p className="text-sm leading-relaxed" style={{ color: textSecondary }}>{isEn ? v.descEn : v.descTh}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 

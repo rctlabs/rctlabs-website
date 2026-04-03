@@ -54,6 +54,11 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
       { label: isTh ? "สถาปัตยกรรม" : "Architecture", href: "/architecture" },
       { label: "7 Genome System", href: "/genome" },
       { label: "41 Algorithms", href: "/algorithms" },
+      { label: "JITNA Protocol", href: "/technology/jitna" },
+      { label: isTh ? "Regional AI" : "Regional AI", href: "/technology/regional-ai" },
+      { label: "RCT-7 Mental OS", href: "/technology/rct-7" },
+      { label: isTh ? "RCT-7 Thinking" : "RCT-7 Thinking", href: "/technology/rct-7-thinking" },
+      { label: isTh ? "Constitutional AI" : "Constitutional AI", href: "/technology/constitutional-ai" },
       { label: "Protocols", href: "/protocols" },
     ],
     [isTh ? "ทรัพยากร" : "Resources"]: [

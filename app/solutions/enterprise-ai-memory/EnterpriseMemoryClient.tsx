@@ -33,21 +33,22 @@ const dbLayers = [
 ]
 
 const dimensions = [
-  { dim: "1D", nameEn: "Content", nameTh: "Content", descEn: "Raw data and text content", descTh: "ข้อมูลดิบและเนื้อหาข้อความ" },
-  { dim: "2D", nameEn: "Context", nameTh: "Context", descEn: "Situational and environmental context", descTh: "บริบทเชิงสถานการณ์และสิ่งแวดล้อม" },
-  { dim: "3D", nameEn: "Intent", nameTh: "Intent", descEn: "User goals and desired outcomes", descTh: "เป้าหมายผู้ใช้และผลลัพธ์ที่ต้องการ" },
-  { dim: "4D", nameEn: "Temporal", nameTh: "Temporal", descEn: "Time-based versioning and evolution", descTh: "การกำหนดเวอร์ชันตามเวลา" },
-  { dim: "5D", nameEn: "Relational", nameTh: "Relational", descEn: "Entity relationships and dependencies", descTh: "ความสัมพันธ์และการพึ่งพาของ Entity" },
-  { dim: "6D", nameEn: "Confidence", nameTh: "Confidence", descEn: "Verification scores and trust levels", descTh: "คะแนนการตรวจสอบและระดับความเชื่อมั่น" },
-  { dim: "7D", nameEn: "Source", nameTh: "Source", descEn: "Provenance and attribution tracking", descTh: "การติดตามแหล่งที่มาและการอ้างอิง" },
-  { dim: "8D", nameEn: "Evolution", nameTh: "Evolution", descEn: "Learning patterns and adaptation history", descTh: "รูปแบบการเรียนรู้และประวัติการปรับตัว" },
+  { dim: "1D", nameEn: "Identity", nameTh: "Identity", descEn: "Persistent entity identifier and ownership metadata — who owns this memory and which agent created it.", descTh: "ตัวระบุ Entity และ Metadata ความเป็นเจ้าของ" },
+  { dim: "2D", nameEn: "Sovereignty", nameTh: "Sovereignty", descEn: "Data ownership, access rights, and consent flags — enforcing Constitutional AI constraints at the storage layer.", descTh: "สิทธิ์ความเป็นเจ้าของข้อมูล สิทธิ์การเข้าถึง และ Constitutional AI" },
+  { dim: "3D", nameEn: "Context", nameTh: "Context", descEn: "Situational and environmental context — session origin, locale, active agent, and conversation thread.", descTh: "บริบทเชิงสถานการณ์ — เซสชัน, Locale, Agent และ Thread" },
+  { dim: "4D", nameEn: "Payload", nameTh: "Payload", descEn: "The actual content — text, embeddings, structured data, and media references stored in the memory item.", descTh: "เนื้อหาจริง — ข้อความ, Embeddings, ข้อมูลเชิงโครงสร้าง และสื่อ" },
+  { dim: "5D", nameEn: "Value", nameTh: "Value", descEn: "Importance score, decay rate, and retrieval priority — determines how long a memory persists and when it fades.", descTh: "คะแนนความสำคัญ อัตราการลดคุณค่า และลำดับความสำคัญการ Recall" },
+  { dim: "6D", nameEn: "Social", nameTh: "Social", descEn: "Relationship graph — links to related memories, parent entities, and cross-agent references for collective recall.", descTh: "กราฟความสัมพันธ์ — ลิงก์ไปยังความจำที่เกี่ยวข้องและ Cross-Agent References" },
+  { dim: "7D", nameEn: "Delta", nameTh: "Delta", descEn: "Change log and versioning — tracks what changed, when, and why, enabling 74% delta compression over raw storage.", descTh: "Change Log และ Versioning — ติดตามการเปลี่ยนแปลง เปิดใช้ Delta Compression 74%" },
+  { dim: "8D", nameEn: "Verification", nameTh: "Verification", descEn: "SignedAI attestation scores, consensus level, and trust rating — proof that the memory passed multi-model review.", descTh: "คะแนน SignedAI Attestation และระดับ Consensus — หลักฐานผ่าน Multi-Model Review" },
+  { dim: "9D", nameEn: "Evolution", nameTh: "Evolution", descEn: "Learning patterns, adaptation history, and feedback loops — how this memory changes and improves over time.", descTh: "รูปแบบการเรียนรู้และประวัติการปรับตัว — วิธีที่ความจำเปลี่ยนแปลงและดีขึ้นตามเวลา" },
 ]
 
 const stats = [
   { value: "74%", label: "Delta Compression", color: "#7B9E87" },
   { value: "3", label: "Memory Layers", color: "#D4A853" },
-  { value: "8D", label: "Context Dimensions", color: "#C4745B" },
-  { value: "24/7", label: "Cross-Session Recall", color: "#89B4C8" },
+  { value: "9D", label: "Context Dimensions", color: "#C4745B" },
+  { value: "<50ms", label: "Recall Latency", color: "#89B4C8" },
 ]
 
 export default function EnterpriseAIMemoryPage() {
@@ -173,16 +174,16 @@ export default function EnterpriseAIMemoryPage() {
           <div className="max-w-5xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
-                <span style={{ color: "#D4A853" }}>{isEn ? "Context" : "Context"}</span>
+                <span style={{ color: "#D4A853" }}>{isEn ? "9D Context" : "9D Context"}</span>
                 {isEn ? " Dimensions" : " Dimensions"}
               </h2>
               <p className="text-base max-w-2xl mx-auto" style={{ color: textSecondary }}>
                 {isEn
-                  ? "Each memory item carries structured context that helps retrieval go beyond keyword matching and remain useful in real enterprise workflows."
-                  : "ข้อมูลความจำแต่ละชิ้นมาพร้อม context ที่มีโครงสร้าง ช่วยให้ retrieval ไปได้ไกลกว่า keyword matching และยังใช้งานได้จริงใน workflow ขององค์กร"}
+                  ? "Each memory item in RCTDB v2.0 carries 9 structured dimensions — the full RCTDB schema powering identity, sovereignty, payload, social graph, delta compression, SignedAI verification, and evolution."
+                  : "ข้อมูลความจำแต่ละชิ้นใน RCTDB v2.0 มาพร้อม  9 มิติ — Schema RCTDB เต็มรูปที่ขับเคลื่อน Identity, Sovereignty, Payload, Social Graph, Delta Compression, SignedAI Verification และ Evolution"}
               </p>
             </motion.div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {dimensions.map((dim, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
                   className="p-5 rounded-xl border" style={{ background: isDark ? "#1E1E1E" : "#FAF6F0", borderColor: cardBorder }}>

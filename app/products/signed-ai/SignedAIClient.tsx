@@ -16,11 +16,27 @@ const features = [
   { icon: BarChart3, color: "#89B4C8", titleEn: "99.7% Accuracy", titleTh: "99.7% Accuracy", descEn: "Reduce hallucination from 15% to 0.3% — enterprise-grade accuracy for critical applications.", descTh: "ลด Hallucination จาก 15% เหลือ 0.3% — ความแม่นยำระดับ Enterprise สำหรับแอปพลิเคชันสำคัญ" },
 ]
 
+const pipeline = [
+  { stage: "INTAKE", color: "#D4A853", descEn: "Receives the request, validates schema, assigns session ID, and classifies task priority.", descTh: "รับคำขอ ตรวจ Schema, กำหนด Session ID และจัดสำดับความสำคัญ" },
+  { stage: "ROUTER", color: "#7B9E87", descEn: "JITNA selects which models to engage from the HexaCore 7-model roster based on task type.", descTh: "JITNA เลือกโมเดลจาก HexaCore 7 ตัวตามประเภทของ Task" },
+  { stage: "SIGNERS", color: "#C4745B", descEn: "All selected models independently process the same request — no cross-contamination.", descTh: "ทุกโมเดลที่เลือกประมวลผลคำขอเดียวกันอย่างอิสระ — ไม่มี Cross-Contamination" },
+  { stage: "ATTESTATION", color: "#89B4C8", descEn: "Each response is scored across 8 dimensions: accuracy, completeness, consistency, relevance, safety, confidence, provenance, and timing.", descTh: "คะแนนคำตอบใน  8 มิติ: Accuracy, Completeness, Consistency, Relevance, Safety, Confidence, Provenance, Timing" },
+  { stage: "CONSENSUS", color: "#B8A9C9", descEn: "Voting method (MAJORITY / WEIGHTED / RANKED / UNANIMOUS) determines final answer from signed responses.", descTh: "Voting Method (MAJORITY/WEIGHTED/RANKED/UNANIMOUS) ตัดสินคำตอบสุดท้ายจากคำตอบที่ Signed" },
+  { stage: "REPORT", color: "#9B7BB8", descEn: "Returns signed response with ED25519 signature, consensus score, model roster used, and full attestation breakdown.", descTh: "ส่งคืนคำตอบแบบ Signed พร้อม ED25519, Consensus Score, Model Roster และรายละเอียด Attestation" },
+]
+
+const pricingTiers = [
+  { tier: "S", label: "Solo", price: "$0.10", models: 1, voting: "N/A", color: "#7B9E87", descEn: "Single best-match model. Fast and cheap for non-critical AI queries.", descTh: "โมเดลเดียวที่เหมาะที่สุด เร็วและถูก" },
+  { tier: "4", label: "Standard", price: "$0.75", models: 4, voting: "MAJORITY", color: "#D4A853", descEn: "4 models, majority consensus. Balanced accuracy for production workflows.", descTh: "4 โมเดล, Majority Consensus — ความแม่นยำสมดุล" },
+  { tier: "6", label: "Advanced", price: "$2.00", models: 6, voting: "WEIGHTED", color: "#C4745B", descEn: "6 models, weighted by domain proficiency. High confidence for regulated sectors.", descTh: "6 โมเดล, Weighted ตามความชำนาญ — คอนเฟลมั่นใจสูง" },
+  { tier: "8", label: "Supreme", price: "$5.00", models: 8, voting: "UNANIMOUS 75%", color: "#9B7BB8", descEn: "All 8 models, 75% unanimous consensus required. Maximum trust for legal, medical, and financial AI.", descTh: "8 โมเดล, ต้องการฉันทามติ 75% — ความเชื่อถือสูงสุด สำหรับกฎหมาย, การแพทย์, การเงิน" },
+]
+
 const stats = [
   { value: "99.7%", label: "Accuracy" },
   { value: "0.3%", label: "Hallucination Rate" },
   { value: "8", label: "Max LLMs" },
-  { value: "<50ms", label: "Verification Latency" },
+  { value: "63/63", label: "Tests Passed" },
 ]
 
 export default function SignedAIPage() {
@@ -92,6 +108,31 @@ export default function SignedAIPage() {
         </div>
       </section>
 
+      {/* 6-Stage Pipeline */}
+      <section className="mx-auto max-w-4xl px-4 py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-foreground">
+            {isTh ? "Pipeline 6 ขั้นตอน" : "6-Stage Verification Pipeline"}
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto">
+            {isTh ? "ทุกคำขอ SignedAI ไหลผ่านทุกขั้นตอน — ไม่มีขั้นตอนใดถูกแบบสุ่ม"
+            : "Every SignedAI request flows through every stage — no step is skipped."}
+          </p>
+        </div>
+        <div className="space-y-3">
+          {pipeline.map((p, i) => (
+            <motion.div key={p.stage} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+              className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card">
+              <div className="shrink-0 flex items-center gap-2">
+                <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: `${p.color}18`, color: p.color }}>{i + 1}</span>
+                <span className="text-xs font-bold font-mono w-24" style={{ color: p.color }}>{p.stage}</span>
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? p.descTh : p.descEn}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* Features */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <div className="text-center mb-12">
@@ -112,6 +153,34 @@ export default function SignedAIPage() {
               <feat.icon size={28} style={{ color: feat.color }} className="mb-4" />
               <h3 className="text-lg font-bold mb-2 text-foreground">{isTh ? feat.titleTh : feat.titleEn}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? feat.descTh : feat.descEn}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Per-Review API Pricing */}
+      <section className="mx-auto max-w-5xl px-4 py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-foreground">
+            {isTh ? "ราคาบริการ API (ต่อการรีวิว)" : "API Pricing (Per Review)"}
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto">
+            {isTh ? "จ่ายเฉพาะสิ่งที่ใช้ — เลือก Tier ตามความสำคัญของ Task"
+            : "Pay only for what you use — pick the Tier that matches the criticality of your task."}
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {pricingTiers.map((t, i) => (
+            <motion.div key={t.tier} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+              className="p-6 rounded-2xl border-2 flex flex-col gap-3" style={{ borderColor: `${t.color}40`, background: `${t.color}08` }}>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold px-2 py-0.5 rounded font-mono" style={{ color: t.color, background: `${t.color}18` }}>Tier {t.tier}</span>
+                <span className="text-xs font-medium" style={{ color: t.color }}>{t.label}</span>
+              </div>
+              <div className="text-3xl font-bold text-foreground">{t.price}</div>
+              <div className="text-xs text-muted-foreground">per review</div>
+              <div className="text-xs font-medium text-foreground">{t.models} {isTh ? "โมเดล" : "model"}{t.models > 1 ? "s" : ""} · {t.voting}</div>
+              <p className="text-xs leading-relaxed text-muted-foreground flex-1">{isTh ? t.descTh : t.descEn}</p>
             </motion.div>
           ))}
         </div>

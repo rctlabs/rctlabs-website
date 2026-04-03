@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
-import { Palette, ArrowRight, Target, Layers, Eye, Wand2 } from "lucide-react"
+import { Palette, ArrowRight, Target, Layers, Eye, Wand2, Brain, ShieldCheck, Cpu } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
 
 const capabilities = [
@@ -36,13 +36,13 @@ export default function ArtentAIPage() {
       <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
         <div className="max-w-3xl mx-auto space-y-5">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-medium" style={{ backgroundColor: "#B8A9C915", borderColor: "#B8A9C930", color: "#B8A9C9" }}>
-            <Palette className="w-4 h-4" /> Creative AI
+            <Brain className="w-4 h-4" /> Personal Agent OS
           </span>
           <h1 className="text-5xl font-bold text-foreground">ArtentAI</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             {isTh
-              ? "Creative AI ที่ขับเคลื่อนด้วยสถาปัตยกรรม ผสมผสาน Intent Understanding กับ Artistic Generation — สร้างผลลัพธ์ที่สอดคล้องกับเป้าหมายเชิงกลยุทธ์"
-              : "Architecture-driven creative AI that combines intent understanding with artistic generation — producing outputs aligned with strategic goals."}
+              ? "Personal Agent OS ที่จำแนก Intent ทุกประเภท, จดจำผ่าน RCTDB 9D และรัน Pipeline CLASSIFY→ROUTE→EXECUTE→VERIFY — ขับเคลื่อนโดย SignedAI Verification"
+              : "The Personal Agent OS that classifies any intent, persists memory through RCTDB 9D, and routes every task through CLASSIFY \u2192 ROUTE \u2192 EXECUTE \u2192 VERIFY — powered by SignedAI-verified execution."}
           </p>
         </div>
       </section>
@@ -51,22 +51,22 @@ export default function ArtentAIPage() {
       <section className="bg-muted/30 py-16">
         <div className="max-w-4xl mx-auto px-4 space-y-4 text-muted-foreground leading-relaxed">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-5">
-            {isTh ? "Creative AI ที่เข้าใจกลยุทธ์" : "Creative AI That Understands Strategy"}
+            {isTh ? "Personal Agent OS ที่เข้าใจความต้องการของคุณ" : "Personal Agent OS That Understands Your Intent"}
           </h2>
           <p>
             {isTh
-              ? "เครื่องมือ Creative AI ส่วนใหญ่สร้างผลงานจาก Prompts ระดับผิวเผิน แต่ Artent AI ลึกกว่า — ใช้สมการ FDIA ของ RCT Ecosystem แยก Creative Intent เป็น Components ที่มีโครงสร้าง เข้าใจไม่ใช่แค่สิ่งที่คุณต้องการสร้าง แต่ทำไมถึงสร้าง และตอบโจทย์ธุรกิจอย่างไร"
-              : "Most creative AI tools generate content based on surface-level prompts. Artent AI goes deeper — it leverages the FDIA equation to decompose creative intent into structured components, understanding not just what you want to create, but why."}
+              ? "Artent AI คือ Personal Agent OS ที่จำแนก Input ทุกประเภทเป็น Intent ที่มีโครงสร้าง จดจำผ่าน RCTDB 9D Schema และรันทุก Task ผ่าน Pipeline 4 ขั้นตอน — ไม่ใช่ AI สร้างเนื้อหาทั่วไป แต่เป็น OS ที่ทำงานให้คุณ"
+              : "Artent AI is a Personal Agent OS that classifies every input as a structured intent, persists it through RCTDB 9D schema, and routes every task through a 4-stage pipeline — not a generic content AI, but an OS that works for you."}
           </p>
           <p>
             {isTh
-              ? "แพลตฟอร์มรวม Genome Subsystem สำหรับ Personality Modeling กับ Multi-Modal Generation Engine ที่สร้างข้อความ รูปภาพ โค้ด งานนำเสนอ วิดีโอ จาก Intent เดียว"
-              : "The platform combines the Genome subsystem for personality modeling with a multi-modal generation engine capable of producing text, images, code, presentations, and video content from a single intent specification."}
+              ? "ระยะปัญญา 5 ระดับของ ARTENT: L1 Chatbot → L2 Recall (RCTDB) → L3 Analysis (FDIA) → L4 Synthesis (Multi-Agent) → L5 Evolution (ปรับปรุงตนเอง) — Agent ที่นี่เติบโตไปพร้อมคุณ"
+              : "5 intelligence levels: L1 Chatbot → L2 Recall (RCTDB memory) → L3 Analysis (FDIA equation) → L4 Synthesis (multi-agent orchestration) → L5 Evolution (self-improving) — an agent that grows with you."}
           </p>
           <p>
             {isTh
-              ? "สำหรับทีม Enterprise Artent AI เชื่อมต่อผลลัพธ์สร้างสรรค์กับ KPIs ที่วัดได้ผ่าน Creative Strategy Alignment Module — ปิดลูประหว่างการสร้างและผลลัพธ์"
-              : "For enterprise teams, Artent AI connects creative output to measurable KPIs through the Creative Strategy Alignment module — closing the loop between creation and performance."}
+              ? "Sovereignty Vault รับประกันว่าคุณเป็นเจ้าของข้อมูลทุกชิ้น: Encrypted Storage, Selective Disclosure และ Constitutional AI Constraints (A=0) ทำให้มั่นใจได้ว่าข้อมูลของคุณจะไม่ถูกนำไปใช้โดยไม่ได้รับอนุญาต"
+              : "The Sovereignty Vault guarantees you own every byte: Encrypted Storage, Selective Disclosure, and Constitutional AI Constraints (A=0) ensure your data is never used without permission."}
           </p>
         </div>
       </section>
@@ -75,7 +75,7 @@ export default function ArtentAIPage() {
       <section className="mx-auto max-w-5xl px-4 py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-foreground">
-            {isTh ? "ความสามารถสร้างสรรค์" : "Creative Capabilities"}
+            {isTh ? "ความสามารถหลัก" : "Core Capabilities"}
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -105,14 +105,14 @@ export default function ArtentAIPage() {
             </h2>
             <p className="text-sm leading-relaxed mb-6 text-muted-foreground">
               {isTh
-                ? "Artent AI ใช้ประโยชน์จาก RCT Stack ทั้งหมด — สมการ FDIA สำหรับ Intent Decomposition, Genome Subsystem สำหรับ Personality Modeling และสถาปัตยกรรม 9-Tier Algorithm"
-                : "Artent AI leverages the full RCT stack — FDIA equation for intent decomposition, Genome subsystem for personality modeling, and the 9-tier algorithm architecture."}
+                ? "ARTENT Genome ใช้ RCT Stack ทั้งหมด — JITNA Routing สำหรับเลือกโมเดล, RCTDB 9D สำหรับ Memory Timeline และ SignedAI สำหรับ Verification"
+                : "The ARTENT Genome leverages the full RCT stack — JITNA for model routing, RCTDB 9D for the Memory Timeline, and SignedAI for result verification."}
             </p>
             <div className="grid grid-cols-3 gap-4">
               {[
-                { label: "FDIA", desc: isTh ? "Intent Decomposition" : "Intent Decomposition", color: "#C4745B" },
-                { label: "Genome", desc: isTh ? "Personality Model" : "Personality Model", color: "#7B9E87" },
-                { label: "9-Tier", desc: isTh ? "Content Routing" : "Content Routing", color: "#D4A853" },
+                { label: "JITNA", desc: isTh ? "Model Routing" : "Model Routing", color: "#C4745B" },
+                { label: "RCTDB 9D", desc: isTh ? "Memory Timeline" : "Memory Timeline", color: "#7B9E87" },
+                { label: "SignedAI", desc: isTh ? "Verification" : "Verification", color: "#D4A853" },
               ].map((item, i) => (
                 <div key={i} className="p-4 rounded-xl text-center bg-muted">
                   <div className="text-lg font-bold mb-1" style={{ color: item.color }}>{item.label}</div>

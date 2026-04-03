@@ -1,10 +1,12 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import RCTLabsPage from "./RCTLabsClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
   return createBilingualMetadata(
-    "en",
+    locale,
     "RCTLabs — AI Testing Platform with 62,205+ Test Cases",
     "RCTLabs — แพลตฟอร์มทดสอบ AI กว่า 62,205 Test Cases",
     "Integrated AI testing platform with 62,205+ automated test cases across 9 tiers. Validate, benchmark, and certify AI models with unit testing, integration testing, and regression analysis.",
@@ -14,6 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function Page() {
+export default async function Page() {
   return <RCTLabsPage />
 }

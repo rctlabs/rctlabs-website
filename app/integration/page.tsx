@@ -1,10 +1,12 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import IntegrationClient from "./IntegrationClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
   return createBilingualMetadata(
-    "en",
+    locale,
     "Integration Guide",
     "คู่มือการเชื่อมต่อ",
     "Integrate RCT Labs with your stack: Notion, Slack, GitHub, file systems, databases, and 20+ enterprise tools via MCP (Model Context Protocol). Step-by-step integration guides.",
@@ -14,6 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function IntegrationPage() {
+export default async function IntegrationPage() {
   return <IntegrationClient />
 }

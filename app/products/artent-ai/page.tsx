@@ -1,10 +1,12 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
 import ArtentAIPage from "./ArtentAIClient"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
   return createBilingualMetadata(
-    "en",
+    locale,
     "Artent AI — Architecture-Driven Creative AI for Enterprise",
     "Artent AI — Creative AI ขับเคลื่อนด้วยสถาปัตยกรรมสำหรับองค์กร",
     "Architecture-driven creative AI combining intent understanding with artistic generation. Multi-modal outputs, brand consistency engine, and creative strategy alignment powered by FDIA equation.",
@@ -14,6 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function Page() {
+export default async function Page() {
   return <ArtentAIPage />
 }
