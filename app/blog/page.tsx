@@ -22,5 +22,26 @@ export default async function BlogPage() {
   const locale = await getRequestLocale()
   const posts = getAllBlogPosts(locale)
   const localePrefix = locale === "th" ? "/th" : "/en"
-  return <BlogPageClient posts={posts} localePrefix={localePrefix} />
+
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "RCT Labs Research Blog",
+    "url": `https://rctlabs.co${localePrefix}/blog`,
+    "publisher": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.co" },
+    "blogPost": posts.slice(0, 10).map((post) => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "url": `https://rctlabs.co${localePrefix}/blog/${post.slug}`,
+      "datePublished": post.date,
+      "author": { "@type": "Person", "name": post.author }
+    }))
+  }
+
+  return (
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
+      <BlogPageClient posts={posts} localePrefix={localePrefix} />
+    </>
+  )
 }

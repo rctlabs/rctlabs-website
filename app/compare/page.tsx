@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
+import { SITE_URL } from "@/lib/site-config"
 import CompareClient from "./CompareClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,6 +25,34 @@ export async function generateMetadata(): Promise<Metadata> {
   )
 }
 
-export default function ComparePage() {
-  return <CompareClient />
+export default async function ComparePage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
+
+  const compareSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "AI Methodology Comparisons — RCT Labs",
+    "url": `${SITE_URL}${localePrefix}/compare`,
+    "description": "Side-by-side comparisons of Constitutional AI, RAG, verification-first methods, and more. Evidence-based analysis from RCT Labs.",
+    "hasPart": [
+      { "@type": "WebPage", "name": "Constitutional AI vs RAG", "url": `${SITE_URL}/en/compare/constitutional-ai-vs-rag` },
+      { "@type": "WebPage", "name": "RCT Labs vs LLM APIs", "url": `${SITE_URL}/en/compare/rct-labs-vs-llm-apis` },
+      { "@type": "WebPage", "name": "Verification vs Prompt Engineering", "url": `${SITE_URL}/en/compare/verification-vs-prompt-engineering` },
+      { "@type": "WebPage", "name": "RCTDB vs Vector Databases", "url": `${SITE_URL}/en/compare/rctdb-vs-vector-databases` }
+    ]
+  }
+
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: `${SITE_URL}${localePrefix}` },
+    { name: "Compare", url: `${SITE_URL}${localePrefix}/compare` },
+  ])
+
+  return (
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(compareSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <CompareClient />
+    </>
+  )
 }

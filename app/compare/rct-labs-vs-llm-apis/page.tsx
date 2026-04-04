@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
@@ -12,10 +12,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return createBilingualMetadata(
     locale,
-    "RCT Labs vs LLM APIs — Constitutional AI vs Bare API Access",
-    "RCT Labs vs LLM APIs — Constitutional AI เทียบกับ Bare API",
+    "RCT Labs vs LLM APIs โ€” Constitutional AI vs Bare API Access",
+    "RCT Labs vs LLM APIs โ€” Constitutional AI เน€เธ—เธตเธขเธเธเธฑเธ Bare API",
     "Bare LLM API access gives you raw model power with no governance, no compliance, and no memory. RCT Labs adds constitutional AI constraints, multi-model consensus, PDPA-compliant memory, and deterministic safety guarantees.",
-    "การใช้ LLM API ตรงให้พลังของโมเดลดิบโดยไม่มี governance, compliance และ memory ส่วน RCT Labs เพิ่ม constitutional AI, multi-model consensus, memory ที่รองรับ PDPA และ deterministic safety guarantee",
+    "เธเธฒเธฃเนเธเน LLM API เธ•เธฃเธเนเธซเนเธเธฅเธฑเธเธเธญเธเนเธกเน€เธ”เธฅเธ”เธดเธเนเธ”เธขเนเธกเนเธกเธต governance, compliance เนเธฅเธฐ memory เธชเนเธงเธ RCT Labs เน€เธเธดเนเธก constitutional AI, multi-model consensus, memory เธ—เธตเนเธฃเธญเธเธฃเธฑเธ PDPA เนเธฅเธฐ deterministic safety guarantee",
     "/compare/rct-labs-vs-llm-apis",
     ["RCT Labs vs LLM APIs", "constitutional AI platform", "enterprise AI governance"]
   )
@@ -28,11 +28,11 @@ const LLM_API_FAQS = [
   },
   {
     question: "Does RCT Labs replace the LLM API or sit on top of it?",
-    answer: "RCT Labs sits on top of multiple LLM APIs. The HexaCore router includes 7 models (Claude Opus, Kimi K2.5, MiniMax, Gemini Flash, Grok, DeepSeek, and Typhoon v2 for Thai). RCT Labs intelligently routes each query to the appropriate model — you do not need to manage individual API calls. This produces a 3.74x cost reduction compared to always using a premium model.",
+    answer: "RCT Labs sits on top of multiple LLM APIs. The HexaCore router includes 7 models (Claude Opus, Kimi K2.5, MiniMax, Gemini Flash, Grok, DeepSeek, and Typhoon v2 for Thai). RCT Labs intelligently routes each query to the appropriate model โ€” you do not need to manage individual API calls. This produces a 3.74x cost reduction compared to always using a premium model.",
   },
   {
     question: "How does RCT Labs achieve PDPA compliance that bare LLM APIs cannot?",
-    answer: "Bare LLM APIs are stateless — they process a request and forget it. PDPA compliance requires persistence: the ability to prove what data was used, when, and why (Section 33), and the ability to permanently delete a person's data on request (Section 34). RCTDB stores every query as an 8-dimensional record with full provenance. When a data subject requests erasure, their subject_uuid is tombstoned — ensuring no retrievable data remains.",
+    answer: "Bare LLM APIs are stateless โ€” they process a request and forget it. PDPA compliance requires persistence: the ability to prove what data was used, when, and why (Section 33), and the ability to permanently delete a person's data on request (Section 34). RCTDB stores every query as an 8-dimensional record with full provenance. When a data subject requests erasure, their subject_uuid is tombstoned โ€” ensuring no retrievable data remains.",
   },
   {
     question: "What is the 3.74x cost reduction from HexaCore routing?",
@@ -40,7 +40,7 @@ const LLM_API_FAQS = [
   },
   {
     question: "Is vendor lock-in a concern with RCT Labs?",
-    answer: "No. RCT Labs is vendor-neutral by design. The HexaCore router abstracts all 7 models behind a unified interface. If you want to swap Claude Opus for a new model, you update the router configuration — no application code changes required. This is in contrast to building directly on a single LLM API, where switching providers requires significant refactoring.",
+    answer: "No. RCT Labs is vendor-neutral by design. The HexaCore router abstracts all 7 models behind a unified interface. If you want to swap Claude Opus for a new model, you update the router configuration โ€” no application code changes required. This is in contrast to building directly on a single LLM API, where switching providers requires significant refactoring.",
   },
 ]
 
@@ -56,7 +56,7 @@ const rows = [
   { feature: "Multi-model consensus verification", llm: "no", rct: "yes" },
   { feature: "Persistent memory across sessions", llm: "no", rct: "yes" },
   { feature: "Warm recall (\u003c50ms)", llm: "no", rct: "yes" },
-  { feature: "Constitutional kill switch (A=0 → F=0)", llm: "no", rct: "yes" },
+  { feature: "Constitutional kill switch (A=0 โ’ F=0)", llm: "no", rct: "yes" },
   { feature: "Thai-language model support (Typhoon v2)", llm: "partial", rct: "yes" },
   { feature: "Vendor-neutral (swap models freely)", llm: "no", rct: "yes" },
   { feature: "Cost optimization (3.74x vs single model)", llm: "no", rct: "yes" },
@@ -69,32 +69,32 @@ const rows = [
 const useCases = [
   {
     scenario: "Enterprise regulated AI (PDPA, finance, healthcare)",
-    llm: "❌",
-    rct: "✅",
-    reason: "Requires audit trail, right to erasure, and Section 33 explainability — all provided by RCT's RCTDB + JITNA.",
+    llm: "โ",
+    rct: "โ…",
+    reason: "Requires audit trail, right to erasure, and Section 33 explainability โ€” all provided by RCT's RCTDB + JITNA.",
   },
   {
     scenario: "Quick prototyping / developer experiments",
-    llm: "✅",
-    rct: "⚠️",
+    llm: "โ…",
+    rct: "โ ๏ธ",
     reason: "Raw LLM API is simpler for one-off experiments. RCT Ecosystem is designed for production-grade deployments.",
   },
   {
     scenario: "Agentic workflows with multiple AI agents",
-    llm: "❌",
-    rct: "✅",
+    llm: "โ",
+    rct: "โ…",
     reason: "JITNA Protocol provides standardized agent negotiation. LLM APIs have no concept of multi-agent orchestration.",
   },
   {
     scenario: "Thai enterprise AI deployment",
-    llm: "⚠️",
-    rct: "✅",
+    llm: "โ ๏ธ",
+    rct: "โ…",
     reason: "HexaCore includes Typhoon v2 (Thai model). PDPA compliance is built-in. RCT Labs is Thailand-native.",
   },
   {
     scenario: "Research / academic use",
-    llm: "✅",
-    rct: "✅",
+    llm: "โ…",
+    rct: "โ…",
     reason: "Both work. RCT adds reproducibility via signed, verifiable outputs (SignedAI + RCTDB).",
   },
 ]
@@ -123,11 +123,11 @@ export default async function RCTvsLLMAPIs() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-warm-amber/30 bg-warm-amber/8 text-warm-amber text-sm font-medium mb-6">
               <Globe className="w-4 h-4" /> Platform Comparison
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-warm-light-gray leading-tight mb-4 text-balance">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight mb-4 text-balance">
               RCT Labs vs Bare LLM APIs
             </h1>
             <p className="text-xl text-warm-dim max-w-2xl mx-auto mb-8">
-              A bare LLM API is a model. RCT Labs is a constitutional AI operating system. The difference is not performance — it is governance, compliance, and memory.
+              A bare LLM API is a model. RCT Labs is a constitutional AI operating system. The difference is not performance โ€” it is governance, compliance, and memory.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               <span className="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-warm-dim">Enterprise Governance</span>
@@ -148,12 +148,12 @@ export default async function RCTvsLLMAPIs() {
                 titleColor: "text-blue-400",
                 points: [
                   "Raw access to one model at a time",
-                  "No persistent memory — context window only",
-                  "Probabilistic output — model may hallucinate",
+                  "No persistent memory โ€” context window only",
+                  "Probabilistic output โ€” model may hallucinate",
                   "No audit trail, no right-to-erasure mechanism",
                   "PDPA compliance left entirely to you",
                   "No agent-to-agent communication standard",
-                  "Vendor lock-in — switch provider = rewrite code",
+                  "Vendor lock-in โ€” switch provider = rewrite code",
                   "Cost: always paying premium model rates",
                 ],
                 verdict: "Best for: rapid prototyping, research, simple tasks",
@@ -167,7 +167,7 @@ export default async function RCTvsLLMAPIs() {
                 points: [
                   "7 HexaCore models, intelligently routed",
                   "RCTDB: 8-dimensional persistent memory across sessions",
-                  "FDIA kill switch: A=0 → output=0, always",
+                  "FDIA kill switch: A=0 โ’ output=0, always",
                   "Full audit trail: every decision cryptographically logged",
                   "PDPA compliance: UUID tombstone right-to-erasure",
                   "JITNA Protocol: open agent-to-agent standard",
@@ -184,7 +184,7 @@ export default async function RCTvsLLMAPIs() {
                 <ul className="space-y-2 mb-6">
                   {points.map((pt) => (
                     <li key={pt} className="text-sm text-warm-dim flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0">•</span>{pt}
+                      <span className="mt-0.5 shrink-0">โ€ข</span>{pt}
                     </li>
                   ))}
                 </ul>
@@ -200,9 +200,9 @@ export default async function RCTvsLLMAPIs() {
             <div className="flex items-start gap-4">
               <DollarSign className="w-6 h-6 text-warm-amber shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-warm-light-gray mb-1">The Hidden Cost of Bare API Access</p>
+                <p className="font-bold text-foreground mb-1">The Hidden Cost of Bare API Access</p>
                 <p className="text-warm-dim text-sm leading-relaxed">
-                  A bare LLM API charges you premium rates for every token — even tokens that retrieve information you already paid for last week. RCT&apos;s Delta Engine + RCTDB warm recall ({"<"}50ms) means repeated queries are served from memory, not from an LLM API call. Over a typical enterprise workload, this produces a <strong className="text-warm-amber">3.74x cost reduction</strong> vs always calling Claude Opus directly.
+                  A bare LLM API charges you premium rates for every token โ€” even tokens that retrieve information you already paid for last week. RCT&apos;s Delta Engine + RCTDB warm recall ({"<"}50ms) means repeated queries are served from memory, not from an LLM API call. Over a typical enterprise workload, this produces a <strong className="text-warm-amber">3.74x cost reduction</strong> vs always calling Claude Opus directly.
                 </p>
               </div>
             </div>
@@ -211,7 +211,7 @@ export default async function RCTvsLLMAPIs() {
 
         {/* Feature matrix */}
         <section className="mx-auto max-w-7xl px-4 py-12">
-          <h2 className="text-2xl font-bold text-warm-light-gray mb-8">Feature Comparison Matrix</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-8">Feature Comparison Matrix</h2>
           <div className="rounded-2xl border border-white/10 overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -224,7 +224,7 @@ export default async function RCTvsLLMAPIs() {
               <tbody>
                 {rows.map((row, i) => (
                   <tr key={row.feature} className={`border-b border-white/5 ${i % 2 === 0 ? "" : "bg-white/2"}`}>
-                    <td className="px-6 py-3 text-warm-light-gray">{row.feature}</td>
+                    <td className="px-6 py-3 text-foreground">{row.feature}</td>
                     <td className="px-4 py-3"><CompareIcon value={row.llm as "yes"|"no"|"partial"} /></td>
                     <td className="px-4 py-3"><CompareIcon value={row.rct as "yes"|"no"|"partial"} /></td>
                   </tr>
@@ -246,7 +246,7 @@ export default async function RCTvsLLMAPIs() {
 
         {/* Use case matrix */}
         <section className="mx-auto max-w-7xl px-4 py-8">
-          <h2 className="text-2xl font-bold text-warm-light-gray mb-6">When to Use Which</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">When to Use Which</h2>
           <div className="rounded-2xl border border-white/10 overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -260,7 +260,7 @@ export default async function RCTvsLLMAPIs() {
               <tbody>
                 {useCases.map((row, i) => (
                   <tr key={row.scenario} className={`border-b border-white/5 ${i % 2 === 0 ? "" : "bg-white/2"}`}>
-                    <td className="px-6 py-3 text-warm-light-gray">{row.scenario}</td>
+                    <td className="px-6 py-3 text-foreground">{row.scenario}</td>
                     <td className="px-4 py-3 text-center text-base">{row.llm}</td>
                     <td className="px-4 py-3 text-center text-base">{row.rct}</td>
                     <td className="px-4 py-3 text-warm-dim text-xs hidden md:table-cell">{row.reason}</td>
@@ -275,7 +275,7 @@ export default async function RCTvsLLMAPIs() {
         <section className="mx-auto max-w-7xl px-4 py-12">
           <div className="rounded-2xl border border-warm-amber/20 bg-warm-amber/5 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <h2 className="text-xl font-bold text-warm-light-gray mb-2">Explore the Architecture</h2>
+              <h2 className="text-xl font-bold text-foreground mb-2">Explore the Architecture</h2>
               <p className="text-warm-dim">Read how FDIA, JITNA, and RCTDB work together to provide constitutional AI guarantees</p>
             </div>
             <div className="flex gap-3 shrink-0">
@@ -300,3 +300,4 @@ export default async function RCTvsLLMAPIs() {
     </>
   )
 }
+

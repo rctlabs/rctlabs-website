@@ -33,7 +33,7 @@ export function PostCard({ slug, title, author, date, category, excerpt, readTim
 
   return (
     <Link href={`${localePrefix}/blog/${slug}`} {...cardSpotlight} className="main-page-reactive-card group block h-full rounded-xl">
-      <article className="relative h-full overflow-hidden rounded-xl border border-white/8 bg-warm-charcoal/40 backdrop-blur-sm p-6 flex flex-col hover:border-warm-amber/25 hover:bg-warm-charcoal/60 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+      <article className="relative h-full overflow-hidden rounded-xl border border-border bg-card p-6 flex flex-col hover:border-warm-amber/30 hover:bg-accent/50 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,0,0,0.15)]">
         {/* Top gradient line */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-warm-amber/20 to-transparent" />
 
@@ -49,7 +49,7 @@ export function PostCard({ slug, title, author, date, category, excerpt, readTim
         </div>
 
         {/* Title */}
-        <h3 className="text-base font-bold text-warm-light-gray group-hover:text-warm-amber transition-colors duration-200 leading-snug mb-3 line-clamp-2">
+        <h3 className="text-base font-bold text-foreground group-hover:text-warm-amber transition-colors duration-200 leading-snug mb-3 line-clamp-2">
           {title}
         </h3>
 
@@ -62,7 +62,7 @@ export function PostCard({ slug, title, author, date, category, excerpt, readTim
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-4">
             {tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="px-2 py-0.5 rounded text-xs bg-white/5 border border-white/8 text-warm-dim/70">
+              <span key={tag} className="px-2 py-0.5 rounded text-xs bg-muted/50 border border-border text-muted-foreground/70">
                 {tag}
               </span>
             ))}
@@ -73,7 +73,7 @@ export function PostCard({ slug, title, author, date, category, excerpt, readTim
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/8 mt-auto">
+        <div className="flex items-center justify-between pt-3 border-t border-border mt-auto">
           <div className="flex items-center gap-1.5 text-xs text-warm-dim">
             <Users className="w-3 h-3" />
             <span>{author.split(" ").slice(0, 2).join(" ")}</span>

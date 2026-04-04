@@ -1,11 +1,12 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { SITE_TEST_COUNT, SITE_VERSION } from "@/lib/site-config"
+import { SITE_URL, SITE_TEST_COUNT, SITE_VERSION } from "@/lib/site-config"
 import { 
   BookOpen, 
   FileText, 
@@ -35,9 +36,30 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DocsPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
+
+  const docsSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "RCT Labs Documentation 2026.03 Snapshot",
+    "url": `${SITE_URL}${localePrefix}/docs`,
+    "description": "Technical documentation for the RCT Constitutional AI Operating System — 10-Layer Architecture, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema, and deployment guides for enterprise AI governance.",
+    "publisher": { "@type": "Organization", "name": "RCT Labs", "url": SITE_URL },
+    "author": { "@type": "Person", "name": "Ittirit Saengow" }
+  }
+
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: `${SITE_URL}${localePrefix}` },
+    { name: "Documentation", url: `${SITE_URL}${localePrefix}/docs` },
+  ])
+
   return (
-    <main className="min-h-screen bg-background dark">
-      <Navbar />
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(docsSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <main className="min-h-screen bg-background dark">
+        <Navbar />
 
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
@@ -303,5 +325,6 @@ const result = await client.execute({
 
       <Footer />
     </main>
+    </>
   )
 }

@@ -89,7 +89,7 @@ export default async function PressPage() {
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-warm-amber/30 bg-warm-amber/8 text-warm-amber text-sm font-medium w-fit mb-6">
               <Newspaper className="w-4 h-4" /> Press & Media
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-warm-light-gray leading-tight mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight mb-4">
               RCT Labs Media Kit
             </h1>
             <p className="text-xl text-warm-dim max-w-2xl mb-8">
@@ -108,7 +108,7 @@ export default async function PressPage() {
                 href="https://www.linkedin.com/in/ittirit-saengow/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/10 text-warm-dim hover:border-warm-amber/30 hover:text-warm-amber transition text-sm"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border text-muted-foreground hover:border-warm-amber/30 hover:text-warm-amber transition text-sm"
               >
                 <Linkedin className="w-4 h-4" /> LinkedIn Profile
               </a>
@@ -118,14 +118,14 @@ export default async function PressPage() {
 
         {/* Founder */}
         <section className="mx-auto max-w-7xl px-4 py-12">
-          <h2 className="text-2xl font-bold text-warm-light-gray mb-6 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
             <User className="w-5 h-5 text-warm-amber" /> About the Founder
           </h2>
-          <div className="rounded-2xl border border-white/10 bg-warm-charcoal/40 p-8">
+          <div className="rounded-2xl border border-border bg-card p-8">
             <div className="flex flex-col md:flex-row gap-8">
               <div className="w-20 h-20 rounded-full bg-linear-to-br from-warm-amber/20 to-warm-amber/5 border border-warm-amber/30 flex items-center justify-center text-2xl font-bold text-warm-amber shrink-0">IS</div>
               <div>
-                <h3 className="text-xl font-bold text-warm-light-gray mb-1">Ittirit Saengow (อิทธิฤทธิ์ แซ่โง้ว)</h3>
+                <h3 className="text-xl font-bold text-foreground mb-1">Ittirit Saengow (อิทธิฤทธิ์ แซ่โง้ว)</h3>
                 <p className="text-warm-amber text-sm font-medium mb-4">Founder & Sole Developer, RCT Labs · Bangkok, Thailand</p>
                 <p className="text-warm-dim leading-relaxed max-w-3xl mb-4">
                   Ittirit Saengow is the sole creator of the RCT (Reverse Component Thinking) Ecosystem — a constitutional AI operating system comprising 62 microservices, 41 algorithms, 7 HexaCore AI models, and 4,849 automated tests. Built over 30 days in June–August 2025 with zero investment capital, from Bangkok, Thailand. Before RCT Labs, Ittirit ran four businesses, studied facility management at the Faculty of Architecture (completing a 4-year program in 6.5 years), and developed the FDIA equation, JITNA protocol, and 7-Genome system as conceptual frameworks before implementing them in code.
@@ -145,15 +145,15 @@ export default async function PressPage() {
 
         {/* Company Facts */}
         <section className="mx-auto max-w-7xl px-4 py-12">
-          <h2 className="text-2xl font-bold text-warm-light-gray mb-6 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
             <Building2 className="w-5 h-5 text-warm-amber" /> Company Fact Sheet
           </h2>
-          <div className="rounded-2xl border border-white/10 overflow-hidden">
+          <div className="rounded-2xl border border-border overflow-hidden">
             <div className="grid grid-cols-1 sm:grid-cols-2">
               {facts.map((fact, i) => (
-                <div key={fact.label} className={`px-6 py-4 flex items-center justify-between border-b border-white/5 ${i % 2 === 0 ? "" : "sm:border-l sm:border-white/5"}`}>
-                  <span className="text-warm-dim text-sm">{fact.label}</span>
-                  <span className="font-semibold text-warm-light-gray text-sm text-right">{fact.value}</span>
+                <div key={fact.label} className={`px-6 py-4 flex items-center justify-between border-b border-border/50 ${i % 2 === 0 ? "" : "sm:border-l sm:border-border/50"}`}>
+                  <span className="text-muted-foreground text-sm">{fact.label}</span>
+                  <span className="font-semibold text-foreground text-sm text-right">{fact.value}</span>
                 </div>
               ))}
             </div>
@@ -162,16 +162,16 @@ export default async function PressPage() {
 
         {/* Story Angles */}
         <section className="mx-auto max-w-7xl px-4 py-12">
-          <h2 className="text-2xl font-bold text-warm-light-gray mb-6 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
             <Newspaper className="w-5 h-5 text-warm-amber" /> Story Angles for Journalists
           </h2>
           <div className="space-y-4">
             {storyAngles.map((story) => (
-              <div key={story.headline} className="rounded-xl border border-white/8 bg-warm-charcoal/30 p-6">
+              <div key={story.headline} className="rounded-xl border border-border bg-muted/30 p-6">
                 <div className="flex items-start gap-4">
                   <span className="px-2.5 py-0.5 rounded-full border border-warm-amber/30 bg-warm-amber/10 text-warm-amber text-xs font-semibold shrink-0">{story.angle}</span>
                 </div>
-                <h3 className="text-lg font-bold text-warm-light-gray mt-3 mb-2">"{story.headline}"</h3>
+                <h3 className="text-lg font-bold text-foreground mt-3 mb-2">"{story.headline}"</h3>
                 <p className="text-warm-dim text-sm leading-relaxed">{story.hook}</p>
               </div>
             ))}
@@ -180,7 +180,7 @@ export default async function PressPage() {
 
         {/* Deep links */}
         <section className="mx-auto max-w-7xl px-4 py-12">
-          <h2 className="text-2xl font-bold text-warm-light-gray mb-6">Research Links</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">Research Links</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               { label: "FDIA Equation Explained", href: "/en/blog/fdia-equation-explained" },
@@ -190,8 +190,8 @@ export default async function PressPage() {
               { label: "PDPA AI Compliance Guide", href: "/en/blog/pdpa-ai-compliance-thailand" },
               { label: "Author Profile — Ittirit Saengow", href: "/en/authors/ittirit-saengow" },
             ].map(({ label, href }) => (
-              <Link key={label} href={href} className="flex items-center justify-between px-5 py-3 rounded-lg border border-white/8 hover:border-warm-amber/30 hover:bg-warm-amber/5 transition group">
-                <span className="text-warm-dim group-hover:text-warm-light-gray text-sm transition">{label}</span>
+              <Link key={label} href={href} className="flex items-center justify-between px-5 py-3 rounded-lg border border-border hover:border-warm-amber/30 hover:bg-warm-amber/5 transition group">
+                <span className="text-muted-foreground group-hover:text-foreground text-sm transition">{label}</span>
                 <ExternalLink className="w-4 h-4 text-warm-dim group-hover:text-warm-amber transition" />
               </Link>
             ))}

@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
@@ -12,10 +12,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return createBilingualMetadata(
     locale,
-    "RCTDB vs Vector Databases — AI Memory vs Semantic Search",
-    "RCTDB vs Vector Databases — AI Memory เทียบกับ Semantic Search",
-    "Pinecone and Weaviate are great for semantic search. RCTDB is designed for AI memory — full PDPA audit trail, 8-dimensional provenance, UUID tombstone erasure, and Delta Engine 74% compression. Here is the architectural difference.",
-    "Pinecone และ Weaviate เหมาะสำหรับ semantic search ส่วน RCTDB ถูกออกแบบเพื่อ AI memory พร้อม PDPA audit trail, provenance 8 มิติ, การลบแบบ UUID tombstone และ Delta Engine compression 74% นี่คือความต่างเชิงสถาปัตยกรรม",
+    "RCTDB vs Vector Databases โ€” AI Memory vs Semantic Search",
+    "RCTDB vs Vector Databases โ€” AI Memory เน€เธ—เธตเธขเธเธเธฑเธ Semantic Search",
+    "Pinecone and Weaviate are great for semantic search. RCTDB is designed for AI memory โ€” full PDPA audit trail, 8-dimensional provenance, UUID tombstone erasure, and Delta Engine 74% compression. Here is the architectural difference.",
+    "Pinecone เนเธฅเธฐ Weaviate เน€เธซเธกเธฒเธฐเธชเธณเธซเธฃเธฑเธ semantic search เธชเนเธงเธ RCTDB เธ–เธนเธเธญเธญเธเนเธเธเน€เธเธทเนเธญ AI memory เธเธฃเนเธญเธก PDPA audit trail, provenance 8 เธกเธดเธ•เธด, เธเธฒเธฃเธฅเธเนเธเธ UUID tombstone เนเธฅเธฐ Delta Engine compression 74% เธเธตเนเธเธทเธญเธเธงเธฒเธกเธ•เนเธฒเธเน€เธเธดเธเธชเธ–เธฒเธเธฑเธ•เธขเธเธฃเธฃเธก",
     "/compare/rctdb-vs-vector-databases",
     ["RCTDB vs vector databases", "AI memory", "semantic search comparison"]
   )
@@ -30,19 +30,19 @@ function CompareIcon({ value }: { value: "yes" | "no" | "partial" }) {
 const RCTDB_FAQS = [
   {
     question: "What is RCTDB and how is it different from a vector database?",
-    answer: "RCTDB is an 8-dimensional AI memory schema designed specifically for constitutional AI workloads. A vector database (Pinecone, Weaviate) stores embeddings for semantic similarity search. RCTDB stores AI decision provenance — query hashes, FDIA scores, model chains, consensus results, subject UUIDs, and timestamps. RCTDB enables PDPA right-to-erasure and Section 33 audit trails; vector databases do not.",
+    answer: "RCTDB is an 8-dimensional AI memory schema designed specifically for constitutional AI workloads. A vector database (Pinecone, Weaviate) stores embeddings for semantic similarity search. RCTDB stores AI decision provenance โ€” query hashes, FDIA scores, model chains, consensus results, subject UUIDs, and timestamps. RCTDB enables PDPA right-to-erasure and Section 33 audit trails; vector databases do not.",
   },
   {
     question: "Can RCTDB do semantic search like Pinecone?",
-    answer: "Yes. RCTDB includes semantic similarity search via the Delta Engine (similarity threshold 0.95). However, its primary purpose is not retrieval — it is memory with governance. The 8-dimensional schema adds provenance, FDIA scoring, and consent management on top of semantic lookup.",
+    answer: "Yes. RCTDB includes semantic similarity search via the Delta Engine (similarity threshold 0.95). However, its primary purpose is not retrieval โ€” it is memory with governance. The 8-dimensional schema adds provenance, FDIA scoring, and consent management on top of semantic lookup.",
   },
   {
     question: "How does RCTDB achieve PDPA compliance that vector databases cannot?",
-    answer: "RCTDB stores each record with a subject_uuid field. When a data subject requests erasure (PDPA Section 34), the UUID is tombstoned — all future queries that would retrieve data for that subject receive nothing. Vector databases store embedding vectors with no native concept of data subject identity or erasure.",
+    answer: "RCTDB stores each record with a subject_uuid field. When a data subject requests erasure (PDPA Section 34), the UUID is tombstoned โ€” all future queries that would retrieve data for that subject receive nothing. Vector databases store embedding vectors with no native concept of data subject identity or erasure.",
   },
   {
     question: "What is the 8-dimensional RCTDB schema?",
-    answer: "RCTDB stores 8 dimensions per record: (1) query_hash — semantic fingerprint, (2) fdia_scores — D/I/A/F values, (3) subject_uuid — PDPA-compliant subject reference, (4) model_chain — which LLMs were used, (5) consensus_result — SignedAI agreement level, (6) delta_chain — incremental state for 74% compression, (7) timestamp — immutable creation time, (8) provenance — source documentation and access log.",
+    answer: "RCTDB stores 8 dimensions per record: (1) query_hash โ€” semantic fingerprint, (2) fdia_scores โ€” D/I/A/F values, (3) subject_uuid โ€” PDPA-compliant subject reference, (4) model_chain โ€” which LLMs were used, (5) consensus_result โ€” SignedAI agreement level, (6) delta_chain โ€” incremental state for 74% compression, (7) timestamp โ€” immutable creation time, (8) provenance โ€” source documentation and access log.",
   },
   {
     question: "What is Delta Engine compression and how does it save 74% storage?",
@@ -68,37 +68,37 @@ const rows = [
 const useCases = [
   {
     scenario: "Product recommendation engine",
-    pinecone: "✅",
-    weaviate: "✅",
-    rctdb: "⚠️",
-    reason: "Standard semantic retrieval — use Pinecone or Weaviate. RCTDB is overkill unless PDPA compliance is required.",
+    pinecone: "โ…",
+    weaviate: "โ…",
+    rctdb: "โ ๏ธ",
+    reason: "Standard semantic retrieval โ€” use Pinecone or Weaviate. RCTDB is overkill unless PDPA compliance is required.",
   },
   {
     scenario: "Enterprise AI with PDPA compliance (Thailand)",
-    pinecone: "❌",
-    weaviate: "❌",
-    rctdb: "✅",
+    pinecone: "โ",
+    weaviate: "โ",
+    rctdb: "โ…",
     reason: "RCTDB is the only option with native subject_uuid, UUID tombstone erasure, and Section 33 provenance trail.",
   },
   {
     scenario: "Multi-LLM agentic workflow memory",
-    pinecone: "❌",
-    weaviate: "❌",
-    rctdb: "✅",
-    reason: "RCTDB stores model_chain and consensus_result — enabling full reproducibility of multi-LLM decision chains.",
+    pinecone: "โ",
+    weaviate: "โ",
+    rctdb: "โ…",
+    reason: "RCTDB stores model_chain and consensus_result โ€” enabling full reproducibility of multi-LLM decision chains.",
   },
   {
     scenario: "Knowledge base for RAG system",
-    pinecone: "✅",
-    weaviate: "✅",
-    rctdb: "✅",
+    pinecone: "โ…",
+    weaviate: "โ…",
+    rctdb: "โ…",
     reason: "All three work. RCTDB adds FDIA scoring and provenance to each retrieval, enabling constitutional AI compliance.",
   },
   {
     scenario: "AI decision audit (regulatory requirement)",
-    pinecone: "❌",
-    weaviate: "❌",
-    rctdb: "✅",
+    pinecone: "โ",
+    weaviate: "โ",
+    rctdb: "โ…",
     reason: "Only RCTDB automatically generates the audit trail required by financial, healthcare, and legal AI regulations.",
   },
 ]
@@ -127,11 +127,11 @@ export default async function RCTDBvsVectorDBs() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-warm-amber/30 bg-warm-amber/8 text-warm-amber text-sm font-medium mb-6">
               <Database className="w-4 h-4" /> AI Memory Architecture
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-warm-light-gray leading-tight mb-4 text-balance">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight mb-4 text-balance">
               RCTDB vs Vector Databases
             </h1>
             <p className="text-xl text-warm-dim max-w-2xl mx-auto mb-8">
-              Pinecone and Weaviate are excellent at semantic search. RCTDB is designed for something different — <strong className="text-warm-light-gray">AI memory with constitutional governance</strong>. The 8-dimensional schema stores not just what was retrieved, but who requested it, which models processed it, and whether the data subject has since claimed their right to erasure.
+              Pinecone and Weaviate are excellent at semantic search. RCTDB is designed for something different โ€” <strong className="text-foreground">AI memory with constitutional governance</strong>. The 8-dimensional schema stores not just what was retrieved, but who requested it, which models processed it, and whether the data subject has since claimed their right to erasure.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               <span className="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-warm-dim">PDPA Compliance</span>
@@ -187,7 +187,7 @@ export default async function RCTDBvsVectorDBs() {
                 points: [
                   "Use Pinecone/Weaviate for external knowledge retrieval",
                   "Use RCTDB for AI decision memory and compliance",
-                  "RAG retrieval from vector DB → decision stored in RCTDB",
+                  "RAG retrieval from vector DB โ’ decision stored in RCTDB",
                   "RCTDB Delta Engine caches retrieval patterns over time",
                   "Result: compliant RAG system with full audit coverage",
                 ],
@@ -201,7 +201,7 @@ export default async function RCTDBvsVectorDBs() {
                 <ul className="space-y-2 mb-6">
                   {points.map((pt) => (
                     <li key={pt} className="text-sm text-warm-dim flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0">•</span>{pt}
+                      <span className="mt-0.5 shrink-0">โ€ข</span>{pt}
                     </li>
                   ))}
                 </ul>
@@ -217,9 +217,9 @@ export default async function RCTDBvsVectorDBs() {
             <div className="flex items-start gap-4">
               <Shield className="w-6 h-6 text-warm-amber shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-warm-light-gray mb-1">The PDPA Compliance Gap</p>
+                <p className="font-bold text-foreground mb-1">The PDPA Compliance Gap</p>
                 <p className="text-warm-dim text-sm leading-relaxed">
-                  Under Thailand&apos;s PDPA (and GDPR), when a data subject requests erasure of their data, you must be able to erase it <strong className="text-warm-light-gray">from every system</strong> that holds it — including your AI memory. Vector databases store embedding vectors with no concept of data subject identity. When you need to erase a person&apos;s data, you cannot identify which vectors belong to them. RCTDB&apos;s <strong className="text-warm-amber">subject_uuid → tombstone</strong> pattern solves this architecturally, not procedurally.
+                  Under Thailand&apos;s PDPA (and GDPR), when a data subject requests erasure of their data, you must be able to erase it <strong className="text-foreground">from every system</strong> that holds it โ€” including your AI memory. Vector databases store embedding vectors with no concept of data subject identity. When you need to erase a person&apos;s data, you cannot identify which vectors belong to them. RCTDB&apos;s <strong className="text-warm-amber">subject_uuid โ’ tombstone</strong> pattern solves this architecturally, not procedurally.
                 </p>
               </div>
             </div>
@@ -228,7 +228,7 @@ export default async function RCTDBvsVectorDBs() {
 
         {/* Feature matrix */}
         <section className="mx-auto max-w-7xl px-4 py-12">
-          <h2 className="text-2xl font-bold text-warm-light-gray mb-8">Feature Comparison Matrix</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-8">Feature Comparison Matrix</h2>
           <div className="rounded-2xl border border-white/10 overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -242,7 +242,7 @@ export default async function RCTDBvsVectorDBs() {
               <tbody>
                 {rows.map((row, i) => (
                   <tr key={`row-${i}`} className={`border-b border-white/5 ${i % 2 !== 0 ? "bg-white/2" : ""}`}>
-                    <td className="px-6 py-3 text-warm-light-gray">{row.feature}</td>
+                    <td className="px-6 py-3 text-foreground">{row.feature}</td>
                     <td className="px-4 py-3"><CompareIcon value={row.pinecone as "yes"|"no"|"partial"} /></td>
                     <td className="px-4 py-3"><CompareIcon value={row.weaviate as "yes"|"no"|"partial"} /></td>
                     <td className="px-4 py-3"><CompareIcon value={row.rctdb as "yes"|"no"|"partial"} /></td>
@@ -265,7 +265,7 @@ export default async function RCTDBvsVectorDBs() {
 
         {/* Use case matrix */}
         <section className="mx-auto max-w-7xl px-4 py-8">
-          <h2 className="text-2xl font-bold text-warm-light-gray mb-6">When to Use Which</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">When to Use Which</h2>
           <div className="rounded-2xl border border-white/10 overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -280,7 +280,7 @@ export default async function RCTDBvsVectorDBs() {
               <tbody>
                 {useCases.map((row, i) => (
                   <tr key={row.scenario} className={`border-b border-white/5 ${i % 2 === 0 ? "" : "bg-white/2"}`}>
-                    <td className="px-6 py-3 text-warm-light-gray">{row.scenario}</td>
+                    <td className="px-6 py-3 text-foreground">{row.scenario}</td>
                     <td className="px-4 py-3 text-center text-base">{row.pinecone}</td>
                     <td className="px-4 py-3 text-center text-base">{row.weaviate}</td>
                     <td className="px-4 py-3 text-center text-base">{row.rctdb}</td>
@@ -296,7 +296,7 @@ export default async function RCTDBvsVectorDBs() {
         <section className="mx-auto max-w-7xl px-4 py-12">
           <div className="rounded-2xl border border-warm-amber/20 bg-warm-amber/5 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <h2 className="text-xl font-bold text-warm-light-gray mb-2">Explore the RCTDB Architecture</h2>
+              <h2 className="text-xl font-bold text-foreground mb-2">Explore the RCTDB Architecture</h2>
               <p className="text-warm-dim">Read how RCTDB&apos;s 8 dimensions provide both AI memory and PDPA compliance simultaneously</p>
             </div>
             <div className="flex gap-3 shrink-0">
@@ -321,3 +321,4 @@ export default async function RCTDBvsVectorDBs() {
     </>
   )
 }
+
