@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { headers } from "next/headers"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
-import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
+import { getBreadcrumbSchema, getFAQSchema, getOrganizationSchema, getSoftwareApplicationSchema } from "@/lib/schema"
 import HomePageClient from "./HomePageClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,6 +27,8 @@ export default async function HomePage() {
   const localePrefix = locale === "th" ? "/th" : "/en"
 
   const breadcrumbSchema = getBreadcrumbSchema([{ name: "Home", url: `https://rctlabs.co${localePrefix}` }])
+  const orgSchema = getOrganizationSchema(locale)
+  const softwareSchema = getSoftwareApplicationSchema(locale)
 
   const faqSchema = getFAQSchema(
     locale === "th"
@@ -83,6 +85,8 @@ export default async function HomePage() {
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
       <HomePageClient locale={locale} />
     </>
   )
