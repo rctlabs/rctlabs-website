@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { getLocalePrefix } from "@/lib/i18n"
@@ -83,7 +83,7 @@ export default function HomePage({ locale }: HomePageClientProps) {
             </div>
 
             <div className="relative mx-auto max-w-6xl px-4">
-            <motion.div
+            <m.div
               whileHover={{ y: -4, scale: 1.004 }}
               transition={{ type: "spring", stiffness: 220, damping: 24, mass: 0.9 }}
               className="main-page-reactive-card main-page-reactive-surface relative overflow-hidden rounded-2xl border border-border bg-white/90 p-10 md:p-16 dark:bg-card/90"
@@ -115,7 +115,7 @@ export default function HomePage({ locale }: HomePageClientProps) {
                   </Link>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
             </div>
           </section>
         </MainPageSection>

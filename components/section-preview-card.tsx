@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useMounted } from "@/hooks/use-mounted"
 import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
@@ -19,6 +19,10 @@ interface SectionPreviewCardProps {
   color: string
   bg: string
   delay?: number
+  eyebrow?: string
+  eyebrowTh?: string
+  footer?: string
+  footerTh?: string
 }
 
 export default function SectionPreviewCard({
@@ -32,6 +36,10 @@ export default function SectionPreviewCard({
   color,
   bg,
   delay = 0,
+  eyebrow,
+  eyebrowTh,
+  footer,
+  footerTh,
 }: SectionPreviewCardProps) {
   const { resolvedTheme } = useTheme()
   const mounted = useMounted()
@@ -40,7 +48,7 @@ export default function SectionPreviewCard({
   const cardSpotlight = useCardSpotlight<HTMLAnchorElement>()
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -85,7 +93,7 @@ export default function SectionPreviewCard({
         {/* Vertical content */}
         <div className="relative z-10 flex flex-1 flex-col pr-16 sm:pr-18">
           <span className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Deep Dive
+            {language === "th" ? (eyebrowTh ?? eyebrow ?? "Deep Dive") : (eyebrow ?? "Deep Dive")}
           </span>
           <h3 className="mb-3 text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-lg">
             {language === "th" ? titleTh : title}
@@ -97,10 +105,10 @@ export default function SectionPreviewCard({
             className="mt-auto flex items-center gap-1 text-xs font-semibold transition-all duration-200 sm:opacity-80 sm:group-hover:translate-x-1 sm:group-hover:opacity-100"
             style={{ color }}
           >
-            {language === "th" ? "เปิดดูรายละเอียด →" : "Open the detail path →"}
+            {language === "th" ? (footerTh ?? footer ?? "เปิดดูรายละเอียด →") : (footer ?? "Open the detail path →")}
           </div>
         </div>
       </Link>
-    </motion.div>
+    </m.div>
   )
 }

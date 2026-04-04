@@ -24,7 +24,7 @@ const InteractiveArchDiagram = lazy(() => import("@/components/diagrams/interact
 const InteractiveGenomeExplorerDiagram = lazy(() => import("@/components/diagrams/interactive-genome-explorer"))
 
 function SkeletonDiagram() {
-  return <div className="min-h-70 w-full animate-pulse rounded-xl border border-border bg-card/60" />
+  return <div className="min-h-96 w-full animate-pulse rounded-xl border border-border bg-card/60" />
 }
 
 export default function LazyDiagramWrapper({
@@ -85,6 +85,7 @@ export const LazyEcosystemOverview = (props: Record<string, unknown>) => (
     LazyComponent={EcosystemOverviewDiagram}
     preload={() => import("@/components/diagrams/ecosystem-overview-diagram")}
     componentProps={props}
+    fallback={<div className="mx-auto aspect-500/420 w-full max-w-120 animate-pulse rounded-xl border border-border bg-card/60" />}
   />
 )
 

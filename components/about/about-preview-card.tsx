@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useMounted } from "@/hooks/use-mounted"
 import { useCardSpotlight } from "@/hooks/use-card-spotlight"
@@ -32,7 +32,7 @@ export function AboutPreviewCard({ eyebrow, title, description, footer, iconSrc,
   )
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -74,6 +74,6 @@ export function AboutPreviewCard({ eyebrow, title, description, footer, iconSrc,
           </div>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   )
 }

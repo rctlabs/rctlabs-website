@@ -6,7 +6,7 @@
  * Thai descriptions use Kanit ExtraLight for visual contrast
  * Migrated from manus-frontend-design: ThemeContext → next-themes, LanguageContext → language-provider
  */
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import Image from "next/image"
@@ -68,7 +68,7 @@ export default function SectionHeading({
   }
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -102,6 +102,6 @@ export default function SectionHeading({
           {description}
         </p>
       )}
-    </motion.div>
+    </m.div>
   )
 }

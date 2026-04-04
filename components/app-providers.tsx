@@ -1,6 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import { LazyMotion, domAnimation } from "framer-motion"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider, type Language } from "@/components/language-provider"
 import { useEffect, useState, type ReactNode } from "react"
@@ -75,8 +76,10 @@ export function AppProviders({ children, initialLocale = "en" }: AppProvidersPro
   return (
     <ThemeProvider>
       <LanguageProvider initialLocale={initialLocale}>
-        {children}
-        <DeferredFloatingAI />
+        <LazyMotion features={domAnimation}>
+          {children}
+          <DeferredFloatingAI />
+        </LazyMotion>
       </LanguageProvider>
     </ThemeProvider>
   )
