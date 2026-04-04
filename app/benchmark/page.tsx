@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import BenchmarkClient from "./BenchmarkClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,5 +18,34 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function BenchmarkPage() {
-  return <BenchmarkClient />
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
+
+  const benchmarkSchema = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "RCT Labs AI Reliability Benchmark — 2025 Results",
+    "description": "4,849 test cases across 9 validation tiers comparing RCT Labs Constitutional AI against LangChain, LlamaIndex, and AutoGen. Metrics: hallucination rate, accuracy, and latency at enterprise scale.",
+    "url": `https://rctlabs.co${localePrefix}/benchmark`,
+    "creator": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.co" },
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "variableMeasured": [
+      { "@type": "PropertyValue", "name": "Hallucination Rate", "value": "0.3%", "unitText": "percent" },
+      { "@type": "PropertyValue", "name": "Test Cases", "value": 4849, "unitText": "count" },
+      { "@type": "PropertyValue", "name": "Validation Tiers", "value": 9, "unitText": "count" }
+    ]
+  }
+
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Benchmark", url: `https://rctlabs.co${localePrefix}/benchmark` },
+  ])
+
+  return (
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(benchmarkSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <BenchmarkClient />
+    </>
+  )
 }

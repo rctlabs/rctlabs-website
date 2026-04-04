@@ -58,6 +58,7 @@ export default function EnterpriseAIMemoryPage() {
   const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
+  const localePrefix = locale === "th" ? "/th" : ""
 
   const bg = isDark ? "#141414" : "#ffffff"
   const bg2 = isDark ? "#1A1A1A" : "#FAF6F0"
@@ -70,9 +71,9 @@ export default function EnterpriseAIMemoryPage() {
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
-        { name: "Home", url: "https://rctlabs.co" },
-        { name: isEn ? "Solutions" : "โซลูชัน", url: "https://rctlabs.co/solutions" },
-        { name: isEn ? "Enterprise AI Memory" : "Enterprise AI Memory", url: "https://rctlabs.co/solutions/enterprise-ai-memory" },
+        { name: isEn ? "Home" : "หน้าหลัก", url: `https://rctlabs.co${localePrefix}` },
+        { name: isEn ? "Solutions" : "โซลูชัน", url: `https://rctlabs.co${localePrefix}/solutions` },
+        { name: isEn ? "Enterprise AI Memory" : "Enterprise AI Memory", url: `https://rctlabs.co${localePrefix}/solutions/enterprise-ai-memory` },
       ])) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
@@ -207,12 +208,12 @@ export default function EnterpriseAIMemoryPage() {
                 {isEn ? "Explore Related Solutions" : "สำรวจโซลูชันที่เกี่ยวข้อง"}
               </h2>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/solutions/ai-hallucination-prevention"
+                <Link href={`${localePrefix}/solutions/ai-hallucination-prevention`}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white"
                   style={{ background: "#C4745B" }}>
                   {isEn ? "Hallucination Prevention" : "Hallucination Prevention"} <ArrowRight size={16} />
                 </Link>
-                <Link href="/solutions/dynamic-ai-routing"
+                <Link href={`${localePrefix}/solutions/dynamic-ai-routing`}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border font-semibold text-sm"
                   style={{ borderColor: cardBorder, color: textPrimary }}>
                   Dynamic AI Routing

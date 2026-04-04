@@ -45,6 +45,26 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/technology/jitna-rfc-001",
+        destination: "/protocols/jitna-rfc-001",
+        permanent: true,
+      },
+      {
+        source: "/en/technology/jitna-rfc-001",
+        destination: "/en/protocols/jitna-rfc-001",
+        permanent: true,
+      },
+      {
+        source: "/technology/fdia-equation-explained",
+        destination: "/blog/fdia-equation-explained",
+        permanent: true,
+      },
+      {
+        source: "/en/technology/fdia-equation-explained",
+        destination: "/en/blog/fdia-equation-explained",
+        permanent: true,
+      },
     ]
   },
   async headers() {

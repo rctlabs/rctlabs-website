@@ -1,11 +1,12 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { SITE_TEST_COUNT, SITE_VERSION } from "@/lib/site-config"
+import { SITE_URL, SITE_TEST_COUNT, SITE_VERSION } from "@/lib/site-config"
 import { 
   BookOpen, 
   FileText, 
@@ -35,25 +36,49 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DocsPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const isTh = locale === "th"
+
+  const docsSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "RCT Labs Documentation 2026.03 Snapshot",
+    "url": `${SITE_URL}${localePrefix}/docs`,
+    "description": "Technical documentation for the RCT Constitutional AI Operating System — 10-Layer Architecture, JITNA Protocol RFC-001, 41 Algorithm APIs, RCTDB schema, and deployment guides for enterprise AI governance.",
+    "publisher": { "@type": "Organization", "name": "RCT Labs", "url": SITE_URL },
+    "author": { "@type": "Person", "name": "Ittirit Saengow" }
+  }
+
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: `${SITE_URL}${localePrefix}` },
+    { name: "Documentation", url: `${SITE_URL}${localePrefix}/docs` },
+  ])
+
   return (
-    <main className="min-h-screen bg-background dark">
-      <Navbar />
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(docsSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <main className="min-h-screen bg-background">
+        <Navbar />
 
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div className="absolute inset-0 grid-background opacity-30" />
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-24 md:py-32">
           <div className="max-w-3xl space-y-6">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">Documentation</p>
-            <h1 className="text-foreground">RCT Ecosystem Documentation</h1>
+            <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "เอกสารประกอบ" : "Documentation"}</p>
+            <h1 className="text-foreground">{isTh ? "เอกสารประกอบ RCT Ecosystem" : "RCT Ecosystem Documentation"}</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Technical documentation for the Constitutional AI Operating System. Architecture, APIs, RFCs, deployment guides, and public-safe references aligned to the March 2026 engineering snapshot.
+              {isTh
+                ? "เอกสารประกอบทางเทคนิคสำหรับ Constitutional AI Operating System — สถาปัตยกรรม, APIs, RFCs, คู่มือการ Deploy และข้อมูลสาธารณะ สอดคล้องกับภาพรวมวิศวกรรมเดือนมีนาคม 2026"
+                : "Technical documentation for the Constitutional AI Operating System. Architecture, APIs, RFCs, deployment guides, and public-safe references aligned to the March 2026 engineering snapshot."}
             </p>
             <div className="flex items-center gap-3 pt-2">
               <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">{SITE_VERSION}</span>
-              <span className="text-xs font-mono text-muted-foreground">{SITE_TEST_COUNT} verified backend tests</span>
+              <span className="text-xs font-mono text-muted-foreground">{SITE_TEST_COUNT} {isTh ? "ผลการทดสอบ backend ที่ผ่าน" : "verified backend tests"}</span>
               <span className="text-xs font-mono text-muted-foreground">•</span>
-              <span className="text-xs font-mono text-muted-foreground">10-Layer Architecture</span>
+              <span className="text-xs font-mono text-muted-foreground">{isTh ? "สถาปัตยกรรม 10 ชั้น" : "10-Layer Architecture"}</span>
             </div>
           </div>
         </div>
@@ -63,9 +88,9 @@ export default async function DocsPage() {
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            { icon: Terminal, title: "Quick Start", desc: "Get up and running with RCT Ecosystem in minutes", href: "#quickstart" },
-            { icon: Layers, title: "Architecture", desc: "10-Layer system architecture deep dive", href: "#architecture" },
-            { icon: FileText, title: "API Reference", desc: "OpenAPI 3.1.0 with 14 endpoints", href: "#api" },
+            { icon: Terminal, title: isTh ? "เริ่มต้นใช้งาน" : "Quick Start", desc: isTh ? "เริ่มใช้งาน RCT Ecosystem ได้ภายในไม่กี่นาที" : "Get up and running with RCT Ecosystem in minutes", href: "#quickstart" },
+            { icon: Layers, title: isTh ? "สถาปัตยกรรม" : "Architecture", desc: isTh ? "เข้าใจสถาปัตยกรรม 10 ชั้นอย่างลึกซึ้ง" : "10-Layer system architecture deep dive", href: "#architecture" },
+            { icon: FileText, title: isTh ? "อ้างอิง API" : "API Reference", desc: isTh ? "OpenAPI 3.1.0 พร้อม 14 endpoints" : "OpenAPI 3.1.0 with 14 endpoints", href: "#api" },
           ].map((item, i) => (
             <Link
               key={i}
@@ -85,8 +110,8 @@ export default async function DocsPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="space-y-10">
             <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">Architecture</p>
-              <h2 className="text-foreground">10-Layer System Overview</h2>
+              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "สถาปัตยกรรม" : "Architecture"}</p>
+              <h2 className="text-foreground">{isTh ? "ภาพรวมสถาปัตยกรรม 10 ชั้น" : "10-Layer System Overview"}</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -122,10 +147,10 @@ export default async function DocsPage() {
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
         <div className="space-y-10">
           <div className="space-y-3">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">Specifications</p>
-            <h2 className="text-foreground">Kernel RFCs</h2>
-            <p className="text-muted-foreground">Formal specifications governing the RCT Ecosystem kernel.</p>
-          </div>
+              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "ข้อกำหนด" : "Specifications"}</p>
+              <h2 className="text-foreground">{isTh ? "Kernel RFCs" : "Kernel RFCs"}</h2>
+              <p className="text-muted-foreground">{isTh ? "ข้อกำหนดทางเทคนิคสำหรับ kernel ของ RCT Ecosystem" : "Formal specifications governing the RCT Ecosystem kernel."}</p>
+            </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
@@ -154,9 +179,9 @@ export default async function DocsPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="space-y-10">
             <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">API Reference</p>
+              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "อ้างอิง API" : "API Reference"}</p>
               <h2 className="text-foreground">OpenAPI 3.1.0 — 14 Endpoints</h2>
-              <p className="text-muted-foreground">RESTful API with JWT RS256 authentication and RBAC authorization.</p>
+              <p className="text-muted-foreground">{isTh ? "RESTful API พร้อม JWT RS256 และการอนุญาต RBAC" : "RESTful API with JWT RS256 authentication and RBAC authorization."}</p>
             </div>
 
             <div className="overflow-x-auto">
@@ -165,7 +190,7 @@ export default async function DocsPage() {
                   <tr className="border-b border-border">
                     <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">Method</th>
                     <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">Endpoint</th>
-                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">Description</th>
+                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{isTh ? "คำอธิบาย" : "Description"}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -204,9 +229,9 @@ export default async function DocsPage() {
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
         <div className="space-y-10">
           <div className="space-y-3">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">Deployment</p>
-            <h2 className="text-foreground">Infrastructure Guide</h2>
-          </div>
+              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "การติดตั้ง" : "Deployment"}</p>
+              <h2 className="text-foreground">{isTh ? "คู่มือโครงสร้างพื้นฐาน" : "Infrastructure Guide"}</h2>
+            </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
@@ -234,13 +259,13 @@ export default async function DocsPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="space-y-10">
             <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">Getting Started</p>
-              <h2 className="text-foreground">Quick Start</h2>
+              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "เริ่มต้น" : "Getting Started"}</p>
+              <h2 className="text-foreground">{isTh ? "เริ่มต้นใช้งาน" : "Quick Start"}</h2>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <h3 className="text-sm font-semibold text-foreground">1. Docker Deployment</h3>
+                <h3 className="text-sm font-semibold text-foreground">1. {isTh ? "ติดตั้งด้วย Docker" : "Docker Deployment"}</h3>
                 <div className="bg-card border border-border rounded-lg p-4">
                   <pre className="text-xs font-mono text-muted-foreground overflow-x-auto">
 {`# Clone the repository
@@ -257,7 +282,7 @@ curl http://localhost:8003/health`}
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-sm font-semibold text-foreground">2. SDK Usage</h3>
+                <h3 className="text-sm font-semibold text-foreground">2. {isTh ? "การใช้งาน SDK" : "SDK Usage"}</h3>
                 <div className="bg-card border border-border rounded-lg p-4">
                   <pre className="text-xs font-mono text-muted-foreground overflow-x-auto">
 {`import { RCT } from '@rctlabs/sdk';
@@ -284,18 +309,20 @@ const result = await client.execute({
       {/* CTA */}
       <section className="mx-auto max-w-6xl px-4 py-24">
         <div className="bg-card border border-border rounded-lg p-12 text-center space-y-6">
-          <h2 className="text-foreground">Need Help?</h2>
+          <h2 className="text-foreground">{isTh ? "ต้องการความช่วยเหลือ?" : "Need Help?"}</h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Explore the full architecture, review the RFCs, or contact our team for enterprise support.
+            {isTh
+              ? "สำรวจสถาปัตยกรรมเต็ม ตรวจสอบ RFCs หรือติดต่อทีมงานของเราสำหรับการสนับสนุนระดับองค์กร"
+              : "Explore the full architecture, review the RFCs, or contact our team for enterprise support."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground">
-              <Link href="/platform">
-                View Platform <ArrowRight className="w-4 h-4" />
+              <Link href={`${localePrefix}/platform`}>
+                {isTh ? "ดูแพลตฟอร์ม" : "View Platform"} <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/contact">Contact Support</Link>
+              <Link href={`${localePrefix}/contact`}>{isTh ? "ติดต่อฝ่ายสนับสนุน" : "Contact Support"}</Link>
             </Button>
           </div>
         </div>
@@ -303,5 +330,6 @@ const result = await client.execute({
 
       <Footer />
     </main>
+    </>
   )
 }

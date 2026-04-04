@@ -74,6 +74,7 @@ export default function DynamicAIRoutingPage() {
   const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
+  const localePrefix = locale === "th" ? "/th" : ""
 
   const bg = isDark ? "#141414" : "#ffffff"
   const bg2 = isDark ? "#1A1A1A" : "#FAF6F0"
@@ -86,9 +87,9 @@ export default function DynamicAIRoutingPage() {
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
-        { name: "Home", url: "https://rctlabs.co" },
-        { name: isEn ? "Solutions" : "โซลูชัน", url: "https://rctlabs.co/solutions" },
-        { name: isEn ? "Dynamic AI Routing" : "Dynamic AI Routing", url: "https://rctlabs.co/solutions/dynamic-ai-routing" },
+        { name: isEn ? "Home" : "หน้าหลัก", url: `https://rctlabs.co${localePrefix}` },
+        { name: isEn ? "Solutions" : "โซลูชัน", url: `https://rctlabs.co${localePrefix}/solutions` },
+        { name: isEn ? "Dynamic AI Routing" : "Dynamic AI Routing", url: `https://rctlabs.co${localePrefix}/solutions/dynamic-ai-routing` },
       ])) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
@@ -114,12 +115,12 @@ export default function DynamicAIRoutingPage() {
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/algorithms"
+              <Link href={`${localePrefix}/algorithms`}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white"
                 style={{ background: "#D4A853" }}>
                 {isEn ? "View 41 Algorithms" : "ดู 41 Algorithms"} <ArrowRight size={16} />
               </Link>
-              <Link href="/architecture"
+              <Link href={`${localePrefix}/architecture`}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border font-semibold text-sm"
                 style={{ borderColor: cardBorder, color: textPrimary }}>
                 {isEn ? "Architecture Overview" : "ภาพรวมสถาปัตยกรรม"}
@@ -283,12 +284,12 @@ export default function DynamicAIRoutingPage() {
                 {isEn ? "Explore Related Solutions" : "สำรวจโซลูชันที่เกี่ยวข้อง"}
               </h2>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/algorithms"
+                <Link href={`${localePrefix}/algorithms`}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white"
                   style={{ background: "#D4A853" }}>
                   {isEn ? "View All 41 Algorithms" : "ดู 41 Algorithms ทั้งหมด"} <ArrowRight size={16} />
                 </Link>
-                <Link href="/solutions/ai-hallucination-prevention"
+                <Link href={`${localePrefix}/solutions/ai-hallucination-prevention`}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border font-semibold text-sm"
                   style={{ borderColor: cardBorder, color: textPrimary }}>
                   AI Hallucination Prevention

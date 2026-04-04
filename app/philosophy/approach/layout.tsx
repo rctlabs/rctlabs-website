@@ -6,15 +6,18 @@ import { getRequestLocale } from "@/lib/request-locale"
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale()
 
-  return createBilingualMetadata(
-    locale,
-    "Approach",
-    "แนวทาง",
-    "How RCT Labs approaches intent-driven AI design, system discipline, and deployment quality.",
-    "แนวทางของ RCT Labs ต่อการออกแบบ AI ที่ขับเคลื่อนด้วยเจตนา วินัยของระบบ และคุณภาพการ deploy",
-    "/philosophy/approach",
-    ["RCT approach", "AI system design approach", "intent-driven AI methodology"]
-  )
+  return {
+    ...createBilingualMetadata(
+      locale,
+      "Approach",
+      "แนวทาง",
+      "How RCT Labs approaches intent-driven AI design, system discipline, and deployment quality.",
+      "แนวทางของ RCT Labs ต่อการออกแบบ AI ที่ขับเคลื่อนด้วยเจตนา วินัยของระบบ และคุณภาพการ deploy",
+      "/philosophy/approach",
+      ["RCT approach", "AI system design approach", "intent-driven AI methodology"]
+    ),
+    robots: { index: false, follow: false, googleBot: { index: false, follow: false, noimageindex: true } },
+  }
 }
 
 export default function ApproachLayout({ children }: { children: React.ReactNode }) {

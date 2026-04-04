@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { GENERAL_CONTACT_EMAIL } from "@/lib/contact"
@@ -21,6 +22,21 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PrivacyPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const breadcrumb = getBreadcrumbSchema([
+    { name: locale === "th" ? "หน้าหลัก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: locale === "th" ? "นโยบายความเป็นส่วนตัว" : "Privacy Policy", url: `https://rctlabs.co${localePrefix}/privacy` },
+  ])
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: locale === "th" ? "นโยบายความเป็นส่วนตัว — RCT Labs" : "Privacy Policy — RCT Labs",
+    description: "PDPA-compliant privacy policy for RCT Labs website and services. Covers data collection, use, sharing, and Thailand users' rights.",
+    url: `https://rctlabs.co${localePrefix}/privacy`,
+    genre: "LegalDocument",
+  }
+
   const sections = [
     {
       title: "1. Introduction",
@@ -74,7 +90,10 @@ export default async function PrivacyPage() {
   ]
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       <section className="mx-auto max-w-4xl px-4 py-12">
@@ -102,5 +121,6 @@ export default async function PrivacyPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

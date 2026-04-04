@@ -1109,7 +1109,21 @@
   --hero-shift-y: 0px;
   transform: perspective(1400px) rotateX(var(--hero-rotate-x)) rotateY(var(--hero-rotate-y));
   transform-style: preserve-3d;
-  transition: transform 280ms var(--hero-architecture-ease), box-shadow 280ms var(--hero-architecture-ease), border-color 280ms var(--hero-architecture-ease);
+  transition: transform 280ms var(--hero-architecture-ease), box-shadow 280ms var(--hero-architecture-ease), border-color 280ms var(--hero-architecture-ease), background-color 200ms ease;
+}
+
+/* Gradient overlay: light vs dark mode via CSS class (no JS isDark needed) */
+.hero-arch-gradient-overlay {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(212,168,83,0.18), transparent 44%),
+    radial-gradient(circle at 20% 80%, rgba(123,158,135,0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,0.56), rgba(255,248,240,0.24));
+}
+.dark .hero-arch-gradient-overlay {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(212,168,83,0.14), transparent 44%),
+    radial-gradient(circle at 20% 80%, rgba(123,158,135,0.10), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));
 }
 
 .hero-architecture-glow {

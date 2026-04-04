@@ -117,7 +117,8 @@ const faqCategories = [
 ] as const
 
 const versions = [
-  { ver: "2.7.0", name: "Enterprise Integration Suite", date: "2026-03-10", status: "LATEST" },
+  { ver: "5.4.5", name: "Full Suite Green — 4,849 Tests", date: "2026-03-21", status: "LATEST" },
+  { ver: "2.7.0", name: "Enterprise Integration Suite", date: "2026-03-10", status: "PRODUCTION" },
   { ver: "2.1.0", name: "Enterprise Refactor Edition", date: "2026-02-15", status: "PRODUCTION" },
   { ver: "8.0", name: "Universal Integration & Open Standard", date: "2026-02-02", status: "PRODUCTION" },
   { ver: "7.0", name: "Complete Ecosystem Edition", date: "2026-01-31", status: "PRODUCTION" },

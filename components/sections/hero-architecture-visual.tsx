@@ -89,27 +89,19 @@ export default function HeroArchitectureVisual() {
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         style={panelStyle}
-        className={`relative aspect-[1/1.04] overflow-hidden rounded-4xl border shadow-[0_20px_48px_rgba(84,61,31,0.12)] sm:aspect-5/4 sm:rounded-4xl sm:shadow-[0_24px_60px_rgba(84,61,31,0.12)] ${
-          isDark ? "border-border bg-card/78" : "border-[#eadfce] bg-white/48"
-        } hero-architecture-panel cursor-default backdrop-blur-md`}
+        className="relative aspect-[1/1.04] overflow-hidden rounded-4xl border border-[#eadfce] bg-white/48 shadow-[0_20px_48px_rgba(84,61,31,0.12)] dark:border-border dark:bg-card/78 sm:aspect-5/4 sm:rounded-4xl sm:shadow-[0_24px_60px_rgba(84,61,31,0.12)] hero-architecture-panel cursor-default backdrop-blur-md"
       >
         <div className="pointer-events-none absolute inset-0">
           <div className="hero-architecture-glow absolute inset-0" />
-          <div
-            className={`absolute inset-0 ${
-              isDark
-                ? "bg-[radial-gradient(circle_at_50%_30%,rgba(212,168,83,0.14),transparent_44%),radial-gradient(circle_at_20%_80%,rgba(123,158,135,0.10),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.08))]"
-                : "bg-[radial-gradient(circle_at_50%_30%,rgba(212,168,83,0.18),transparent_44%),radial-gradient(circle_at_20%_80%,rgba(123,158,135,0.12),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.56),rgba(255,248,240,0.24))]"
-            }`}
-          />
-          <div className={`absolute inset-[7%] rounded-[26px] border sm:inset-[8%] sm:rounded-[30px] ${isDark ? "border-white/8" : "border-white/70"}`} />
-          <div className={`absolute inset-x-[12%] top-[22%] h-px sm:inset-x-[14%] sm:top-[23%] ${isDark ? "bg-white/10" : "bg-[#eadfce]"}`} />
-          {enhancedVisualReady ? <div className={`absolute inset-x-[14%] bottom-[26%] h-px sm:inset-x-[16%] sm:bottom-[24%] ${isDark ? "bg-white/10" : "bg-[#eadfce]"}`} /> : null}
+          <div className="absolute inset-0 hero-arch-gradient-overlay" />
+          <div className="absolute inset-[7%] rounded-[26px] border border-white/70 dark:border-white/8 sm:inset-[8%] sm:rounded-[30px]" />
+          <div className="absolute inset-x-[12%] top-[22%] h-px bg-[#eadfce] dark:bg-white/10 sm:inset-x-[14%] sm:top-[23%]" />
+          {enhancedVisualReady ? <div className="absolute inset-x-[14%] bottom-[26%] h-px bg-[#eadfce] dark:bg-white/10 sm:inset-x-[16%] sm:bottom-[24%]" /> : null}
         </div>
 
         <div className="relative z-10 flex h-full flex-col p-3.5 sm:p-5">
           <div className="flex items-center justify-between gap-2.5 sm:gap-3">
-            <div className={`text-[9px] font-medium sm:text-[10px] ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
+            <div className="text-[9px] font-medium text-warm-gray dark:text-warm-subtle sm:text-[10px]">
               Architecture Signal
             </div>
             <div className="flex items-center gap-1 rounded-full border border-warm-amber/20 bg-warm-amber/8 px-2 py-1 text-[8px] font-medium text-warm-amber sm:gap-1.5 sm:text-[9px]">
@@ -121,10 +113,10 @@ export default function HeroArchitectureVisual() {
           <div className="relative flex-1">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="hero-architecture-cluster relative h-[74%] w-[74%] max-h-72 max-w-72 sm:h-[78%] sm:w-[78%] sm:max-h-88 sm:max-w-88">
-                <div className={`absolute inset-[11%] rounded-full border sm:inset-[12%] ${isDark ? "border-white/8" : "border-[#eadfce]"}`} />
-                {enhancedVisualReady ? <div className={`absolute inset-[24%] rounded-full border ${isDark ? "border-white/8" : "border-[#eadfce]"}`} /> : null}
-                {enhancedVisualReady ? <div className={`absolute left-1/2 top-[12%] h-[76%] w-px -translate-x-1/2 sm:top-[10%] sm:h-[80%] ${isDark ? "bg-white/8" : "bg-[#eadfce]"}`} /> : null}
-                <div className={`absolute left-[12%] top-1/2 h-px w-[76%] -translate-y-1/2 sm:left-[10%] sm:w-[80%] ${isDark ? "bg-white/8" : "bg-[#eadfce]"}`} />
+                <div className="absolute inset-[11%] rounded-full border border-[#eadfce] dark:border-white/8 sm:inset-[12%]" />
+                {enhancedVisualReady ? <div className="absolute inset-[24%] rounded-full border border-[#eadfce] dark:border-white/8" /> : null}
+                {enhancedVisualReady ? <div className="absolute left-1/2 top-[12%] h-[76%] w-px -translate-x-1/2 bg-[#eadfce] dark:bg-white/8 sm:top-[10%] sm:h-[80%]" /> : null}
+                <div className="absolute left-[12%] top-1/2 h-px w-[76%] -translate-y-1/2 bg-[#eadfce] dark:bg-white/8 sm:left-[10%] sm:w-[80%]" />
 
                 <div
                   className="hero-architecture-aura absolute inset-[31%] rounded-full"
@@ -137,14 +129,17 @@ export default function HeroArchitectureVisual() {
 
                 <Link
                   href={`${localePrefix}/fdia`}
-                  className={`absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border sm:h-32 sm:w-32 ${
-                    isDark ? "border-warm-amber/25 bg-[#161616]/88" : "border-white/80 bg-white/78"
-                  } hero-architecture-core z-20 overflow-hidden shadow-[0_0_34px_rgba(212,168,83,0.18)] backdrop-blur-md outline-none transition-colors hover:border-warm-amber/45`}
+                  className={`absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-white/80 bg-white/78 dark:border-warm-amber/25 dark:bg-[#161616]/88 sm:h-32 sm:w-32 hero-architecture-core z-20 overflow-hidden shadow-[0_0_34px_rgba(212,168,83,0.18)] backdrop-blur-md outline-none transition-colors hover:border-warm-amber/45`}
                 >
                   <div className="hero-architecture-core__body flex h-full w-full flex-col items-center justify-center">
-                    <div className={`text-[9px] font-medium sm:text-[10px] ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>FDIA</div>
-                    <div className={`mt-1 font-mono text-[13px] font-bold sm:text-sm ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
-                      D<sup className="text-[10px] text-warm-terracotta">I</sup> x A
+                    <div className="text-[9px] font-medium text-warm-gray dark:text-warm-subtle sm:text-[10px]">FDIA</div>
+                    <div className="mt-1 font-mono text-[11px] font-bold leading-none sm:text-[13px]">
+                      <span className="text-warm-amber">F</span>
+                      <span className="text-warm-charcoal dark:text-warm-light-gray"> = </span>
+                      <span className="text-warm-terracotta">D</span>
+                      <sup className="text-[8px] text-warm-terracotta sm:text-[9px]">I</sup>
+                      <span className="text-warm-charcoal dark:text-warm-light-gray"> × </span>
+                      <span className="text-warm-sage">A</span>
                     </div>
                     <div className="mt-1.5 text-[8px] font-semibold uppercase tracking-[0.12em] text-warm-amber sm:mt-2 sm:text-[9px] sm:tracking-[0.14em]">
                       {isTH ? "เปิดสมการ" : "Open Formula"}
@@ -171,7 +166,7 @@ export default function HeroArchitectureVisual() {
                       >
                         {node.short}
                       </div>
-                      <span className={`text-[9px] font-medium sm:text-[10px] ${isDark ? "text-warm-pale/85" : "text-warm-charcoal"}`}>
+                      <span className="text-[9px] font-medium text-warm-charcoal dark:text-warm-pale/85 sm:text-[10px]">
                         {isTH ? node.th : node.en}
                       </span>
                     </Link>
@@ -204,16 +199,14 @@ export default function HeroArchitectureVisual() {
             </div>
           </div>
 
-          <div
-            className={`hero-architecture-metrics grid grid-cols-3 gap-1.5 rounded-[1.15rem] border px-2.5 py-2 sm:gap-2 sm:rounded-2xl sm:px-3 sm:py-2.5 ${isDark ? "border-white/8 bg-black/16" : "border-white/70 bg-white/52"}`}
-          >
+          <div className="hero-architecture-metrics grid grid-cols-3 gap-1.5 rounded-[1.15rem] border border-white/70 bg-white/52 px-2.5 py-2 dark:border-white/8 dark:bg-black/16 sm:gap-2 sm:rounded-2xl sm:px-3 sm:py-2.5">
             {metrics.map((metric, index) => (
               <div
                 key={metric.en}
                 className={`hero-architecture-metric hero-architecture-metric--${(index % 3) + 1} text-center`}
               >
                 <div className={`text-[15px] font-bold font-mono sm:text-base ${metric.accent}`}>{metric.value}</div>
-                <div className={`text-[9px] sm:text-[10px] ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>{isTH ? metric.th : metric.en}</div>
+                <div className="text-[9px] text-warm-gray dark:text-warm-subtle sm:text-[10px]">{isTH ? metric.th : metric.en}</div>
               </div>
             ))}
           </div>

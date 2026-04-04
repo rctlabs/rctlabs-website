@@ -29,6 +29,7 @@ export default function RegionalAIClient() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const isTh = locale === "th"
+  const localePrefix = isTh ? "/th" : ""
 
   return (
     <main className="min-h-screen bg-background" id="main-content">
@@ -195,10 +196,10 @@ AdapterRegistry.register(
             {isTh ? "พร้อม Deploy Regional AI?" : "Ready to Deploy Your Regional AI?"}
           </h2>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
+            <Link href={`${localePrefix}/contact`} className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
               {isTh ? "ติดต่อเรา" : "Contact Us"} <ArrowRight size={16} />
             </Link>
-            <Link href="/solutions/dynamic-ai-routing" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
+            <Link href={`${localePrefix}/solutions/dynamic-ai-routing`} className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
               {isTh ? "JITNA Dynamic Routing" : "JITNA Dynamic Routing"}
             </Link>
           </div>

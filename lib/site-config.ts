@@ -60,6 +60,12 @@ export const PUBLIC_ROUTE_PRIORITIES: Record<string, number> = {
   "/technology/jitna": 0.78,
   "/technology/rct-7": 0.78,
   "/technology/rct-7-thinking": 0.78,
+  "/philosophy": 0.72,
+  "/philosophy/fdia": 0.74,
+  "/philosophy/jitna": 0.73,
+  "/philosophy/rct-7": 0.72,
+  "/philosophy/intent-os": 0.70,
+  "/open-protocol": 0.76,
 }
 
 export const PUBLIC_ROUTES = [
@@ -127,6 +133,12 @@ export const PUBLIC_ROUTES = [
   "/compare/rct-labs-vs-llm-apis",
   "/compare/verification-vs-prompt-engineering",
   "/compare/rctdb-vs-vector-databases",
+  "/philosophy",
+  "/philosophy/fdia",
+  "/philosophy/jitna",
+  "/philosophy/rct-7",
+  "/philosophy/intent-os",
+  "/open-protocol",
 ] as const
 
 export const NOINDEX_ROUTE_PREFIXES = [

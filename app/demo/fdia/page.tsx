@@ -174,6 +174,7 @@ export default function FDIADemoPage() {
   const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
+  const localePrefix = locale === "th" ? "/th" : ""
 
   const [future, setFuture] = useState("Deploy intelligent AI system with high accuracy")
   const [data, setData] = useState(75)
@@ -199,7 +200,7 @@ export default function FDIADemoPage() {
     "description": isEn
       ? "Interactive FDIA equation demo: Calculate and visualize AI hallucination risk in real time."
       : "เดโมสมการ FDIA แบบอินเทอร์แอคทีฟ: คำนวณและดูความเสี่ยง AI Hallucination แบบเรียลไทม์",
-    "url": "https://rctlabs.co/demo/fdia",
+    "url": `https://rctlabs.co/${locale}/demo/fdia`,
     "applicationCategory": "CalculatorApplication",
     "operatingSystem": "Cross-platform",
     "publisher": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.co" }
@@ -444,7 +445,7 @@ export default function FDIADemoPage() {
                     <div className="space-y-2">
                       {result.suggestedPages.map((page, i) => (
                         <Link
-                          key={i} href={page.path}
+                          key={i} href={`${localePrefix}${page.path}`}
                           className="flex items-center gap-3 p-3 rounded-xl transition-colors group"
                           style={{ background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)" }}
                         >
@@ -528,7 +529,7 @@ export default function FDIADemoPage() {
               className="mt-10 text-center"
             >
               <Link
-                href="/protocols/fdia-equation"
+                href={`${localePrefix}/protocols/fdia-equation`}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border transition-all"
                 style={{ borderColor: "rgba(212,168,83,0.4)", color: "#D4A853" }}
               >

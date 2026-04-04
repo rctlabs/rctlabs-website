@@ -92,6 +92,7 @@ export default function HallucinationPreventionPage() {
   const isDark = (mounted ? resolvedTheme : "light") === "dark"
   const locale = getLocaleFromPathname(pathname) ?? "en"
   const isEn = locale === "en"
+  const localePrefix = locale === "th" ? "/th" : ""
 
   const bg = isDark ? "#141414" : "#ffffff"
   const bg2 = isDark ? "#1A1A1A" : "#FAF6F0"
@@ -104,9 +105,9 @@ export default function HallucinationPreventionPage() {
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumbSchema([
-        { name: "Home", url: "https://rctlabs.co" },
-        { name: isEn ? "Solutions" : "โซลูชัน", url: "https://rctlabs.co/solutions" },
-        { name: isEn ? "AI Hallucination Prevention" : "ป้องกัน AI Hallucination", url: "https://rctlabs.co/solutions/ai-hallucination-prevention" },
+        { name: isEn ? "Home" : "หน้าหลัก", url: `https://rctlabs.co${localePrefix}` },
+        { name: isEn ? "Solutions" : "โซลูชัน", url: `https://rctlabs.co${localePrefix}/solutions` },
+        { name: isEn ? "AI Hallucination Prevention" : "ป้องกัน AI Hallucination", url: `https://rctlabs.co${localePrefix}/solutions/ai-hallucination-prevention` },
       ])) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
@@ -132,12 +133,12 @@ export default function HallucinationPreventionPage() {
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/products/signed-ai"
+              <Link href={`${localePrefix}/products/signed-ai`}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white"
                 style={{ background: "#C4745B" }}>
                 {isEn ? "SignedAI Product" : "SignedAI Product"} <ArrowRight size={16} />
               </Link>
-              <Link href="/demo/fdia"
+              <Link href={`${localePrefix}/demo/fdia`}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border"
                 style={{ borderColor: cardBorder, color: textPrimary }}>
                 {isEn ? "Try FDIA Demo" : "ลอง FDIA Demo"}
@@ -324,12 +325,12 @@ export default function HallucinationPreventionPage() {
                 {isEn ? "Explore Related Solutions" : "สำรวจโซลูชันที่เกี่ยวข้อง"}
               </h2>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/solutions/enterprise-ai-memory"
+                <Link href={`${localePrefix}/solutions/enterprise-ai-memory`}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white"
                   style={{ background: "#7B9E87" }}>
                   {isEn ? "Enterprise AI Memory" : "Enterprise AI Memory"} <ArrowRight size={16} />
                 </Link>
-                <Link href="/products/signed-ai"
+                <Link href={`${localePrefix}/products/signed-ai`}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border font-semibold text-sm"
                   style={{ borderColor: cardBorder, color: textPrimary }}>
                   SignedAI Product

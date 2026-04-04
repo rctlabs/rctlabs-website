@@ -94,7 +94,7 @@ export default function GenomePage() {
         <div className="space-y-5">
           {localGenomes.map((g, i) => (
             <motion.div key={g.id} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="p-6 rounded-2xl border border-border bg-card hover:border-warm-amber/40 transition-all">
+              className="p-6 rounded-2xl border border-border bg-card hover:border-warm-amber/40 hover:shadow-[0_12px_28px_rgba(212,168,83,0.09)] hover:-translate-y-1 transition-[border-color,box-shadow,transform] duration-300">
               <div className="flex items-center gap-3 mb-3">
                 <span className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold font-mono" style={{ backgroundColor: `${g.color}15`, color: g.color }}>{g.id}</span>
                 <h3 className="text-lg font-bold text-foreground">{g.name}</h3>
@@ -102,7 +102,9 @@ export default function GenomePage() {
               <p className="text-sm leading-relaxed text-muted-foreground">{g.desc}</p>
               {g.link && (
                 <Link href={g.link} className="inline-flex items-center gap-1 mt-3 text-xs font-medium" style={{ color: g.color }}>
-                  {isTh ? "เรียนรู้เพิ่มเติม" : "Learn more"} <ArrowRight size={12} />
+                  {isTh ? "เรียนรู้เพิ่มเติม" : "Learn more"}
+                  <span className="sr-only">{isTh ? `เกี่ยวกับ ${g.name}` : ` about ${g.name}`}</span>
+                  <ArrowRight size={12} />
                 </Link>
               )}
             </motion.div>

@@ -281,7 +281,7 @@ export default function PricingPage() {
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
             {subscriptionPlans.map((plan) => (
-              <div key={plan.nameEn} className={`rounded-2xl border p-5 ${plan.popular ? "border-warm-amber/40 bg-white ring-1 ring-warm-amber/20 dark:bg-[#1E1E1E]" : "border-warm-light-gray bg-white dark:border-[#2A2A2A] dark:bg-[#1E1E1E]"}`}>
+              <div key={plan.nameEn} className={`rounded-2xl border p-5 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(212,168,83,0.09)] ${plan.popular ? "border-warm-amber/40 bg-white ring-1 ring-warm-amber/20 dark:bg-[#1E1E1E] hover:shadow-[0_12px_28px_rgba(212,168,83,0.15)]" : "border-warm-light-gray bg-white dark:border-[#2A2A2A] dark:bg-[#1E1E1E]"}`}>
                 <div className="flex items-center justify-between gap-2">
                   <h3 className="text-base font-bold text-warm-charcoal dark:text-warm-light-gray">{isTh ? plan.nameTh : plan.nameEn}</h3>
                   {plan.popular ? <span className="rounded-full bg-warm-amber px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">{isTh ? "แนะนำ" : "Popular"}</span> : null}
@@ -327,7 +327,7 @@ export default function PricingPage() {
             return (
               <div
                 key={tier.id}
-                className={`relative flex flex-col rounded-2xl border overflow-hidden transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-xl ${
+                className={`relative flex flex-col rounded-2xl border overflow-hidden transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1.5 hover:border-warm-amber/40 hover:shadow-[0_16px_36px_rgba(212,168,83,0.12)] ${
                   tier.popular
                     ? "border-warm-amber/40 bg-white dark:bg-[#1E1E1E] ring-1 ring-warm-amber/20"
                     : "border-warm-light-gray dark:border-[#2A2A2A] bg-white dark:bg-[#1E1E1E]"

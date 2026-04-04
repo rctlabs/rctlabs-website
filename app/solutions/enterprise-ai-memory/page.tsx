@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
-import { getBreadcrumbSchema } from "@/lib/schema"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import EnterpriseAIMemoryPage from "./EnterpriseMemoryClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,9 +27,25 @@ export default async function Page() {
     { name: locale === "th" ? "Enterprise AI Memory" : "Enterprise AI Memory", url: `https://rctlabs.co${localePrefix}/solutions/enterprise-ai-memory` },
   ])
 
+  const faqSchema = getFAQSchema([
+    {
+      question: "How much compression does Enterprise AI Memory achieve compared to storing full conversation context?",
+      answer: "Enterprise AI Memory achieves 74% lossless delta compression — storing only context changes rather than full snapshots, enabling persistent memory across sessions without exponential storage costs.",
+    },
+    {
+      question: "How does RCTDB differ from vector databases for enterprise AI?",
+      answer: "RCTDB uses an 8-dimensional schema with governed recall, audit trails, and constitutional constraints. Vector databases provide raw similarity search without governance, explainability, or right-to-erasure controls required for enterprise PDPA compliance.",
+    },
+    {
+      question: "Does Enterprise AI Memory support PDPA and data sovereignty requirements?",
+      answer: "Yes. Enterprise AI Memory includes built-in PDPA Section 33 explainability, right-to-erasure for stored context, role-based access controls, and complete audit trails for all memory read and write operations.",
+    },
+  ])
+
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <EnterpriseAIMemoryPage />
     </>
   )

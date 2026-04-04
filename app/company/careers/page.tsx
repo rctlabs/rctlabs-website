@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer"
 import { GENERAL_CONTACT_EMAIL, GENERAL_CONTACT_MAILTO } from "@/lib/contact"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { ArrowRight, Handshake, Lightbulb, Mail, ShieldCheck, Users } from "lucide-react"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,6 +27,19 @@ export default async function CareersPage() {
   const locale = await getRequestLocale()
   const isTh = locale === "th"
   const localePrefix = isTh ? "/th" : "/en"
+
+  const breadcrumb = getBreadcrumbSchema([
+    { name: isTh ? "หน้าหลัก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: isTh ? "บริษัท" : "Company", url: `https://rctlabs.co${localePrefix}/company` },
+    { name: isTh ? "Collaboration" : "Collaboration", url: `https://rctlabs.co${localePrefix}/company/careers` },
+  ])
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: isTh ? "Collaboration — ร่วมงานกับ RCT Labs" : "Collaboration — Work With RCT Labs",
+    description: "Collaboration pathways for advisory, research, implementation, and future opportunities with RCT Labs.",
+    url: `https://rctlabs.co${localePrefix}/company/careers`,
+  }
 
   const collaborationTracks = [
     {
@@ -64,7 +78,10 @@ export default async function CareersPage() {
       ]
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
@@ -185,5 +202,6 @@ export default async function CareersPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

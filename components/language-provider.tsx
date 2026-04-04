@@ -172,8 +172,19 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
   const router = useRouter()
   const searchParams = useSearchParams()
   const [languageState, setLanguageState] = useState<Language>(() => getLocaleFromPathname(pathname || "") ?? initialLocale)
-  const language = getLocaleFromPathname(pathname || "") ?? languageState
+  // Use languageState as the primary source so toggleLanguage updates the UI immediately.
+  // Sync back from pathname changes (browser back/forward, external navigation).
+  const language = languageState
 
+  useEffect(() => {
+    const pathLocale = getLocaleFromPathname(pathname || "")
+    if (pathLocale && pathLocale !== languageState) {
+      setLanguageState(pathLocale)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
+
+  // Sync document.lang attribute on every language change
   useEffect(() => {
     if (typeof document === "undefined") return
     document.documentElement.lang = language

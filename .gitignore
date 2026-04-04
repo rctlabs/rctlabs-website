@@ -30,6 +30,7 @@ next-env.d.ts
 
 # Lighthouse / audit artifacts
 .lighthouse-*
+.lh-tmp/
 .tmp-lh-*.json
 .last-run.json
 .audit/
@@ -43,3 +44,7 @@ test-results/
 
 # Local dev notes / scratch files
 Card design.md
+
+# Build / server logs
+build-wave3.log
+server-*.log

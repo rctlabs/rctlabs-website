@@ -271,12 +271,21 @@ export default function JITNAFlowchart({ language = "en" }: { language?: "en" | 
                 <text x={pos.x - nodeW / 2 + 14} y={pos.y - nodeH / 2 + 3} textAnchor="middle" fill="white" fontSize="10" fontWeight="700">
                   {step.num}
                 </text>
-                <text x={pos.x} y={pos.y - 6} textAnchor="middle" fontSize="20">
+                <text x={pos.x} y={language === "th" ? pos.y - 10 : pos.y - 6} textAnchor="middle" fontSize="20">
                   {step.icon}
                 </text>
-                <text x={pos.x} y={pos.y + 16} textAnchor="middle" fill="#1A1A1A" fontFamily="'Inter', 'Kanit', sans-serif" fontSize="11" fontWeight="600">
-                  {language === "en" ? step.name : step.nameTh}
-                </text>
+                {language === "en" ? (
+                  <text x={pos.x} y={pos.y + 16} textAnchor="middle" fill="#1A1A1A" fontFamily="'Inter', 'Kanit', sans-serif" fontSize="11" fontWeight="600">
+                    {step.name}
+                  </text>
+                ) : (
+                  <text textAnchor="middle" fill="#1A1A1A" fontFamily="'Inter', 'Kanit', sans-serif" fontWeight="600">
+                    <tspan x={pos.x} y={pos.y + 9} fontSize="9">{step.nameTh.includes(" (") ? step.nameTh.split(" (")[0] : step.nameTh}</tspan>
+                    {step.nameTh.includes(" (") && (
+                      <tspan x={pos.x} dy="11" fontSize="8.5" opacity={0.7}>{`(${step.nameTh.split(" (")[1]}`}</tspan>
+                    )}
+                  </text>
+                )}
               </g>
             )
           })}

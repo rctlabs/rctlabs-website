@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
@@ -20,6 +21,21 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TermsPage() {
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const breadcrumb = getBreadcrumbSchema([
+    { name: locale === "th" ? "หน้าหลัก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: locale === "th" ? "ข้อกำหนดการให้บริการ" : "Terms of Service", url: `https://rctlabs.co${localePrefix}/terms` },
+  ])
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: locale === "th" ? "ข้อกำหนดการให้บริการ — RCT Labs" : "Terms of Service — RCT Labs",
+    description: "Terms of Service for RCT Labs website and services. JITNA Protocol and core algorithms licensed under Apache 2.0.",
+    url: `https://rctlabs.co${localePrefix}/terms`,
+    genre: "LegalDocument",
+  }
+
   const sections = [
     {
       title: "1. Acceptance of Terms",
@@ -79,7 +95,10 @@ export default async function TermsPage() {
   ]
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       <section className="mx-auto max-w-4xl px-4 py-12">
@@ -107,5 +126,6 @@ export default async function TermsPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

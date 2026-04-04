@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { ArrowLeft, ArrowRight, Globe2, Handshake, ShieldCheck } from "lucide-react"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -24,6 +25,20 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function PartnersPage() {
   const locale = await getRequestLocale()
   const localePrefix = locale === "th" ? "/th" : "/en"
+
+  const breadcrumb = getBreadcrumbSchema([
+    { name: locale === "th" ? "หน้าหลัก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: locale === "th" ? "บริษัท" : "Company", url: `https://rctlabs.co${localePrefix}/company` },
+    { name: locale === "th" ? "พันธมิตร" : "Partners", url: `https://rctlabs.co${localePrefix}/company/partners` },
+  ])
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: locale === "th" ? "พันธมิตร — ระบบนิเวศเทคโนโลยี ที่ปรึกษา และ Channel" : "Partners — Technology, Consulting, and Channel Ecosystem",
+    description: "Learn how RCT Labs partners with technology providers, consulting firms, and channel teams to deploy constitutional AI systems in enterprise environments.",
+    url: `https://rctlabs.co${localePrefix}/company/partners`,
+  }
+
   const partnerTypes = [
     {
       title: "Technology Partners",
@@ -43,7 +58,10 @@ export default async function PartnersPage() {
   ]
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       {/* Header */}
@@ -109,5 +127,6 @@ export default async function PartnersPage() {
 
       <Footer />
     </main>
+    </>
   )
 }
