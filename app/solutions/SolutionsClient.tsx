@@ -272,8 +272,8 @@ export default function SolutionsPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {problems.map((p, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="p-5 rounded-2xl border border-border bg-card text-center">
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} whileHover={{ y: -4, scale: 1.006, transition: { duration: 0.24 } }}
+              className="p-5 rounded-2xl border border-border bg-card text-center main-page-reactive-card group hover:border-warm-amber/40 hover:shadow-[0_12px_28px_rgba(212,168,83,0.09)] transition-[border-color,box-shadow] duration-300">
               <p.icon className="mx-auto mb-3 text-warm-terracotta" size={28} />
               <p className="text-sm font-semibold text-foreground">{isTh ? p.th : p.en}</p>
             </motion.div>
@@ -285,8 +285,8 @@ export default function SolutionsPage() {
       <section className="bg-muted/30 py-20">
         <div className="max-w-5xl mx-auto px-4 space-y-12">
           {solutions.map((sol) => (
-            <motion.div key={sol.id} initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-              className="rounded-2xl border border-border bg-card overflow-hidden">
+            <motion.div key={sol.id} initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} whileHover={{ y: -4, scale: 1.006, transition: { duration: 0.24 } }}
+              className="rounded-2xl border border-border bg-card overflow-hidden main-page-reactive-card hover:border-warm-amber/40 hover:shadow-[0_16px_36px_rgba(212,168,83,0.09)] transition-[border-color,box-shadow] duration-300">
               <div className="grid grid-cols-1 lg:grid-cols-5">
                 <div className="p-6 sm:p-8 lg:col-span-3">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border mb-5" style={{ backgroundColor: `${sol.color}10`, borderColor: `${sol.color}30` }}>

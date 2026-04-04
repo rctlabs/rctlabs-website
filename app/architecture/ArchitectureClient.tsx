@@ -2,6 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { FAQSection } from "@/components/faq-section"
 import { motion, useReducedMotion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -60,6 +61,7 @@ export default function ArchitecturePage() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const isTh = locale === "th"
+  const localePrefix = isTh ? "/th" : ""
   const prefersReducedMotion = useReducedMotion()
 
   const localLayers = isTh ? layers.th : layers.en
@@ -171,12 +173,12 @@ export default function ArchitecturePage() {
         <h2 className="text-2xl font-bold text-foreground text-center mb-8">{isTh ? "สำรวจเพิ่มเติม" : "Explore More"}</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { href: "/genome", label: isTh ? "7 Genome System" : "7 Genome System", desc: isTh ? "ระบบย่อย DNA ที่ขับเคลื่อนแต่ละชั้น" : "The DNA subsystems that power each layer", icon: "🧬" },
-            { href: "/fdia", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "แกนกลางทางคณิตศาสตร์ของ Reasoning Layer" : "The mathematical core of the Reasoning Layer", icon: "📐" },
-            { href: "/algorithms", label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "กรอบงานอัลกอริทึม 41 รายการ แบ่งเป็น 9 capability tiers" : "A 41-algorithm framework organized across 9 capability tiers", icon: "⚡" },
-            { href: "/benchmark", label: isTh ? "เกณฑ์มาตรฐาน" : "Benchmarks", desc: isTh ? "เมตริกประสิทธิภาพข้ามทุกชั้น" : "Performance metrics across all layers", icon: "📊" },
-            { href: "/integration", label: isTh ? "การเชื่อมต่อ" : "Integration", desc: isTh ? "วิธี Deploy สถาปัตยกรรม 10 ชั้น" : "How to deploy the 10-layer stack", icon: "🔌" },
-            { href: "/solutions", label: isTh ? "โซลูชัน" : "Solutions", desc: isTh ? "โซลูชัน Enterprise AI" : "Enterprise AI solutions", icon: "🛡️" },
+            { href: `${localePrefix}/genome`, label: isTh ? "7 Genome System" : "7 Genome System", desc: isTh ? "ระบบย่อย DNA ที่ขับเคลื่อนแต่ละชั้น" : "The DNA subsystems that power each layer", icon: "🧬" },
+            { href: `${localePrefix}/fdia`, label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "แกนกลางทางคณิตศาสตร์ของ Reasoning Layer" : "The mathematical core of the Reasoning Layer", icon: "📐" },
+            { href: `${localePrefix}/algorithms`, label: isTh ? "41 อัลกอริทึม" : "41 Algorithms", desc: isTh ? "กรอบงานอัลกอริทึม 41 รายการ แบ่งเป็น 9 capability tiers" : "A 41-algorithm framework organized across 9 capability tiers", icon: "⚡" },
+            { href: `${localePrefix}/benchmark`, label: isTh ? "เกณฑ์มาตรฐาน" : "Benchmarks", desc: isTh ? "เมตริกประสิทธิภาพข้ามทุกชั้น" : "Performance metrics across all layers", icon: "📊" },
+            { href: `${localePrefix}/integration`, label: isTh ? "การเชื่อมต่อ" : "Integration", desc: isTh ? "วิธี Deploy สถาปัตยกรรม 10 ชั้น" : "How to deploy the 10-layer stack", icon: "🔌" },
+            { href: `${localePrefix}/solutions`, label: isTh ? "โซลูชัน" : "Solutions", desc: isTh ? "โซลูชัน Enterprise AI" : "Enterprise AI solutions", icon: "🛡️" },
           ].map((link) => (
             <Link key={link.href} href={link.href} className="block p-4 rounded-xl border border-border bg-card hover:border-warm-sky/50 transition-all">
               <span className="text-2xl mb-2 block">{link.icon}</span>
@@ -214,16 +216,53 @@ export default function ArchitecturePage() {
         <div className="mx-auto max-w-3xl px-4 text-center space-y-6">
           <h2 className="text-3xl font-bold text-foreground">{isTh ? "พร้อม Build ด้วย 10-Layer Stack?" : "Ready to Build on the 10-Layer Stack?"}</h2>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
+            <Link href={`${localePrefix}/contact`} className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
               {isTh ? "ติดต่อทีม" : "Contact Us"} <ArrowRight size={16} />
             </Link>
-            <Link href="/docs" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
+            <Link href={`${localePrefix}/docs`} className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
               {isTh ? "อ่าน Docs" : "Read Docs"}
             </Link>
           </div>
         </div>
       </section>
 
+      <FAQSection
+        items={[
+          {
+            question: isTh ? "สถาปัตยกรรม AI 10 ชั้นของ RCT Labs คืออะไร?" : "What is the RCT Labs 10-Layer AI Architecture?",
+            answer: isTh
+              ? "สถาปัตยกรรม AI 10 ชั้นคือ constitutional AI stack ที่ครอบคลุมตั้งแต่ hardware abstraction ที่ชั้น 1 ถึง self-evolving orchestration ที่ชั้น 10 แต่ละชั้นมีบทบาทชัดเจนในการรับรองว่า AI execution มีความถูกต้อง ตรวจสอบได้ และควบคุมได้"
+              : "The RCT Labs 10-Layer Architecture is a constitutional AI stack spanning from hardware abstraction at layer 1 to self-evolving orchestration at layer 10. Each layer serves a distinct role in ensuring verifiable, auditable, and governed AI execution across enterprise deployments.",
+          },
+          {
+            question: isTh ? "Multi-LLM consensus ทำงานอย่างไรในสถาปัตยกรรมนี้?" : "How does multi-LLM consensus work in the architecture?",
+            answer: isTh
+              ? "Multi-LLM consensus ทำงานที่ orchestration layer โดยโมเดล AI หลายตัวประเมิน request อย่างอิสระ และ consensus mechanism ที่ถูกควบคุมโดย constitutional rules จะกำหนดผลลัพธ์สุดท้าย ซึ่งช่วยลด bias และลดอัตราการ hallucination"
+              : "Multi-LLM consensus operates at the orchestration layer, where multiple AI models independently evaluate a request and a consensus mechanism — governed by constitutional rules — determines the final response. This eliminates single-model bias and reduces hallucination rates.",
+          },
+          {
+            question: isTh ? "Constitutional AI มีบทบาทอย่างไรในสถาปัตยกรรมของ RCT?" : "What is the role of constitutional AI in RCT's architecture?",
+            answer: isTh
+              ? "หลักการ Constitutional AI ถูกฝังอยู่ในทุกชั้นของ RCT stack โดยกำหนดสิ่งที่ระบบ AI สามารถและไม่สามารถทำได้ วิธีแก้ conflict และวิธีรักษา auditability ทำให้มั่นใจว่า AI decisions สอดคล้องกับ organizational policies"
+              : "Constitutional AI principles are embedded at every layer of the RCT stack. They define what the AI system can and cannot do, how conflicts are resolved, and how auditability is maintained. This ensures AI decisions remain aligned with organizational policies and ethical constraints.",
+          },
+          {
+            question: isTh ? "สถาปัตยกรรมมี runtime components กี่ตัว?" : "How many runtime components does the architecture include?",
+            answer: isTh
+              ? `สถาปัตยกรรม production มี ${SITE_MICROSERVICE_COUNT}+ runtime components กระจายอยู่ข้าม 10 ชั้น ครอบคลุม memory, routing, verification, orchestration และ self-evolution แต่ละ component deploy และ compose แยกกันได้`
+              : `The production architecture includes ${SITE_MICROSERVICE_COUNT}+ runtime components distributed across 10 layers, covering memory, routing, verification, orchestration, and self-evolution. Each component is independently deployable and composable.`,
+          },
+          {
+            question: isTh ? "สถาปัตยกรรมสามารถ deploy on-premise ได้ไหม?" : "Can the architecture be deployed on-premise?",
+            answer: isTh
+              ? "ได้ สถาปัตยกรรม RCT Labs รองรับการ deploy แบบ on-premise, hybrid และ cloud ลูกค้าองค์กรสามารถแยก Layer เฉพาะสำหรับ data sovereignty compliance โดยเฉพาะในตลาดที่มีการควบคุมเช่น PDPA ของไทย"
+              : "Yes. The RCT Labs architecture supports on-premise, hybrid, and cloud deployment models. Enterprise clients can isolate specific layers for data sovereignty compliance, particularly in regulated markets such as Thailand under PDPA.",
+          },
+        ]}
+        locale={isTh ? "th" : "en"}
+        heading="Frequently Asked Questions"
+        headingTh="คำถามที่พบบ่อย"
+      />
       <Footer />
     </main>
   )

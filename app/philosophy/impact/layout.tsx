@@ -6,15 +6,18 @@ import { getRequestLocale } from "@/lib/request-locale"
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale()
 
-  return createBilingualMetadata(
-    locale,
-    "Impact",
-    "ผลกระทบ",
-    "How RCT Labs evaluates the operational and societal impact of intent-driven AI systems.",
-    "แนวทางที่ RCT Labs ใช้ประเมินผลกระทบเชิงปฏิบัติการและสังคมของระบบ AI ที่ขับเคลื่อนด้วยเจตนา",
-    "/philosophy/impact",
-    ["AI impact", "intent-driven AI impact", "responsible AI impact"]
-  )
+  return {
+    ...createBilingualMetadata(
+      locale,
+      "Impact",
+      "ผลกระทบ",
+      "How RCT Labs evaluates the operational and societal impact of intent-driven AI systems.",
+      "แนวทางที่ RCT Labs ใช้ประเมินผลกระทบเชิงปฏิบัติการและสังคมของระบบ AI ที่ขับเคลื่อนด้วยเจตนา",
+      "/philosophy/impact",
+      ["AI impact", "intent-driven AI impact", "responsible AI impact"]
+    ),
+    robots: { index: false, follow: false, googleBot: { index: false, follow: false, noimageindex: true } },
+  }
 }
 
 export default function ImpactLayout({ children }: { children: React.ReactNode }) {

@@ -6,15 +6,18 @@ import { getRequestLocale } from "@/lib/request-locale"
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale()
 
-  return createBilingualMetadata(
-    locale,
-    "Ethics",
-    "จริยธรรม",
-    "RCT Labs ethics framework for constitutional AI, governance, and responsible deployment.",
-    "กรอบจริยธรรมของ RCT Labs สำหรับ constitutional AI การกำกับดูแล และการ deploy อย่างรับผิดชอบ",
-    "/philosophy/ethics",
-    ["AI ethics", "constitutional AI ethics", "RCT governance ethics"]
-  )
+  return {
+    ...createBilingualMetadata(
+      locale,
+      "Ethics",
+      "จริยธรรม",
+      "RCT Labs ethics framework for constitutional AI, governance, and responsible deployment.",
+      "กรอบจริยธรรมของ RCT Labs สำหรับ constitutional AI การกำกับดูแล และการ deploy อย่างรับผิดชอบ",
+      "/philosophy/ethics",
+      ["AI ethics", "constitutional AI ethics", "RCT governance ethics"]
+    ),
+    robots: { index: false, follow: false, googleBot: { index: false, follow: false, noimageindex: true } },
+  }
 }
 
 export default function EthicsLayout({ children }: { children: React.ReactNode }) {

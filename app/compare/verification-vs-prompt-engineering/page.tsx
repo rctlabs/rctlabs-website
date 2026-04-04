@@ -3,7 +3,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
-import { getBreadcrumbSchema } from "@/lib/schema"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowRight, CheckCircle, XCircle, MinusCircle, Lock, AlertTriangle } from "lucide-react"
 
@@ -49,9 +49,25 @@ export default async function VerificationVsPromptEngineering() {
     { name: "Verification vs Prompt Engineering", url: `https://rctlabs.co${localePrefix}/compare/verification-vs-prompt-engineering` },
   ])
 
+  const faqSchema = getFAQSchema([
+    {
+      question: "Why can't prompt engineering alone guarantee AI safety for enterprise compliance?",
+      answer: "Prompt engineering relies on LLMs following instructions probabilistically — any model can ignore, misinterpret, or bypass instructions. Constitutional AI verification applies deterministic constraint checks that block violations regardless of model behavior, making it suitable for PDPA, GDPR, and internal governance requirements.",
+    },
+    {
+      question: "What makes constitutional AI verification deterministic while prompt engineering is not?",
+      answer: "Verification operates at the system layer above the LLM, applying formal rules that either pass or fail completely. When a verification constraint fails, the output is blocked entirely, not scored probabilistically. This creates reproducible, auditable behavior required for legal compliance.",
+    },
+    {
+      question: "Is constitutional AI verification compatible with any LLM?",
+      answer: "Yes. RCT's verification layer is model-agnostic and works identically across GPT-4, Claude, Typhoon, and other models in the HexaCore ensemble. The same constitutional constraints apply regardless of which underlying model generates the response.",
+    },
+  ])
+
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <main className="min-h-screen bg-background">
         <Navbar />
 

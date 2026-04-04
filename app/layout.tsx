@@ -169,8 +169,9 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     verification,
     icons: {
-      icon: "/icon.svg",
-      shortcut: "/icon-dark-32x32.png",
+      icon: [
+        { url: "/icon.svg", type: "image/svg+xml" },
+      ],
       apple: "/apple-icon.png",
     },
     manifest: "/manifest.webmanifest",

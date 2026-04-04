@@ -3,6 +3,7 @@ import Link from "next/link"
 import { getRequestLocale } from "@/lib/request-locale"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getAllAuthorProfiles } from "@/lib/authors"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
@@ -25,8 +26,27 @@ export default async function AuthorsPage() {
   const isTh = locale === "th"
   const authors = getAllAuthorProfiles()
 
+  const breadcrumb = getBreadcrumbSchema([
+    { name: locale === "th" ? "หน้าหลัก" : "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: locale === "th" ? "ผู้เขียนและผู้ตรวจทาน" : "Authors and Reviewers", url: `https://rctlabs.co${localePrefix}/authors` },
+  ])
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: locale === "th" ? "ผู้เขียนและผู้ตรวจทาน RCT Labs" : "RCT Labs Authors and Reviewers",
+    numberOfItems: authors.length,
+    itemListElement: authors.map((author, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      item: { "@type": "Person", name: author.name, url: `https://rctlabs.co${localePrefix}/authors/${author.id}` },
+    })),
+  }
+
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
       <section className="mx-auto max-w-6xl px-4 py-24 md:py-32">
         <div className="max-w-3xl">
@@ -53,5 +73,6 @@ export default async function AuthorsPage() {
       </section>
       <Footer />
     </main>
+    </>
   )
 }

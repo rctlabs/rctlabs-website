@@ -7,15 +7,15 @@ import { FAQClient } from "./FAQClient"
 const faqSchemaData = [
   {
     question: "What is the RCT Ecosystem?",
-    answer: "RCT is a sovereign AI governance framework built around the FDIA equation, JITNA protocol, 10-layer architecture, 41 algorithms, and 7 genome subsystems.",
+    answer: "RCT is a constitutional AI operating system built by a solo developer in Bangkok, Thailand — 62 microservices, 41 algorithms, 7 HexaCore AI models, and 4,849 automated tests passing at 0 failures. It combines the FDIA equation (F=D^I×A), JITNA Protocol (RFC-001), 10-layer architecture, and 7 genome subsystems.",
   },
   {
     question: "How does the JITNA Protocol work?",
-    answer: "JITNA operates in five phases: Intent Capture, Data Enrichment, Delta Synthesis, Architect Review, and Response Delivery, with quality gates across each stage.",
+    answer: "JITNA (Just-In-Time Nodal Assembly) operates in 5 phases: Intent Capture → Data Enrichment → Delta Synthesis → Architect Review → Response Delivery, each with quality gates. It is published as RFC-001 v2.0 under Apache 2.0 license and is designed as the open communication standard for multi-LLM AI agents.",
   },
   {
     question: "What infrastructure does RCT require?",
-    answer: "RCT runs on Docker-based infrastructure with PostgreSQL, Redis, and optional local LLM inference, and can scale to Kubernetes for enterprise deployment.",
+    answer: "RCT runs on a 62-microservice architecture with PostgreSQL, Redis, and optional Ollama for local LLM inference, validated by 4,849 passing tests across 8 test levels. It scales from Docker Compose (33 containers) to Kubernetes (57 resources with HPA, PDB, NetworkPolicy, ArgoCD).",
   },
 ]
 

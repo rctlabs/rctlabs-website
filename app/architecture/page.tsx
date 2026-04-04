@@ -4,7 +4,6 @@ import { getFAQSchema, getBreadcrumbSchema } from "@/lib/schema"
 import { getRequestLocale } from "@/lib/request-locale"
 import { SITE_URL } from "@/lib/site-config"
 import ArchitectureClient from "./ArchitectureClient"
-import { FAQSection } from "@/components/faq-section"
 
 const faqItems = [
   {
@@ -60,7 +59,6 @@ export default async function ArchitecturePage() {
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <ArchitectureClient />
-      <FAQSection items={faqItems} />
     </>
   )
 }
