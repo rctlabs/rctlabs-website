@@ -4,7 +4,7 @@
  * PageTransition — Smooth page transition wrapper using Framer Motion
  * Adapted from manus-frontend-design; 60fps GPU-accelerated
  */
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { type ReactNode, memo } from "react"
 
 const pageVariants = {
@@ -25,7 +25,7 @@ interface PageTransitionProps {
 
 const PageTransition = memo(({ children, className = "" }: PageTransitionProps) => {
   return (
-    <motion.div
+    <m.div
       initial="initial"
       animate="enter"
       exit="exit"
@@ -34,7 +34,7 @@ const PageTransition = memo(({ children, className = "" }: PageTransitionProps) 
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 })
 

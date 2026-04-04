@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
-import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
+import { getBreadcrumbSchema, getFAQSchema, getProductOfferSchema } from "@/lib/schema"
 import PricingClient from "./PricingClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -25,6 +25,7 @@ export default async function PricingPage() {
     { name: "Home", url: `https://rctlabs.co${localePrefix}` },
     { name: "Pricing", url: `https://rctlabs.co${localePrefix}/pricing` },
   ])
+  const productSchema = getProductOfferSchema(locale)
 
   const faqSchema = getFAQSchema([
     {
@@ -48,6 +49,7 @@ export default async function PricingPage() {
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       <PricingClient />
     </>
   )

@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -144,7 +144,7 @@ export default function AlgorithmsPage() {
       <section className="mx-auto max-w-4xl px-4 py-20">
         <div className="space-y-3">
           {localTiers.map((t, i) => (
-            <motion.div key={t.tier} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.04 }} whileHover={{ y: -3, scale: 1.005, transition: { duration: 0.2 } }}
+            <m.div key={t.tier} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.04 }} whileHover={{ y: -3, scale: 1.005, transition: { duration: 0.2 } }}
               className="p-4 rounded-xl border border-border bg-card main-page-reactive-card group hover:border-warm-amber/40 hover:shadow-[0_8px_20px_rgba(212,168,83,0.08)] transition-[border-color,box-shadow] duration-300">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-warm-amber/10 text-warm-amber">{t.tier}</span>
@@ -155,7 +155,7 @@ export default function AlgorithmsPage() {
               <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
                 <div className="h-full rounded-full" style={{ backgroundColor: t.color, width: `${15 + i * 9.5}%` }} />
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -170,13 +170,13 @@ export default function AlgorithmsPage() {
               : "A hybrid methodology that seamlessly combines analytical processing with research-grade synthesis across 4 distinct modes."}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {analysearchModes.map((m, i) => (
-              <motion.div key={m.mode} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }} whileHover={{ y: -4, scale: 1.006, transition: { duration: 0.24 } }}
+            {analysearchModes.map((mode, i) => (
+              <m.div key={mode.mode} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }} whileHover={{ y: -4, scale: 1.006, transition: { duration: 0.24 } }}
                 className="p-5 rounded-2xl border border-border bg-card text-center main-page-reactive-card group hover:border-warm-amber/40 hover:shadow-[0_12px_28px_rgba(212,168,83,0.09)] transition-[border-color,box-shadow] duration-300">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold mx-auto mb-3" style={{ backgroundColor: `${m.color}15`, color: m.color }}>{i + 1}</div>
-                <h3 className="font-bold text-sm text-foreground mb-2">{m.mode}</h3>
-                <p className="text-xs text-muted-foreground">{isTh ? m.descTh : m.descEn}</p>
-              </motion.div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold mx-auto mb-3" style={{ backgroundColor: `${mode.color}15`, color: mode.color }}>{i + 1}</div>
+                <h3 className="font-bold text-sm text-foreground mb-2">{mode.mode}</h3>
+                <p className="text-xs text-muted-foreground">{isTh ? mode.descTh : mode.descEn}</p>
+              </m.div>
             ))}
           </div>
         </div>

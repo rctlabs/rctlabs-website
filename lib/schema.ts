@@ -1,7 +1,9 @@
 // Schema.org structured data for SEO
 import type { Locale } from './i18n'
 import {
+  SITE_ALGORITHM_COUNT,
   SITE_HALLUCINATION_RATE,
+  SITE_LAYER_COUNT,
   SITE_MICROSERVICE_COUNT,
   SITE_NAME,
   SITE_UPTIME,
@@ -170,6 +172,42 @@ export function getSoftwareApplicationSchema(locale: Locale) {
       name: SITE_NAME,
       url: SITE_URL,
     },
+  }
+}
+
+/** Structured data for Pricing page — Product + multi-tier Offers */
+export function getProductOfferSchema(locale: Locale) {
+  const name = locale === 'th' ? 'RCT Ecosystem — แพลตฟอร์ม AI ระดับองค์กร' : 'RCT Ecosystem — Constitutional AI Enterprise Platform'
+  const description = locale === 'th'
+    ? `ระบบปฏิบัติการ AI สถาปัตยกรรม ${SITE_LAYER_COUNT} ชั้น พร้อม ${SITE_ALGORITHM_COUNT} อัลกอริทึม, Multi-LLM Consensus, FDIA equation และ hallucination ${SITE_HALLUCINATION_RATE}`
+    : `${SITE_LAYER_COUNT}-layer Constitutional AI Operating System with ${SITE_ALGORITHM_COUNT} algorithms, Multi-LLM Consensus, FDIA equation, and ${SITE_HALLUCINATION_RATE} hallucination`
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name,
+    description,
+    brand: { '@type': 'Organization', name: 'RCT Labs', url: SITE_URL },
+    url: `${SITE_URL}/${locale}/pricing`,
+    image: `${SITE_URL}/opengraph-image`,
+    offers: [
+      {
+        '@type': 'Offer',
+        name: locale === 'th' ? 'แผน Starter' : 'Starter',
+        description: locale === 'th' ? 'สำรวจสถาปัตยกรรม RCT Ecosystem โดยไม่มีค่าใช้จ่าย' : 'Explore the RCT Ecosystem architecture for free',
+        price: '0',
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        url: `${SITE_URL}/${locale}/pricing`,
+      },
+      {
+        '@type': 'Offer',
+        name: locale === 'th' ? 'แผน Enterprise' : 'Enterprise',
+        description: locale === 'th' ? 'แพลตฟอร์ม AI ระดับองค์กรพร้อมการติดตั้งแบบกำหนดเองและ SLA' : 'Full enterprise AI platform with custom deployment and SLA',
+        priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'USD', description: 'Custom — contact sales' },
+        availability: 'https://schema.org/InStock',
+        url: `${SITE_URL}/${locale}/pricing`,
+      },
+    ],
   }
 }
 

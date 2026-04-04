@@ -7,7 +7,7 @@
  * Migrated from manus-frontend-design: ThemeContext → next-themes
  */
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { ArrowUp } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
 
@@ -40,7 +40,7 @@ export default function BackToTop() {
   return (
     <AnimatePresence>
       {visible && !aiChatOpen && (
-        <motion.button
+        <m.button
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -54,7 +54,7 @@ export default function BackToTop() {
           }`}
         >
           <ArrowUp size={16} className="transition-transform group-hover:-translate-y-0.5" />
-        </motion.button>
+        </m.button>
       )}
     </AnimatePresence>
   )

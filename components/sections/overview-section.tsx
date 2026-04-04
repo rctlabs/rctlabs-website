@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { LazyEcosystemOverview } from "@/components/diagrams/lazy-diagram-wrapper"
@@ -105,7 +105,7 @@ export default function OverviewSection({ locale }: OverviewSectionProps) {
           pixelIcon={PIXEL_ARCH}
         />
 
-        <motion.div
+        <m.div
           initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98 }}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -114,9 +114,9 @@ export default function OverviewSection({ locale }: OverviewSectionProps) {
         >
           <div className="pointer-events-none absolute inset-x-[10%] top-6 h-48 rounded-full bg-white/34 blur-3xl dark:bg-warm-amber/10" />
           <LazyEcosystemOverview />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.003 }}
@@ -134,7 +134,7 @@ export default function OverviewSection({ locale }: OverviewSectionProps) {
                 : "Choose the lens that matches your evaluation goal directly, whether that is architecture, protocol, core systems, verification, or deployment. This keeps the homepage shorter and more enterprise-oriented."}
             </p>
           </div>
-        </motion.div>
+        </m.div>
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {deepDiveCards.map((card, index) => (

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -63,24 +63,23 @@ export function FloatingAIComingSoon() {
       {/* Floating Button */}
       <AnimatePresence>
         {!isOpen && (
-          <motion.button
+          <m.button
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
-            whileHover={{ scale: 1.1 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent text-accent-foreground shadow-lg shadow-accent/30 flex items-center justify-center animate-glow-pulse"
+            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent text-accent-foreground shadow-lg shadow-accent/30 flex items-center justify-center animate-glow-pulse hover:scale-110 transition-transform duration-200"
             aria-label={language === 'th' ? 'เปิดตัวช่วย ArtentAI แบบกำลังพัฒนา' : 'Open coming-soon ArtentAI assistant'}
           >
             <Sparkles className="w-6 h-6" />
-          </motion.button>
+          </m.button>
         )}
       </AnimatePresence>
 
       {/* Coming Soon Modal */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -88,7 +87,7 @@ export function FloatingAIComingSoon() {
           >
             <div className="glass rounded-xl border border-border shadow-2xl overflow-hidden">
               {/* Header */}
-              <div className="bg-gradient-to-r from-accent/20 to-accent/10 px-6 py-4 flex items-center justify-between border-b border-border">
+              <div className="bg-linear-to-r from-accent/20 to-accent/10 px-6 py-4 flex items-center justify-between border-b border-border">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
                     <Sparkles className="w-5 h-5 text-accent" />
@@ -169,7 +168,7 @@ export function FloatingAIComingSoon() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

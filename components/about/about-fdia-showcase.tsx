@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 
 type AboutFDIAShowcaseProps = {
   locale: "en" | "th"
@@ -93,7 +93,7 @@ export function AboutFDIAShowcase({ locale }: AboutFDIAShowcaseProps) {
               <div className="relative overflow-hidden rounded-[32px] border border-[#2b2620] bg-[#1b1a18] p-6 text-warm-sand shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_16px_44px_rgba(0,0,0,0.22)] dark:border-[#39332b] dark:bg-[#151412] md:p-8">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,168,83,0.14),transparent_38%),radial-gradient(circle_at_82%_22%,rgba(137,180,200,0.10),transparent_22%),radial-gradient(circle_at_25%_85%,rgba(123,158,135,0.10),transparent_20%)]" />
                 <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm-amber/40 to-transparent opacity-80" />
-                <motion.div className="relative" {...equationMotion}>
+                <m.div className="relative" {...equationMotion}>
                   <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-warm-amber/90">{isTh ? "Operating equation" : "Operating equation"}</div>
                   <div className="mt-6 flex flex-wrap items-end justify-center gap-3 text-center font-mono text-[3rem] font-bold tracking-[-0.06em] sm:text-[4.5rem] md:text-[5.5rem]">
                     <span style={{ color: "#D4A853" }}>F</span>
@@ -110,13 +110,13 @@ export function AboutFDIAShowcase({ locale }: AboutFDIAShowcaseProps) {
                       ? "Data กลายเป็นพลังที่มีทิศทางเมื่อถูกยกกำลังด้วย Intent และจะไม่กลายเป็นอนาคตที่น่าเชื่อถือจนกว่าจะผ่าน Architect ผู้ลงนามการตัดสินใจสุดท้าย"
                       : "Data becomes directional power when raised by Intent, and it does not become trustworthy future-state output until it passes through the Architect who signs the final decision."}
                   </p>
-                </motion.div>
+                </m.div>
               </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               {fdiaCards.map((card, index) => (
-                <motion.div
+                <m.div
                   key={card.symbol}
                   className="group relative overflow-hidden rounded-[28px] border border-[#e6ddd0] bg-white/94 p-6 shadow-[0_12px_30px_rgba(84,61,31,0.045)] dark:border-border/70 dark:bg-card/92"
                   initial={reduceMotion ? undefined : { opacity: 0, y: 22 }}
@@ -132,7 +132,7 @@ export function AboutFDIAShowcase({ locale }: AboutFDIAShowcaseProps) {
                   <h3 className="mt-6 text-2xl font-bold text-foreground">{card.title}</h3>
                   <div className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{card.subtitle}</div>
                   <p className="mt-4 text-sm leading-7 text-muted-foreground">{card.description}</p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
