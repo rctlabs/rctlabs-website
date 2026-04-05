@@ -1,6 +1,6 @@
 "use client"
 
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { Globe, Moon, Search, Sun } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { useMounted } from "@/hooks/use-mounted"
@@ -83,13 +83,13 @@ export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHe
           >
             <AnimatePresence mode="wait">
               {isDark ? (
-                <motion.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
+                <m.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
                   <Sun size={16} />
-                </motion.div>
+                </m.div>
               ) : (
-                <motion.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
+                <m.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
                   <Moon size={16} />
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </button>
@@ -106,18 +106,18 @@ export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHe
           onTrackedAction?.("theme_toggle", surface)
           setTheme(isDark ? "light" : "dark")
         }}
-        className={`hidden md:flex min-h-11 min-w-11 items-center justify-center rounded-lg p-2 transition-colors ${baseText}`}
+        className={`hidden md:flex min-h-12 min-w-12 items-center justify-center rounded-lg p-2 transition-colors ${baseText}`}
         aria-label="Toggle theme"
       >
         <AnimatePresence mode="wait">
           {isDark ? (
-            <motion.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
+            <m.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
               <Sun size={17} />
-            </motion.div>
+            </m.div>
           ) : (
-            <motion.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
+            <m.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
               <Moon size={17} />
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </button>

@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 
@@ -135,7 +135,7 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
               const y2 = centerY + radius * Math.sin((angle2 * Math.PI) / 180)
 
               return (
-                <motion.line
+                <m.line
                   key={`line-${i}`}
                   x1={x1}
                   y1={y1}
@@ -152,7 +152,7 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
             })}
 
             {/* Center Hub */}
-            <motion.circle
+            <m.circle
               cx={centerX}
               cy={centerY}
               r={50}
@@ -163,7 +163,7 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             />
-            <motion.text
+            <m.text
               x={centerX}
               y={centerY}
               textAnchor="middle"
@@ -174,7 +174,7 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
               transition={{ delay: 0.8 }}
             >
               RCT DNA
-            </motion.text>
+            </m.text>
 
             {/* Genome Nodes */}
             {genomes.map((genome, i) => {
@@ -188,7 +188,7 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
               return (
                 <g key={genome.id}>
                   {/* Connection to center */}
-                  <motion.line
+                  <m.line
                     x1={centerX}
                     y1={centerY}
                     x2={x}
@@ -203,7 +203,7 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
                   />
 
                   {/* Genome Circle */}
-                  <motion.circle
+                  <m.circle
                     cx={x}
                     cy={y}
                     r={isHovered || isActive ? 35 : 30}
@@ -253,7 +253,7 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
         <div className="space-y-4">
           <AnimatePresence mode="wait">
             {activeGenome ? (
-              <motion.div
+              <m.div
                 key={activeGenome}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -284,9 +284,9 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
                     </>
                   )
                 })()}
-              </motion.div>
+              </m.div>
             ) : (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="rounded-lg border bg-card p-6"
@@ -300,7 +300,7 @@ export function SevenGenomeSystem({ locale = "en" }: { locale?: "en" | "th" }) {
                     "คลิกที่จีโนมใดก็ได้ในแผนภาพเพื่อเรียนรู้เพิ่มเติมเกี่ยวกบบทบาทของมันใน DNA ของ RCT Ecosystem"
                   )}
                 </p>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
 

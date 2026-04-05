@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -101,22 +101,22 @@ export default function RegionalAIClient() {
             : "G38 Typhoon is active. \"Pluggable\" models can be added in 3 steps using the open plug-in architecture."}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {regionalModels.map((m, i) => (
-            <motion.div key={m.region} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+          {regionalModels.map((_item, i) => (
+            <m.div key={_item.region} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
               className="p-5 rounded-xl border border-border bg-card">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">{m.flag}</span>
+                <span className="text-2xl">{_item.flag}</span>
                 <div>
-                  <div className="text-sm font-bold text-foreground">{m.region}</div>
-                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${m.status === "Active" ? "bg-green-500/10 text-green-600" : "bg-muted text-muted-foreground"}`}>
-                    {m.status}
+                  <div className="text-sm font-bold text-foreground">{_item.region}</div>
+                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${_item.status === "Active" ? "bg-green-500/10 text-green-600" : "bg-muted text-muted-foreground"}`}>
+                    {_item.status}
                   </span>
                 </div>
               </div>
-              <div className="text-xs font-medium text-foreground mb-0.5">{m.model}</div>
-              <div className="text-xs text-muted-foreground mb-2">{m.provider}</div>
-              <div className="text-xs" style={{ color: m.color }}>Proficiency: {m.proficiency}</div>
-            </motion.div>
+              <div className="text-xs font-medium text-foreground mb-0.5">{_item.model}</div>
+              <div className="text-xs text-muted-foreground mb-2">{_item.provider}</div>
+              <div className="text-xs" style={{ color: _item.color }}>Proficiency: {_item.proficiency}</div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -134,14 +134,14 @@ export default function RegionalAIClient() {
           </p>
           <div className="space-y-4">
             {pluginSteps.map((s, i) => (
-              <motion.div key={s.step} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+              <m.div key={s.step} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                 className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card">
                 <span className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 bg-warm-amber/10 text-warm-amber">{s.step}</span>
                 <div>
                   <div className="text-sm font-bold text-foreground mb-1 font-mono">{s.title}</div>
                   <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? s.descTh : s.descEn}</p>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
 

@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { useLanguage } from "@/components/language-provider"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { FlaskConical, Palette, ShieldCheck, ArrowRight, Layers, Cpu, Zap } from "lucide-react"
@@ -292,7 +292,7 @@ export default function ProductsPage() {
       <section className="mx-auto max-w-5xl px-4 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {products.map((product, i) => (
-            <motion.div
+            <m.div
               key={product.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -340,7 +340,7 @@ export default function ProductsPage() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>

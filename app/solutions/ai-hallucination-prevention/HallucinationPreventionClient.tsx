@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { useMounted } from "@/hooks/use-mounted"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -115,23 +115,23 @@ export default function HallucinationPreventionPage() {
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#C4745B", borderColor: "rgba(196,116,91,0.3)", background: "rgba(196,116,91,0.07)" }}>
               <Shield size={14} /> {isEn ? "Solutions" : "โซลูชัน"}
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            </m.div>
+            <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: textPrimary }}>
               {isEn ? "AI Hallucination " : "การป้องกัน "}
               <span style={{ color: "#C4745B" }}>{isEn ? "Prevention" : "AI Hallucination"}</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            </m.h1>
+            <m.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-10" style={{ color: textSecondary }}>
               {isEn
                 ? "Reduce AI hallucination from 15% to 0.3% using SignedAI Multi-LLM consensus verification with cryptographic audit trails."
                 : "ลด AI Hallucination จาก 15% เป็น 0.3% ด้วย SignedAI Multi-LLM Consensus Verification พร้อม Cryptographic Audit Trails"}
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            </m.p>
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href={`${localePrefix}/products/signed-ai`}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white"
@@ -143,14 +143,14 @@ export default function HallucinationPreventionPage() {
                 style={{ borderColor: cardBorder, color: textPrimary }}>
                 {isEn ? "Try FDIA Demo" : "ลอง FDIA Demo"}
               </Link>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Problem Statement */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <m.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border mb-5"
                 style={{ color: "#C4745B", borderColor: "rgba(196,116,91,0.25)", background: "rgba(196,116,91,0.06)" }}>
                 {isEn ? "The Problem" : "ปัญหา"}
@@ -177,8 +177,8 @@ export default function HallucinationPreventionPage() {
                   </div>
                 ))}
               </div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
+            </m.div>
+            <m.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
               className="p-8 rounded-3xl border text-center" style={{ background: isDark ? "#1E1E1E" : "#FAF6F0", borderColor: cardBorder }}>
               <div className="text-7xl font-bold mb-2" style={{ color: "#C4745B" }}>15%</div>
               <p className="text-xs font-semibold uppercase tracking-wider mb-6" style={{ color: textMuted }}>
@@ -189,14 +189,14 @@ export default function HallucinationPreventionPage() {
               <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: textMuted }}>
                 {isEn ? "With SignedAI Verification" : "ด้วย SignedAI Verification"}
               </p>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* How SignedAI Works */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-5xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
                 {isEn ? "How SignedAI " : "SignedAI "}
                 <span style={{ color: "#D4A853" }}>{isEn ? "Works" : "ทำงานอย่างไร"}</span>
@@ -206,12 +206,12 @@ export default function HallucinationPreventionPage() {
                   ? "A 4-step verification pipeline that transforms unreliable single-LLM outputs into cryptographically verified enterprise-grade responses."
                   : "Pipeline 4 ขั้นตอนที่เปลี่ยนผลลัพธ์ Single-LLM ที่ไม่น่าเชื่อถือเป็นคำตอบระดับ Enterprise ที่ได้รับการยืนยัน Cryptographic"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {verificationSteps.map((step, i) => {
                 const Icon = step.icon
                 return (
-                  <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  <m.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                     className="p-6 sm:p-8 rounded-2xl border" style={{ background: cardBg, borderColor: cardBorder }}>
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
@@ -230,7 +230,7 @@ export default function HallucinationPreventionPage() {
                         </p>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )
               })}
             </div>
@@ -240,12 +240,12 @@ export default function HallucinationPreventionPage() {
         {/* Comparison Table */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
               <h2 className="text-3xl font-bold mb-3" style={{ color: textPrimary }}>
                 Single LLM vs <span style={{ color: "#7B9E87" }}>SignedAI</span>
               </h2>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+            </m.div>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
               className="rounded-2xl border overflow-hidden" style={{ borderColor: cardBorder }}>
               <div className="grid grid-cols-4 text-xs font-semibold uppercase tracking-wider p-4"
                 style={{ background: isDark ? "#1E1E1E" : "#FAF6F0", color: textMuted, borderBottom: `1px solid ${cardBorder}` }}>
@@ -265,14 +265,14 @@ export default function HallucinationPreventionPage() {
                   <div className="text-center font-semibold" style={{ color: "#D4A853" }}>{row.improvement}</div>
                 </div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Case Studies */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: textPrimary }}>
                 {isEn ? "Real-World " : "ผลลัพธ์"}{" "}
                 <span style={{ color: "#7B9E87" }}>{isEn ? "Case Studies" : "จริง"}</span>
@@ -280,27 +280,27 @@ export default function HallucinationPreventionPage() {
               <p className="text-sm max-w-xl mx-auto" style={{ color: textMuted }}>
                 {isEn ? "Verified results from enterprise deployments across regulated industries." : "ผลลัพธ์ที่ตรวจสอบได้จากการ Deploy ใน Enterprise ในอุตสาหกรรมที่มีการกำกับดูแล"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {caseStudies.map((cs, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                <m.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                   className="rounded-2xl border overflow-hidden" style={{ background: cardBg, borderColor: cardBorder }}>
                   <div className="px-5 py-4 flex items-center gap-3" style={{ background: `${cs.color}12` }}>
                     <span className="text-2xl">{cs.icon}</span>
                     <h3 className="font-bold text-base" style={{ color: cs.color }}>{isEn ? cs.industry.en : cs.industry.th}</h3>
                   </div>
                   <div className="px-5 py-4 space-y-3">
-                    {cs.metrics.map((m, j) => (
+                    {cs.metrics.map((_item, j) => (
                       <div key={j} className="text-xs rounded-lg px-3 py-2.5"
                         style={{ background: isDark ? "#161616" : "#FAF6F0" }}>
                         <div className="font-semibold mb-1.5" style={{ color: isDark ? "#CCC" : "#333" }}>
-                          {isEn ? m.label.en : m.label.th}
+                          {isEn ? _item.label.en : _item.label.th}
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="line-through" style={{ color: textMuted }}>{m.before}</span>
+                          <span className="line-through" style={{ color: textMuted }}>{_item.before}</span>
                           <span style={{ color: "#9CA3AF" }}>→</span>
-                          <span className="font-bold" style={{ color: cs.color }}>{m.after}</span>
-                          <span className="ml-auto font-bold" style={{ color: "#7B9E87" }}>{m.delta}</span>
+                          <span className="font-bold" style={{ color: cs.color }}>{_item.after}</span>
+                          <span className="ml-auto font-bold" style={{ color: "#7B9E87" }}>{_item.delta}</span>
                         </div>
                       </div>
                     ))}
@@ -311,7 +311,7 @@ export default function HallucinationPreventionPage() {
                       "{isEn ? cs.quote.en : cs.quote.th}"
                     </blockquote>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -320,7 +320,7 @@ export default function HallucinationPreventionPage() {
         {/* CTA */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-2xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <h2 className="text-2xl font-bold mb-6" style={{ color: textPrimary }}>
                 {isEn ? "Explore Related Solutions" : "สำรวจโซลูชันที่เกี่ยวข้อง"}
               </h2>
@@ -336,7 +336,7 @@ export default function HallucinationPreventionPage() {
                   SignedAI Product
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 

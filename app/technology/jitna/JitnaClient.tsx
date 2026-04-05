@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -135,7 +135,7 @@ export default function JitnaClient({ locale: propLocale }: { locale?: string })
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {jitnaprimitives.map((p, i) => (
-            <motion.div key={p.symbol} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+            <m.div key={p.symbol} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
               className="p-5 rounded-xl border border-border bg-card">
               <div className="flex items-center gap-3 mb-3">
                 <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold font-mono"
@@ -146,17 +146,17 @@ export default function JitnaClient({ locale: propLocale }: { locale?: string })
                 </div>
               </div>
               <p className="text-xs leading-relaxed text-muted-foreground">{isTh ? p.descTh : p.descEn}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
+        <m.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
           className="mt-6 p-4 rounded-xl border border-border bg-muted/20 text-center">
           <p className="text-xs text-muted-foreground font-mono">
             {isTh
               ? "สูตร JITNA: Δ = I − D → เลือก A → Execute → R → อัปเดต M"
               : "JITNA formula: Δ = I − D → select A → Execute → R → update M"}
           </p>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* 6 Routing Factors */}
@@ -173,14 +173,14 @@ export default function JitnaClient({ locale: propLocale }: { locale?: string })
         </div>
         <div className="grid sm:grid-cols-2 gap-5">
           {routingFactors.map((f, i) => (
-            <motion.div key={f.factor} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+            <m.div key={f.factor} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
               className="p-6 rounded-xl border border-border bg-card">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: f.color }} />
                 <span className="text-sm font-bold font-mono" style={{ color: f.color }}>{f.factor}</span>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? f.descTh : f.descEn}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -195,11 +195,11 @@ export default function JitnaClient({ locale: propLocale }: { locale?: string })
               { value: "41", label: isTh ? "Algorithm Options" : "Algorithm Options", color: "#C4745B" },
               { value: "4", label: isTh ? "Voting Methods" : "Voting Methods", color: "#89B4C8" },
             ].map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+              <m.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                 className="p-5 rounded-2xl border border-border bg-card text-center">
                 <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{s.label}</div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -230,10 +230,11 @@ export default function JitnaClient({ locale: propLocale }: { locale?: string })
 
       {/* Related */}
       <section className="mx-auto max-w-5xl px-4 pb-16">
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { href: "/genome", icon: "🧬", label: "G3 JITNA Genome", desc: isTh ? "JITNA ใน Context ของ 7 Genome System" : "JITNA in the 7 Genome System context" },
             { href: "/technology/rct-7", icon: "🧠", label: "RCT-7 Mental OS", desc: isTh ? "JITNA รันใน ROUTE state ของ IntentLoop" : "JITNA runs in the ROUTE state of IntentLoop" },
+            { href: "/technology/constitutional-ai", icon: "⚖️", label: "Constitutional AI", desc: isTh ? "ผลลัพธ์ JITNA Routing ถูกจำกัดด้วยกฎ Constitutional AI" : "JITNA routing output is constrained by Constitutional AI rules" },
             { href: "/solutions/regional-ai", icon: "🌏", label: "Regional AI", desc: isTh ? "JITNA Routing ไปยัง Typhoon G38 สำหรับภาษาไทย" : "JITNA routing to Typhoon G38 for Thai tasks" },
           ].map((link) => (
             <Link key={link.href} href={link.href} className="block p-4 rounded-xl border border-border bg-card hover:border-warm-amber/50 transition-all">

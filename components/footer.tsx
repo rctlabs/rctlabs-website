@@ -11,7 +11,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { Globe, ChevronDown } from "lucide-react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { useMounted } from "@/hooks/use-mounted"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { SITE_VERSION, SOCIAL_LINKS } from "@/lib/site-config"
@@ -165,16 +165,16 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                     className="flex w-full items-center justify-between text-xs font-semibold uppercase tracking-wider mb-2.5 text-warm-charcoal dark:text-[#CCC]"
                   >
                     {title}
-                    <motion.span
+                    <m.span
                       animate={{ rotate: openSections[title] ? 180 : 0 }}
                       transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                     >
                       <ChevronDown className="h-3.5 w-3.5" />
-                    </motion.span>
+                    </m.span>
                   </button>
                   <AnimatePresence initial={false}>
                     {openSections[title] && (
-                      <motion.ul
+                      <m.ul
                         key={title}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
@@ -189,14 +189,14 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                                 href={link.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
+                                className="text-xs sm:text-sm py-1 inline-block transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                               >
                                 {link.label}
                               </a>
                             ) : (
                               <Link
                                 href={lh(link.href)}
-                                className="inline-flex items-center gap-1.5 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
+                                className="inline-flex items-center gap-1.5 py-1 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                               >
                                 {link.label}
                                 {"badge" in link && link.badge ? (
@@ -208,15 +208,15 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                             )}
                           </li>
                         ))}
-                      </motion.ul>
+                      </m.ul>
                     )}
                   </AnimatePresence>
                 </div>
                 {/* Desktop: always visible */}
                 <div className="hidden sm:block">
-                  <h4 className="text-[11px] font-semibold uppercase tracking-[0.15em] mb-2.5 text-[#595959] dark:text-warm-light-gray/60">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.15em] mb-2.5 text-[#595959] dark:text-warm-light-gray/60">
                     {title}
-                  </h4>
+                  </p>
                   <ul className="space-y-1.5">
                     {links.map((link) => (
                       <li key={link.label}>
@@ -225,14 +225,14 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
+                            className="text-xs sm:text-sm py-1 inline-block transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                           >
                             {link.label}
                           </a>
                         ) : (
                           <Link
                             href={lh(link.href)}
-                            className="inline-flex items-center gap-1.5 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
+                            className="inline-flex items-center gap-1.5 py-1 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                           >
                             {link.label}
                             {"badge" in link && link.badge ? (

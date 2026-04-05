@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { useMounted } from "@/hooks/use-mounted"
@@ -143,22 +143,22 @@ export default function JitnaClient() {
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#D4A853", borderColor: "rgba(212,168,83,0.3)", background: "rgba(212,168,83,0.07)" }}>
               <FileText size={14} /> JITNA Protocol
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            </m.div>
+            <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: textPrimary }}>
               JITNA <span style={{ color: "#D4A853" }}>RFC-001</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            </m.h1>
+            <m.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-8" style={{ color: textSecondary }}>
               {isEn
                 ? "Just-In-Time Nodal Assembly — the 'HTTP of the Agentic AI world'. 6 Primitives enabling real-time cognitive assembly across multi-agent systems."
                 : "Just-In-Time Nodal Assembly — 'HTTP แห่งโลก Agentic AI' มี 6 Primitives สำหรับ Real-time Cognitive Assembly ข้าม Multi-Agent Systems"}
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            </m.p>
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-wrap justify-center gap-3">
               {[
                 { v: "96.1%", l: isEn ? "Consensus Accuracy" : "ความแม่นยำฉันทามติ" },
@@ -170,7 +170,7 @@ export default function JitnaClient() {
                   <div className="text-xs" style={{ color: textSecondary }}>{stat.l}</div>
                 </div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
@@ -211,16 +211,16 @@ export default function JitnaClient() {
               ))}
             </div>
 
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.08 }}>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.08 }}>
               <JITNAFlowchart language={isEn ? "en" : "th"} />
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* 6 Primitives */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-4xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
               <h2 className="text-3xl font-bold mb-4" style={{ color: textPrimary }}>
                 {isEn ? "The 6 " : "6 "}<span style={{ color: "#D4A853" }}>Primitives</span>
               </h2>
@@ -229,10 +229,10 @@ export default function JitnaClient() {
                   ? "JITNA uses 6 core primitives (I, D, Δ, A, R, M) to encode intent, data, synthesis, approach, reflection, and memory into a universal packet structure."
                   : "JITNA ใช้ 6 Primitives หลัก (I, D, Δ, A, R, M) เพื่อเข้ารหัส Intent, Data, Synthesis, Approach, Reflection และ Memory เป็น Packet Structure สากล"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {primitives.map((prim, i) => (
-                <motion.div key={prim.letter} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+                <m.div key={prim.letter} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                   className="p-5 rounded-2xl border" style={{ background: cardBg, borderColor: cardBorder }}>
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl font-bold font-mono"
@@ -249,7 +249,7 @@ export default function JitnaClient() {
                   <div className="p-2.5 rounded-lg text-xs font-mono" style={{ background: isDark ? "#141414" : "white", color: isDark ? "#888" : "#6B6B6B" }}>
                     {isEn ? prim.exampleEn : prim.exampleTh}
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -258,13 +258,13 @@ export default function JitnaClient() {
         {/* JITNA vs Traditional */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
               <h2 className="text-3xl font-bold mb-3" style={{ color: textPrimary }}>
                 JITNA vs <span style={{ color: "#89B4C8" }}>{isEn ? "Traditional APIs" : "Traditional APIs"}</span>
               </h2>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              <m.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                 className="p-6 rounded-2xl border" style={{ background: isDark ? "#1A1A1A" : "white", borderColor: cardBorder }}>
                 <h3 className="text-base font-bold mb-4" style={{ color: textPrimary }}>
                   {isEn ? "Traditional REST/GraphQL" : "REST/GraphQL แบบดั้งเดิม"}
@@ -276,8 +276,8 @@ export default function JitnaClient() {
                   <li>❌ {isEn ? "No built-in verification" : "ไม่มี Verification ในตัว"}</li>
                   <li>❌ {isEn ? "Stateless by default" : "Stateless โดยค่าเริ่มต้น"}</li>
                 </ul>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              </m.div>
+              <m.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                 className="p-6 rounded-2xl border" style={{ background: cardBg, borderColor: cardBorder }}>
                 <h3 className="text-base font-bold mb-4" style={{ color: textPrimary }}>
                   JITNA Protocol (RFC-001)
@@ -289,9 +289,9 @@ export default function JitnaClient() {
                   <li>✅ {isEn ? "Cryptographic verification" : "การตรวจสอบด้วย Cryptography"}</li>
                   <li>✅ {isEn ? "Context-aware by design" : "ตระหนักถึง Context โดยการออกแบบ"}</li>
                 </ul>
-              </motion.div>
+              </m.div>
             </div>
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.12 }} className="mt-6 overflow-hidden rounded-2xl border" style={{ background: isDark ? "#1A1A1A" : "white", borderColor: cardBorder }}>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.12 }} className="mt-6 overflow-hidden rounded-2xl border" style={{ background: isDark ? "#1A1A1A" : "white", borderColor: cardBorder }}>
               <div className="grid gap-0 md:grid-cols-[0.95fr_1.05fr]">
                 <div className="p-6">
                   <div className="mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: "#C4745B" }}>{isEn ? "Protocol Surface" : "Protocol Surface"}</div>
@@ -312,21 +312,21 @@ export default function JitnaClient() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Use Cases */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-4xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
               <h2 className="text-3xl font-bold mb-3" style={{ color: textPrimary }}>
                 {isEn ? "Real-World " : "กรณีการใช้งาน"}<span style={{ color: "#C4745B" }}>{isEn ? "Use Cases" : "จริง"}</span>
               </h2>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {useCases.map((uc, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                <m.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                   className="p-5 rounded-2xl border" style={{ background: cardBg, borderColor: cardBorder }}>
                   <h3 className="text-base font-bold mb-2" style={{ color: textPrimary }}>
                     {isEn ? uc.titleEn : uc.titleTh}
@@ -338,7 +338,7 @@ export default function JitnaClient() {
                     style={{ background: isDark ? "#141414" : "rgba(123,158,135,0.1)", color: "#7B9E87" }}>
                     {isEn ? uc.metricEn : uc.metricTh}
                   </span>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -347,7 +347,7 @@ export default function JitnaClient() {
         {/* Technical Specs */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="p-8 rounded-2xl border" style={{ background: isDark ? "#1A1A1A" : "white", borderColor: cardBorder }}>
               <h2 className="text-2xl font-bold mb-6" style={{ color: textPrimary }}>
                 {isEn ? "Technical " : "ข้อมูลจำเพาะทาง"}<span style={{ color: "#7B9E87" }}>Specifications</span>
@@ -372,14 +372,14 @@ export default function JitnaClient() {
                     : "เช่นเดียวกับที่ HTTP ทำให้การสื่อสารเว็บเป็นมาตรฐาน JITNA ทำให้การสื่อสาร AI Agent เป็นมาตรฐาน เป็น Protocol สากลที่ระบบ AI ใดก็ตามสามารถนำมาใช้ได้ ทำให้เกิด Interoperability ข้ามแพลตฟอร์ม โมเดล และผู้ขาย"}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* CTA */}
         <section className="py-14 px-4" style={{ background: bg }}>
           <div className="max-w-2xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <h2 className="text-2xl font-bold mb-6" style={{ color: textPrimary }}>
                 {isEn ? "Explore the JITNA Ecosystem" : "สำรวจ JITNA Ecosystem"}
               </h2>
@@ -395,7 +395,7 @@ export default function JitnaClient() {
                   FDIA Equation
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 

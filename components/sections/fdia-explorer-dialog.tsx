@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState, type ReactNode } from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { Calculator, ChevronRight, Orbit, ShieldCheck, Sparkles, Zap } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import {
@@ -242,7 +242,7 @@ export function FDIAExplorerDialog({ language, trigger }: FDIAExplorerDialogProp
           </DialogHeader>
 
           <div className="overflow-y-auto px-4 py-4 sm:px-5 sm:py-5">
-            <motion.div
+            <m.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
               animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
               transition={prefersReducedMotion ? undefined : { duration: 0.26 }}
@@ -295,7 +295,7 @@ export function FDIAExplorerDialog({ language, trigger }: FDIAExplorerDialogProp
                   <div className="mt-2 font-mono text-lg font-bold text-[#e7a38d]">{intentReadout.multiplier}</div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
 
             <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.84fr)]">
               <Accordion type="multiple" defaultValue={["snapshot", "blueprint"]} className="rounded-3xl border border-[rgba(176,150,111,0.14)] bg-[linear-gradient(180deg,rgba(33,30,28,0.82),rgba(21,20,18,0.96))] px-4 sm:px-5">
@@ -342,7 +342,7 @@ export function FDIAExplorerDialog({ language, trigger }: FDIAExplorerDialogProp
 
                         return (
                           <div key={node.id} className="flex items-center gap-2 sm:contents">
-                            <motion.button
+                            <m.button
                               type="button"
                               onClick={() => setSelectedId(node.id)}
                               whileHover={prefersReducedMotion ? undefined : { y: -2, scale: 1.01 }}
@@ -367,7 +367,7 @@ export function FDIAExplorerDialog({ language, trigger }: FDIAExplorerDialogProp
                               </div>
                               <div className="mt-2.5 text-sm font-semibold text-[#f4ede3]">{isEn ? node.label : node.labelTh}</div>
                               <div className="mt-1 text-xs leading-relaxed text-[#b5aa9a]">{isEn ? node.subtitle : node.subtitleTh}</div>
-                            </motion.button>
+                            </m.button>
                             {index < railOrder.length - 1 ? <div className="hidden items-center justify-center sm:flex"><ChevronRight className="h-4 w-4 text-[#857a6d]" /></div> : null}
                           </div>
                         )

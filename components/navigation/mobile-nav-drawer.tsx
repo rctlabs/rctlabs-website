@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react"
 import type { Locale } from "@/lib/i18n"
 import { localizeCopy, type NavGroup, type ResourceTrack } from "@/lib/navigation"
@@ -60,7 +60,7 @@ export function MobileNavDrawer({
   return (
     <AnimatePresence>
       {isOpen ? (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
@@ -102,7 +102,7 @@ export function MobileNavDrawer({
 
                       setView({ level: "group", groupId: group.id })
                     }}
-                    className={`flex w-full items-start justify-between gap-4 rounded-[20px] border px-4 py-4 text-left transition-colors ${isDark ? "border-white/12 bg-[#1a1a1a] text-white hover:bg-[#202020]" : "border-warm-light-gray bg-white text-warm-charcoal hover:bg-warm-sand/25"}`}
+                    className={`flex w-full items-start justify-between gap-4 rounded-[20px] border px-4 py-5 text-left transition-colors ${isDark ? "border-white/12 bg-[#1a1a1a] text-white hover:bg-[#202020]" : "border-warm-light-gray bg-white text-warm-charcoal hover:bg-warm-sand/25"}`}
                   >
                     <div>
                       <div className={`text-[11px] font-semibold uppercase tracking-[0.2em] ${isDark ? "text-warm-amber" : "text-warm-amber"}`}>
@@ -147,7 +147,7 @@ export function MobileNavDrawer({
                       onNavigate(localizeCopy(item.label, locale), item.href, activeGroup.id)
                       onClose()
                     }}
-                    className={`block rounded-[18px] border px-4 py-4 transition-colors ${
+                    className={`block rounded-[18px] border px-4 py-5 transition-colors ${
                       isActivePath(item.href)
                         ? isDark
                           ? "border-warm-amber/40 bg-[#201b12] text-white"
@@ -255,7 +255,7 @@ export function MobileNavDrawer({
               <UserProfileMenu />
             </div>
           </div>
-        </motion.div>
+        </m.div>
       ) : null}
     </AnimatePresence>
   )

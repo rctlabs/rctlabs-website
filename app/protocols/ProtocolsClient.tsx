@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { useMounted } from "@/hooks/use-mounted"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -102,22 +102,22 @@ export default function ProtocolsPage() {
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#C4745B", borderColor: "rgba(196,116,91,0.3)", background: "rgba(196,116,91,0.07)" }}>
               📜 {isEn ? "Open Standards" : "มาตรฐานเปิด"}
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            </m.div>
+            <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: textPrimary }}>
               {isEn ? "RCT " : "RCT "}<span style={{ color: "#C4745B" }}>{isEn ? "Protocols" : "Protocols"}</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            </m.h1>
+            <m.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-8" style={{ color: isDark ? "#999" : "#4A4A4A" }}>
               {isEn
                 ? "Open protocols and mathematical foundations powering the RCT Ecosystem. Published as transparent, peer-reviewable standards available to the AI community."
                 : "โปรโตคอลเปิดและรากฐานทางคณิตศาสตร์ที่ขับเคลื่อน RCT Ecosystem เผยแพร่เป็น Standards ที่โปร่งใสและตรวจสอบได้จาก Community ด้าน AI"}
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            </m.p>
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-wrap justify-center gap-3">
               {[
                 { v: "3", l: isEn ? "Open Protocols" : "Open Protocols" },
@@ -129,40 +129,40 @@ export default function ProtocolsPage() {
                   <div className="text-xs" style={{ color: textSecondary }}>{stat.l}</div>
                 </div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Introduction */}
         <section className="py-14 px-4" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            <m.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="text-2xl sm:text-3xl font-bold mb-5" style={{ color: textPrimary }}>
               {isEn ? "The Foundation of Interoperable AI" : "รากฐานของ AI ที่ทำงานร่วมกันได้"}
-            </motion.h2>
+            </m.h2>
             <div className="space-y-4 text-base leading-relaxed" style={{ color: textSecondary }}>
-              <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+              <m.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 {isEn
                   ? "Protocols are the backbone of any reliable system. The RCT Ecosystem publishes its three core protocols as open standards, enabling transparency, peer review, and interoperability with external AI frameworks. Each protocol addresses a different dimension of AI intelligence: communication (JITNA), decision-making (FDIA), and cognitive architecture (RCT-7)."
                   : "โปรโตคอลเป็นแกนหลักของระบบที่เชื่อถือได้ RCT Ecosystem เผยแพร่โปรโตคอลหลัก 3 ตัวเป็น Open Standards เปิดให้โปร่งใส Peer Review และ Interoperability กับ AI Frameworks ภายนอก แต่ละโปรโตคอลจัดการมิติที่แตกต่างกัน"}
-              </motion.p>
-              <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+              </m.p>
+              <m.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
                 {isEn
                   ? "Together, these three protocols form a complete specification for building intelligent, safe, and scalable AI systems. JITNA defines how agents communicate, FDIA defines how decisions are computed, and RCT-7 defines how AI personality and behavior emerge from seven cognitive subsystems."
                   : "โปรโตคอลทั้ง 3 ตัวรวมกันเป็นข้อกำหนดสมบูรณ์สำหรับสร้างระบบ AI ที่ฉลาด ปลอดภัย และปรับขนาดได้ JITNA กำหนดวิธีที่ Agents สื่อสาร FDIA กำหนดวิธีคำนวณการตัดสินใจ และ RCT-7 กำหนดบุคลิกภาพ AI จาก 7 Subsystems"}
-              </motion.p>
-              <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
+              </m.p>
+              <m.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
                 {isEn
                   ? "By adopting these open protocols, enterprises can integrate RCT capabilities into existing infrastructure without vendor lock-in. Each protocol is versioned, backward-compatible, and designed for incremental adoption — start with one and expand as your AI maturity grows."
                   : "ด้วยการนำ Open Protocols เหล่านี้มาใช้ องค์กรสามารถเชื่อมต่อความสามารถ RCT เข้ากับ Infrastructure ที่มีอยู่โดยไม่ถูกล็อคกับ Vendor แต่ละโปรโตคอลรองรับ Backward-Compatible และออกแบบให้นำไปใช้แบบ Incremental"}
-              </motion.p>
+              </m.p>
             </div>
           </div>
         </section>
 
         <section className="px-4 py-14" style={{ background: bg }}>
           <div className="max-w-5xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-8 text-center">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-8 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium border" style={{ color: "#7B9E87", borderColor: "rgba(123,158,135,0.28)", background: "rgba(123,158,135,0.08)" }}>
                 <OptimizedImage src={PIXEL_JITNA} alt="" pixelated containerClassName="h-6 w-6" objectFit="contain" width={24} height={24} />
                 {isEn ? "Interactive Protocol Flow" : "Interactive Protocol Flow"}
@@ -175,17 +175,17 @@ export default function ProtocolsPage() {
                   ? "The landing page now exposes the protocol mechanics directly: intent capture, negotiation, validation, adaptive delivery, and feedback are all visible in a Manus-style interactive flow."
                   : "หน้า protocols แสดงกลไกของโปรโตคอลโดยตรงแล้ว: ตั้งแต่การจับ intent, การเจรจา, การตรวจสอบ, การส่งมอบแบบปรับตัว จนถึง feedback loop ผ่าน flow แบบ interactive ตามแนวทาง Manus"}
               </p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+            </m.div>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
               <JITNAFlowchart language={isEn ? "en" : "th"} />
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Open Protocols banner */}
         <section className="py-6 px-4" style={{ background: bg }}>
           <div className="max-w-4xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="p-6 sm:p-8 rounded-2xl border flex flex-col md:flex-row items-center gap-6"
               style={{ background: isDark ? "#1E1E1E" : "#FAF6F0", borderColor: cardBorder }}>
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
@@ -202,7 +202,7 @@ export default function ProtocolsPage() {
                     : "RCT เผยแพร่ Core Protocols เป็น Open Standards — เปิดให้ Peer Review, Community Contribution และ Interoperability กับระบบ AI อื่น ความโปร่งใสสร้างความเชื่อมั่น"}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
@@ -213,7 +213,7 @@ export default function ProtocolsPage() {
               {protocols.map((protocol, i) => {
                 const Icon = protocol.icon
                 return (
-                  <motion.div key={protocol.id} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+                  <m.div key={protocol.id} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                     <Link href={protocol.href}>
                       <div className="group p-6 sm:p-8 rounded-2xl border transition-all duration-300 cursor-pointer hover:-translate-y-1"
                         style={{
@@ -246,7 +246,7 @@ export default function ProtocolsPage() {
                         </div>
                       </div>
                     </Link>
-                  </motion.div>
+                  </m.div>
                 )
               })}
             </div>

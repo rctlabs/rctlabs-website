@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 
 // Inner tooltip - detailed explanation for each variable
 function DetailedTooltip({ 
@@ -18,7 +18,7 @@ function DetailedTooltip({
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 8, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 8, scale: 0.95 }}
@@ -44,7 +44,7 @@ function DetailedTooltip({
               <p className="text-xs text-muted-foreground leading-relaxed">{description}</p>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   )
@@ -55,7 +55,7 @@ function OverviewTooltip({ isVisible }: { isVisible: boolean }) {
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
@@ -97,7 +97,7 @@ function OverviewTooltip({ isVisible }: { isVisible: boolean }) {
               <p className="text-xs text-center text-muted-foreground/70">*Human in the Loop</p>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   )
@@ -171,7 +171,7 @@ export function FDIAEquation() {
   return (
     <div className="relative flex flex-col items-center justify-center py-12 md:py-16">
       {/* Animated glow background */}
-      <motion.div
+      <m.div
         variants={glowVariants}
         initial="initial"
         animate="animate"
@@ -192,15 +192,15 @@ export function FDIAEquation() {
         <OverviewTooltip isVisible={showOverview} />
 
         {/* Main Equation Container */}
-        <motion.div
+        <m.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="relative flex items-baseline font-mono font-bold select-none px-4"
         >
           {/* F */}
-          <motion.div variants={itemVariants} className="relative">
-            <motion.span
+          <m.div variants={itemVariants} className="relative">
+            <m.span
               className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl cursor-pointer transition-all duration-300 ${
                 hoveredVar === "F" ? "text-accent" : "text-foreground"
               }`}
@@ -209,36 +209,36 @@ export function FDIAEquation() {
               whileHover={{ scale: 1.1 }}
             >
               F
-            </motion.span>
+            </m.span>
             <DetailedTooltip
               variable="F"
               name={variables.F.name}
               description={variables.F.description}
               isVisible={hoveredVar === "F"}
             />
-          </motion.div>
+          </m.div>
 
           {/* = */}
-          <motion.span
+          <m.span
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-muted-foreground mx-3 md:mx-5"
           >
             =
-          </motion.span>
+          </m.span>
 
           {/* ( */}
-          <motion.span
+          <m.span
             variants={itemVariants}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-muted-foreground/50"
           >
             (
-          </motion.span>
+          </m.span>
 
           {/* D^I */}
-          <motion.div variants={itemVariants} className="relative flex items-start">
+          <m.div variants={itemVariants} className="relative flex items-start">
             {/* D */}
             <div className="relative">
-              <motion.span
+              <m.span
                 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl cursor-pointer transition-all duration-300 ${
                   hoveredVar === "D" ? "brightness-125" : ""
                 } text-accent`}
@@ -247,7 +247,7 @@ export function FDIAEquation() {
                 whileHover={{ scale: 1.1 }}
               >
                 D
-              </motion.span>
+              </m.span>
               <DetailedTooltip
                 variable="D"
                 name={variables.D.name}
@@ -258,7 +258,7 @@ export function FDIAEquation() {
 
             {/* I (superscript) */}
             <div className="relative -ml-1">
-              <motion.span
+              <m.span
                 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl cursor-pointer transition-all duration-300 inline-block align-super ${
                   hoveredVar === "I" ? "brightness-125" : ""
                 } text-accent`}
@@ -268,7 +268,7 @@ export function FDIAEquation() {
                 whileHover={{ scale: 1.15 }}
               >
                 I
-              </motion.span>
+              </m.span>
               <DetailedTooltip
                 variable="I"
                 name={variables.I.name}
@@ -276,27 +276,27 @@ export function FDIAEquation() {
                 isVisible={hoveredVar === "I"}
               />
             </div>
-          </motion.div>
+          </m.div>
 
           {/* ) */}
-          <motion.span
+          <m.span
             variants={itemVariants}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-muted-foreground/50"
           >
             )
-          </motion.span>
+          </m.span>
 
           {/* x */}
-          <motion.span
+          <m.span
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-muted-foreground mx-3 md:mx-5"
           >
             x
-          </motion.span>
+          </m.span>
 
           {/* A */}
-          <motion.div variants={itemVariants} className="relative">
-            <motion.span
+          <m.div variants={itemVariants} className="relative">
+            <m.span
               className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl cursor-pointer transition-all duration-300 ${
                 hoveredVar === "A" ? "text-accent" : "text-foreground"
               }`}
@@ -305,19 +305,19 @@ export function FDIAEquation() {
               whileHover={{ scale: 1.1 }}
             >
               A
-            </motion.span>
+            </m.span>
             <DetailedTooltip
               variable="A"
               name={variables.A.name}
               description={variables.A.description}
               isVisible={hoveredVar === "A"}
             />
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </div>
 
       {/* Equation Label */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.5 }}
@@ -326,7 +326,7 @@ export function FDIAEquation() {
         <span className="text-xs font-mono text-muted-foreground tracking-widest uppercase">
           The FDIA Equation
         </span>
-      </motion.div>
+      </m.div>
     </div>
   )
 }

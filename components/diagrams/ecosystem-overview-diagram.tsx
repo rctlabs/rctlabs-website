@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 
@@ -103,7 +103,7 @@ export default function EcosystemOverviewDiagram() {
       <svg viewBox="0 0 500 420" className="mx-auto w-full max-w-120" role="application" aria-label="RCT Ecosystem Overview Diagram" tabIndex={0} onKeyDown={handleKeyDown}>
         <circle cx={cx} cy={cy} r={orbitR} fill="none" stroke={isDark ? "#2A2A2A" : "#E8E3DC"} strokeWidth={1} strokeDasharray="6 4" />
 
-        <motion.g
+        <m.g
           animate={{ rotate: 360 }}
           transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: `${cx}px ${cy}px` }}
@@ -111,13 +111,13 @@ export default function EcosystemOverviewDiagram() {
           <circle cx={cx} cy={cy - orbitR} r="5" fill="#D4A853" opacity="0.9" />
           <circle cx={cx + 8} cy={cy - orbitR + 26} r="3" fill="#89B4C8" opacity="0.65" />
           <circle cx={cx - 10} cy={cy - orbitR + 52} r="2.5" fill="#C4745B" opacity="0.45" />
-        </motion.g>
+        </m.g>
 
         {nodePositions.map((node) => (
-          <motion.line key={`line-${node.id}`} x1={cx} y1={cy} x2={node.x} y2={node.y} stroke={hovered === node.id ? node.color : isDark ? "#333" : "#D4D0C8"} strokeWidth={hovered === node.id ? 2.5 : 1.5} strokeDasharray={hovered === node.id ? "none" : "6 4"} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} />
+          <m.line key={`line-${node.id}`} x1={cx} y1={cy} x2={node.x} y2={node.y} stroke={hovered === node.id ? node.color : isDark ? "#333" : "#D4D0C8"} strokeWidth={hovered === node.id ? 2.5 : 1.5} strokeDasharray={hovered === node.id ? "none" : "6 4"} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} />
         ))}
 
-        <motion.circle cx={cx} cy={cy} r={centerR} fill={isDark ? "#222" : "#FAF6F0"} stroke="#D4A853" strokeWidth={2.5} initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, type: "spring" }} style={{ transformOrigin: `${cx}px ${cy}px` }} />
+        <m.circle cx={cx} cy={cy} r={centerR} fill={isDark ? "#222" : "#FAF6F0"} stroke="#D4A853" strokeWidth={2.5} initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, type: "spring" }} style={{ transformOrigin: `${cx}px ${cy}px` }} />
         <text x={cx} y={cy - 8} textAnchor="middle" fontSize={13} fontWeight={700} fill="#D4A853" fontFamily="monospace">RCT</text>
         <text x={cx} y={cy + 8} textAnchor="middle" fontSize={9} fontWeight={500} fill={isDark ? "#888" : "#6B6B6B"}>Ecosystem</text>
 
@@ -126,12 +126,12 @@ export default function EcosystemOverviewDiagram() {
           const isSelected = selected === node.id
           const isFocused = focusedIndex === index
           return (
-            <motion.g key={node.id} onMouseEnter={() => setHovered(node.id)} onMouseLeave={() => setHovered(null)} onClick={() => { setSelected(node.id); setFocusedIndex(index) }} className="cursor-pointer" initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 + index * 0.1, duration: 0.4, type: "spring" }} style={{ transformOrigin: `${node.x}px ${node.y}px` }} role="button" aria-label={`${isEn ? node.label : node.labelTh}. ${isEn ? node.desc : node.descTh}`}>
+            <m.g key={node.id} onMouseEnter={() => setHovered(node.id)} onMouseLeave={() => setHovered(null)} onClick={() => { setSelected(node.id); setFocusedIndex(index) }} className="cursor-pointer" initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 + index * 0.1, duration: 0.4, type: "spring" }} style={{ transformOrigin: `${node.x}px ${node.y}px` }} role="button" aria-label={`${isEn ? node.label : node.labelTh}. ${isEn ? node.desc : node.descTh}`}>
               {(isHovered || isSelected) && <circle cx={node.x} cy={node.y} r={nodeR + 6} fill={node.color} opacity={isSelected ? 0.25 : 0.15} />}
               {isFocused && <circle cx={node.x} cy={node.y} r={nodeR + 4} fill="none" stroke={node.color} strokeWidth={2} strokeDasharray="4 4" opacity={0.8} />}
               <circle cx={node.x} cy={node.y} r={nodeR} fill={isDark ? node.darkBg : node.bg} stroke={isHovered || isSelected ? node.color : isDark ? "#333" : "#D4D0C8"} strokeWidth={isHovered || isSelected ? 2.5 : 1.5} />
               {renderNodeLabel(node)}
-            </motion.g>
+            </m.g>
           )
         })}
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useInView, useReducedMotion } from "framer-motion"
+import { m, useInView, useReducedMotion } from "framer-motion"
 import { useRef } from "react"
 import Link from "next/link"
 import { useTheme } from "@/components/theme-provider"
@@ -47,7 +47,7 @@ function ProgressBar({
         </span>
       </div>
       <div className={`h-1.5 w-full overflow-hidden rounded-full ${isDark ? "bg-white/8" : "bg-warm-light-gray/60"}`}>
-        <motion.div
+        <m.div
           className={`h-full rounded-full ${
             pct === 100
               ? "bg-warm-sage"
@@ -109,7 +109,7 @@ export default function HeroMetricsPanel() {
         {/* Live beacon */}
         <div className="flex items-center gap-1.5 shrink-0">
           <span className="relative flex h-2 w-2">
-            <motion.span
+            <m.span
               className="absolute inline-flex h-full w-full rounded-full bg-warm-sage opacity-75"
               animate={shouldAnimate ? { opacity: [0.35, 0.75, 0.35] } : { opacity: 0.45 }}
               transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
@@ -127,11 +127,11 @@ export default function HeroMetricsPanel() {
         <div className={`text-[10px] font-bold uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
           {isTH ? "รากฐานสถาปัตยกรรม" : "Architecture Foundation"}
         </div>
-        {architectureMetrics.map((m, i) => (
+        {architectureMetrics.map((_item, i) => (
           <ProgressBar
-            key={m.id}
-            label={isTH ? m.th : m.en}
-            pct={m.pct}
+            key={_item.id}
+            label={isTH ? _item.th : _item.en}
+            pct={_item.pct}
             delay={i * 0.1}
             isDark={isDark}
             shouldAnimate={shouldAnimate}
@@ -147,11 +147,11 @@ export default function HeroMetricsPanel() {
         <div className={`text-[10px] font-bold uppercase tracking-[0.18em] ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>
           {isTH ? "ประสิทธิภาพระบบ" : "System Performance"}
         </div>
-        {performanceMetrics.map((m, i) => (
+        {performanceMetrics.map((_item, i) => (
           <ProgressBar
-            key={m.id}
-            label={isTH ? m.th : m.en}
-            pct={m.pct}
+            key={_item.id}
+            label={isTH ? _item.th : _item.en}
+            pct={_item.pct}
             delay={architectureMetrics.length * 0.1 + i * 0.1}
             isDark={isDark}
             shouldAnimate={shouldAnimate}

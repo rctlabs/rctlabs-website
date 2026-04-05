@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 
@@ -65,10 +65,10 @@ export default function PerformanceRadarChart() {
           <line key={index} x1={cx} y1={cy} x2={end.x} y2={end.y} stroke={isDark ? "#333" : "#D4D0C8"} strokeWidth={1} />
         ))}
 
-        <motion.path d={polygonPath} fill={isDark ? "rgba(212,168,83,0.15)" : "rgba(212,168,83,0.12)"} stroke="#D4A853" strokeWidth={2} initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.8 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.4, ease: "easeOut" }} style={{ transformOrigin: `${cx}px ${cy}px` }} />
+        <m.path d={polygonPath} fill={isDark ? "rgba(212,168,83,0.15)" : "rgba(212,168,83,0.12)"} stroke="#D4A853" strokeWidth={2} initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.8 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.4, ease: "easeOut" }} style={{ transformOrigin: `${cx}px ${cy}px` }} />
 
         {dataPoints.map((point, index) => (
-          <motion.circle key={index} cx={point.x} cy={point.y} r={hoveredIdx === index ? 6 : 4} fill="#D4A853" stroke={isDark ? "#1A1A1A" : "#fff"} strokeWidth={2} className="cursor-pointer" onMouseEnter={() => setHoveredIdx(index)} onMouseLeave={() => setHoveredIdx(null)} initial={prefersReducedMotion ? false : { opacity: 0 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { delay: 0.18 + index * 0.04, duration: 0.2 }} />
+          <m.circle key={index} cx={point.x} cy={point.y} r={hoveredIdx === index ? 6 : 4} fill="#D4A853" stroke={isDark ? "#1A1A1A" : "#fff"} strokeWidth={2} className="cursor-pointer" onMouseEnter={() => setHoveredIdx(index)} onMouseLeave={() => setHoveredIdx(null)} initial={prefersReducedMotion ? false : { opacity: 0 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { delay: 0.18 + index * 0.04, duration: 0.2 }} />
         ))}
 
         {labelPositions.map((position, index) => {

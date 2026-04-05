@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 interface EvaluationClientProps {
@@ -64,7 +64,7 @@ export default function EvaluationClient({ localePrefix, isTh }: EvaluationClien
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {comparisons.map((item) => (
-          <motion.div
+          <m.div
             key={item.title}
             {...cardSpotlight}
             whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.006 }}
@@ -75,7 +75,7 @@ export default function EvaluationClient({ localePrefix, isTh }: EvaluationClien
             <Link href={`${localePrefix}${item.href}`} className="mt-4 inline-flex text-sm font-medium text-accent hover:underline">
               {isTh ? "อ่านหน้าเปรียบเทียบฉบับเต็ม" : "Read the full comparison"}
             </Link>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 

@@ -1,7 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { BookOpen, ExternalLink, FlaskConical, BarChart3, Shield } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import Image from "next/image"
@@ -191,7 +191,7 @@ export default function EvidenceSection() {
 
       <div className="relative max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section heading */}
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -224,14 +224,14 @@ export default function EvidenceSection() {
               ? "หลักการของ RCT Ecosystem ได้รับการสนับสนุนจากงานวิจัยระดับสากลที่ผ่านการ peer-review และรายงานอุตสาหกรรมชั้นนำ"
               : "RCT Ecosystem's principles are supported by peer-reviewed research and leading industry reports from trusted institutions."}
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Evidence Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 mb-16">
           {evidenceCards.map((card, i) => {
             const Icon = card.icon
             return (
-              <motion.div
+              <m.div
                 key={i}
                 {...cardSpotlight}
                 initial="hidden"
@@ -303,13 +303,13 @@ export default function EvidenceSection() {
                     </a>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             )
           })}
         </div>
 
         {/* Partner compatibility grid */}
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -322,7 +322,7 @@ export default function EvidenceSection() {
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {partners.map((partner) => (
-              <motion.div
+              <m.div
                 key={partner.name}
                 {...cardSpotlight}
                 whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.01 }}
@@ -333,10 +333,10 @@ export default function EvidenceSection() {
                   {partner.svg}
                 </div>
                 <span className="truncate text-sm font-medium text-muted-foreground">{partner.name}</span>
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   )

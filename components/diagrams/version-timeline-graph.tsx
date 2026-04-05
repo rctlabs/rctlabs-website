@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { useMounted } from "@/hooks/use-mounted"
@@ -113,16 +113,16 @@ export default function VersionTimelineGraph() {
         <rect x={nowX} y={padT} width={svgW - padR - nowX} height={chartH} fill={isDark ? "rgba(212,168,83,0.03)" : "rgba(212,168,83,0.04)"} />
 
         {/* Area fills — historical only */}
-        <motion.path d={featureArea} fill={isDark ? "rgba(212,168,83,0.08)" : "rgba(212,168,83,0.06)"} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} />
-        <motion.path d={testArea} fill={isDark ? "rgba(123,158,135,0.08)" : "rgba(123,158,135,0.06)"} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} />
+        <m.path d={featureArea} fill={isDark ? "rgba(212,168,83,0.08)" : "rgba(212,168,83,0.06)"} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} />
+        <m.path d={testArea} fill={isDark ? "rgba(123,158,135,0.08)" : "rgba(123,158,135,0.06)"} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} />
 
         {/* Historical solid paths */}
-        <motion.path d={featurePathHist} fill="none" stroke="#D4A853" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.0, ease: "easeOut" }} />
-        <motion.path d={testPathHist} fill="none" stroke="#7B9E87" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.0, ease: "easeOut", delay: 0.15 }} />
+        <m.path d={featurePathHist} fill="none" stroke="#D4A853" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.0, ease: "easeOut" }} />
+        <m.path d={testPathHist} fill="none" stroke="#7B9E87" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.0, ease: "easeOut", delay: 0.15 }} />
 
         {/* Planned dashed paths */}
-        <motion.path d={featurePathPlan} fill="none" stroke="#D4A853" strokeWidth={1.5} strokeDasharray="6 4" strokeLinecap="round" strokeLinejoin="round" opacity={0.6} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.0, ease: "easeOut", delay: 0.3 }} />
-        <motion.path d={testPathPlan} fill="none" stroke="#7B9E87" strokeWidth={1.5} strokeDasharray="6 4" strokeLinecap="round" strokeLinejoin="round" opacity={0.6} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.0, ease: "easeOut", delay: 0.45 }} />
+        <m.path d={featurePathPlan} fill="none" stroke="#D4A853" strokeWidth={1.5} strokeDasharray="6 4" strokeLinecap="round" strokeLinejoin="round" opacity={0.6} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.0, ease: "easeOut", delay: 0.3 }} />
+        <m.path d={testPathPlan} fill="none" stroke="#7B9E87" strokeWidth={1.5} strokeDasharray="6 4" strokeLinecap="round" strokeLinejoin="round" opacity={0.6} initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.0, ease: "easeOut", delay: 0.45 }} />
 
         {/* NOW vertical divider */}
         <line x1={nowX} y1={padT - 4} x2={nowX} y2={padT + chartH} stroke="#D4A853" strokeWidth={1.5} strokeDasharray="5 3" opacity={0.7} />
@@ -143,7 +143,7 @@ export default function VersionTimelineGraph() {
               {isHov && <line x1={x} y1={padT} x2={x} y2={padT + chartH} stroke={isDark ? "#444" : "#D4D0C8"} strokeWidth={1} strokeDasharray="4 4" />}
 
               {/* Feature dot: solid for real, hollow for planned */}
-              <motion.circle
+              <m.circle
                 cx={x} cy={fY}
                 r={isHov ? 5 : 3}
                 fill={isPlanned ? bgFill : "#D4A853"}
@@ -156,7 +156,7 @@ export default function VersionTimelineGraph() {
                 transition={{ delay: 0.5 + index * 0.07 }}
               />
               {/* Test dot */}
-              <motion.circle
+              <m.circle
                 cx={x} cy={tY}
                 r={isHov ? 5 : 3}
                 fill={isPlanned ? bgFill : "#7B9E87"}

@@ -108,6 +108,13 @@ export default function HomePage({ locale }: HomePageClientProps) {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
+                    href={`${localePrefix}/protocols`}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-6 py-3 font-medium text-foreground transition-colors hover:bg-secondary"
+                  >
+                    {locale === "en" ? "Explore Protocols" : "สำรวจ Protocol Docs"}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
                     href={`${localePrefix}/contact`}
                     className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-6 py-3 font-medium text-foreground transition-colors hover:bg-secondary"
                   >

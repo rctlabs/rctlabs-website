@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { motion, useInView, useReducedMotion } from "framer-motion"
+import { m, useInView, useReducedMotion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { usePathname } from "next/navigation"
@@ -104,7 +104,7 @@ export default function MetricsSection() {
           pixelIcon={PIXEL_METRICS}
         />
 
-        <motion.div
+        <m.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -113,7 +113,7 @@ export default function MetricsSection() {
         >
           {highlights.map((highlight, index) => (
             <Link key={highlight.label} href={`${localePrefix}${highlight.href}`} className="block">
-              <motion.div whileHover={prefersReducedMotion ? undefined : { y: -2 }} className={`group relative overflow-hidden rounded-2xl border p-5 text-center transition-[border-color,box-shadow,transform] duration-200 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.22)]" : "bg-white border-warm-light-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)]"}`}>
+              <m.div whileHover={prefersReducedMotion ? undefined : { y: -2 }} className={`group relative overflow-hidden rounded-2xl border p-5 text-center transition-[border-color,box-shadow,transform] duration-200 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.22)]" : "bg-white border-warm-light-gray hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)]"}`}>
                 <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(123,158,135,0.12),transparent_46%)]" />
                 </div>
@@ -121,26 +121,26 @@ export default function MetricsSection() {
                 <div className={`text-3xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}><AnimatedCounter target={highlight.value} suffix={highlight.suffix} reducedMotion={prefersReducedMotion ?? undefined} /></div>
                 <div className="mt-1 text-sm font-semibold text-warm-amber">{highlight.label}</div>
                 <div className={`mt-0.5 text-xs sm:text-sm ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-dim" : "text-warm-secondary"}`}>{highlight.desc}</div>
-              </motion.div>
+              </m.div>
             </Link>
           ))}
-        </motion.div>
+        </m.div>
 
         <div className="grid gap-5 md:grid-cols-2 lg:gap-6">
-          <motion.div initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.4 }} className="md:col-span-2 lg:col-span-1">
+          <m.div initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.4 }} className="md:col-span-2 lg:col-span-1">
             <LazyPerformanceRadarChart />
-          </motion.div>
+          </m.div>
           <div className="space-y-3">
             {metrics.map((metric, index) => (
-              <motion.div key={metric.label.en} initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={prefersReducedMotion ? undefined : { duration: 0.3, delay: index * 0.03 }} className={`rounded-2xl border p-5 transition-[border-color,box-shadow] duration-200 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_4px_20px_rgba(0,0,0,0.18)]" : "bg-white border-warm-light-gray hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]"}`}>
+              <m.div key={metric.label.en} initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={prefersReducedMotion ? undefined : { duration: 0.3, delay: index * 0.03 }} className={`rounded-2xl border p-5 transition-[border-color,box-shadow] duration-200 ${isDark ? "bg-warm-charcoal border-border hover:shadow-[0_4px_20px_rgba(0,0,0,0.18)]" : "bg-white border-warm-light-gray hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]"}`}>
                 <div className="mb-3 flex items-center justify-between">
                   <span className={`text-sm sm:text-base font-semibold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{metric.label[language as keyof typeof metric.label] || metric.label.en}</span>
                   <span className="font-mono text-sm font-bold" style={{ color: metric.color }}>{metric.value}</span>
                 </div>
                 <div className={`h-2 overflow-hidden rounded-full ${isDark ? "bg-[#2A2A2A]" : "bg-warm-sand"}`}>
-                  <motion.div initial={prefersReducedMotion ? false : { width: 0 }} whileInView={prefersReducedMotion ? undefined : { width: `${metric.bar}%` }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.6, delay: 0.12 + index * 0.04 }} className="h-full rounded-full" style={{ width: prefersReducedMotion ? `${metric.bar}%` : undefined, backgroundColor: metric.color }} />
+                  <m.div initial={prefersReducedMotion ? false : { width: 0 }} whileInView={prefersReducedMotion ? undefined : { width: `${metric.bar}%` }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.6, delay: 0.12 + index * 0.04 }} className="h-full rounded-full" style={{ width: prefersReducedMotion ? `${metric.bar}%` : undefined, backgroundColor: metric.color }} />
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>

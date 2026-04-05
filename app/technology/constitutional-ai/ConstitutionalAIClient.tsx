@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import {
   ShieldCheck,
   XCircle,
@@ -223,6 +223,7 @@ const vaultFeatures = {
 const related = [
   { href: "/genome", label: "Genome System" },
   { href: "/technology/jitna", label: "JITNA Protocol" },
+  { href: "/technology/rct-7-thinking", label: "RCT-7 Thinking" },
   { href: "/products/signed-ai", label: "SignedAI" },
   { href: "/solutions/enterprise-ai-memory", label: "Vault (RCTDB)" },
   { href: "/algorithms", label: "Algorithm Registry" },
@@ -267,7 +268,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
       {/* ── Hero ── */}
       <section className="py-24 px-6">
         <div className="max-w-5xl mx-auto text-center">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -278,7 +279,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
             </span>
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-4">{t.hero}</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t.heroSub}</p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -291,7 +292,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
           </div>
 
           {/* Equation display */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -316,7 +317,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
                 </span>
               )
             })}
-          </motion.div>
+          </m.div>
 
           <p className="text-center text-muted-foreground text-sm mb-14 max-w-2xl mx-auto italic">
             {t.equationNote}
@@ -325,7 +326,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
           {/* Equation parts breakdown */}
           <div className="grid md:grid-cols-2 gap-4">
             {eq.map((part, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -340,7 +341,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
                   <div className={`font-semibold ${part.color} mb-1`}>{part.label}</div>
                   <p className="text-muted-foreground text-sm leading-relaxed">{part.description}</p>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -360,7 +361,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
 
           <div className="grid md:grid-cols-2 gap-5">
             {proh.map((item, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -377,7 +378,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
                     <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -393,7 +394,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
 
           <div className="grid md:grid-cols-2 gap-5">
             {vault.map((item, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -410,7 +411,7 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
                     <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>

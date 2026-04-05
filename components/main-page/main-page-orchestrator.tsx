@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion"
+import { m, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion"
 import { useIdleActivation } from "@/hooks/use-idle-activation"
 
 type MainPageSectionId = "hero" | "overview" | "core-pillars" | "fdia" | "evidence" | "cta"
@@ -83,7 +83,7 @@ function MainPageFieldOverlay() {
   const terraY = !reducedMotion ? 52 + pageProgress * 16 : 56
 
   return (
-    <motion.div
+    <m.div
       aria-hidden="true"
       className="main-page-orchestrated-field"
       animate={{
@@ -93,22 +93,22 @@ function MainPageFieldOverlay() {
       }}
       transition={{ type: "spring", stiffness: 42, damping: 24, mass: 1.05 }}
     >
-      <motion.div
+      <m.div
         className="main-page-orchestrated-field__veil"
         animate={{ opacity: clamp(0.2 + pageProgress * 0.08 + settleBoost * 0.2, 0.18, 0.34) }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       />
-      <motion.div
+      <m.div
         className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--amber"
         animate={{ x: `${amberX}%`, y: `${amberY}%`, scale: 1 + heroBoost * 0.16 + (1 - motionSettling) * 0.03 }}
         transition={{ type: "spring", stiffness: 28, damping: 22, mass: 1.2 }}
       />
-      <motion.div
+      <m.div
         className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--sage"
         animate={{ x: `${sageX}%`, y: `${sageY}%`, scale: 1 + fdiaBoost * 0.18 + (1 - motionSettling) * 0.02 }}
         transition={{ type: "spring", stiffness: 26, damping: 24, mass: 1.25 }}
       />
-      <motion.div
+      <m.div
         className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--terra"
         animate={{ x: `${terraX}%`, y: `${terraY}%`, scale: 1 + settleBoost * 0.22 + pageProgress * 0.03 }}
         transition={{ type: "spring", stiffness: 24, damping: 24, mass: 1.3 }}
@@ -161,7 +161,7 @@ function MainPageFieldOverlay() {
         className="main-page-orchestrated-field__settle"
         style={{ opacity: clamp(Math.max(0, pageProgress - 0.52) * 1.25, 0, 0.3) }}
       />
-    </motion.div>
+    </m.div>
   )
 }
 

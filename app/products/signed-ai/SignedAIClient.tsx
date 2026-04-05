@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -74,7 +74,7 @@ export default function SignedAIPage() {
       <section className="mx-auto max-w-4xl px-4 pb-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((stat, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +84,7 @@ export default function SignedAIPage() {
             >
               <div className="text-3xl font-bold text-warm-amber">{stat.value}</div>
               <div className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{stat.label}</div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -121,14 +121,14 @@ export default function SignedAIPage() {
         </div>
         <div className="space-y-3">
           {pipeline.map((p, i) => (
-            <motion.div key={p.stage} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+            <m.div key={p.stage} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
               className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card">
               <div className="shrink-0 flex items-center gap-2">
                 <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: `${p.color}18`, color: p.color }}>{i + 1}</span>
                 <span className="text-xs font-bold font-mono w-24" style={{ color: p.color }}>{p.stage}</span>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? p.descTh : p.descEn}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -142,7 +142,7 @@ export default function SignedAIPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {features.map((feat, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -153,7 +153,7 @@ export default function SignedAIPage() {
               <feat.icon size={28} style={{ color: feat.color }} className="mb-4" />
               <h3 className="text-lg font-bold mb-2 text-foreground">{isTh ? feat.titleTh : feat.titleEn}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? feat.descTh : feat.descEn}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -171,7 +171,7 @@ export default function SignedAIPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {pricingTiers.map((t, i) => (
-            <motion.div key={t.tier} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+            <m.div key={t.tier} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
               className="p-6 rounded-2xl border-2 flex flex-col gap-3" style={{ borderColor: `${t.color}40`, background: `${t.color}08` }}>
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold px-2 py-0.5 rounded font-mono" style={{ color: t.color, background: `${t.color}18` }}>Tier {t.tier}</span>
@@ -181,7 +181,7 @@ export default function SignedAIPage() {
               <div className="text-xs text-muted-foreground">per review</div>
               <div className="text-xs font-medium text-foreground">{t.models} {isTh ? "โมเดล" : "model"}{t.models > 1 ? "s" : ""} · {t.voting}</div>
               <p className="text-xs leading-relaxed text-muted-foreground flex-1">{isTh ? t.descTh : t.descEn}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>

@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { useMounted } from "@/hooks/use-mounted"
@@ -93,23 +93,23 @@ export default function RCT7MentalModelPage() {
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#7B9E87", borderColor: "rgba(123,158,135,0.3)", background: "rgba(123,158,135,0.07)" }}>
               <Brain size={14} /> {isEn ? "Cognitive Framework" : "Cognitive Framework"}
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            </m.div>
+            <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: textPrimary }}>
               RCT-7 <span style={{ color: "#7B9E87" }}>Mental Model</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            </m.h1>
+            <m.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-10" style={{ color: isDark ? "#999" : "#4A4A4A" }}>
               {isEn
                 ? "7 Genome subsystems that define AI personality and behavior — a cognitive architecture for building AI that thinks, not just computes."
                 : "7 Genome Subsystems ที่กำหนดบุคลิกภาพและพฤติกรรม AI — สถาปัตยกรรมทางปัญญาสำหรับสร้าง AI ที่คิด ไม่ใช่แค่คำนวณ"}
-            </motion.p>
+            </m.p>
             {/* Genome count badge */}
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
+            <m.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
               className="inline-flex items-center gap-4 px-8 py-4 rounded-2xl border"
               style={{ background: isDark ? "#1E1E1E" : "white", borderColor: "rgba(123,158,135,0.3)" }}>
               <span className="text-4xl font-bold" style={{ color: "#7B9E87" }}>7</span>
@@ -117,33 +117,33 @@ export default function RCT7MentalModelPage() {
                 <div className="text-sm font-semibold" style={{ color: textPrimary }}>{isEn ? "Genome Subsystems" : "Genome Subsystems"}</div>
                 <div className="text-xs" style={{ color: isDark ? "#888" : "#6B6B6B" }}>{isEn ? "Cognitive Architecture" : "สถาปัตยกรรมทางปัญญา"}</div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Introduction */}
         <section className="py-14 px-4" style={{ background: bg }}>
           <div className="max-w-3xl mx-auto">
-            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            <m.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="text-2xl sm:text-3xl font-bold mb-5" style={{ color: textPrimary }}>
               {isEn ? "What Is the RCT-7 Mental Model?" : "RCT-7 Mental Model คืออะไร?"}
-            </motion.h2>
+            </m.h2>
             <div className="space-y-4 text-base leading-relaxed" style={{ color: isDark ? "#999" : "#4A4A4A" }}>
-              <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+              <m.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 {isEn
                   ? "The RCT-7 Mental Model is a cognitive framework that defines how AI systems should think, not just compute. Inspired by cognitive science research, it decomposes intelligence into seven fundamental capabilities. Each is implemented as a genome subsystem within the RCT Ecosystem."
                   : "RCT-7 Mental Model เป็น Cognitive Framework ที่กำหนดวิธีที่ระบบ AI ควรคิด ไม่ใช่แค่คำนวณ ได้แรงบันดาลใจจากวิทยาศาสตร์การรับรู้ แยก Intelligence เป็น 7 ความสามารถพื้นฐาน แต่ละอย่างถูกนำไปใช้เป็น Genome Subsystem ใน RCT Ecosystem"}
-              </motion.p>
-              <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+              </m.p>
+              <m.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
                 {isEn
                   ? "Traditional AI systems excel at pattern matching but lack a coherent cognitive architecture. The RCT-7 model addresses this gap — Perception feeds data to Reasoning, Ethics constrains Execution, and Evolution improves all subsystems over time through meta-learning."
                   : "ระบบ AI แบบดั้งเดิมเก่งในการจับคู่รูปแบบแต่ขาดสถาปัตยกรรมทางปัญญาที่เชื่อมโยง RCT-7 Model แก้ช่องว่างนี้ — Perception ป้อนข้อมูลให้ Reasoning, Ethics จำกัด Execution และ Evolution ปรับปรุงทุกระบบย่อยผ่าน Meta-Learning"}
-              </motion.p>
-              <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
+              </m.p>
+              <m.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
                 {isEn
                   ? "This model maps to the 7 Genome System and integrates with the 10-Layer Architecture at Layer 5 (Reasoning Core) and Layer 10 (Self-Evolving Orchestrator). By tuning genome weights, developers create AI personalities optimized for specific use cases — from empathetic customer agents to rigorous analytical systems."
                   : "Model นี้เชื่อมโยงกับ 7 Genome System และรวมกับสถาปัตยกรรม 10 ชั้นที่ Layer 5 (Reasoning Core) และ Layer 10 (Self-Evolving Orchestrator) ด้วยการปรับน้ำหนัก Genome นักพัฒนาสร้าง AI Personalities ที่ปรับแต่งสำหรับ Use Cases เฉพาะ"}
-              </motion.p>
+              </m.p>
             </div>
           </div>
         </section>
@@ -151,7 +151,7 @@ export default function RCT7MentalModelPage() {
         {/* 7 Genomes */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
                 <span style={{ color: "#7B9E87" }}>7 Genome</span> {isEn ? "Subsystems" : "Subsystems"}
               </h2>
@@ -160,12 +160,12 @@ export default function RCT7MentalModelPage() {
                   ? "Each genome represents a fundamental cognitive capability — together they form a complete AI mind."
                   : "แต่ละ Genome แสดงถึงความสามารถทางปัญญาพื้นฐาน — รวมกันเป็น AI Mind ที่สมบูรณ์"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="space-y-4">
               {genomes.map((genome, i) => {
                 const Icon = genome.icon
                 return (
-                  <motion.div key={i} initial={{ opacity: 0, x: i % 2 === 0 ? -24 : 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+                  <m.div key={i} initial={{ opacity: 0, x: i % 2 === 0 ? -24 : 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                     className="p-5 sm:p-6 rounded-2xl border" style={{ background: isDark ? "#1E1E1E" : "#ffffff", borderColor: cardBorder }}>
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
@@ -185,7 +185,7 @@ export default function RCT7MentalModelPage() {
                         </p>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )
               })}
             </div>
@@ -195,7 +195,7 @@ export default function RCT7MentalModelPage() {
         {/* CTA */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-2xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <h2 className="text-2xl font-bold mb-6" style={{ color: textPrimary }}>
                 {isEn ? "Explore Related Protocols" : "สำรวจ Protocols ที่เกี่ยวข้อง"}
               </h2>
@@ -211,7 +211,7 @@ export default function RCT7MentalModelPage() {
                   JITNA RFC-001
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 

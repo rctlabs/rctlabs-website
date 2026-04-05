@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -80,7 +80,7 @@ export default function ArtentAIPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {capabilities.map((cap, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -91,7 +91,7 @@ export default function ArtentAIPage() {
               <cap.icon size={28} style={{ color: cap.color }} className="mb-4" />
               <h3 className="text-lg font-bold mb-2 text-foreground">{isTh ? cap.titleTh : cap.titleEn}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? cap.descTh : cap.descEn}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>

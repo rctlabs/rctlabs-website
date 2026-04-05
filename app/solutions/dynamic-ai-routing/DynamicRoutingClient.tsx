@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { useMounted } from "@/hooks/use-mounted"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -97,23 +97,23 @@ export default function DynamicAIRoutingPage() {
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#D4A853", borderColor: "rgba(212,168,83,0.3)", background: "rgba(212,168,83,0.07)" }}>
               <GitBranch size={14} /> {isEn ? "Solutions" : "โซลูชัน"}
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            </m.div>
+            <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: textPrimary }}>
               <span style={{ color: "#D4A853" }}>{isEn ? "Dynamic" : "Dynamic"}</span>
               {isEn ? " AI Routing" : " AI Routing"}
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            </m.h1>
+            <m.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-10" style={{ color: textSecondary }}>
               {isEn
                 ? "Intelligent Multi-LLM routing across 41 algorithms and 7 specialized AI models — from intent parsing to self-evolving orchestration. Sub-50ms with 60% cost savings."
                 : "Routing Multi-LLM อัจฉริยะผ่าน 41 Algorithms และ 7 โมเดล AI พิเศษ — ผ่าน Intent Parsing ถึง Self-Evolving Orchestration ต่ำกว่า 50ms ประหยัดต้นทุน 60%"}
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            </m.p>
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href={`${localePrefix}/algorithms`}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white"
@@ -125,14 +125,14 @@ export default function DynamicAIRoutingPage() {
                 style={{ borderColor: cardBorder, color: textPrimary }}>
                 {isEn ? "Architecture Overview" : "ภาพรวมสถาปัตยกรรม"}
               </Link>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Benefits Grid */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-5xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
                 {isEn ? "Why " : "ทำไม "}
                 <span style={{ color: "#D4A853" }}>Dynamic Routing</span>
@@ -143,12 +143,12 @@ export default function DynamicAIRoutingPage() {
                   ? "Static model assignment wastes resources and limits quality. Dynamic routing ensures every task gets the optimal AI model."
                   : "การกำหนด Model แบบคงที่สิ้นเปลืองทรัพยากรและจำกัดคุณภาพ Dynamic Routing รับประกันว่าทุก Task ได้รับ AI Model ที่เหมาะสมที่สุด"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {routingBenefits.map((benefit, i) => {
                 const Icon = benefit.icon
                 return (
-                  <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  <m.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                     className="p-6 sm:p-8 rounded-2xl border" style={{ background: isDark ? "#1E1E1E" : "#FAF6F0", borderColor: cardBorder }}>
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
@@ -164,7 +164,7 @@ export default function DynamicAIRoutingPage() {
                         </p>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )
               })}
             </div>
@@ -174,7 +174,7 @@ export default function DynamicAIRoutingPage() {
         {/* 9-Tier Architecture */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
                 <span style={{ color: "#D4A853" }}>9 Tiers</span>
                 {isEn ? " of Algorithm Intelligence" : " แห่ง Algorithm Intelligence"}
@@ -184,10 +184,10 @@ export default function DynamicAIRoutingPage() {
                   ? "41 algorithms organized into 9 tiers — from foundational operations to self-evolving meta-intelligence."
                   : "41 Algorithms จัดเป็น 9 Tiers — ตั้งแต่การดำเนินการพื้นฐานถึง Self-Evolving Meta-Intelligence"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="space-y-3">
               {tiers.map((tier, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
+                <m.div key={i} initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
                   className="p-4 sm:p-5 rounded-xl border flex items-center gap-4" style={{ background: cardBg, borderColor: cardBorder }}>
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center shrink-0 font-bold text-sm sm:text-base"
                     style={{ background: `${tier.color}15`, color: tier.color }}>
@@ -205,25 +205,25 @@ export default function DynamicAIRoutingPage() {
                     <div className="text-xl font-bold" style={{ color: tier.color }}>{tier.count}</div>
                     <div className="text-[10px] uppercase tracking-wider" style={{ color: textMuted }}>Algo</div>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
             {/* Total */}
-            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
+            <m.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
               className="mt-6 p-5 rounded-xl border-2 text-center"
               style={{ borderColor: "rgba(212,168,83,0.3)", background: isDark ? "rgba(58,46,21,0.3)" : "rgba(254,243,199,0.4)" }}>
               <span className="text-3xl sm:text-4xl font-bold" style={{ color: "#D4A853" }}>41</span>
               <span className="text-sm font-medium ml-2" style={{ color: textPrimary }}>
                 {isEn ? "Total Algorithms across 9 Tiers" : "Algorithms ทั้งหมดใน 9 Tiers"}
               </span>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* HexaCore Model Roster */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-5xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
                 <span style={{ color: "#D4A853" }}>HexaCore</span>
                 {isEn ? " — The 7-Model Roster" : " — 7-Model Roster"}
@@ -233,18 +233,18 @@ export default function DynamicAIRoutingPage() {
                   ? "3 Western : 3 Eastern : 1 Regional — balanced global intelligence, including Typhoon G38 powered by SCB10X for Thai-language sovereignty."
                   : "3 Western : 3 Eastern : 1 Regional \u2014 ปัญญาระดับโลกที่สมดุล รวมถึง Typhoon G38 จาก SCB10X สำหรับอธิปไตยภาษาไทย"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {models.map((m, i) => (
-                <motion.div key={m.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+              {models.map((_item, i) => (
+                <m.div key={_item.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
                   className="p-5 rounded-xl border" style={{ background: cardBg, borderColor: cardBorder }}>
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-xs font-bold px-2 py-0.5 rounded font-mono" style={{ color: m.color, background: `${m.color}18` }}>{m.id}</span>
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: m.color, background: `${m.color}18`, border: `1px solid ${m.color}40` }}>{m.badge}</span>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded font-mono" style={{ color: _item.color, background: `${_item.color}18` }}>{_item.id}</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: _item.color, background: `${_item.color}18`, border: `1px solid ${_item.color}40` }}>{_item.badge}</span>
                   </div>
-                  <div className="text-xs font-semibold mb-0.5" style={{ color: textMuted }}>{m.role}</div>
-                  <div className="text-sm font-bold" style={{ color: textPrimary }}>{m.provider}</div>
-                </motion.div>
+                  <div className="text-xs font-semibold mb-0.5" style={{ color: textMuted }}>{_item.role}</div>
+                  <div className="text-sm font-bold" style={{ color: textPrimary }}>{_item.provider}</div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -253,7 +253,7 @@ export default function DynamicAIRoutingPage() {
         {/* Voting Methods */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-5xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
                 {isEn ? "4 " : "4 "}
                 <span style={{ color: "#D4A853" }}>{isEn ? "Consensus Methods" : "Consensus Methods"}</span>
@@ -263,14 +263,14 @@ export default function DynamicAIRoutingPage() {
                   ? "JITNA selects the voting method based on task criticality — from fast majority polling to SignedAI's 75% unanimous consensus."
                   : "JITNA เลือก Voting Method ตามความสำคัญของ Task \u2014 ตั้งแต่ Majority Polling ที่เร็วจนถึง SignedAI Unanimous 75%"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {votingMethods.map((v, i) => (
-                <motion.div key={v.method} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                <m.div key={v.method} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                   className="p-5 rounded-xl border flex items-start gap-4" style={{ background: cardBg, borderColor: cardBorder }}>
                   <span className="w-24 shrink-0 text-xs font-bold px-2 py-1 rounded text-center mt-0.5 font-mono" style={{ color: v.color, background: `${v.color}18` }}>{v.method}</span>
                   <p className="text-sm leading-relaxed" style={{ color: textSecondary }}>{isEn ? v.descEn : v.descTh}</p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -279,7 +279,7 @@ export default function DynamicAIRoutingPage() {
         {/* CTA */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-2xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <h2 className="text-2xl font-bold mb-6" style={{ color: textPrimary }}>
                 {isEn ? "Explore Related Solutions" : "สำรวจโซลูชันที่เกี่ยวข้อง"}
               </h2>
@@ -295,7 +295,7 @@ export default function DynamicAIRoutingPage() {
                   AI Hallucination Prevention
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 

@@ -5,7 +5,7 @@
  * Provides consistent header with tag + title + description
  * Migrated from manus-frontend-design: ThemeContext → next-themes, LanguageContext → language-provider
  */
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 
@@ -59,7 +59,7 @@ export default function SubPageHero({
       }`}
     >
       <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -93,7 +93,7 @@ export default function SubPageHero({
           >
             {description}
           </p>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   )

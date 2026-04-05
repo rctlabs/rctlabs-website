@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -194,7 +194,7 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
         </div>
         <div className="space-y-3">
           {thinkingSteps.map((s, i) => (
-            <motion.div key={s.step} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+            <m.div key={s.step} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
               className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card">
               <div className="shrink-0 flex items-center gap-3">
                 <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
@@ -208,7 +208,7 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
                 <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? s.descTh : s.descEn}</p>
                 <span className="text-xs font-mono mt-2 inline-block" style={{ color: s.color }}>Kernel: {s.kernelTiers}</span>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -226,7 +226,7 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
           </div>
           <div className="grid sm:grid-cols-3 gap-5">
             {rctVariants.map((v, i) => (
-              <motion.div key={v.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+              <m.div key={v.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                 className="p-5 rounded-xl border border-border bg-card">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-lg font-bold font-mono" style={{ color: v.color }}>{v.id}</span>
@@ -234,7 +234,7 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
                 </div>
                 <div className="text-sm font-semibold text-foreground mb-1">{isTh ? v.fullNameTh : v.fullName}</div>
                 <p className="text-xs leading-relaxed text-muted-foreground">{isTh ? v.descTh : v.descEn}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -257,16 +257,16 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
           </p>
         </div>
         <div className="space-y-2">
-          {kernelMapping.map((m, i) => (
-            <motion.div key={m.tier} initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
+          {kernelMapping.map((_item, i) => (
+            <m.div key={_item.tier} initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
               className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card">
-              <span className="text-xs font-bold font-mono w-14 shrink-0" style={{ color: m.color }}>{m.tier}</span>
-              <span className="text-xs text-muted-foreground w-44 shrink-0">{isTh ? m.tierNameTh : m.tierNameEn}</span>
+              <span className="text-xs font-bold font-mono w-14 shrink-0" style={{ color: _item.color }}>{_item.tier}</span>
+              <span className="text-xs text-muted-foreground w-44 shrink-0">{isTh ? _item.tierNameTh : _item.tierNameEn}</span>
               <div className="flex items-center gap-1.5 text-xs text-foreground font-medium">
-                <ChevronRight size={12} style={{ color: m.color }} />
-                {m.step}
+                <ChevronRight size={12} style={{ color: _item.color }} />
+                {_item.step}
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -284,11 +284,11 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
               { value: "3", label: isTh ? "Variants (O/S/I)" : "Variants (O/S/I)", color: "#89B4C8" },
               { value: "T1–T9", label: isTh ? "Kernel Coverage" : "Kernel Coverage", color: "#C4745B" },
             ].map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+              <m.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                 className="p-5 rounded-2xl border border-border bg-card text-center">
                 <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{s.label}</div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>

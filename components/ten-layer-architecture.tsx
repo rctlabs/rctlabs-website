@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
 import { cn } from "@/lib/utils"
@@ -166,7 +166,7 @@ export function TenLayerArchitecture({ locale = "en" }: { locale?: "en" | "th" }
         <div className="lg:col-span-2 space-y-2">
           <AnimatePresence>
             {layers.map((layer, index) => (
-              <motion.div
+              <m.div
                 key={layer.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ 
@@ -218,20 +218,20 @@ export function TenLayerArchitecture({ locale = "en" }: { locale?: "en" | "th" }
                   </div>
 
                   {/* Expand Icon */}
-                  <motion.div
+                  <m.div
                     animate={{ rotate: activeLayer === layer.id ? 180 : 0 }}
                     className="flex-shrink-0 text-muted-foreground"
                   >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M6 9l6 6 6-6" />
                     </svg>
-                  </motion.div>
+                  </m.div>
                 </div>
 
                 {/* Expanded Details */}
                 <AnimatePresence>
                   {activeLayer === layer.id && (
-                    <motion.div
+                    <m.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -257,10 +257,10 @@ export function TenLayerArchitecture({ locale = "en" }: { locale?: "en" | "th" }
                           ))}
                         </div>
                       </div>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </m.div>
             ))}
           </AnimatePresence>
         </div>

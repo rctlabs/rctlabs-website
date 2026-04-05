@@ -3,7 +3,7 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
 import type { LucideIcon } from "lucide-react"
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { ArrowRight, ExternalLink } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -180,7 +180,7 @@ export function ResourcePageShell({
             {stats.length > 0 ? (
               <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 {stats.map((stat) => (
-                  <motion.div
+                  <m.div
                     key={`${stat.label}-${stat.value}`}
                     {...statSpotlight}
                     whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.006 }}
@@ -189,7 +189,7 @@ export function ResourcePageShell({
                     <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{stat.label}</div>
                     <div className="mt-2 text-2xl font-bold text-foreground">{stat.value}</div>
                     {stat.detail ? <p className="mt-2 text-sm leading-6 text-muted-foreground">{stat.detail}</p> : null}
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             ) : null}
@@ -250,7 +250,7 @@ export function ResourceCardGrid({ cards, columns = "three" }: { cards: Resource
       {cards.map((card) => {
         const Icon = card.icon
         const content = (
-          <motion.div
+          <m.div
             {...cardSpotlight}
             whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.006 }}
             whileTap={prefersReducedMotion ? undefined : { scale: 0.996 }}
@@ -295,7 +295,7 @@ export function ResourceCardGrid({ cards, columns = "three" }: { cards: Resource
                 <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Roadmap Pairing</span>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )
 
         if (card.external) {

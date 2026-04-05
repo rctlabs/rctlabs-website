@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { useMounted } from "@/hooks/use-mounted"
@@ -143,30 +143,30 @@ export default function FDIAEquationPage() {
         {/* Hero */}
         <section className="py-20 px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ borderColor: "#C4745B", color: "#C4745B", background: "rgba(196,116,91,0.08)" }}
             >
               {isEn ? "RCT Protocol" : "RCT Protocol"}
-            </motion.div>
-            <motion.h1
+            </m.div>
+            <m.h1
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6"
             >
               {isEn ? "The FDIA Equation" : "สมการ FDIA"}
-            </motion.h1>
-            <motion.p
+            </m.h1>
+            <m.p
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto"
             >
               {isEn
                 ? "F = (D^I) × A — Mathematical foundation for intent-centric AI. Future equals Data raised to the power of Intent, multiplied by the Architect."
                 : "F = (D^I) × A — รากฐานคณิตศาสตร์ของ AI ที่ขับเคลื่อนด้วยเจตนา อนาคตเท่ากับข้อมูลยกกำลังเจตนา คูณสถาปนิก"}
-            </motion.p>
+            </m.p>
 
             {/* Equation Display */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
               className="flex items-center justify-center gap-2 sm:gap-4 mb-4"
             >
@@ -178,20 +178,20 @@ export default function FDIAEquationPage() {
               <span className="text-3xl text-muted-foreground">)</span>
               <span className="text-3xl text-muted-foreground">×</span>
               <span className="text-5xl sm:text-6xl font-bold" style={{ color: "#89B4C8" }}>A</span>
-            </motion.div>
-            <motion.p
+            </m.div>
+            <m.p
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
               className="text-sm text-muted-foreground font-mono"
             >
               Future = (Data<sup>Intent</sup>) × Architect
-            </motion.p>
+            </m.p>
           </div>
         </section>
 
         {/* Quick Reference */}
         <section className="px-4 pb-8">
           <div className="max-w-3xl mx-auto">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
               className="grid grid-cols-2 sm:grid-cols-4 gap-4"
             >
@@ -209,24 +209,24 @@ export default function FDIAEquationPage() {
                   </div>
                 )
               })}
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Component Breakdown */}
         <section className="px-4 py-12">
           <div className="max-w-3xl mx-auto">
-            <motion.h2
+            <m.h2
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="text-2xl font-bold text-center mb-8"
             >
               {isEn ? "Component Deep Dive" : "วิเคราะห์แต่ละส่วนประกอบ"}
-            </motion.h2>
+            </m.h2>
             <div className="space-y-5">
               {components.map((comp, i) => {
                 const Icon = comp.icon
                 return (
-                  <motion.div
+                  <m.div
                     key={comp.letter}
                     initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
@@ -257,7 +257,7 @@ export default function FDIAEquationPage() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )
               })}
             </div>
@@ -267,15 +267,15 @@ export default function FDIAEquationPage() {
         {/* Key Principles */}
         <section className="px-4 py-16" style={{ background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
           <div className="max-w-5xl mx-auto">
-            <motion.h2
+            <m.h2
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="text-2xl font-bold text-center mb-10"
             >
               {isEn ? "Three Key Principles" : "หลักการสำคัญสามข้อ"}
-            </motion.h2>
+            </m.h2>
             <div className="grid sm:grid-cols-3 gap-6">
               {principles.map((p, i) => (
-                <motion.div
+                <m.div
                   key={i}
                   initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }} transition={{ delay: i * 0.1 }}
@@ -285,7 +285,7 @@ export default function FDIAEquationPage() {
                   <div className="w-10 h-10 rounded-xl mb-4" style={{ background: `${p.color}18` }} />
                   <h3 className="font-bold mb-2" style={{ color: p.color }}>{isEn ? p.titleEn : p.titleTh}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">{isEn ? p.descEn : p.descTh}</p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -294,13 +294,13 @@ export default function FDIAEquationPage() {
         {/* Examples Table */}
         <section className="px-4 py-16">
           <div className="max-w-5xl mx-auto">
-            <motion.h2
+            <m.h2
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="text-2xl font-bold text-center mb-10"
             >
               {isEn ? "Real-World Examples" : "ตัวอย่างในโลกจริง"}
-            </motion.h2>
-            <motion.div
+            </m.h2>
+            <m.div
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="rounded-2xl border overflow-hidden"
               style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}
@@ -315,7 +315,7 @@ export default function FDIAEquationPage() {
                 <div className="text-center" style={{ color: "#C4745B" }}>F / Grade</div>
               </div>
               {examples.map((ex, i) => (
-                <motion.div
+                <m.div
                   key={i}
                   initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }} transition={{ delay: i * 0.06 }}
@@ -337,9 +337,9 @@ export default function FDIAEquationPage() {
                       {ex.f} / {ex.grade}
                     </span>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
+            </m.div>
             <p className="text-xs text-muted-foreground text-center mt-4">
               {isEn ? "Note: F = round(Math.pow(D/100, I/100) × (A/100) × 100). When A=0, output=0 regardless of D and I." : "หมายเหตุ: F = round(Math.pow(D/100, I/100) × (A/100) × 100) เมื่อ A=0 ผลลัพธ์=0 โดยไม่คำนึงถึง D และ I"}
             </p>
@@ -349,7 +349,7 @@ export default function FDIAEquationPage() {
         {/* CTA */}
         <section className="px-4 py-16" style={{ background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
           <div className="max-w-2xl mx-auto text-center">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="p-10 rounded-3xl border"
               style={{ borderColor: "rgba(196,116,91,0.25)", background: isDark ? "rgba(196,116,91,0.05)" : "rgba(196,116,91,0.04)" }}
@@ -381,7 +381,7 @@ export default function FDIAEquationPage() {
                   {isEn ? "RCT-7 Mental Model" : "RCT-7 Mental Model"}
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
