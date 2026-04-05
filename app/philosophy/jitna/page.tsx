@@ -183,6 +183,34 @@ export default function JITNAPage() {
         </div>
       </section>
 
+      {/* Deep-dive link to Technology page */}
+      <section className="mx-auto max-w-7xl px-4 pb-24">
+        <div className="rounded-2xl border border-border bg-card/60 p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-warm-amber">
+              {language === "th" ? "สำหรับนักพัฒนาและทีมเทคนิค" : "For developers & technical teams"}
+            </p>
+            <h3 className="text-lg font-semibold text-foreground">
+              {language === "th"
+                ? "ดู JITNA ในเชิงสถาปัตยกรรมเต็มรูปแบบ"
+                : "See JITNA as a full routing architecture"}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {language === "th"
+                ? "หน้า Philosophy นี้อธิบายหลักการเชิงแนวคิดของ JITNA หน้า Technology อธิบาย 6 Primitives (I, D, Δ, A, R, M), routing logic, proficiency scoring และ RCTDB integration"
+                : "This Philosophy page covers JITNA's conceptual principles. The Technology page covers the 6 Primitives (I, D, Δ, A, R, M), routing logic, proficiency scoring, and RCTDB integration."}
+            </p>
+          </div>
+          <Link
+            href={`/${language}/technology/jitna`}
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+          >
+            {language === "th" ? "ดู JITNA Technical Doc" : "View JITNA Technical Docs"}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
       <Footer />
     </main>
   )

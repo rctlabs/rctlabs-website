@@ -17,9 +17,9 @@ const orbitNodes = [
 ] as const
 
 const microBadges = [
-  { id: "algorithms", label: "41A", positionClass: "left-[11%] top-[24%] sm:left-[12%] sm:top-[20%]", accent: "#D4A853", href: "/algorithms" },
-  { id: "layers", label: "L10", positionClass: "right-[10%] top-[16%] sm:top-[14%]", accent: "#7B9E87", href: "/architecture" },
-  { id: "genomes", label: "G7", positionClass: "bottom-[24%] right-[10%] sm:bottom-[21%] sm:right-[12%]", accent: "#89B4C8", href: "/genome" },
+  { id: "algorithms", label: "41A", positionClass: "left-[11%] top-[24%] sm:left-[12%] sm:top-[20%]", accent: "#D4A853", lightAccent: "#7A5910", href: "/algorithms" },
+  { id: "layers", label: "L10", positionClass: "right-[10%] top-[16%] sm:top-[14%]", accent: "#7B9E87", lightAccent: "#2E5E3A", href: "/architecture" },
+  { id: "genomes", label: "G7", positionClass: "bottom-[24%] right-[10%] sm:bottom-[21%] sm:right-[12%]", accent: "#89B4C8", lightAccent: "#1E5572", href: "/genome" },
 ] as const
 
 const metrics = [
@@ -185,7 +185,7 @@ export default function HeroArchitectureVisual() {
                       <div
                         className="rounded-full border px-2 py-1 font-mono text-[9px] font-semibold shadow-[0_8px_18px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-0.5 sm:px-2.5 sm:text-[10px]"
                         style={{
-                          color: badge.accent,
+                          color: isDark ? badge.accent : badge.lightAccent,
                           borderColor: `${badge.accent}2F`,
                           backgroundColor: isDark ? "rgba(22,22,22,0.78)" : "rgba(255,255,255,0.76)",
                         }}

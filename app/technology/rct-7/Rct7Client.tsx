@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -80,25 +80,25 @@ export default function Rct7Client({ locale: propLocale }: { locale?: string }) 
         </div>
         <div className="space-y-3">
           {intentLoopStates.map((s, i) => (
-            <motion.div key={s.state} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+            <m.div key={s.state} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
               className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card">
               <div className="shrink-0 flex items-center gap-3">
                 <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: `${s.color}18`, color: s.color }}>{s.num}</span>
                 <span className="text-xs font-bold font-mono w-16" style={{ color: s.color }}>{s.state}</span>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? s.descTh : s.descEn}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
         {/* Loop indicator */}
-        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
+        <m.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
           className="mt-6 p-4 rounded-xl border border-warm-amber/30 bg-warm-amber/5 text-center">
           <RefreshCw size={16} className="text-warm-amber inline-block mr-2" />
           <span className="text-sm text-warm-amber font-medium">
             {isTh ? "ADAPT → IDLE: วงจรต่อเนื่องทุก Task" : "ADAPT → IDLE: Perpetual loop after every task"}
           </span>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* Stats */}
@@ -114,11 +114,11 @@ export default function Rct7Client({ locale: propLocale }: { locale?: string }) 
               { value: "4,849", label: isTh ? "Tests Passed" : "Tests Passed", color: "#89B4C8" },
               { value: "G7→G1", label: isTh ? "Feedback Loop" : "Feedback Loop", color: "#C4745B" },
             ].map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+              <m.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                 className="p-5 rounded-2xl border border-border bg-card text-center">
                 <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{s.label}</div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>

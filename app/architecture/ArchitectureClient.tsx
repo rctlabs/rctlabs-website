@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { FAQSection } from "@/components/faq-section"
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -126,7 +126,7 @@ export default function ArchitecturePage() {
         <h2 className="text-2xl font-bold text-foreground text-center mb-10">{isTh ? "ภาพรวม 10 ชั้นทั้งหมด" : "All 10 Layers at a Glance"}</h2>
         <div className="space-y-3">
           {localLayers.map((l, i) => (
-            <motion.div key={l.num} initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.22, delay: i * 0.02 }}
+            <m.div key={l.num} initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }} whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }} viewport={{ once: true }} transition={prefersReducedMotion ? undefined : { duration: 0.22, delay: i * 0.02 }}
               className="flex gap-4 p-4 rounded-xl border border-border bg-card">
               <div className="flex items-center gap-3 shrink-0">
                 <span className="text-sm font-bold px-3 py-1 rounded-lg bg-warm-sky/10 text-warm-sky whitespace-nowrap">{l.num}</span>
@@ -136,7 +136,7 @@ export default function ArchitecturePage() {
                 <h3 className="font-semibold text-sm text-foreground">{l.name}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">{l.desc}</p>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -202,11 +202,11 @@ export default function ArchitecturePage() {
             { value: "6,738+", label: isTh ? "Total Tests" : "Total Tests", color: "#D4A853" },
             { value: "62", label: isTh ? "Microservices" : "Microservices", color: "#89B4C8" },
           ].map((s, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+            <m.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
               className="p-5 rounded-2xl border border-border bg-card text-center">
               <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
               <div className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{s.label}</div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>

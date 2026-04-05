@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useLanguage } from "@/components/language-provider"
 
 interface ArchitectMascotProps {
@@ -11,7 +11,7 @@ export default function ArchitectMascot({ className = "" }: ArchitectMascotProps
   const { language } = useLanguage()
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
@@ -42,6 +42,6 @@ export default function ArchitectMascot({ className = "" }: ArchitectMascotProps
           </p>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   )
 }

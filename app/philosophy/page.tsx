@@ -38,8 +38,34 @@ export default function PhilosophyPage() {
     },
   ]
 
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://rctlabs.co/en" },
+      { "@type": "ListItem", position: 2, name: "Philosophy", item: "https://rctlabs.co/en/philosophy" },
+    ],
+  }
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "RCT Philosophy Concepts",
+    numberOfItems: 6,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "FDIA", url: "https://rctlabs.co/en/philosophy/fdia" },
+      { "@type": "ListItem", position: 2, name: "JITNA", url: "https://rctlabs.co/en/philosophy/jitna" },
+      { "@type": "ListItem", position: 3, name: "RCT-7", url: "https://rctlabs.co/en/philosophy/rct-7" },
+      { "@type": "ListItem", position: 4, name: "Intent OS", url: "https://rctlabs.co/en/philosophy/intent-os" },
+      { "@type": "ListItem", position: 5, name: "Approach", url: "https://rctlabs.co/en/philosophy/approach" },
+      { "@type": "ListItem", position: 6, name: "Ethics", url: "https://rctlabs.co/en/philosophy/ethics" },
+    ],
+  }
+
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       {/* Hero Section */}
@@ -127,5 +153,6 @@ export default function PhilosophyPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

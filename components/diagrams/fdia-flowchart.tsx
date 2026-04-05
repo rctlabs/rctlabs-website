@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { useState } from "react"
 import { useLanguage } from "@/components/language-provider"
 import { pixelIcons } from "@/lib/pixel-icons"
@@ -348,7 +348,7 @@ export default function FDIAFlowchart({ compact = false, forceDark = false, blue
             {displayNodes.map((node, index) => {
               const selected = activeNode === node.id
               return (
-                <motion.button
+                <m.button
                   key={node.id}
                   type="button"
                   initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.94, y: 8 }}
@@ -389,12 +389,12 @@ export default function FDIAFlowchart({ compact = false, forceDark = false, blue
                   <div className={`leading-relaxed text-[#b5aa9a] ${blueprintOnly ? "mt-px text-[8px] sm:text-[9px]" : compact ? "mt-0.5 text-[9px] sm:text-[10px]" : "mt-1 text-[10px] sm:text-[11px]"}`}>
                     {isEn ? node.subtitle : node.subtitleTh}
                   </div>
-                </motion.button>
+                </m.button>
               )
             })}
 
             {blueprintOnly ? (
-              <motion.div
+              <m.div
                 key={active.id}
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
                 animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
@@ -430,7 +430,7 @@ export default function FDIAFlowchart({ compact = false, forceDark = false, blue
                     {isEn ? active.description : active.descriptionTh}
                   </p>
                 </div>
-              </motion.div>
+              </m.div>
             ) : null}
           </div>
         </div>

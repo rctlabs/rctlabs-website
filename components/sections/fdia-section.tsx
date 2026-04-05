@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import SectionHeading from "@/components/section-heading"
@@ -113,7 +113,7 @@ export default function FDIASection() {
 
         <div className="mb-7 grid gap-3 md:grid-cols-3 lg:mb-8">
           {signalCards.map((card, index) => (
-            <motion.div
+            <m.div
               key={card.title}
               {...cardSpotlight}
               initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -126,14 +126,14 @@ export default function FDIASection() {
               <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7A5910] dark:text-warm-amber">{card.eyebrow}</div>
               <h3 className="mt-2 text-base font-semibold text-foreground sm:text-lg">{card.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-[14px]">{card.body}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
         <div className="hidden lg:flex items-center gap-0 mb-8">
           {stages.map((stage, i) => (
             <React.Fragment key={stage.letter}>
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 {...cardSpotlight}
                 whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
@@ -154,7 +154,7 @@ export default function FDIASection() {
                 <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
                   {stage.desc}
                 </p>
-              </motion.div>
+              </m.div>
               {i < 3 && (
                 <div className="flex items-center justify-center shrink-0 px-2">
                   <span className="text-warm-amber text-xl font-bold">→</span>
@@ -166,7 +166,7 @@ export default function FDIASection() {
 
         <div className="grid sm:grid-cols-2 gap-4 md:gap-5 mb-8 lg:hidden">
           {stages.map((stage, i) => (
-            <motion.div
+            <m.div
               key={stage.letter}
               {...cardSpotlight}
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
@@ -188,11 +188,11 @@ export default function FDIASection() {
               <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
                 {stage.desc}
               </p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
-        <motion.div
+        <m.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
           {...cardSpotlight}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
@@ -221,10 +221,10 @@ export default function FDIASection() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </m.div>
 
         <div className="flex justify-center">
-          <motion.div
+          <m.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
             whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -234,8 +234,7 @@ export default function FDIASection() {
             <FDIAExplorerDialog
               language={language}
               trigger={
-                <div className="contents">
-                  <motion.button
+                <m.button
                     type="button"
                     whileHover={prefersReducedMotion ? undefined : { y: -6, scale: 1.02, rotate: -1.4 }}
                     whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
@@ -281,11 +280,10 @@ export default function FDIASection() {
                         </p>
                       </div>
                     </div>
-                  </motion.button>
-                </div>
+                  </m.button>
               }
             />
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

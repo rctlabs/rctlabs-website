@@ -1,7 +1,7 @@
-﻿"use client"
+"use client"
 
 import Link from "next/link"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { ChevronDown, ArrowRight } from "lucide-react"
 import type { Locale } from "@/lib/i18n"
 import { localizeCopy, type NavGroup } from "@/lib/navigation"
@@ -68,7 +68,7 @@ export function DesktopNav({
                 className={`opacity-40 group-hover:opacity-70 transition-all duration-200 ${isOpen ? "rotate-180 opacity-70" : ""}`}
               />
               {groupActive ? (
-                <motion.div
+                <m.div
                   layoutId="nav-indicator"
                   className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-warm-amber"
                   transition={{ type: "spring", stiffness: 420, damping: 30 }}
@@ -78,7 +78,7 @@ export function DesktopNav({
 
             <AnimatePresence>
               {isOpen ? (
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: -6, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -6, scale: 0.98 }}
@@ -204,7 +204,7 @@ export function DesktopNav({
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </m.div>
               ) : null}
             </AnimatePresence>
           </div>

@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -180,34 +180,34 @@ export default function FdiaClient() {
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#D4A853", borderColor: "rgba(212,168,83,0.3)", background: "rgba(212,168,83,0.07)" }}>
               <Calculator size={14} /> {isEn ? "FDIA Equation" : "สมการ FDIA"}
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            </m.div>
+            <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-4" style={{ color: textPrimary }}>
               F = (D<sup>I</sup>) × <span style={{ color: "#7B9E87" }}>A</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            </m.h1>
+            <m.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-8" style={{ color: textSecondary }}>
               {isEn
                 ? "Future equals Data raised to the power of Intent, multiplied by the Architect. The master equation governing the entire RCT Ecosystem."
                 : "Future เท่ากับ Data ยกกำลัง Intent คูณด้วย Architect สมการหลักที่ควบคุม RCT Ecosystem ทั้งหมด"}
-            </motion.p>
+            </m.p>
             {/* Big equation badge */}
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
+            <m.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
               className="inline-block px-8 py-5 rounded-2xl border font-mono text-3xl font-bold"
               style={{ background: isDark ? "#1E1E1E" : "white", borderColor: "rgba(212,168,83,0.3)", color: "#D4A853" }}>
               F = (D<sup className="text-lg">I</sup>) × A
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* 4 Components */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-4xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
               <h2 className="text-3xl font-bold mb-4" style={{ color: textPrimary }}>
                 {isEn ? "Mathematical " : "รากฐานทาง"}<span style={{ color: "#D4A853" }}>{isEn ? "Foundation" : "คณิตศาสตร์"}</span>
               </h2>
@@ -216,10 +216,10 @@ export default function FdiaClient() {
                   ? "The FDIA equation is not just a metaphor — it's a precise mathematical framework that governs how the RCT Ecosystem processes intent and generates outcomes."
                   : "สมการ FDIA ไม่ใช่แค่อุปมา — แต่เป็นกรอบทางคณิตศาสตร์ที่แม่นยำซึ่งควบคุมวิธีที่ RCT Ecosystem ประมวลผล Intent และสร้างผลลัพธ์"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {components.map((comp, i) => (
-                <motion.div key={comp.letter} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                <m.div key={comp.letter} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                   className="p-5 rounded-2xl border" style={{ background: cardBg, borderColor: cardBorder }}>
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl font-bold font-mono"
@@ -236,7 +236,7 @@ export default function FdiaClient() {
                   <p className="text-sm leading-relaxed" style={{ color: textSecondary }}>
                     {isEn ? comp.descEn : comp.descTh}
                   </p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -245,13 +245,13 @@ export default function FdiaClient() {
         {/* Why A = Architect */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: textPrimary }}>
                 {isEn ? "Why " : "ทำไม "}<span style={{ color: "#7B9E87" }}>A = Architect</span>
                 {isEn ? ", Not Action?" : " ไม่ใช่ Action?"}
               </h2>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            </m.div>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="p-7 rounded-2xl border mb-6" style={{ background: isDark ? "#1A1A1A" : "white", borderColor: cardBorder }}>
               <p className="text-sm leading-relaxed mb-6" style={{ color: textSecondary }}>
                 {isEn
@@ -260,24 +260,24 @@ export default function FdiaClient() {
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {architectPillars.map((pillar, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  <m.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                     className="p-4 rounded-xl text-center" style={{ background: isDark ? "#151515" : "#FAF6F0" }}>
                     <div className="text-2xl mb-2">{pillar.icon}</div>
                     <h4 className="text-xs font-bold mb-1" style={{ color: textPrimary }}>{isEn ? pillar.titleEn : pillar.titleTh}</h4>
                     <p className="text-xs leading-relaxed" style={{ color: isDark ? "#888" : "#6B6B6B" }}>
                       {isEn ? pillar.descEn : pillar.descTh}
                     </p>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Applications */}
         <section className="py-16 px-4" style={{ background: bg }}>
           <div className="max-w-4xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
               <h2 className="text-3xl font-bold mb-3" style={{ color: textPrimary }}>
                 {isEn ? "Real-World " : "การใช้งาน"}<span style={{ color: "#C4745B" }}>{isEn ? "Applications" : "จริง"}</span>
               </h2>
@@ -286,17 +286,17 @@ export default function FdiaClient() {
                   ? "The FDIA equation powers every component of the RCT Ecosystem, from code generation to decision-making."
                   : "สมการ FDIA ขับเคลื่อนทุกส่วนประกอบของ RCT Ecosystem ตั้งแต่การสร้างโค้ดไปจนถึงการตัดสินใจ"}
               </p>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {applications.map((app, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                <m.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                   className="p-5 rounded-2xl border" style={{ background: cardBg, borderColor: cardBorder }}>
                   <h3 className="text-base font-bold mb-3" style={{ color: textPrimary }}>{isEn ? app.titleEn : app.titleTh}</h3>
                   <div className="space-y-2 text-sm" style={{ color: textSecondary }}>
                     <div><span className="font-semibold" style={{ color: "#D4A853" }}>Input: </span>{isEn ? app.exampleEn : app.exampleTh}</div>
                     <div><span className="font-semibold" style={{ color: "#7B9E87" }}>Output: </span>{isEn ? app.resultEn : app.resultTh}</div>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -305,7 +305,7 @@ export default function FdiaClient() {
         {/* Exponential Thinking */}
         <section className="py-16 px-4" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="p-7 rounded-2xl border" style={{ background: isDark ? "#1A1A1A" : "white", borderColor: cardBorder }}>
               <h2 className="text-2xl font-bold mb-4" style={{ color: textPrimary }}>
                 {isEn ? "The Power of " : "พลังของ "}<span style={{ color: "#C4745B" }}>Exponential Thinking</span>
@@ -328,14 +328,14 @@ export default function FdiaClient() {
                     : "การเพิ่ม Intent ความชัดเจน 10 เท่า สร้างศักยภาพผลลัพธ์เพิ่มขึ้นล้านล้านเท่า"}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* CTA */}
         <section className="py-14 px-4" style={{ background: bg }}>
           <div className="max-w-2xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <h2 className="text-2xl font-bold mb-6" style={{ color: textPrimary }}>
                 {isEn ? "Experience FDIA in Action" : "สัมผัส FDIA ในการใช้งานจริง"}
               </h2>
@@ -351,7 +351,7 @@ export default function FdiaClient() {
                   {isEn ? "All Protocols" : "ทุก Protocols"}
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 

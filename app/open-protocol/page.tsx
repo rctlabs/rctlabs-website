@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer"
 import Link from "next/link"
 import { ArrowRight, Code2, Lock, Zap, Globe, BookOpen, Workflow, ShieldCheck, Boxes } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import SectionHeading from "@/components/section-heading"
@@ -145,14 +145,14 @@ export default function ProtocolPage() {
           {features.map((feature, i) => {
             const Icon = feature.icon
             return (
-              <motion.div key={i} whileHover={{ y: -4 }} className="relative overflow-hidden p-8 rounded-lg border border-border hover:border-accent/50 transition bg-card">
+              <m.div key={i} whileHover={{ y: -4 }} className="relative overflow-hidden p-8 rounded-lg border border-border hover:border-accent/50 transition bg-card">
                 <div className="pointer-events-none absolute right-4 top-4 h-10 w-10 opacity-40">
                   <OptimizedImage src={PIXEL_PROTOCOL} alt="" pixelated containerClassName="h-full w-full" objectFit="contain" width={40} height={40} />
                 </div>
                 <Icon className="w-12 h-12 text-accent mb-4" />
                 <h3 className="text-xl font-semibold mb-2 text-foreground">{feature.title}</h3>
                 <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-              </motion.div>
+              </m.div>
             )
           })}
         </div>

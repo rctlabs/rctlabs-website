@@ -19,7 +19,7 @@
  *   variant="global" → position: fixed, z-[1], low intensity
  */
 
-import { motion, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { useMemo, useState } from "react"
 import { usePathname } from "next/navigation"
 import { useMainPageOrchestration } from "@/components/main-page/main-page-orchestrator"
@@ -132,7 +132,7 @@ export default function HeroAnimatedBackground({
   }
 
   return (
-    <motion.div
+    <m.div
       className={wrapperClass}
       aria-hidden="true"
       animate={{ x: pointerShiftX, y: pointerShiftY }}
@@ -179,7 +179,7 @@ export default function HeroAnimatedBackground({
             style={{ filter: `blur(${glow.beam}px)` }}
           />
           {!isGlobal && useEnhancedEffects && (
-            <motion.div
+            <m.div
               className="absolute -inset-y-px w-18"
               style={{ backgroundImage: "var(--rct-hero-signal-trace)" }}
               initial={{ x: "-140%", opacity: 0 }}
@@ -199,7 +199,7 @@ export default function HeroAnimatedBackground({
         </div>
       ))}
 
-      <motion.div
+      <m.div
         className="absolute top-[16%] left-[21%] h-[52%] w-px"
         style={{ backgroundImage: "var(--rct-hero-vertical-guide)" }}
         initial={{ opacity: 0 }}
@@ -207,7 +207,7 @@ export default function HeroAnimatedBackground({
         transition={{ duration: 1.4, delay: 0.15 }}
       />
 
-      <motion.div
+      <m.div
         className="absolute top-[54%] left-[52%] h-px w-[22%]"
         style={{ backgroundImage: "var(--rct-hero-horizontal-guide)" }}
         initial={{ opacity: 0 }}
@@ -217,7 +217,7 @@ export default function HeroAnimatedBackground({
 
       {/* ── Layer 4: Anchor nodes ─────────────────────────────────── */}
       {visibleNodes.map((node, index) => (
-        <motion.div
+        <m.div
           key={`${node.x}-${node.y}`}
           className="absolute"
           style={{ left: `${node.x}%`, top: `${node.y}%` }}
@@ -233,8 +233,8 @@ export default function HeroAnimatedBackground({
             className="relative h-2.5 w-2.5 rounded-full border border-white/40 bg-warm-amber/90"
             style={{ boxShadow: "var(--rct-hero-anchor-shadow)" }}
           />
-        </motion.div>
+        </m.div>
       ))}
-    </motion.div>
+    </m.div>
   )
 }

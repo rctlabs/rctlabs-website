@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 
@@ -69,27 +69,27 @@ export function AnimatedFDIAEquation({ locale = "en" }: { locale?: "en" | "th" }
       </div>
 
       {/* Main Equation */}
-      <motion.div
+      <m.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="flex flex-wrap items-center justify-center gap-2 text-4xl md:text-6xl font-mono mb-12"
       >
         {/* F = */}
-        <motion.span variants={itemVariants} className="font-bold text-foreground">
+        <m.span variants={itemVariants} className="font-bold text-foreground">
           F
-        </motion.span>
-        <motion.span variants={itemVariants} className="text-muted-foreground">
+        </m.span>
+        <m.span variants={itemVariants} className="text-muted-foreground">
           =
-        </motion.span>
+        </m.span>
 
         {/* ( */}
-        <motion.span variants={itemVariants} className="text-muted-foreground">
+        <m.span variants={itemVariants} className="text-muted-foreground">
           (
-        </motion.span>
+        </m.span>
 
         {/* D */}
-        <motion.div
+        <m.div
           variants={itemVariants}
           className={cn(
             "relative cursor-pointer transition-all duration-300",
@@ -98,32 +98,32 @@ export function AnimatedFDIAEquation({ locale = "en" }: { locale?: "en" | "th" }
           onMouseEnter={() => setHoveredPart("D")}
           onMouseLeave={() => setHoveredPart(null)}
         >
-          <motion.span
+          <m.span
             animate={isAnimating ? "pulse" : ""}
             variants={pulseVariants}
             className="font-bold text-blue-500"
           >
             D
-          </motion.span>
+          </m.span>
           {hoveredPart === "D" && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm bg-card border border-border rounded-lg px-3 py-2 shadow-lg z-10"
             >
               <span className="font-semibold text-blue-500">D</span>
               <span className="text-muted-foreground"> = {t("Data", "ข้อมูล")}</span>
-            </motion.div>
+            </m.div>
           )}
-        </motion.div>
+        </m.div>
 
         {/* ^ */}
-        <motion.span variants={itemVariants} className="text-muted-foreground">
+        <m.span variants={itemVariants} className="text-muted-foreground">
           <sup className="text-2xl md:text-3xl">^</sup>
-        </motion.span>
+        </m.span>
 
         {/* I */}
-        <motion.div
+        <m.div
           variants={itemVariants}
           className={cn(
             "relative cursor-pointer transition-all duration-300",
@@ -132,37 +132,37 @@ export function AnimatedFDIAEquation({ locale = "en" }: { locale?: "en" | "th" }
           onMouseEnter={() => setHoveredPart("I")}
           onMouseLeave={() => setHoveredPart(null)}
         >
-          <motion.span
+          <m.span
             animate={isAnimating ? "pulse" : ""}
             variants={pulseVariants}
             className="font-bold text-green-500"
           >
             I
-          </motion.span>
+          </m.span>
           {hoveredPart === "I" && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm bg-card border border-border rounded-lg px-3 py-2 shadow-lg z-10"
             >
               <span className="font-semibold text-green-500">I</span>
               <span className="text-muted-foreground"> = {t("Intent", "เจตนา")}</span>
-            </motion.div>
+            </m.div>
           )}
-        </motion.div>
+        </m.div>
 
         {/* ) */}
-        <motion.span variants={itemVariants} className="text-muted-foreground">
+        <m.span variants={itemVariants} className="text-muted-foreground">
           )
-        </motion.span>
+        </m.span>
 
         {/* × */}
-        <motion.span variants={itemVariants} className="text-muted-foreground">
+        <m.span variants={itemVariants} className="text-muted-foreground">
           ×
-        </motion.span>
+        </m.span>
 
         {/* A */}
-        <motion.div
+        <m.div
           variants={itemVariants}
           className={cn(
             "relative cursor-pointer transition-all duration-300",
@@ -171,30 +171,30 @@ export function AnimatedFDIAEquation({ locale = "en" }: { locale?: "en" | "th" }
           onMouseEnter={() => setHoveredPart("A")}
           onMouseLeave={() => setHoveredPart(null)}
         >
-          <motion.span
+          <m.span
             animate={isAnimating ? "pulse" : ""}
             variants={pulseVariants}
             className="font-bold text-purple-500"
           >
             A
-          </motion.span>
+          </m.span>
           {hoveredPart === "A" && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm bg-card border border-border rounded-lg px-3 py-2 shadow-lg z-10"
             >
               <span className="font-semibold text-purple-500">A</span>
               <span className="text-muted-foreground"> = {t("Action", "การกระทำ")}</span>
-            </motion.div>
+            </m.div>
           )}
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
 
       {/* Component Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Data Card */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1 }}
@@ -220,10 +220,10 @@ export function AnimatedFDIAEquation({ locale = "en" }: { locale?: "en" | "th" }
               "วัตถุดิบของความเข้าใจ ข้อมูลบริบท รูปแบบประวัติ และสัญญาณสิ่งแวดล้อม"
             )}
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Intent Card */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
@@ -253,10 +253,10 @@ export function AnimatedFDIAEquation({ locale = "en" }: { locale?: "en" | "th" }
             <span>^</span>
             <span className="font-bold">{t("Exponent", "เลขชี้กำลัง")}</span>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Action Card */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.4 }}
@@ -282,11 +282,11 @@ export function AnimatedFDIAEquation({ locale = "en" }: { locale?: "en" | "th" }
               "ผลลัพธ์ที่จับต้องได้ซึ่งแสดงเจตนาในโลกจริง นำทางด้วยความสัมพันธ์ระหว่างข้อมูลและเจตนา"
             )}
           </p>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Formula Explanation */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
@@ -301,7 +301,7 @@ export function AnimatedFDIAEquation({ locale = "en" }: { locale?: "en" | "th" }
             "F = (D^I) × A แสดงว่าเจตนา (I) ขยายคุณค่าของข้อมูล (D) แบบเลขชี้กำลัง โดยไม่มีเจตนาที่ชัดเจน ข้อมูลเป็นแค่สัญญาณรบกวน แต่เมื่อมีเจตนาที่แม่นยำ ข้อมูลกลายเป็นสัญญาณที่บริสุทธิ์ที่ขับเคลื่อนการกระทำ (A) ที่มีความหมาย"
           )}
         </p>
-      </motion.div>
+      </m.div>
     </div>
   )
 }

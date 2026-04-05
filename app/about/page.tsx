@@ -269,6 +269,14 @@ export default async function AboutPage() {
 
   const timelineItems = [
     {
+      phase: isTh ? "จุดเปลี่ยน" : "The turning point",
+      period: isTh ? "สิงหาคม 2025" : "August 2025",
+      title: isTh ? "จากข้อจำกัด สู่ระบบที่มีรัฐธรรมนูญของตัวเอง" : "From constraint into a system with its own constitution",
+      capability: isTh ? "เหตุการณ์ในช่วงนี้ทำให้ผู้สร้างระบบตระหนักว่า intent ต่างหากที่ควรเป็นศูนย์กลาง ไม่ใช่ model เป็นจุดเริ่มอันแท้จริงของ FDIA equation และ Constitutional AI OS" : "Events during this period led the architect to understand that intent — not model output — should be the center of any reliable system. This became the true origin of the FDIA equation and Constitutional AI OS.",
+      businessImpact: isTh ? "ระบบนี้ไม่ได้เริ่มจาก market opportunity แต่เริ่มจากความเข้าใจเชิงลึกถึงสิ่งที่ AI ควรรับผิดชอบต่อ" : "The system did not begin from a market opportunity. It began from a deep understanding of what AI should be accountable to.",
+      tone: "amber",
+    },
+    {
       phase: isTh ? "Foundation layer" : "Foundation layer",
       period: isTh ? "ปลายปี 2025" : "Late 2025",
       title: isTh ? "จาก framework เชิงแนวคิด สู่ระบบคิดที่มีรัฐธรรมนูญของตัวเอง" : "From conceptual framework to a system with its own constitution",

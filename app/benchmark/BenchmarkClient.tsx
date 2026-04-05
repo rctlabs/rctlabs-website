@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { m, useInView } from "framer-motion"
 import Link from "next/link"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
@@ -105,7 +105,7 @@ function AnimatedStat({ stat, isDark }: { stat: StatItem; isDark: boolean }) {
   const count = useAnimatedCounter(stat.value, 2000, isInView)
   const Icon = stat.icon
   return (
-    <motion.div
+    <m.div
       ref={ref}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -123,7 +123,7 @@ function AnimatedStat({ stat, isDark }: { stat: StatItem; isDark: boolean }) {
       <div className={`text-sm font-medium ${isDark ? "text-[#999]" : "text-warm-gray"}`}>
         {stat.labelEn}
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -155,15 +155,15 @@ export default function BenchmarkPage() {
         {/* Hero */}
         <section className={`py-20 px-4 text-center transition-colors duration-300 ${isDark ? "bg-[#0D0D0D]" : "bg-warm-cream"}`}>
           <div className="max-w-3xl mx-auto space-y-5">
-            <motion.span
+            <m.span
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-sage/10 border border-warm-sage/30 text-warm-sage text-sm font-medium"
             >
               📊 {isEn ? "Benchmarks" : "เกณฑ์มาตรฐาน"}
-            </motion.span>
-            <motion.h1
+            </m.span>
+            <m.h1
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -171,8 +171,8 @@ export default function BenchmarkPage() {
             >
               {isEn ? "Performance " : "เปรียบเทียบ "}
               <span className="font-display text-warm-sage">{isEn ? "Comparison" : "ประสิทธิภาพ"}</span>
-            </motion.h1>
-            <motion.p
+            </m.h1>
+            <m.p
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -181,7 +181,7 @@ export default function BenchmarkPage() {
               {isEn
                 ? "RCT SignedAI achieves 99.7% accuracy vs 85% for single LLM, with 60% cost savings, full audit trails, and cryptographic signing."
                 : "RCT SignedAI ความแม่นยำ 99.7% เทียบกับ 85% สำหรับ Single LLM พร้อมประหยัดต้นทุน 60% Audit Trails ครบถ้วน และ Cryptographic Signing"}
-            </motion.p>
+            </m.p>
           </div>
         </section>
 
@@ -199,7 +199,7 @@ export default function BenchmarkPage() {
         {/* Interactive Chart Dashboard */}
         <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-[#141414]" : "bg-white"}`} aria-label="Interactive Charts">
           <div className="max-w-5xl mx-auto px-4">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -215,7 +215,7 @@ export default function BenchmarkPage() {
                   ? "Switch between Radar and Bar views to compare RCT SignedAI against Single LLM across key dimensions."
                   : "สลับระหว่างมุมมอง Radar และ Bar เพื่อเปรียบเทียบ RCT SignedAI กับ Single LLM"}
               </p>
-            </motion.div>
+            </m.div>
 
             {/* Chart Toggle */}
             <div className="flex justify-center mb-8">
@@ -237,7 +237,7 @@ export default function BenchmarkPage() {
             </div>
 
             {/* Chart Container */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -273,14 +273,14 @@ export default function BenchmarkPage() {
                   )}
                 </ResponsiveContainer>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
         {/* Key Metrics Cards */}
         <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-warm-charcoal" : "bg-warm-cream"}`} aria-label="Key Metrics">
           <div className="max-w-5xl mx-auto px-4">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -291,10 +291,10 @@ export default function BenchmarkPage() {
                 <span className="font-display text-warm-sage">{isEn ? "Performance" : "ประสิทธิภาพ"}</span>{" "}
                 {isEn ? "Metrics" : "ตัวชี้วัด"}
               </h2>
-            </motion.div>
+            </m.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
               {benchmarks.map((bm, i) => (
-                <motion.div
+                <m.div
                   key={i}
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -314,7 +314,7 @@ export default function BenchmarkPage() {
                         <span className="text-sm font-bold" style={{ color: bm.color }}>{bm.rct}</span>
                       </div>
                       <div className={`h-2.5 rounded-full overflow-hidden ${isDark ? "bg-[#2A2A2A]" : "bg-warm-light-gray"}`}>
-                        <motion.div
+                        <m.div
                           initial={{ width: 0 }}
                           whileInView={{ width: `${bm.inverted ? Math.max(5, 100 - bm.rctVal * 3) : Math.min(100, bm.rctVal)}%` }}
                           viewport={{ once: true }}
@@ -330,7 +330,7 @@ export default function BenchmarkPage() {
                         <span className={`text-sm font-bold ${isDark ? "text-[#666]" : "text-[#999]"}`}>{bm.single}</span>
                       </div>
                       <div className={`h-2.5 rounded-full overflow-hidden ${isDark ? "bg-[#2A2A2A]" : "bg-warm-light-gray"}`}>
-                        <motion.div
+                        <m.div
                           initial={{ width: 0 }}
                           whileInView={{ width: `${bm.inverted ? Math.min(100, bm.singleVal * 3) : bm.singleVal}%` }}
                           viewport={{ once: true }}
@@ -340,7 +340,7 @@ export default function BenchmarkPage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -349,7 +349,7 @@ export default function BenchmarkPage() {
         {/* Feature Comparison Table */}
         <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-[#141414]" : "bg-white"}`} aria-label="Feature Comparison">
           <div className="max-w-2xl mx-auto px-4">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -360,7 +360,7 @@ export default function BenchmarkPage() {
                 <span className="font-display text-warm-amber">{isEn ? "Feature" : "ฟีเจอร์"}</span>{" "}
                 {isEn ? "Comparison" : "เปรียบเทียบ"}
               </h2>
-            </motion.div>
+            </m.div>
             <p className={`text-xs text-center mb-2 sm:hidden ${isDark ? "text-[#555]" : "text-[#B0A898]"}`}>
               {isEn ? "← scroll to see more →" : "← เลื่อนเพื่อดูเพิ่มเติม →"}
             </p>
@@ -373,7 +373,7 @@ export default function BenchmarkPage() {
                     <span className={`text-xs font-semibold uppercase tracking-wider text-center ${isDark ? "text-[#666]" : "text-[#999]"}`}>Single LLM</span>
                   </div>
                   {featureComparison.map((feat, i) => (
-                    <motion.div
+                    <m.div
                       key={i}
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -390,7 +390,7 @@ export default function BenchmarkPage() {
                       <span className="text-center">
                         {feat.single ? <CheckCircle size={18} className="inline text-warm-sage" /> : <X size={18} className={`inline ${isDark ? "text-[#444]" : "text-[#CCC]"}`} />}
                       </span>
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
               </div>
@@ -401,7 +401,7 @@ export default function BenchmarkPage() {
         {/* Platform Comparison */}
         <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-warm-charcoal" : "bg-warm-cream"}`} aria-label="Platform Comparison">
           <div className="max-w-4xl mx-auto px-4">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -417,7 +417,7 @@ export default function BenchmarkPage() {
                   ? "How RCT Ecosystem stacks up against LangChain and AutoGPT across enterprise-critical capabilities."
                   : "วิธีที่ RCT Ecosystem เปรียบเทียบกับ LangChain และ AutoGPT ในความสามารถสำคัญระดับ Enterprise"}
               </p>
-            </motion.div>
+            </m.div>
 
             <p className={`text-xs text-center mb-2 sm:hidden ${isDark ? "text-[#555]" : "text-[#B0A898]"}`}>
               {isEn ? "← scroll to see all platforms →" : "← เลื่อนเพื่อดูทุก Platform →"}
@@ -432,7 +432,7 @@ export default function BenchmarkPage() {
                     <div className="text-center text-[#B8A9C9]">AutoGPT</div>
                   </div>
                   {platformRows.map((row, i) => (
-                    <motion.div
+                    <m.div
                       key={i}
                       initial={{ opacity: 0, x: -8 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -446,7 +446,7 @@ export default function BenchmarkPage() {
                       <div className={`text-center ${cellCls(row.rct.type)}`}>{row.rct.label}</div>
                       <div className={`text-center ${cellCls(row.lc.type)}`}>{row.lc.label}</div>
                       <div className={`text-center ${cellCls(row.agpt.type)}`}>{row.agpt.label}</div>
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
               </div>
@@ -479,11 +479,11 @@ export default function BenchmarkPage() {
                 { value: "6,738+", label: isEn ? "Total Tests" : "Tests ทั้งหมด", color: "#D4A853" },
                 { value: "0.92", label: isEn ? "FDIA Accuracy" : "FDIA Accuracy", color: "#89B4C8" },
               ].map((s, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+                <m.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                   className={`p-5 rounded-2xl border text-center ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-[#E8E3DC]"}`}>
                   <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
                   <div className={`text-xs uppercase tracking-wider mt-1 ${isDark ? "text-[#888]" : "text-[#6B6B6B]"}`}>{s.label}</div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
             <div className={`p-5 rounded-xl border text-sm leading-relaxed ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A] text-[#999]" : "bg-white border-[#E8E3DC] text-[#4A4A4A]"}`}>
@@ -497,7 +497,7 @@ export default function BenchmarkPage() {
         {/* CTA */}
         <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-[#0D0D0D]" : "bg-white"}`} aria-label="CTA">
           <div className="max-w-2xl mx-auto px-4 text-center">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -520,7 +520,7 @@ export default function BenchmarkPage() {
                   SignedAI Details
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 

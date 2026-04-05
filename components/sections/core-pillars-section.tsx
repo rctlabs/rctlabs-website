@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useState, type CSSProperties } from "react"
-import { motion, useMotionTemplate, useReducedMotion, useSpring } from "framer-motion"
+import { m, useMotionTemplate, useReducedMotion, useSpring } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { getLocalePrefix } from "@/lib/i18n"
 import { pixelIcons } from "@/lib/pixel-icons"
@@ -53,7 +53,7 @@ function PillarCard({ locale, pillar }: PillarCardProps) {
   }
 
   return (
-    <motion.div
+    <m.div
       whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.007 }}
       whileTap={prefersReducedMotion ? undefined : { scale: 0.995 }}
       transition={{ type: "spring", stiffness: 260, damping: 22, mass: 0.7 }}
@@ -70,7 +70,7 @@ function PillarCard({ locale, pillar }: PillarCardProps) {
         onMouseLeave={() => setHovered(false)}
         className="main-page-reactive-card group relative flex min-h-40 h-full overflow-hidden rounded-[28px] border border-border bg-white/90 px-4 py-4 sm:min-h-44 sm:px-5 sm:py-5 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/40 hover:bg-white dark:bg-card/90 dark:hover:bg-card"
       >
-        <motion.div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ backgroundImage: glow }} />
+        <m.div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ backgroundImage: glow }} />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.84),rgba(255,248,240,0.12))] dark:bg-[linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,248,240,0.01))]" />
 
         <div className="pointer-events-none absolute right-4 top-4 z-10 flex flex-col items-center gap-4 sm:right-5 sm:top-5 sm:gap-5">
@@ -112,7 +112,7 @@ function PillarCard({ locale, pillar }: PillarCardProps) {
           </div>
         </div>
       </Link>
-    </motion.div>
+    </m.div>
   )
 }
 

@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+import { m, AnimatePresence, useReducedMotion } from "framer-motion"
 import { ChevronRight } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
 
@@ -92,7 +92,7 @@ export default function InteractiveGenomeExplorer({ language = "en" }: { languag
         {genomes.map((genome, index) => {
           const isActive = genome.id === activeGenome
           return (
-            <motion.button
+            <m.button
               key={genome.id}
               type="button"
               onClick={() => {
@@ -118,13 +118,13 @@ export default function InteractiveGenomeExplorer({ language = "en" }: { languag
                 {genome.name.replace(" Genome", "")}
               </div>
               <div className={`mt-1 font-mono text-[9px] ${isDark ? "text-warm-subtle" : "text-warm-gray"}`}>{genome.version}</div>
-            </motion.button>
+            </m.button>
           )
         })}
       </div>
 
       <AnimatePresence mode="wait">
-        <motion.div
+        <m.div
           key={activeData.id}
           initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
           animate={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
@@ -193,7 +193,7 @@ export default function InteractiveGenomeExplorer({ language = "en" }: { languag
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </AnimatePresence>
     </div>
   )

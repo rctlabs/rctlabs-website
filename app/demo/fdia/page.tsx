@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { useMounted } from "@/hooks/use-mounted"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -215,15 +215,15 @@ export default function FDIADemoPage() {
         {/* Hero */}
         <section className="py-20 px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ borderColor: "#D4A853", color: "#D4A853", background: "rgba(212,168,83,0.08)" }}
             >
               {isEn ? "Interactive Playground" : "ทดลองแบบอินเทอร์แอคทีฟ"}
-            </motion.div>
-            <motion.h1
+            </m.div>
+            <m.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -231,8 +231,8 @@ export default function FDIADemoPage() {
             >
               {isEn ? "FDIA Equation " : "ทดลอง "}
               <span style={{ color: "#D4A853" }}>{isEn ? "Demo" : "สมการ FDIA"}</span>
-            </motion.h1>
-            <motion.p
+            </m.h1>
+            <m.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -241,10 +241,10 @@ export default function FDIADemoPage() {
               {isEn
                 ? "Adjust parameters and see real-time results. Explore how Data, Intent, and Architect oversight combine to predict AI system readiness."
                 : "ปรับพารามิเตอร์และดูผลลัพธ์แบบ real-time สำรวจว่า Data, Intent และ Architect oversight รวมกันอย่างไร"}
-            </motion.p>
+            </m.p>
 
             {/* Equation Display */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3 }}
@@ -259,7 +259,7 @@ export default function FDIADemoPage() {
               <span className="text-xl text-muted-foreground">)</span>
               <span className="text-xl text-muted-foreground">×</span>
               <span className="text-3xl sm:text-4xl font-bold" style={{ color: "#C4745B" }}>A</span>
-            </motion.div>
+            </m.div>
             <p className="mt-3 text-xs text-muted-foreground font-mono">
               Future = (Data<sup>Intent</sup>) × Architect
             </p>
@@ -271,7 +271,7 @@ export default function FDIADemoPage() {
           <div className="max-w-5xl mx-auto">
 
             {/* Preset Scenarios */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -296,11 +296,11 @@ export default function FDIADemoPage() {
                   </button>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
 
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Left: Input Panel */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
@@ -362,10 +362,10 @@ export default function FDIADemoPage() {
                     isEn={isEn} isDark={isDark}
                   />
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Right: Results */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
@@ -381,9 +381,9 @@ export default function FDIADemoPage() {
                   </h3>
                   <AnimatePresence mode="wait">
                     {result && !isCalculating ? (
-                      <motion.div key={result.score} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}>
+                      <m.div key={result.score} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}>
                         <AnimatedScore value={result.score} grade={result.grade} isDark={true} />
-                      </motion.div>
+                      </m.div>
                     ) : (
                       <div className="h-20 flex items-center">
                         <div className="w-6 h-6 border-2 border-warm-amber border-t-transparent rounded-full animate-spin" />
@@ -400,7 +400,7 @@ export default function FDIADemoPage() {
                             <span className="font-mono" style={{ color: b.color }}>{b.value}%</span>
                           </div>
                           <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.08)" }}>
-                            <motion.div
+                            <m.div
                               className="h-full rounded-full"
                               style={{ backgroundColor: b.color }}
                               initial={{ width: 0 }}
@@ -416,7 +416,7 @@ export default function FDIADemoPage() {
 
                 {/* Recommendation */}
                 {result && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
                     className="p-5 rounded-2xl border"
                     style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}
@@ -428,12 +428,12 @@ export default function FDIADemoPage() {
                     <p className="text-sm leading-relaxed text-muted-foreground">
                       {isEn ? result.recommendation : result.recommendationTh}
                     </p>
-                  </motion.div>
+                  </m.div>
                 )}
 
                 {/* Suggested Pages */}
                 {result && result.suggestedPages.length > 0 && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
                     className="p-5 rounded-2xl border"
                     style={{ borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }}
@@ -456,9 +456,9 @@ export default function FDIADemoPage() {
                         </Link>
                       ))}
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </section>
@@ -466,14 +466,14 @@ export default function FDIADemoPage() {
         {/* Equation Explanation */}
         <section className="px-4 py-16" style={{ background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
           <div className="max-w-5xl mx-auto">
-            <motion.h2
+            <m.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-2xl sm:text-3xl font-bold text-center mb-12"
             >
               {isEn ? "How the FDIA Equation Works" : "สมการ FDIA ทำงานอย่างไร"}
-            </motion.h2>
+            </m.h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
@@ -501,7 +501,7 @@ export default function FDIADemoPage() {
                   descTh: "ตัวคูณ คือการกำกับดูแลโดยมนุษย์ หากไม่มี ผลลัพธ์ AI แม้สมบูรณ์แบบก็ไม่ได้รับการยืนยัน",
                 },
               ].map(item => (
-                <motion.div
+                <m.div
                   key={item.letter}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -518,11 +518,11 @@ export default function FDIADemoPage() {
                   <span className="text-3xl font-bold block" style={{ color: item.color }}>{item.letter}</span>
                   <span className="text-sm font-semibold block mt-1 mb-2">{isEn ? item.titleEn : item.titleTh}</span>
                   <p className="text-xs text-muted-foreground leading-relaxed">{isEn ? item.descEn : item.descTh}</p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -536,7 +536,7 @@ export default function FDIADemoPage() {
                 {isEn ? "Read Full FDIA Equation Docs" : "อ่านเอกสาร FDIA Equation เต็มรูปแบบ"}
                 <ArrowRight size={16} />
               </Link>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 

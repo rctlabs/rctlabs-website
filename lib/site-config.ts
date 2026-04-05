@@ -66,6 +66,10 @@ export const PUBLIC_ROUTE_PRIORITIES: Record<string, number> = {
   "/philosophy/rct-7": 0.72,
   "/philosophy/intent-os": 0.70,
   "/open-protocol": 0.76,
+  "/genome": 0.80,
+  "/algorithms": 0.79,
+  "/fdia": 0.78,
+  "/protocols": 0.77,
 }
 
 export const PUBLIC_ROUTES = [

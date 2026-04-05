@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { Menu, Search, FileText, Mail, Sparkles } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
@@ -51,7 +51,7 @@ export default function QuickActionsMenu() {
     <div className="fixed bottom-36 right-4 z-41 sm:bottom-40 sm:right-6">
       <AnimatePresence>
         {open ? (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 12, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.96 }}
@@ -86,7 +86,7 @@ export default function QuickActionsMenu() {
                 </button>
               )
             })}
-          </motion.div>
+          </m.div>
         ) : null}
       </AnimatePresence>
 

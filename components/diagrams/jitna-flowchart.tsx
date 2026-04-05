@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 
 interface StepNode {
@@ -293,7 +293,7 @@ export default function JITNAFlowchart({ language = "en" }: { language?: "en" | 
       </div>
 
       <AnimatePresence mode="wait">
-        <motion.div
+        <m.div
           key={activeData.id}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -313,7 +313,7 @@ export default function JITNAFlowchart({ language = "en" }: { language?: "en" | 
             </div>
           </div>
           <p className="text-sm leading-relaxed text-muted-foreground">{language === "en" ? activeData.desc : activeData.descTh}</p>
-        </motion.div>
+        </m.div>
       </AnimatePresence>
     </div>
   )

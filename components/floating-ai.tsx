@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback, type FormEvent } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -87,10 +87,10 @@ export function FloatingAI() {
 
   /* Build conversation_history from last 6 messages for API context */
   const buildHistory = useCallback((): Array<{ role: string; content: string; _topic?: string }> => {
-    return messages.slice(-6).map((m) => ({
-      role: m.role,
-      content: m.content,
-      ...(m.topic ? { _topic: m.topic } : {}),
+    return messages.slice(-6).map((_item) => ({
+      role: _item.role,
+      content: _item.content,
+      ...(_item.topic ? { _topic: _item.topic } : {}),
     }))
   }, [messages])
 
@@ -185,7 +185,7 @@ export function FloatingAI() {
 
   function handleFeedback(msgId: string, type: "up" | "down") {
     setMessages((prev) =>
-      prev.map((m) => (m.id === msgId ? { ...m, feedback: type } : m)),
+      prev.map((_item) => (_item.id === msgId ? { ..._item, feedback: type } : _item)),
     )
   }
 
@@ -353,7 +353,7 @@ export function FloatingAI() {
   /* Render                                                            */
   /* ---------------------------------------------------------------- */
 
-  const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant")
+  const lastAssistant = [...messages].reverse().find((msg) => msg.role === "assistant")
   const suggestions = lastAssistant?.suggestions || []
 
   return (
@@ -361,7 +361,7 @@ export function FloatingAI() {
       {/* ============ Floating Button ============ */}
       <AnimatePresence>
         {!isOpen && (
-          <motion.button
+          <m.button
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
@@ -371,14 +371,14 @@ export function FloatingAI() {
             aria-label="Open AI Assistant"
           >
             <Sparkles className="w-6 h-6" />
-          </motion.button>
+          </m.button>
         )}
       </AnimatePresence>
 
       {/* ============ Chat Panel ============ */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.95 }}
@@ -608,7 +608,7 @@ export function FloatingAI() {
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
               </Button>
             </form>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

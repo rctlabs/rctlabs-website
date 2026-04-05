@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useState } from "react"
 import { SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME } from "@/lib/site-config"
 import { cn } from "@/lib/utils"
@@ -106,7 +106,7 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {metrics.map((metric, index) => (
-          <motion.div
+          <m.div
             key={metric.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -145,7 +145,7 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
                   <span className="text-foreground font-bold">{metric.rctValue}{metric.unit}</span>
                 </div>
                 <div className="h-3 bg-muted rounded-full overflow-hidden">
-                  <motion.div
+                  <m.div
                     className={cn("h-full rounded-full bg-gradient-to-r", metric.color)}
                     initial={{ width: 0 }}
                     animate={{ width: "100%" }}
@@ -181,12 +181,12 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
                 </span>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 
       {/* Summary Stats */}
-      <motion.div 
+      <m.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
@@ -210,7 +210,7 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
             <p className="text-sm text-muted-foreground">{t("Regional Markets", "ตลาดภูมิภาค")}</p>
           </div>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   )
 }

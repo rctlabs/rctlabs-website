@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { CheckCircle, ArrowRight } from "lucide-react"
@@ -136,7 +136,7 @@ export function RCT7Timeline({ locale = "en" }: { locale?: "en" | "th" }) {
           </span>
         </div>
         <div className="h-2 bg-muted rounded-full overflow-hidden">
-          <motion.div
+          <m.div
             className="h-full bg-gradient-to-r from-accent to-secondary"
             initial={{ width: 0 }}
             animate={{ width: `${(completedSteps.length / 7) * 100}%` }}
@@ -156,7 +156,7 @@ export function RCT7Timeline({ locale = "en" }: { locale?: "en" | "th" }) {
             const isActive = activeStep === step.id
 
             return (
-              <motion.div
+              <m.div
                 key={step.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -232,14 +232,14 @@ export function RCT7Timeline({ locale = "en" }: { locale?: "en" | "th" }) {
                     </div>
                   </div>
                 )}
-              </motion.div>
+              </m.div>
             )
           })}
         </div>
       </div>
 
       {/* Getting Started Guide */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
@@ -282,7 +282,7 @@ export function RCT7Timeline({ locale = "en" }: { locale?: "en" | "th" }) {
             ))}
           </ul>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   )
 }

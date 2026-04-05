@@ -6,7 +6,7 @@
  * Migrated from manus-frontend-design: ThemeContext → next-themes
  */
 import { useState, useEffect } from "react"
-import { motion, useScroll, useSpring } from "framer-motion"
+import { m, useScroll, useSpring } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 
 export default function ReadingProgressIndicator() {
@@ -30,13 +30,13 @@ export default function ReadingProgressIndicator() {
   if (!isVisible) return null
 
   return (
-    <motion.div
+    <m.div
       className="fixed top-0 left-0 right-0 z-49 h-1"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <motion.div
+      <m.div
         className={`h-full origin-left ${
           isDark
             ? "bg-linear-to-r from-warm-amber via-[#C49A48] to-warm-amber"
@@ -44,6 +44,6 @@ export default function ReadingProgressIndicator() {
         }`}
         style={{ scaleX }}
       />
-    </motion.div>
+    </m.div>
   )
 }

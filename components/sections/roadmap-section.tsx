@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { ArrowRight, CheckCircle2, Circle, Clock, Heart, Users, Scale, Target, Trophy, CalendarClock } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
@@ -213,7 +213,7 @@ export default function RoadmapSection() {
         />
 
         {/* Phase progress chain */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
           className="mb-6 flex items-center justify-center gap-2 flex-wrap"
         >
@@ -229,23 +229,23 @@ export default function RoadmapSection() {
               </div>
             )
           })}
-        </motion.div>
+        </m.div>
 
         {/* Version Evolution Diagram */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
           className="mb-6"
         >
           <VersionTimelineGraph />
-        </motion.div>
+        </m.div>
 
         {/* Monthly Milestone Calendar */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
           className="mb-8"
         >
           <RoadmapMilestoneCalendar />
-        </motion.div>
+        </m.div>
 
         {/* Phase Cards Grid */}
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -258,7 +258,7 @@ export default function RoadmapSection() {
                 : isDark ? "border-[#27445a] bg-[#162633] text-[#89B4C8]" : "border-[#d8e5ee] bg-[#f4f9fc] text-[#4f7284]"
 
             return (
-              <motion.div
+              <m.div
                 key={item.phase}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.5, delay: index * 0.06 }}
                 className={`group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-6 sm:p-7 transition-all duration-300 ${
@@ -322,13 +322,13 @@ export default function RoadmapSection() {
                     </span>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             )
           })}
         </div>
 
         {/* Development Velocity Factors */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
           className="mt-14"
         >
@@ -355,7 +355,7 @@ export default function RoadmapSection() {
                 ? isDark ? "border-warm-amber/30 bg-warm-amber/10 text-warm-amber" : "border-warm-amber/25 bg-warm-amber/10 text-[#9a6d1e]"
                 : isDark ? "border-border bg-background/60 text-warm-dim" : "border-[#e6ddd0] bg-[#fffaf6] text-warm-gray"
               return (
-                <motion.div
+                <m.div
                   key={index}
                   initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: index * 0.08 }}
                   className={`group relative flex h-full flex-col overflow-hidden rounded-[28px] border p-5 sm:p-6 transition-all duration-300 ${
@@ -404,14 +404,14 @@ export default function RoadmapSection() {
                       </span>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               )
             })}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Founder Commitment Banner */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
           className="mt-10"
         >
@@ -476,7 +476,7 @@ export default function RoadmapSection() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
 
       </div>
     </section>

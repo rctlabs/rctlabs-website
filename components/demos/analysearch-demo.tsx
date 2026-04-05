@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import {
   ArrowRight,
   CheckCircle2,
@@ -286,7 +286,7 @@ export default function AnalysearchDemo({ language = "en" }: { language?: "en" |
 
         <AnimatePresence>
           {showSuggestions && !isProcessing && (
-            <motion.div
+            <m.div
               ref={suggestionsRef}
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
@@ -311,7 +311,7 @@ export default function AnalysearchDemo({ language = "en" }: { language?: "en" |
                   {suggestion}
                 </button>
               ))}
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </div>
@@ -390,7 +390,7 @@ export default function AnalysearchDemo({ language = "en" }: { language?: "en" |
 
         <AnimatePresence mode="wait">
           {result && (
-            <motion.div
+            <m.div
               key={`${selectedMode}-${query}`}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -410,7 +410,7 @@ export default function AnalysearchDemo({ language = "en" }: { language?: "en" |
                 })}
               </div>
               <p className="text-sm leading-relaxed text-warm-secondary dark:text-warm-dim">{result.answer}</p>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </div>

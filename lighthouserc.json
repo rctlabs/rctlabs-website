@@ -1,14 +1,20 @@
 {
   "ci": {
     "collect": {
-      "startServerCommand": "npm run start",
+      "startServerCommand": "npm run start -- -p 3010",
       "startServerReadyPattern": "Ready",
-      "startServerReadyTimeout": 120000,
-      "numberOfRuns": 3,
+      "startServerReadyTimeout": 60000,
+      "numberOfRuns": 1,
       "url": [
-        "http://localhost:3000/en",
-        "http://localhost:3000/en/pricing",
-        "http://localhost:3000/en/solutions"
+        "http://localhost:3010/en",
+        "http://localhost:3010/en/pricing",
+        "http://localhost:3010/en/solutions",
+        "http://localhost:3010/en/about",
+        "http://localhost:3010/en/technology/jitna",
+        "http://localhost:3010/en/compare/constitutional-ai-vs-rag",
+        "http://localhost:3010/en/benchmark-summary",
+        "http://localhost:3010/en/open-protocol",
+        "http://localhost:3010/en/genome"
       ],
       "settings": {
         "formFactor": "mobile",

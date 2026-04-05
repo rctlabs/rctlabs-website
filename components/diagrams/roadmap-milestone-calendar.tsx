@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { MapPin } from "lucide-react"
@@ -188,7 +188,7 @@ export default function RoadmapMilestoneCalendar() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {calendarData.map((month, monthIdx) => (
-            <motion.div
+            <m.div
               key={`${month.periodEn}-${month.yearLabelEn}`}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -259,7 +259,7 @@ export default function RoadmapMilestoneCalendar() {
                   <span>{month.isCurrent ? (isEn ? "current window" : "ช่วงปัจจุบัน") : (isEn ? "planned window" : "ช่วงแผนงาน")}</span>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
         ))}
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
@@ -107,7 +107,7 @@ export default function RCTLabsPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {features.map((feat, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -120,7 +120,7 @@ export default function RCTLabsPage() {
               </div>
               <h3 className="text-lg font-bold mb-2 text-foreground">{isTh ? feat.titleTh : feat.titleEn}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? feat.descTh : feat.descEn}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>

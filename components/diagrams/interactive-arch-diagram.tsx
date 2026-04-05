@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+import { m, AnimatePresence, useReducedMotion } from "framer-motion"
 import {
   ChevronDown,
   Server,
@@ -124,7 +124,7 @@ export default function InteractiveArchDiagram({ language = "en" }: { language?:
           const LayerIcon = layer.icon
           const isExpanded = expandedLayer === layer.id
           return (
-            <motion.div
+            <m.div
               key={layer.id}
               initial={prefersReducedMotion ? false : { opacity: 0, x: -10 }}
               whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
@@ -169,7 +169,7 @@ export default function InteractiveArchDiagram({ language = "en" }: { language?:
 
                 <AnimatePresence>
                   {isExpanded && (
-                    <motion.div
+                    <m.div
                       initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
                       animate={prefersReducedMotion ? { height: "auto", opacity: 1 } : { height: "auto", opacity: 1 }}
                       exit={prefersReducedMotion ? { height: 0, opacity: 1 } : { height: 0, opacity: 0 }}
@@ -203,11 +203,11 @@ export default function InteractiveArchDiagram({ language = "en" }: { language?:
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </button>
-            </motion.div>
+            </m.div>
           )
         })}
       </div>
