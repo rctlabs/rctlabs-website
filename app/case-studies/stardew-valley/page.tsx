@@ -296,6 +296,8 @@ function getLocaleFromHeaders(value: string | null): Locale {
   return value === "th" ? "th" : "en"
 }
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(): Promise<Metadata> {
   const locale = getLocaleFromHeaders((await headers()).get("x-locale"))
 

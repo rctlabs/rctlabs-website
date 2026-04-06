@@ -297,13 +297,35 @@ export function FloatingAI() {
     return lines.join("\n") || "No analysis data available"
   }
 
+  // Auto-classify user intent → choose the best analysis mode
+  function classifyIntent(text: string): AnalysisMode {
+    const lower = text.toLowerCase()
+    const ANALYZE_KEYWORDS = [
+      "architecture", "layer", "algorithm", "fdia", "jitna", "signemai", "signedai",
+      "consensus", "rctdb", "genome", "benchmark", "hallucination", "แสดง", "วิเคราะห์",
+      "อธิบาย", "explain", "compare", "compare", "breakdown", "how does", "what is",
+      "สถาปัตยกรรม", "โปรโตคอล",
+    ]
+    const MIRROR_KEYWORDS = [
+      "refine", "improve", "rewrite", "revise", "better", "alternative", "version",
+      "ปรับปรุง", "เขียนใหม่", "แก้ไข",
+    ]
+    if (MIRROR_KEYWORDS.some((kw) => lower.includes(kw))) return "mirror"
+    if (text.length > 80 || ANALYZE_KEYWORDS.some((kw) => lower.includes(kw))) return "analyze"
+    return "chat"
+  }
+
   // Handle analysis mode submission
   const handleAnalysisSubmit = useCallback(
     (text: string) => {
-      if (analysisMode === "chat") {
+      const detectedMode = classifyIntent(text)
+      if (detectedMode !== analysisMode) {
+        setAnalysisMode(detectedMode)
+      }
+      if (detectedMode === "chat") {
         sendMessage(text)
       } else {
-        runAnalysis(text, analysisMode)
+        runAnalysis(text, detectedMode)
       }
     },
     [analysisMode, sendMessage, runAnalysis]

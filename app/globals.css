@@ -132,8 +132,10 @@
 
 @theme inline {
   /* Typography: Space Grotesk display, Inter/Kanit body, Space Mono code */
-  --font-sans: "Inter", "Kanit", system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Kanit", system-ui, sans-serif;
+  /* NOTE: "Kanit" literal string does NOT match next/font hashed @font-face name.
+     Always use var(--rct-font-thai) to reference the loaded Kanit font. */
+  --font-sans: "Inter", var(--rct-font-thai, 'Noto Sans Thai'), system-ui, sans-serif;
+  --font-display: "Space Grotesk", var(--rct-font-thai, 'Noto Sans Thai'), system-ui, sans-serif;
   --font-mono: "Space Mono", "JetBrains Mono", "Fira Code", "Geist Mono", monospace;
 
   /* Custom font sizes */
@@ -326,6 +328,12 @@
   input[type="checkbox"]:not(:disabled),
   input[type="radio"]:not(:disabled) {
     @apply cursor-pointer;
+  }
+
+  /* Suppress browser default visited-link purple so Tailwind color classes stay in control.
+     Without this, links that inherit text color can fail contrast checks in Lighthouse. */
+  a:visited {
+    color: inherit;
   }
 
   /* Focus states for accessibility */

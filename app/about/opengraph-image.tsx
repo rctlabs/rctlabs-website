@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og"
+import { SITE_TEST_COUNT } from "@/lib/site-config"
 
 export const alt = "About RCT Labs — Enterprise Constitutional AI Architecture"
 export const size = { width: 1200, height: 630 }
@@ -114,7 +115,7 @@ export default function AboutOgImage() {
           {/* Bottom stats row */}
           <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
             {[
-              { value: "4,849", label: "Passing Tests" },
+              { value: SITE_TEST_COUNT.toLocaleString(), label: "Passing Tests" },
               { value: "0.3%", label: "Hallucination Rate" },
               { value: "7", label: "HexaCore Models" },
               { value: "99.98%", label: "Uptime SLA" },

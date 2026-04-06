@@ -17,6 +17,7 @@ interface LazyDiagramWrapperProps {
 }
 
 const EcosystemOverviewDiagram = lazy(() => import("@/components/diagrams/ecosystem-overview-diagram"))
+const NeuralBlueprintDiagram = lazy(() => import("@/components/diagrams/neural-blueprint-diagram"))
 const FDIAFlowchartDiagram = lazy(() => import("@/components/diagrams/fdia-flowchart"))
 const FDIACalculatorPanelDiagram = lazy(() => import("@/components/sections/fdia-calculator-panel"))
 const PerformanceRadarChartDiagram = lazy(() => import("@/components/diagrams/performance-radar-chart"))
@@ -86,6 +87,15 @@ export const LazyEcosystemOverview = (props: Record<string, unknown>) => (
     preload={() => import("@/components/diagrams/ecosystem-overview-diagram")}
     componentProps={props}
     fallback={<div className="mx-auto aspect-500/420 w-full max-w-120 animate-pulse rounded-xl border border-border bg-card/60" />}
+  />
+)
+
+export const LazyNeuralBlueprint = (props: Record<string, unknown>) => (
+  <LazyDiagramWrapper
+    LazyComponent={NeuralBlueprintDiagram}
+    preload={() => import("@/components/diagrams/neural-blueprint-diagram")}
+    componentProps={props}
+    fallback={<div className="w-full h-[420px] animate-pulse rounded-xl border border-border bg-card/60" />}
   />
 )
 

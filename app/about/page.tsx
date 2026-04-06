@@ -11,6 +11,11 @@ import { headers } from "next/headers"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { SITE_ALGORITHM_COUNT, SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
 
+// Force fresh server render on every navigation so x-locale header is always read.
+// Without this, Next.js partial rendering may reuse a cached RSC payload when
+// switching between /en/about and /th/about (both rewrite to app/about/page.tsx).
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers()
   const locale = (headersList.get("x-locale") || "en") as Locale

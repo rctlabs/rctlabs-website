@@ -1,6 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import Image from "next/image"
 import { m, useInView, useReducedMotion } from "framer-motion"
 import { ArrowRight, ArrowDown } from "lucide-react"
 import Link from "next/link"
@@ -13,6 +14,7 @@ import { useMounted } from "@/hooks/use-mounted"
 import { useIdleActivation } from "@/hooks/use-idle-activation"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { useCardSpotlight } from "@/hooks/use-card-spotlight"
+import { SITE_ALGORITHM_COUNT, SITE_LAYER_COUNT, SITE_HEXACORE_COUNT, SITE_UPTIME } from "@/lib/site-config"
 
 const HeroArchitectureVisual = dynamic(() => import("@/components/sections/hero-architecture-visual"), {
   loading: () => (
@@ -53,10 +55,10 @@ export default function HeroSection({ locale }: HeroSectionProps) {
   }
 
   const stats = [
-    { value: "41", label: t("hero.stat.algorithms"), iconSrc: pixelIcons.brain },
-    { value: "10", label: t("hero.stat.layers"), iconSrc: pixelIcons.layers },
-    { value: "7", label: t("hero.stat.genomes"), iconSrc: pixelIcons.genome },
-    { value: "99.98%", sublabel: "SLA", label: t("hero.stat.uptime"), iconSrc: pixelIcons.cpu },
+    { value: String(SITE_ALGORITHM_COUNT), label: t("hero.stat.algorithms"), iconSrc: pixelIcons.brain },
+    { value: String(SITE_LAYER_COUNT), label: t("hero.stat.layers"), iconSrc: pixelIcons.layers },
+    { value: String(SITE_HEXACORE_COUNT), label: t("hero.stat.genomes"), iconSrc: pixelIcons.genome },
+    { value: SITE_UPTIME.replace(" SLA", ""), sublabel: "SLA", label: t("hero.stat.uptime"), iconSrc: pixelIcons.cpu },
   ]
 
   const containerVariants = {
@@ -202,7 +204,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                       isDark ? "bg-card/80 border-border" : "border-[#e6ddd0] bg-white"
                     }`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={stat.iconSrc}
                         alt=""
                         width={18}

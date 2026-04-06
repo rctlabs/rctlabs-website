@@ -21,6 +21,10 @@ const nextConfig = {
   compress: true,
   experimental: {
     optimizeCss: true,
+    // Disable client-side Router Cache for dynamically rendered pages (pages that
+    // use headers(), cookies(), etc.). This ensures locale-switching via
+    // /en/* ↔ /th/* always triggers a fresh RSC fetch — not a cached payload.
+    staleTimes: { dynamic: 0 },
     optimizePackageImports: [
       "@radix-ui/react-accordion",
       "@radix-ui/react-dialog",
@@ -88,11 +92,11 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https://d2xsxph8kpxj0f.cloudfront.net https://rctlabs.co",
-              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://vitals.vercel-insights.com",
+              "img-src 'self' data: blob: https://d2xsxph8kpxj0f.cloudfront.net https://rctlabs.co https://www.googletagmanager.com",
+              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://api.rctlabs.co https://vitals.vercel-insights.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://region1.google-analytics.com https://region1.analytics.google.com",
               "frame-ancestors 'none'",
             ].join("; "),
           },

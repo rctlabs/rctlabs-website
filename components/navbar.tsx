@@ -163,11 +163,12 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- route changes should immediately collapse transient nav UI state.
+    // Track full pathname so locale-only changes (e.g. /th/about → /en/about) also close the drawer.
     setMobileOpen(false)
     setOpenGroupId(null)
     setShortcutsOpen(false)
     setActiveResourceTrackId(findActiveResourceTrack(localePath))
-  }, [localePath])
+  }, [pathname])
 
   useEffect(() => {
     return () => {
@@ -312,9 +313,9 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
               <Image
                 src={LOGO_HORIZONTAL}
                 alt="RCT — Reverse Component Thinking"
-                width={144}
+                width={96}
                 height={32}
-                className={`hidden h-8 w-36 object-contain object-left sm:block ${isDark ? "brightness-0 invert" : ""}`}
+                className={`hidden h-8 w-auto object-contain object-left sm:block ${isDark ? "brightness-0 invert" : ""}`}
                 priority
               />
             </Link>

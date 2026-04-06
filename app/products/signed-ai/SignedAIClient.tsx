@@ -133,6 +133,91 @@ export default function SignedAIPage() {
         </div>
       </section>
 
+      {/* Live Verification Demo */}
+      <section className="mx-auto max-w-4xl px-4 py-20">
+        <div className="text-center mb-10">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium mb-4" style={{ background: "#7B9E8715", color: "#7B9E87", border: "1px solid #7B9E8730" }}>
+            <ShieldCheck className="w-3 h-3" /> {isTh ? "ตัวอย่างจริง" : "Live Demo"}
+          </span>
+          <h2 className="text-3xl font-bold text-foreground">
+            {isTh ? "การตรวจสอบจริง" : "Verification in Action"}
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">
+            {isTh ? "ตัวอย่าง Consensus Result จาก 3 LLMs (Tier 4 · MAJORITY)" : "Sample consensus result from 3 LLMs — Tier 4 · MAJORITY voting"}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
+          {/* Query header */}
+          <div className="px-6 py-4 border-b border-border bg-muted/30">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2 font-mono">
+              <span>REQUEST</span>
+              <span>·</span>
+              <span className="text-warm-amber">Tier 4 · MAJORITY · session_id: axq-7821</span>
+            </div>
+            <p className="text-sm font-semibold text-foreground font-mono leading-relaxed">
+              &quot;What is the recommended insulin dosage protocol for Type 1 diabetic adolescents?&quot;
+            </p>
+          </div>
+          {/* Model rows */}
+          <div className="divide-y divide-border">
+            {([
+              { model: "GPT-4o", confidence: 97, agree: true, noteEn: "Verified against ADA Guidelines 2024", noteTh: "ตรวจสอบแล้วตรงกับ ADA Guidelines 2024", color: "#10A37F" },
+              { model: "Claude 3.5 Sonnet", confidence: 94, agree: true, noteEn: "Confirmed — with weight-based dosing caveat", noteTh: "ยืนยัน พร้อมข้อแม้เรื่อง Weight-based dosing", color: "#D97706" },
+              { model: "Gemini 1.5 Pro", confidence: 91, agree: true, noteEn: "Aligned — recommends Endocrinologist consult", noteTh: "ตรงกัน — แนะนำ Endocrinologist consult เพิ่มเติม", color: "#4285F4" },
+            ] as const).map((row, i) => (
+              <m.div
+                key={row.model}
+                initial={{ opacity: 0, x: -12 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="px-6 py-4"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full" style={{ background: row.color }} />
+                    <span className="text-sm font-medium text-foreground">{row.model}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold" style={{ color: row.agree ? "#7B9E87" : "#C4745B" }}>{row.agree ? "✓ Agree" : "✗ Disagree"}</span>
+                    <span className="text-xs font-mono text-muted-foreground">{row.confidence}%</span>
+                  </div>
+                </div>
+                <div className="h-1.5 rounded-full bg-muted overflow-hidden mb-2">
+                  <m.div
+                    className="h-full rounded-full"
+                    style={{ background: row.color }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${row.confidence}%` }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 + i * 0.1, duration: 0.7, ease: "easeOut" }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">{isTh ? row.noteTh : row.noteEn}</p>
+              </m.div>
+            ))}
+          </div>
+          {/* Consensus footer */}
+          <div className="px-6 py-5 bg-muted/30 border-t border-border">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="flex-1">
+                <div className="text-xs text-muted-foreground font-mono mb-1">CONSENSUS</div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-warm-amber">3/3 MAJORITY ✓</span>
+                  <span className="text-xs text-muted-foreground">· 94.0% avg confidence</span>
+                </div>
+              </div>
+              <div className="shrink-0">
+                <div className="text-xs text-muted-foreground font-mono mb-1">ED25519 SIGNATURE</div>
+                <div className="font-mono text-xs text-muted-foreground">
+                  ED25519:<span className="text-warm-amber">a3f8d2c1...</span>b19c
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <div className="text-center mb-12">
