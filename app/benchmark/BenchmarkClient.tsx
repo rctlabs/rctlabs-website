@@ -141,6 +141,8 @@ export default function BenchmarkPage() {
     radarData?: typeof radarData
     barData?: typeof barData
     counterStats?: Array<{ value: number; suffix: string; labelEn: string; labelTh: string; prefix?: string }>
+    source?: "live" | "static"
+    updatedAt?: string
   }
   const [liveData, setLiveData] = useState<LiveBenchmarkData | null>(null)
   useEffect(() => {
@@ -229,6 +231,13 @@ export default function BenchmarkPage() {
                 <span className="font-display text-warm-sage">{isEn ? "Interactive" : "แผนภูมิ"}</span>{" "}
                 {isEn ? "Dashboard" : "เชิงโต้ตอบ"}
               </h2>
+              {/* Live data badge */}
+              {liveData?.source === "live" && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-warm-sage/15 text-warm-sage border border-warm-sage/25 mb-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-warm-sage animate-pulse" />
+                  {isEn ? "Live Data" : "ข้อมูล Live"}
+                </span>
+              )}
               <p className={`text-sm max-w-xl mx-auto ${isDark ? "text-[#888]" : "text-warm-gray"}`}>
                 {isEn
                   ? "Switch between Radar and Bar views to compare RCT SignedAI against Single LLM across key dimensions."
@@ -427,11 +436,11 @@ export default function BenchmarkPage() {
               transition={{ duration: 0.6 }}
               className="text-center mb-10 lg:mb-14"
             >
-              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-3 ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}>
+              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-3 ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
                 {isEn ? "Platform" : "เปรียบเทียบ"}{" "}
-                <span className="font-display text-[#D4A853]">{isEn ? "Comparison" : "Platform"}</span>
+                <span className="font-display text-warm-amber">{isEn ? "Comparison" : "Platform"}</span>
               </h2>
-              <p className={`text-sm max-w-xl mx-auto ${isDark ? "text-[#888]" : "text-[#6B6B6B]"}`}>
+              <p className={`text-sm max-w-xl mx-auto ${isDark ? "text-[#888]" : "text-warm-gray"}`}>
                 {isEn
                   ? "How RCT Ecosystem stacks up against LangChain and AutoGPT across enterprise-critical capabilities."
                   : "วิธีที่ RCT Ecosystem เปรียบเทียบกับ LangChain และ AutoGPT ในความสามารถสำคัญระดับ Enterprise"}
@@ -442,13 +451,13 @@ export default function BenchmarkPage() {
               {isEn ? "← scroll to see all platforms →" : "← เลื่อนเพื่อดูทุก Platform →"}
             </p>
             <div className="overflow-x-auto">
-              <div className="min-w-[560px]">
-                <div className={`rounded-2xl border overflow-hidden ${isDark ? "border-[#2A2A2A]" : "border-[#E8E3DC]"}`}>
-                  <div className={`grid grid-cols-4 items-center px-4 sm:px-6 py-4 border-b text-xs sm:text-sm font-bold uppercase tracking-wider ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A] text-[#888]" : "bg-[#F5F0E8] border-[#E8E3DC] text-[#6B6B6B]"}`}>
+              <div className="min-w-140">
+                <div className={`rounded-2xl border overflow-hidden ${isDark ? "border-[#2A2A2A]" : "border-warm-light-gray"}`}>
+                  <div className={`grid grid-cols-4 items-center px-4 sm:px-6 py-4 border-b text-xs sm:text-sm font-bold uppercase tracking-wider ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A] text-[#888]" : "bg-[#F5F0E8] border-warm-light-gray text-warm-gray"}`}>
                     <div>{isEn ? "Capability" : "ความสามารถ"}</div>
-                    <div className="text-center text-[#7B9E87]">RCT Ecosystem</div>
-                    <div className="text-center text-[#89B4C8]">LangChain</div>
-                    <div className="text-center text-[#B8A9C9]">AutoGPT</div>
+                    <div className="text-center text-warm-sage">RCT Ecosystem</div>
+                    <div className="text-center text-warm-sky">LangChain</div>
+                    <div className="text-center text-warm-lavender">AutoGPT</div>
                   </div>
                   {platformRows.map((row, i) => (
                     <m.div
@@ -458,10 +467,10 @@ export default function BenchmarkPage() {
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.04 }}
                       className={`grid grid-cols-4 items-center gap-2 px-4 sm:px-6 py-3 border-b last:border-b-0 text-xs sm:text-sm transition-colors ${
-                        isDark ? "border-[#2A2A2A] hover:bg-[#1E1E1E]" : "border-[#F0EBE3] hover:bg-white"
-                      } ${i % 2 === 0 ? (isDark ? "bg-[#161616]" : "bg-[#FAF6F0]/50") : isDark ? "bg-[#1A1A1A]" : "bg-white"}`}
+                        isDark ? "border-[#2A2A2A] hover:bg-[#1E1E1E]" : "border-warm-sand hover:bg-white"
+                      } ${i % 2 === 0 ? (isDark ? "bg-[#161616]" : "bg-warm-cream/50") : isDark ? "bg-warm-charcoal" : "bg-white"}`}
                     >
-                      <div className={`font-medium ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}>{isEn ? row.cap.en : row.cap.th}</div>
+                      <div className={`font-medium ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>{isEn ? row.cap.en : row.cap.th}</div>
                       <div className={`text-center ${cellCls(row.rct.type)}`}>{row.rct.label}</div>
                       <div className={`text-center ${cellCls(row.lc.type)}`}>{row.lc.label}</div>
                       <div className={`text-center ${cellCls(row.agpt.type)}`}>{row.agpt.label}</div>
@@ -482,10 +491,10 @@ export default function BenchmarkPage() {
         <section className={`py-16 px-4 transition-colors duration-300 ${isDark ? "bg-[#141414]" : "bg-warm-cream/50"}`} aria-label="v5.4.5 milestone">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className={`text-3xl font-bold mb-2 ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}>
+              <h2 className={`text-3xl font-bold mb-2 ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
                 {isEn ? "Test Infrastructure v5.4.5" : "Test Infrastructure v5.4.5"}
               </h2>
-              <p className={`text-sm ${isDark ? "text-[#888]" : "text-[#6B6B6B]"}`}>
+              <p className={`text-sm ${isDark ? "text-[#888]" : "text-warm-gray"}`}>
                 {isEn
                   ? "First ever 0-failure milestone across the entire test suite — March 21, 2026"
                   : "Milestone 0 ความล้มเหลวครั้งแรก ในชุดทดสอบทั้งหมด — 21 มีนาคม 2026"}
@@ -499,13 +508,13 @@ export default function BenchmarkPage() {
                 { value: "0.92", label: isEn ? "FDIA Accuracy" : "FDIA Accuracy", color: "#89B4C8" },
               ].map((s, i) => (
                 <m.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                  className={`p-5 rounded-2xl border text-center ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-[#E8E3DC]"}`}>
+                  className={`p-5 rounded-2xl border text-center ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A]" : "bg-white border-warm-light-gray"}`}>
                   <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
-                  <div className={`text-xs uppercase tracking-wider mt-1 ${isDark ? "text-[#888]" : "text-[#6B6B6B]"}`}>{s.label}</div>
+                  <div className={`text-xs uppercase tracking-wider mt-1 ${isDark ? "text-[#888]" : "text-warm-gray"}`}>{s.label}</div>
                 </m.div>
               ))}
             </div>
-            <div className={`p-5 rounded-xl border text-sm leading-relaxed ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A] text-[#999]" : "bg-white border-[#E8E3DC] text-[#4A4A4A]"}`}>
+            <div className={`p-5 rounded-xl border text-sm leading-relaxed ${isDark ? "bg-[#1E1E1E] border-[#2A2A2A] text-[#999]" : "bg-white border-warm-light-gray text-[#4A4A4A]"}`}>
               {isEn
                 ? "FDIA accuracy 0.92 vs industry average ~0.65. Test pyramid: Unit → Integration → Contract → Component → API → E2E → Performance → Security (8 levels). Zero failures across 6,738+ tests represents the first clean run in project history."
                 : "FDIA Accuracy 0.92 เทียบกับอุตสาหกรรมที่ ~0.65 Test Pyramid: Unit→Integration→Contract→Component→API→E2E→Performance→Security (8 ระดับ) ผ่าน 6,738+ Tests โดยไม่มีความล้มเหลวเลย — ครั้งแรกในประวัติศาสตร์โปรเจกต์"}
@@ -523,19 +532,19 @@ export default function BenchmarkPage() {
               transition={{ duration: 0.6 }}
               className="space-y-5"
             >
-              <h3 className={`text-xl sm:text-2xl font-bold ${isDark ? "text-[#E8E3DC]" : "text-[#1A1A1A]"}`}>
+              <h3 className={`text-xl sm:text-2xl font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
                 {isEn ? "Ready to upgrade your AI infrastructure?" : "พร้อมอัปเกรดโครงสร้างพื้นฐาน AI ของคุณ?"}
               </h3>
-              <p className={`text-sm max-w-lg mx-auto ${isDark ? "text-[#888]" : "text-[#6B6B6B]"}`}>
+              <p className={`text-sm max-w-lg mx-auto ${isDark ? "text-[#888]" : "text-warm-gray"}`}>
                 {isEn
                   ? "See how RCT SignedAI can transform your enterprise AI with multi-LLM orchestration, cryptographic verification, and complete audit trails."
                   : "ดูว่า RCT SignedAI สามารถเปลี่ยนแปลง Enterprise AI ด้วย Multi-LLM Orchestration, Cryptographic Verification และ Audit Trails ที่สมบูรณ์"}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/solutions" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#7B9E87] text-white font-semibold text-sm hover:bg-[#6A8D76] transition-all hover:-translate-y-0.5">
+                <Link href="/solutions" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-warm-sage text-white font-semibold text-sm hover:bg-[#6A8D76] transition-all hover:-translate-y-0.5">
                   {isEn ? "Explore Solutions" : "สำรวจ Solutions"} <ArrowRight size={16} />
                 </Link>
-                <Link href="/products/signed-ai" className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl border font-semibold text-sm transition-all hover:-translate-y-0.5 ${isDark ? "border-[#333] text-[#E8E3DC] hover:bg-[#1E1E1E]" : "border-[#E8E3DC] text-[#1A1A1A] hover:bg-[#FAF6F0]"}`}>
+                <Link href="/products/signed-ai" className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl border font-semibold text-sm transition-all hover:-translate-y-0.5 ${isDark ? "border-[#333] text-warm-light-gray hover:bg-[#1E1E1E]" : "border-warm-light-gray text-warm-charcoal hover:bg-warm-cream"}`}>
                   SignedAI Details
                 </Link>
               </div>
