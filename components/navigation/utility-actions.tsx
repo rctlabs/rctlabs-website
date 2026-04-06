@@ -15,7 +15,7 @@ interface UtilityActionsProps {
 }
 
 export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHero = false }: UtilityActionsProps) {
-  const { language, setLanguage } = useLanguage()
+  const { language, setLanguage, isLocaleChanging } = useLanguage()
   const { resolvedTheme, setTheme } = useTheme()
   const mounted = useMounted()
 
@@ -64,9 +64,14 @@ export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHe
               <Globe className="h-4 w-4" />
               Locale
             </div>
-            <div className={`inline-flex rounded-full p-1 ${isDark ? "bg-white/6" : "bg-warm-sand/65"}`}>
-              <button type="button" onClick={() => { onTrackedAction?.("locale_en", surface); setLanguage("en") }} className={localeButtonClass("en")}>EN</button>
-              <button type="button" onClick={() => { onTrackedAction?.("locale_th", surface); setLanguage("th") }} className={localeButtonClass("th")}>TH</button>
+            <div className={`inline-flex rounded-full p-1 relative ${isDark ? "bg-white/6" : "bg-warm-sand/65"}`}>
+              {isLocaleChanging && (
+                <span className="absolute inset-0 flex items-center justify-center rounded-full bg-warm-amber/10 pointer-events-none">
+                  <span className="h-3 w-3 animate-spin rounded-full border-2 border-warm-amber border-t-transparent" />
+                </span>
+              )}
+              <button type="button" disabled={isLocaleChanging} onClick={() => { onTrackedAction?.("locale_en", surface); setLanguage("en") }} className={localeButtonClass("en")}>EN</button>
+              <button type="button" disabled={isLocaleChanging} onClick={() => { onTrackedAction?.("locale_th", surface); setLanguage("th") }} className={localeButtonClass("th")}>TH</button>
             </div>
           </div>
 

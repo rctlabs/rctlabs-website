@@ -1,6 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import Image from "next/image"
 import { m, useInView, useReducedMotion } from "framer-motion"
 import { ArrowRight, ArrowDown } from "lucide-react"
 import Link from "next/link"
@@ -203,7 +204,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                       isDark ? "bg-card/80 border-border" : "border-[#e6ddd0] bg-white"
                     }`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={stat.iconSrc}
                         alt=""
                         width={18}

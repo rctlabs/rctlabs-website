@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useCallback, useEffect, useMemo, useState, startTransition, type ReactNode } from "react"
+import { createContext, useContext, useCallback, useEffect, useMemo, useState, useTransition, type ReactNode } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { addLocaleToPathname, getLocaleFromPathname } from "@/lib/i18n"
 
@@ -11,6 +11,8 @@ interface LanguageContextType {
   setLanguage: (lang: Language) => void
   toggleLanguage: () => void
   t: (key: string) => string
+  /** true while the locale-change navigation RSC fetch is in-flight */
+  isLocaleChanging: boolean
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
@@ -171,6 +173,7 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
   const pathname = usePathname()
   const router = useRouter()
   const [languageState, setLanguageState] = useState<Language>(() => getLocaleFromPathname(pathname || "") ?? initialLocale)
+  const [isPending, startTransition] = useTransition()
   // Use languageState as the primary source so toggleLanguage updates the UI immediately.
   // Sync back from pathname changes (browser back/forward, external navigation).
   const language = languageState
@@ -220,8 +223,8 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
   )
 
   const value = useMemo(
-    () => ({ language, setLanguage, toggleLanguage, t }),
-    [language, setLanguage, toggleLanguage, t]
+    () => ({ language, setLanguage, toggleLanguage, t, isLocaleChanging: isPending }),
+    [language, setLanguage, toggleLanguage, t, isPending]
   )
 
   return (

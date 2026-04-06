@@ -137,9 +137,9 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
               <Image
                 src={LOGO_PNG}
                 alt="RCT — Reverse Component Thinking"
-                width={160}
+                width={96}
                 height={32}
-                className="h-8 w-40 object-contain dark:brightness-0 dark:invert"
+                className="h-8 w-auto object-contain dark:brightness-0 dark:invert"
               />
             </Link>
             <p className={`text-xs sm:text-sm leading-relaxed max-w-sm mt-2 text-center text-warm-secondary dark:text-[#888] ${isTh ? "subtitle-th" : ""}`}>
