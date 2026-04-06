@@ -96,6 +96,20 @@ export function proxy(request: NextRequest) {
   ) as Locale | undefined
 
   if (pathnameLocale) {
+    // For bare locale root paths (/en, /th), do NOT rewrite the URL.
+    // These routes are handled by app/[locale]/page.tsx with ISR (revalidate=3600).
+    // Rewriting to "/" would hit app/page.tsx which is force-dynamic and breaks ISR.
+    const isBareLocale = pathname === `/${pathnameLocale}`
+
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-locale', pathnameLocale)
+
+    if (isBareLocale) {
+      const response = NextResponse.next({ request: { headers: requestHeaders } })
+      response.headers.set('x-locale', pathnameLocale)
+      return response
+    }
+
     // Strip locale prefix and rewrite to the original page path
     // e.g. /en/about → /about, /th/solutions/ai-hallucination-prevention → /solutions/ai-hallucination-prevention
     const pathnameWithoutLocale = stripLocalePrefix(pathname)
@@ -103,9 +117,6 @@ export function proxy(request: NextRequest) {
     // context for Turbopack — new URL() breaks nested route rewrites.
     const rewriteUrl = request.nextUrl.clone()
     rewriteUrl.pathname = pathnameWithoutLocale
-
-    const requestHeaders = new Headers(request.headers)
-    requestHeaders.set('x-locale', pathnameLocale)
 
     const response = NextResponse.rewrite(rewriteUrl, {
       request: { headers: requestHeaders },

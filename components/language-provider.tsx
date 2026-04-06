@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useCallback, useEffect, useMemo, useState, startTransition, type ReactNode } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { addLocaleToPathname, getLocaleFromPathname } from "@/lib/i18n"
 
 export type Language = "en" | "th"
@@ -170,7 +170,6 @@ interface LanguageProviderProps {
 export function LanguageProvider({ children, initialLocale = "en" }: LanguageProviderProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [languageState, setLanguageState] = useState<Language>(() => getLocaleFromPathname(pathname || "") ?? initialLocale)
   // Use languageState as the primary source so toggleLanguage updates the UI immediately.
   // Sync back from pathname changes (browser back/forward, external navigation).
@@ -198,7 +197,7 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
     if (!pathname || lang === language) return
 
     const localizedPath = addLocaleToPathname(pathname, lang)
-    const query = searchParams.toString()
+    const query = typeof window !== "undefined" ? window.location.search.slice(1) : ""
     const hash = typeof window !== "undefined" ? window.location.hash : ""
     const nextHref = `${localizedPath}${query ? `?${query}` : ""}${hash}`
 
@@ -207,7 +206,7 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
     startTransition(() => {
       router.push(nextHref)
     })
-  }, [language, pathname, router, searchParams])
+  }, [language, pathname, router])
 
   const toggleLanguage = useCallback(() => {
     setLanguage(language === "en" ? "th" : "en")

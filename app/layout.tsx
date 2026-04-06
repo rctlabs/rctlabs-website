@@ -1,8 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import Script from "next/script"
-import { headers } from "next/headers"
 import { Inter, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
+import { LocaleLangSync } from "@/components/locale-lang-sync"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
@@ -72,24 +72,13 @@ const kanit = Kanit({
   display: "swap",
 })
 
-/** Resolve locale once and reuse across both generateMetadata and RootLayout */
-async function getLocale(): Promise<"en" | "th"> {
-  const headerList = await headers()
-  return (headerList.get("x-locale") === "th" ? "th" : "en") as "en" | "th"
-}
+
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale()
-
-  const title =
-    locale === "th"
-      ? "RCT Labs - ระบบปฏิบัติการ AI ที่เน้น Intent"
-      : "RCT Labs - Intent-Driven AI Operating System"
-
-  const description =
-    locale === "th"
-      ? "โครงสร้างพื้นฐาน Constitutional AI พร้อมสถาปัตยกรรม 10 ชั้น Multi-LLM Consensus และ Data Sovereignty สำหรับงานระดับองค์กร"
-      : "Constitutional AI infrastructure with 10-layer architecture, multi-LLM consensus, and data sovereignty for enterprise deployment."
+  // NOTE: No headers() call here — keeps root layout ISR-compatible.
+  // Locale-specific metadata is provided by each page's generateMetadata.
+  const title = "RCT Labs - Intent-Driven AI Operating System"
+  const description = "Constitutional AI infrastructure with 10-layer architecture, multi-LLM consensus, and data sovereignty for enterprise deployment."
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -121,7 +110,7 @@ export async function generateMetadata(): Promise<Metadata> {
       telephone: false,
     },
     alternates: {
-      canonical: `${SITE_URL}/${locale}`,
+      canonical: `${SITE_URL}/en`,
       languages: {
         en: `${SITE_URL}/en`,
         th: `${SITE_URL}/th`,
@@ -130,15 +119,15 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     openGraph: {
       type: "website",
-      locale: locale === "th" ? "th_TH" : "en_US",
-      alternateLocale: locale === "th" ? ["en_US"] : ["th_TH"],
-      url: `${SITE_URL}/${locale}`,
+      locale: "en_US",
+      alternateLocale: ["th_TH"],
+      url: `${SITE_URL}/en`,
       siteName: "RCT Labs",
       title,
       description,
       images: [
         {
-          url: `${SITE_OG_IMAGE}?locale=${locale}`,
+          url: `${SITE_OG_IMAGE}`,
           width: 1200,
           height: 630,
           alt: title,
@@ -152,7 +141,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       creator: SOCIAL_LINKS.twitterHandle,
       site: SOCIAL_LINKS.twitterHandle,
-      images: [`${SITE_OG_IMAGE}?locale=${locale}`],
+      images: [`${SITE_OG_IMAGE}`],
     },
     robots: {
       index: true,
@@ -184,13 +173,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const locale = await getLocale()
-
-  const organizationSchema = getOrganizationSchema(locale)
-  const websiteSchema = getWebSiteSchema(locale)
+  // NOTE: No headers() call — keeps root layout ISR-compatible.
+  // <html lang> defaults to "en" and is patched client-side by <LocaleLangSync />
+  // based on the URL pathname (e.g. /th/* → lang="th").
+  const organizationSchema = getOrganizationSchema("en")
+  const websiteSchema = getWebSiteSchema("en")
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="color-scheme" content="light dark" />
@@ -247,7 +237,8 @@ export default async function RootLayout({
         >
           Skip to main content
         </a>
-        <AppProviders initialLocale={locale}>
+        <AppProviders>
+          <LocaleLangSync />
           <DeferredGlobalBackground />
           <div id="main-content" className="relative z-10" tabIndex={-1}>
             {children}
