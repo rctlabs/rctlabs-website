@@ -101,6 +101,12 @@ export default function EcosystemOverviewDiagram() {
       </p>
 
       <svg viewBox="0 0 500 420" className="mx-auto w-full max-w-120" role="application" aria-label="RCT Ecosystem Overview Diagram" tabIndex={0} onKeyDown={handleKeyDown}>
+        {/* SVG filter definition — replaces CSS drop-shadow, fully Safari-compatible */}
+        <defs>
+          <filter id="tooltip-shadow" x="-5%" y="-10%" width="110%" height="130%">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="rgba(0,0,0,0.5)" />
+          </filter>
+        </defs>
         <circle cx={cx} cy={cy} r={orbitR} fill="none" stroke={isDark ? "#2A2A2A" : "#E8E3DC"} strokeWidth={1} strokeDasharray="6 4" />
 
         <m.g
@@ -149,13 +155,42 @@ export default function EcosystemOverviewDiagram() {
           if (ty + tooltipH > 410) ty = node.y - nodeR - tooltipH - 20
           if (ty < 10) ty = 10
           const desc = isEn ? node.desc : node.descTh
+          // Split description into 3 lines of ~38 chars each (no foreignObject — Safari compatible)
+          const words = desc.split(" ")
+          const lines: string[] = []
+          let currentLine = ""
+          for (const word of words) {
+            if ((currentLine + " " + word).trim().length > 38) {
+              lines.push(currentLine.trim())
+              currentLine = word
+              if (lines.length === 2) { currentLine = words.slice(words.indexOf(word)).join(" "); break }
+            } else {
+              currentLine = currentLine ? currentLine + " " + word : word
+            }
+          }
+          if (currentLine) lines.push(currentLine.trim())
           return (
             <g className="pointer-events-none">
-              <rect x={tx} y={ty} width={tooltipW} height={tooltipH} rx={10} fill={isDark ? "#2A2A2A" : "#1A1A1A"} opacity={0.98} filter="drop-shadow(0 4px 12px rgba(0,0,0,0.3))" />
-              <text x={tx + tooltipW / 2} y={ty + padding + 12} textAnchor="middle" fontSize={11} fontWeight={700} fill="#D4A853" fontFamily="var(--font-sans)">{isEn ? node.label : node.labelTh}</text>
-              <foreignObject x={tx + padding} y={ty + padding + 22} width={tooltipW - padding * 2} height={tooltipH - padding - 26}>
-                <div style={{ fontSize: "9px", lineHeight: "1.4", color: "#CCC", textAlign: "center", fontFamily: "var(--font-sans)", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>{desc}</div>
-              </foreignObject>
+              {/* Tooltip background — SVG filter shadow (Safari-safe, no CSS drop-shadow) */}
+              <rect x={tx} y={ty} width={tooltipW} height={tooltipH} rx={10}
+                fill={isDark ? "#2A2A2A" : "#1A1A1A"} opacity={0.97}
+                filter="url(#tooltip-shadow)"
+                stroke={node.color} strokeWidth={0.8} strokeOpacity={0.6}
+              />
+              {/* Title */}
+              <text x={tx + tooltipW / 2} y={ty + padding + 12} textAnchor="middle"
+                fontSize={11} fontWeight={700} fill="#D4A853" fontFamily="var(--font-sans)">
+                {isEn ? node.label : node.labelTh}
+              </text>
+              {/* Description — pure SVG tspan lines, no foreignObject */}
+              <text x={tx + tooltipW / 2} textAnchor="middle"
+                fontSize={9} fill="#CCCCCC" fontFamily="var(--font-sans)">
+                {lines.slice(0, 3).map((line, i) => (
+                  <tspan key={i} x={tx + tooltipW / 2} dy={i === 0 ? ty + padding + 30 : 13}>
+                    {line}
+                  </tspan>
+                ))}
+              </text>
             </g>
           )
         })()}

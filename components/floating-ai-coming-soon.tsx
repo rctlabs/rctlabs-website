@@ -40,15 +40,23 @@ export function FloatingAIComingSoon() {
     close: language === 'th' ? 'ปิด' : 'Close',
   }
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email) {
-      setSubscribed(true)
-      setTimeout(() => {
-        setEmail("")
-        setSubscribed(false)
-      }, 3000)
+    if (!email) return
+    try {
+      await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "floating-ai", locale: language }),
+      })
+    } catch {
+      // Silently fail — UX confirmation still shown
     }
+    setSubscribed(true)
+    setTimeout(() => {
+      setEmail("")
+      setSubscribed(false)
+    }, 3000)
   }
 
   const features = [

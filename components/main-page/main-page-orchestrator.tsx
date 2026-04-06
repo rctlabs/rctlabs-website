@@ -309,10 +309,17 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
       return
     }
 
-    const updateActiveSection = () => {
-      const sectionElements = Array.from(
+    // Cache section elements — querySelectorAll is expensive on every scroll frame.
+    // Re-queried on resize to handle layout changes.
+    let cachedSectionElements: HTMLElement[] = []
+    const refreshSectionCache = () => {
+      cachedSectionElements = Array.from(
         rootRef.current?.querySelectorAll<HTMLElement>("[data-main-section]") ?? []
       )
+    }
+
+    const updateActiveSection = () => {
+      const sectionElements = cachedSectionElements
 
       if (sectionElements.length === 0) {
         activeFrameRef.current = null
@@ -358,12 +365,14 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
     }
 
     scheduleUpdate()
+    refreshSectionCache()
+    const handleResize = () => { refreshSectionCache(); scheduleUpdate() }
     window.addEventListener("scroll", scheduleUpdate, { passive: true })
-    window.addEventListener("resize", scheduleUpdate)
+    window.addEventListener("resize", handleResize)
 
     return () => {
       window.removeEventListener("scroll", scheduleUpdate)
-      window.removeEventListener("resize", scheduleUpdate)
+      window.removeEventListener("resize", handleResize)
       if (activeFrameRef.current !== null) {
         window.cancelAnimationFrame(activeFrameRef.current)
       }

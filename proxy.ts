@@ -22,7 +22,36 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export function proxy(request: NextRequest) {
-  const pathname = request.nextUrl.pathname
+  const { pathname, searchParams } = request.nextUrl
+
+  // ─── Analytics dashboard — token-gated (all environments) ──────────────
+  // The /analytics page exposes internal cost and performance data.
+  // Access requires ANALYTICS_SECRET_TOKEN env var + ?token=... query param.
+  if (pathname.startsWith('/analytics') || pathname.match(/^\/[a-z]{2}\/analytics/)) {
+    const secret = process.env.ANALYTICS_SECRET_TOKEN
+    if (!secret || secret === 'change_this_to_a_long_random_secret') {
+      return new NextResponse(
+        JSON.stringify({ error: 'Analytics dashboard is not configured.' }),
+        { status: 503, headers: { 'content-type': 'application/json' } }
+      )
+    }
+    const tokenFromQuery = searchParams.get('token')
+    const tokenFromHeader = request.headers.get('x-analytics-token')
+    if (tokenFromQuery !== secret && tokenFromHeader !== secret) {
+      return new NextResponse(
+        `<!doctype html><html><head><title>RCT Analytics — Access Required</title>` +
+        `<style>body{font-family:system-ui;display:flex;align-items:center;justify-content:center;` +
+        `height:100vh;margin:0;background:#0d1117;color:#ccc;}` +
+        `.card{border:1px solid #30363d;border-radius:12px;padding:2rem 2.5rem;text-align:center;max-width:360px;}` +
+        `h2{color:#e6edf3;margin-bottom:.5rem}p{font-size:.9rem;margin-bottom:1.5rem}code{background:#21262d;padding:.1em .4em;border-radius:4px}</style>` +
+        `</head><body><div class="card">` +
+        `<h2>🔒 Analytics Dashboard</h2>` +
+        `<p>Access requires a valid token.<br/>Append <code>?token=YOUR_TOKEN</code> to the URL.</p>` +
+        `</div></body></html>`,
+        { status: 401, headers: { 'content-type': 'text/html' } }
+      )
+    }
+  }
 
   // Block internal/admin routes in production (no auth system yet)
   if (process.env.NODE_ENV === 'production' || process.env.BLOCK_INTERNAL_ROUTES === 'true') {

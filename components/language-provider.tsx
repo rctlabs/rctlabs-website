@@ -181,14 +181,18 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
     if (pathLocale && pathLocale !== languageState) {
       setLanguageState(pathLocale)
     }
+    // Sync html[lang] from the URL pathname, NOT from languageState.
+    // Rationale: setLanguageState() fires immediately on toggle click (for optimistic
+    // Navbar/Footer updates), but the RSC re-render is deferred via startTransition.
+    // If we updated document.documentElement.lang from languageState, the Kanit font
+    // would flash on/off BEFORE the page content changes — jarring and confusing.
+    // By tying the lang attribute change to pathname (which only updates after the
+    // RSC commit), font and content switch together in a single visual frame.
+    if (pathLocale && typeof document !== "undefined") {
+      document.documentElement.lang = pathLocale
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
-
-  // Sync document.lang attribute on every language change
-  useEffect(() => {
-    if (typeof document === "undefined") return
-    document.documentElement.lang = language
-  }, [language])
 
   const setLanguage = useCallback((lang: Language) => {
     if (!pathname || lang === language) return

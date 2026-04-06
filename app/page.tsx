@@ -4,6 +4,8 @@ import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getBreadcrumbSchema, getFAQSchema, getOrganizationSchema, getSoftwareApplicationSchema } from "@/lib/schema"
 import HomePageClient from "./HomePageClient"
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(): Promise<Metadata> {
   const headerList = await headers()
   const locale = (headerList.get("x-locale") === "th" ? "th" : "en") as "en" | "th"

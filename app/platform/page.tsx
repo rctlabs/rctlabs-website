@@ -29,6 +29,8 @@ import {
 } from "lucide-react"
 import { TenLayerArchitecture } from "@/components/ten-layer-architecture"
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers()
   const locale = (headersList.get("x-locale") || "en") as Locale
