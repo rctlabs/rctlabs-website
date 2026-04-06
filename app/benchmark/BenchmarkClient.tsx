@@ -137,6 +137,25 @@ export default function BenchmarkPage() {
   const isEn = language === "en"
   const [chartView, setChartView] = useState<ChartView>("radar")
 
+  type LiveBenchmarkData = {
+    radarData?: typeof radarData
+    barData?: typeof barData
+    counterStats?: Array<{ value: number; suffix: string; labelEn: string; labelTh: string; prefix?: string }>
+  }
+  const [liveData, setLiveData] = useState<LiveBenchmarkData | null>(null)
+  useEffect(() => {
+    fetch("/api/benchmark")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: LiveBenchmarkData | null) => d && setLiveData(d))
+      .catch(() => {})
+  }, [])
+
+  const activeRadarData = liveData?.radarData ?? radarData
+  const activeBarData = liveData?.barData ?? barData
+  const activeCounterStats = liveData?.counterStats
+    ? liveData.counterStats.map((live, i) => ({ ...counterStats[i], ...live }))
+    : counterStats
+
   const chartBg = isDark ? "#1E1E1E" : "#FFFFFF"
   const gridColor = isDark ? "#333" : "#E8E3DC"
   const textColor = isDark ? "#999" : "#6B6B6B"
@@ -189,7 +208,7 @@ export default function BenchmarkPage() {
         <section className={`py-10 lg:py-14 transition-colors duration-300 ${isDark ? "bg-[#111]" : "bg-warm-cream"}`} aria-label="Key Stats">
           <div className="max-w-5xl mx-auto px-4">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {counterStats.map((stat) => (
+              {activeCounterStats.map((stat) => (
                 <AnimatedStat key={stat.labelEn} stat={stat} isDark={isDark} />
               ))}
             </div>
@@ -247,7 +266,7 @@ export default function BenchmarkPage() {
               <div className="w-full" style={{ height: 420 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   {chartView === "radar" ? (
-                    <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="75%">
+                    <RadarChart data={activeRadarData} cx="50%" cy="50%" outerRadius="75%">
                       <PolarGrid stroke={gridColor} />
                       <PolarAngleAxis dataKey="subject" tick={{ fill: textColor, fontSize: 12 }} />
                       <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: textColor, fontSize: 10 }} />
@@ -257,17 +276,17 @@ export default function BenchmarkPage() {
                       <Tooltip contentStyle={{ backgroundColor: chartBg, border: `1px solid ${gridColor}`, borderRadius: 12, fontSize: 13 }} labelStyle={{ color: textColor }} />
                     </RadarChart>
                   ) : (
-                    <BarChart data={barData} barGap={4} barCategoryGap="20%">
+                    <BarChart data={activeBarData} barGap={4} barCategoryGap="20%">
                       <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
                       <XAxis dataKey="name" tick={{ fill: textColor, fontSize: 11 }} axisLine={{ stroke: gridColor }} />
                       <YAxis domain={[0, 100]} tick={{ fill: textColor, fontSize: 11 }} axisLine={{ stroke: gridColor }} />
                       <Tooltip contentStyle={{ backgroundColor: chartBg, border: `1px solid ${gridColor}`, borderRadius: 12, fontSize: 13 }} labelStyle={{ color: textColor }} />
                       <Legend wrapperStyle={{ fontSize: 13 }} />
                       <Bar name="RCT SignedAI" dataKey="rct" radius={[6, 6, 0, 0]}>
-                        {barData.map((_, i) => <Cell key={i} fill="#7B9E87" />)}
+                        {activeBarData.map((_, i) => <Cell key={i} fill="#7B9E87" />)}
                       </Bar>
                       <Bar name="Single LLM" dataKey="single" radius={[6, 6, 0, 0]}>
-                        {barData.map((_, i) => <Cell key={i} fill={isDark ? "#555" : "#CCC"} />)}
+                        {activeBarData.map((_, i) => <Cell key={i} fill={isDark ? "#555" : "#CCC"} />)}
                       </Bar>
                     </BarChart>
                   )}

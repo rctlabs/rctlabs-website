@@ -204,7 +204,7 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
   const lastScrollSampleRef = useRef({ value: 0, time: 0 })
   const reducedMotion = useReducedMotion() ?? false
   const { scrollY, scrollYProgress } = useScroll()
-  const enhancedFieldReady = useIdleActivation({ enabled: !reducedMotion, timeoutMs: 1800 })
+  const enhancedFieldReady = useIdleActivation({ enabled: !reducedMotion, timeoutMs: 2500 })
 
   const [pageProgress, setPageProgress] = useState(0)
   const [scrollVelocity, setScrollVelocity] = useState(0)

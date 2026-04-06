@@ -30,8 +30,10 @@ next-env.d.ts
 
 # Lighthouse / audit artifacts
 .lighthouse-*
+.lighthouseci/
 .lh-tmp/
 .tmp-lh-*.json
+lh-*.json
 .last-run.json
 .audit/
 

@@ -96,7 +96,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https://d2xsxph8kpxj0f.cloudfront.net https://rctlabs.co https://www.googletagmanager.com",
-              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://vitals.vercel-insights.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://region1.google-analytics.com https://region1.analytics.google.com",
+              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://api.rctlabs.co https://vitals.vercel-insights.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://region1.google-analytics.com https://region1.analytics.google.com",
               "frame-ancestors 'none'",
             ].join("; "),
           },

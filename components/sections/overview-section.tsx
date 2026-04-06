@@ -3,7 +3,7 @@
 import { m, useReducedMotion } from "framer-motion"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
-import { LazyEcosystemOverview } from "@/components/diagrams/lazy-diagram-wrapper"
+import { LazyNeuralBlueprint } from "@/components/diagrams/lazy-diagram-wrapper"
 import SectionPreviewCard from "@/components/section-preview-card"
 import SectionHeading from "@/components/section-heading"
 import { useMounted } from "@/hooks/use-mounted"
@@ -113,7 +113,7 @@ export default function OverviewSection({ locale }: OverviewSectionProps) {
           className="relative mb-8"
         >
           <div className="pointer-events-none absolute inset-x-[10%] top-6 h-48 rounded-full bg-white/34 blur-3xl dark:bg-warm-amber/10" />
-          <LazyEcosystemOverview />
+          <LazyNeuralBlueprint />
         </m.div>
 
         <m.div
