@@ -28,7 +28,7 @@ const HeroAnimatedBackground = dynamic(() => import("@/components/ui/hero-animat
 })
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
-const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
+const LOGO_MARK = "/logo-mark.svg"
 
 type HeroSectionProps = {
   locale: "en" | "th"
@@ -234,7 +234,23 @@ export default function HeroSection({ locale }: HeroSectionProps) {
             transition={shouldAnimate ? { duration: 0.26, delay: 0.04 } : undefined}
             className="group relative mx-auto w-full max-w-105 lg:-mr-2 lg:ml-0 lg:max-w-none"
           >
-            {deferredHeroAssetsReady ? <HeroArchitectureVisual /> : <div className="h-112 w-full rounded-4xl border border-[#e6ddd0] bg-white/50 shadow-[0_20px_48px_rgba(84,61,31,0.08)] dark:border-border dark:bg-card/45" />}
+            {deferredHeroAssetsReady ? <HeroArchitectureVisual /> : (
+              <div className={`h-112 w-full rounded-4xl border shadow-[0_20px_48px_rgba(84,61,31,0.08)] overflow-hidden ${isDark ? "border-border bg-card/45" : "border-[#e6ddd0] bg-white/50"}`}>
+                {/* Skeleton: orbit label hints shown while HeroArchitectureVisual loads */}
+                <div className="flex h-full flex-col items-center justify-center gap-3 px-8 opacity-40">
+                  <div className={`h-2 w-24 animate-pulse rounded-full ${isDark ? "bg-warm-amber/30" : "bg-warm-amber/40"}`} />
+                  <div className="grid grid-cols-2 gap-2 w-full max-w-50">
+                    {["Intent", "Verify", "Memory", "Kernel"].map((label) => (
+                      <div key={label} className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 ${isDark ? "border-border/60 bg-card/60" : "border-[#e6ddd0] bg-warm-sand/50"}`}>
+                        <div className={`h-1.5 w-1.5 rounded-full bg-warm-amber/60`} />
+                        <span className={`text-[10px] font-medium ${isDark ? "text-warm-muted" : "text-warm-gray"}`}>{label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className={`h-1.5 w-16 animate-pulse rounded-full ${isDark ? "bg-warm-sage/20" : "bg-warm-sage/30"}`} />
+                </div>
+              </div>
+            )}
           </m.div>
         </div>
 

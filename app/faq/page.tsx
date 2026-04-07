@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+export const dynamic = "force-dynamic"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
 import { getFAQSchema, getBreadcrumbSchema } from "@/lib/schema"

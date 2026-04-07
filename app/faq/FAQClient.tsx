@@ -155,7 +155,7 @@ export function FAQClient({ locale }: FAQClientProps) {
 
   return (
     <main className="min-h-screen bg-background" id="main-content">
-      <Navbar />
+      <Navbar locale={locale} />
       <section className="mx-auto max-w-7xl px-4 py-20 text-center md:py-28">
         <div className="mx-auto max-w-3xl space-y-5">
           <div className="inline-flex items-center gap-2 rounded-full border border-warm-amber/30 bg-warm-amber/10 px-4 py-1.5 text-sm font-medium text-warm-amber">

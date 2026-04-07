@@ -44,7 +44,6 @@ export default function NeuralBlueprintDiagram(_props: Record<string, unknown>) 
           style={{
             transform: "rotateX(14deg)",
             transformOrigin: "center top",
-            transformStyle: "preserve-3d",
           }}
         >
           {LAYERS.map((layer, i) => {

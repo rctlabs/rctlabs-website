@@ -25,6 +25,12 @@ const themeBootstrapScript = `(() => {
   } catch {}
 })();`
 
+// Inline script: set html[lang] from URL pathname BEFORE hydration to prevent
+// the flash where Thai text renders with Inter font (happens because root layout
+// defaults to lang="en" for ISR compatibility and LocaleLangSync patches it
+// client-side after hydration — this script closes the gap).
+const localeBootstrapScript = `(()=>{try{var p=window.location.pathname;document.documentElement.setAttribute('lang',p.startsWith('/th')?'th':'en');}catch(e){}})();`
+
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION
 const bingSiteVerification = process.env.BING_SITE_VERIFICATION
 const enableVercelRuntimeInsights = process.env.VERCEL === "1"
@@ -161,7 +167,10 @@ export async function generateMetadata(): Promise<Metadata> {
       icon: [
         { url: "/icon.svg", type: "image/svg+xml" },
       ],
-      apple: "/apple-icon.png",
+      // Explicit apple entry ensures <link rel="apple-touch-icon"> is included
+      // even when explicit icons config overrides file-based metadata merging.
+      // Points to the dynamic edge route /apple-icon (app/apple-icon.tsx).
+      apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
     },
     manifest: "/manifest.webmanifest",
     // Note: generator field removed — do not expose internal tooling
@@ -184,6 +193,8 @@ export default async function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="color-scheme" content="light dark" />
+        {/* Locale bootstrap: set html[lang] immediately from URL to prevent Thai→Inter font flash */}
+        <script dangerouslySetInnerHTML={{ __html: localeBootstrapScript }} />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
         {/* Preconnect to image CDN for faster LCP */}
         <link rel="preconnect" href="https://d2xsxph8kpxj0f.cloudfront.net" crossOrigin="anonymous" />
