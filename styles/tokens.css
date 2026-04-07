@@ -94,10 +94,9 @@
   --rct-input-placeholder: #999999;
   
   /* ═══ Typography ═══ */
-  --rct-font-display: 'Space Grotesk', 'Kanit', system-ui, sans-serif;
-  --rct-font-body: 'Inter', 'Kanit', system-ui, sans-serif;
-  --rct-font-thai: 'Kanit', 'Noto Sans Thai', sans-serif;
-  --rct-font-mono: 'Space Mono', 'Kanit', monospace;
+  /* Font CSS variables are owned by next/font (hashed class on <body>).
+     --font-display, --font-sans, --font-mono, --rct-font-thai are
+     injected by layout.tsx and must NOT be redeclared here as literals. */
   
   /* Font Sizes */
   --rct-text-2xs: 0.625rem;   /* 10px */

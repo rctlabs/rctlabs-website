@@ -1,14 +1,31 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- RCT Ecosystem — Official Favicon Mark -->
-  <!-- Dark background with rounded corners, matching brand identity -->
-  <rect width="180" height="180" rx="38" fill="#0D0D0D"/>
-  <!-- Orbital ring — RCT brand language: circular intelligence orbit -->
-  <circle cx="90" cy="90" r="72" stroke="#D4A853" stroke-width="2.5" stroke-opacity="0.28" fill="none"/>
-  <!-- Letter R — primary lettermark in warm amber -->
-  <!-- Vertical stem -->
-  <line x1="52" y1="46" x2="52" y2="134" stroke="#D4A853" stroke-width="18" stroke-linecap="round"/>
-  <!-- R bowl: top bar + arc + return to middle -->
-  <path d="M52 46 H96 Q130 46 130 73 Q130 100 96 100 H52" stroke="#D4A853" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <!-- R leg: diagonal from midpoint bowl to bottom-right -->
-  <line x1="96" y1="100" x2="130" y2="134" stroke="#D4A853" stroke-width="16" stroke-linecap="round"/>
+<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    RCT Labs — Browser Tab / PWA Icon
+    Dark rounded square background, orbital mark in white with amber center node
+    Supports: favicon, PWA launcher icon, Open Graph social preview
+  -->
+
+  <!-- Dark background -->
+  <rect width="512" height="512" rx="100" fill="#0D0D0D"/>
+
+  <!-- Diagonal axis: lower-left → upper-right -->
+  <line x1="146" y1="366" x2="403" y2="109" stroke="white" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- Outer orbital arc (r=208) -->
+  <path d="M 436 152 A 208 208 0 1 1 360 76" stroke="white" stroke-width="25" stroke-linecap="round"/>
+
+  <!-- Middle orbital arc (r=156) -->
+  <path d="M 391 178 A 156 156 0 1 1 334 121" stroke="white" stroke-width="21" stroke-linecap="round"/>
+
+  <!-- Inner orbital arc (r=104) -->
+  <path d="M 346 204 A 104 104 0 1 1 308 166" stroke="white" stroke-width="17" stroke-linecap="round"/>
+
+  <!-- Center node — amber accent -->
+  <circle cx="256" cy="256" r="49" fill="#D4A853"/>
+
+  <!-- Outer node — white -->
+  <circle cx="403" cy="109" r="28" fill="white"/>
+
+  <!-- Inner node — white -->
+  <circle cx="146" cy="366" r="17" fill="white"/>
 </svg>

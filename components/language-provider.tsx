@@ -1,7 +1,7 @@
 "use client"
 
-import { createContext, useContext, useCallback, useEffect, useMemo, useState, useTransition, type ReactNode } from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { createContext, useContext, useCallback, useEffect, useMemo, type ReactNode } from "react"
+import { usePathname } from "next/navigation"
 import { addLocaleToPathname, getLocaleFromPathname } from "@/lib/i18n"
 
 export type Language = "en" | "th"
@@ -171,45 +171,40 @@ interface LanguageProviderProps {
 
 export function LanguageProvider({ children, initialLocale = "en" }: LanguageProviderProps) {
   const pathname = usePathname()
-  const router = useRouter()
-  const [languageState, setLanguageState] = useState<Language>(() => getLocaleFromPathname(pathname || "") ?? initialLocale)
-  const [isPending, startTransition] = useTransition()
-  // Use languageState as the primary source so toggleLanguage updates the UI immediately.
-  // Sync back from pathname changes (browser back/forward, external navigation).
-  const language = languageState
+
+  // Derive language directly from URL pathname — single source of truth.
+  // Both /en/about and /th/about rewrite to the same internal route /about.
+  // Using router.push() for locale switching hits a stale RSC Router Cache
+  // keyed by the internal rewritten path (not the browser URL), so cached Thai
+  // content could be served for an English locale request and vice-versa.
+  // Deriving from pathname ensures the context always matches the visible URL.
+  const language = getLocaleFromPathname(pathname || "") ?? initialLocale
 
   useEffect(() => {
+    // Keep <html lang> in sync with the URL locale after each navigation.
     const pathLocale = getLocaleFromPathname(pathname || "")
-    if (pathLocale && pathLocale !== languageState) {
-      setLanguageState(pathLocale)
-    }
-    // Sync html[lang] from the URL pathname, NOT from languageState.
-    // Rationale: setLanguageState() fires immediately on toggle click (for optimistic
-    // Navbar/Footer updates), but the RSC re-render is deferred via startTransition.
-    // If we updated document.documentElement.lang from languageState, the Kanit font
-    // would flash on/off BEFORE the page content changes — jarring and confusing.
-    // By tying the lang attribute change to pathname (which only updates after the
-    // RSC commit), font and content switch together in a single visual frame.
     if (pathLocale && typeof document !== "undefined") {
       document.documentElement.lang = pathLocale
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
   const setLanguage = useCallback((lang: Language) => {
-    if (!pathname || lang === language) return
+    // Use full-page navigation (window.location.assign) — NOT router.push() —
+    // for locale switching. router.push() can serve stale RSC cache because
+    // /en/about and /th/about both rewrite to /about (same internal key), so
+    // the Router Cache may return the previously cached locale payload.
+    // window.location.assign() forces a fresh HTTP GET request: middleware
+    // intercepts it, sets x-locale header correctly, and the server renders
+    // the page with the correct locale every time.
+    if (typeof window === "undefined" || !pathname || lang === language) return
 
     const localizedPath = addLocaleToPathname(pathname, lang)
-    const query = typeof window !== "undefined" ? window.location.search.slice(1) : ""
-    const hash = typeof window !== "undefined" ? window.location.hash : ""
+    const query = window.location.search.slice(1)
+    const hash = window.location.hash
     const nextHref = `${localizedPath}${query ? `?${query}` : ""}${hash}`
 
-    setLanguageState(lang)
-
-    startTransition(() => {
-      router.push(nextHref)
-    })
-  }, [language, pathname, router])
+    window.location.assign(nextHref)
+  }, [language, pathname])
 
   const toggleLanguage = useCallback(() => {
     setLanguage(language === "en" ? "th" : "en")
@@ -223,8 +218,10 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
   )
 
   const value = useMemo(
-    () => ({ language, setLanguage, toggleLanguage, t, isLocaleChanging: isPending }),
-    [language, setLanguage, toggleLanguage, t, isPending]
+    // isLocaleChanging is always false — locale switching is now a full-page
+    // load so there is no in-flight SPA transition to track.
+    () => ({ language, setLanguage, toggleLanguage, t, isLocaleChanging: false }),
+    [language, setLanguage, toggleLanguage, t]
   )
 
   return (

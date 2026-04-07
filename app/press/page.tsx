@@ -113,7 +113,7 @@ export default async function PressPage() {
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
       <main className="min-h-screen bg-background">
-        <Navbar />
+        <Navbar locale={locale} />
 
         {/* Hero */}
         <section className="relative overflow-hidden">

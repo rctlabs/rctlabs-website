@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic"
 import { LazyMotion, domAnimation } from "framer-motion"
 import { ThemeProvider } from "@/components/theme-provider"
-import { LanguageProvider, type Language } from "@/components/language-provider"
+import { LanguageProvider, useLanguage, type Language } from "@/components/language-provider"
 import { useEffect, useState, type ReactNode } from "react"
 
 const FloatingAIComingSoon = dynamic(
@@ -79,8 +79,29 @@ export function AppProviders({ children, initialLocale = "en" }: AppProvidersPro
         <LazyMotion features={domAnimation}>
           {children}
           <DeferredFloatingAI />
+          <LocaleTransitionOverlay />
         </LazyMotion>
       </LanguageProvider>
     </ThemeProvider>
+  )
+}
+
+/**
+ * Semi-transparent overlay shown while an in-flight locale-change RSC fetch
+ * is pending. Prevents the user from seeing Thai content flash with the wrong
+ * font during the ~200–500 ms between clicking the language toggle and the
+ * new RSC payload committing.
+ *
+ * Uses isLocaleChanging from LanguageContext (driven by React useTransition).
+ * Must be rendered INSIDE <LanguageProvider> to consume the context.
+ */
+function LocaleTransitionOverlay() {
+  const { isLocaleChanging } = useLanguage()
+  if (!isLocaleChanging) return null
+  return (
+    <div
+      className="pointer-events-none fixed inset-0 z-9998 bg-background/90 backdrop-blur-sm"
+      aria-hidden="true"
+    />
   )
 }

@@ -16,7 +16,7 @@ import { useMounted } from "@/hooks/use-mounted"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { SITE_VERSION, SOCIAL_LINKS } from "@/lib/site-config"
 
-const LOGO_PNG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
+const LOGO_PNG = "/logo-horizontal.svg"
 
 type FooterProps = {
   locale?: "en" | "th"
@@ -139,6 +139,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                 alt="RCT — Reverse Component Thinking"
                 width={96}
                 height={32}
+                unoptimized
                 className="h-8 w-auto object-contain dark:brightness-0 dark:invert"
               />
             </Link>

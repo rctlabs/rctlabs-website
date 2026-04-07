@@ -81,6 +81,12 @@ function getAvifSrc(src: string, pixelated: boolean): string | undefined {
   return undefined
 }
 
+/** For PNG sources, try the co-located .webp version as a progressive upgrade source. */
+function getWebpFromPng(src: string): string | undefined {
+  if (src.endsWith(".png")) return src.replace(/\.png$/, ".webp")
+  return undefined
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 const OptimizedImage = memo(function OptimizedImage({
@@ -164,6 +170,7 @@ const OptimizedImage = memo(function OptimizedImage({
 
   const extension = getImageExtension(currentSrc)
   const avifSrc = getAvifSrc(currentSrc, pixelated)
+  const webpFromPng = extension === "png" ? getWebpFromPng(currentSrc) : undefined
   const style: React.CSSProperties = {
     ...(aspectRatio ? { aspectRatio } : {}),
     ...(pixelated ? { imageRendering: "pixelated" as const } : {}),
@@ -203,6 +210,8 @@ const OptimizedImage = memo(function OptimizedImage({
         <picture style={{ display: "contents" }}>
           {avifSrc && <source type="image/avif" srcSet={avifSrc} sizes={sizes} />}
           {extension === "webp" && <source type="image/webp" srcSet={currentSrc} sizes={sizes} />}
+          {/* WebP upgrade for PNG: serve modern format to capable browsers, PNG as fallback */}
+          {webpFromPng && <source type="image/webp" srcSet={webpFromPng} sizes={sizes} />}
           {extension === "png" && <source type="image/png" srcSet={currentSrc} sizes={sizes} />}
           {(extension === "jpg" || extension === "jpeg") && (
             <source type="image/jpeg" srcSet={currentSrc} sizes={sizes} />

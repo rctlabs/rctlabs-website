@@ -30,8 +30,8 @@ const MobileNavDrawer = dynamic(
   { ssr: false, loading: () => null },
 )
 
-const LOGO_HORIZONTAL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-horizontal-600x200-transparent_7bebf81e.png"
-const LOGO_MARK = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/Logo-mark-256x256-transparent_27abc2a3.png"
+const LOGO_HORIZONTAL = "/logo-horizontal.svg"
+const LOGO_MARK = "/logo-mark.svg"
 
 interface NavbarProps {
   variant?: "default" | "article"
@@ -307,6 +307,7 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
                 alt="RCT"
                 width={32}
                 height={32}
+                unoptimized
                 className={`h-8 w-8 object-contain object-left sm:hidden ${isDark ? "brightness-0 invert" : ""}`}
                 priority
               />
@@ -315,6 +316,7 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
                 alt="RCT — Reverse Component Thinking"
                 width={96}
                 height={32}
+                unoptimized
                 className={`hidden h-8 w-auto object-contain object-left sm:block ${isDark ? "brightness-0 invert" : ""}`}
                 priority
               />

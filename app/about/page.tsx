@@ -7,7 +7,7 @@ import { AboutPreviewCard } from "@/components/about/about-preview-card"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Shield, Eye, Heart, Sparkles, Target, Quote } from "lucide-react"
-import { headers } from "next/headers"
+import { getRequestLocale } from "@/lib/request-locale"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { SITE_ALGORITHM_COUNT, SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT, SITE_TEST_COUNT, SITE_UPTIME, SITE_VERSION } from "@/lib/site-config"
 
@@ -17,8 +17,7 @@ import { SITE_ALGORITHM_COUNT, SITE_HALLUCINATION_RATE, SITE_MICROSERVICE_COUNT,
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const headersList = await headers()
-  const locale = (headersList.get("x-locale") || "en") as Locale
+  const locale = await getRequestLocale()
 
   return createBilingualMetadata(
     locale,
@@ -53,8 +52,7 @@ export default async function AboutPage() {
       "url": "https://rctlabs.co"
     }
   }
-  const headersList = await headers()
-  const locale = (headersList.get("x-locale") || "en") as Locale
+  const locale = await getRequestLocale()
   const isTh = locale === "th"
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: isTh ? "หน้าหลัก" : "Home", url: `https://rctlabs.co/${locale}` },

@@ -39,6 +39,14 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Next.js file-based metadata for app/apple-icon.tsx generates
+      // <link href="/apple-icon.png"> but the actual route is /apple-icon.
+      // Redirect the .png URL to the dynamic edge route.
+      {
+        source: "/apple-icon.png",
+        destination: "/apple-icon",
+        permanent: false,
+      },
       {
         source: "/home",
         destination: "/",
