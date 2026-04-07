@@ -70,6 +70,13 @@ export const PUBLIC_ROUTE_PRIORITIES: Record<string, number> = {
   "/algorithms": 0.79,
   "/fdia": 0.78,
   "/protocols": 0.77,
+  // Entity pages — high-value original knowledge pages for AIO/entity search
+  "/entity/fdia-equation": 0.82,
+  "/entity/jitna-protocol": 0.82,
+  "/entity/rct-kernel": 0.80,
+  "/entity/intent-profiles": 0.78,
+  "/entity/governance-layer": 0.78,
+  "/entity/memory-architecture": 0.78,
 }
 
 export const PUBLIC_ROUTES = [
@@ -143,6 +150,13 @@ export const PUBLIC_ROUTES = [
   "/philosophy/rct-7",
   "/philosophy/intent-os",
   "/open-protocol",
+  // Entity pages — knowledge graph nodes for AI-optimized search
+  "/entity/fdia-equation",
+  "/entity/jitna-protocol",
+  "/entity/rct-kernel",
+  "/entity/intent-profiles",
+  "/entity/governance-layer",
+  "/entity/memory-architecture",
 ] as const
 
 export const NOINDEX_ROUTE_PREFIXES = [

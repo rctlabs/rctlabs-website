@@ -77,6 +77,40 @@ const nextConfig = {
         destination: "/en/blog/fdia-equation-explained",
         permanent: true,
       },
+      // Redirect v0-scaffold sub-pages that still contain placeholder content
+      // to their parent pages — prevents Google from indexing "YourBrand" copy.
+      // Philosophy sub-pages (approach/ethics/values/vision/impact)
+      {
+        source: "/philosophy/:sub(approach|ethics|values|vision|impact)",
+        destination: "/philosophy",
+        permanent: true,
+      },
+      {
+        source: "/en/philosophy/:sub(approach|ethics|values|vision|impact)",
+        destination: "/en/philosophy",
+        permanent: true,
+      },
+      {
+        source: "/th/philosophy/:sub(approach|ethics|values|vision|impact)",
+        destination: "/th/philosophy",
+        permanent: true,
+      },
+      // Community sub-pages (events/forums/members)
+      {
+        source: "/community/:sub(events|forums|members)",
+        destination: "/community",
+        permanent: true,
+      },
+      {
+        source: "/en/community/:sub(events|forums|members)",
+        destination: "/en/community",
+        permanent: true,
+      },
+      {
+        source: "/th/community/:sub(events|forums|members)",
+        destination: "/th/community",
+        permanent: true,
+      },
     ]
   },
   async headers() {
@@ -100,11 +134,14 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
+              // GA4 (gtag/js) and GTM (gtm.js) both served from googletagmanager.com
               "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https://d2xsxph8kpxj0f.cloudfront.net https://rctlabs.co https://www.googletagmanager.com",
-              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://api.rctlabs.co https://vitals.vercel-insights.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://region1.google-analytics.com https://region1.analytics.google.com",
+              // www.google.com needed for GA4 attribution pixel (1×1 tracking image)
+              "img-src 'self' data: blob: https://d2xsxph8kpxj0f.cloudfront.net https://rctlabs.co https://www.googletagmanager.com https://www.google.com",
+              // stats.g.doubleclick.net needed for GA4 attribution and conversion tracking
+              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://api.rctlabs.co https://vitals.vercel-insights.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://region1.google-analytics.com https://region1.analytics.google.com https://stats.g.doubleclick.net",
               "frame-ancestors 'none'",
             ].join("; "),
           },

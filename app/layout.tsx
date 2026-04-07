@@ -199,23 +199,26 @@ export default async function RootLayout({
         {/* Preconnect to image CDN for faster LCP */}
         <link rel="preconnect" href="https://d2xsxph8kpxj0f.cloudfront.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://d2xsxph8kpxj0f.cloudfront.net" />
-        {/* Google Tag Manager */}
-        {gtmId && (
-          <Script id="gtm-head" strategy="afterInteractive">
-            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f)})(window,document,'script','dataLayer','${gtmId}');`}
-          </Script>
-        )}
-        {/* Google Analytics 4 (direct, fallback when GTM not active) */}
-        {!gtmId && ga4Id && (
+        {/* Google Analytics 4 — always loaded directly so Google can verify the tag.
+            Initialises window.dataLayer before GTM so GTM reuses the same queue. */}
+        {ga4Id && (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
               strategy="afterInteractive"
             />
             <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}',{page_path:window.location.pathname});`}
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}',{page_path:window.location.pathname,send_page_view:true});`}
             </Script>
           </>
+        )}
+        {/* Google Tag Manager — piggy-backs on the dataLayer initialised above.
+            When using GTM, disable the GA4 Configuration tag's built-in page_view
+            inside GTM to prevent double-counting. */}
+        {gtmId && (
+          <Script id="gtm-head" strategy="afterInteractive">
+            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f)})(window,document,'script','dataLayer','${gtmId}');`}
+          </Script>
         )}
         {/* Schema.org structured data */}
         <script
