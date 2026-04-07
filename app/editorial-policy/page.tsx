@@ -33,7 +33,7 @@ export default async function EditorialPolicyPage() {
     headline: "Editorial Policy — AI Disclosure, Review Process & Update Cadence",
     description: "RCT Labs editorial policy: all articles written by verified authors with first-hand expertise. Covers AI disclosure policy, review process, update cadence, and factual accuracy commitment.",
     author: { "@type": "Person", name: "Ittirit Saengow", url: `https://rctlabs.co${localePrefix}/authors/ittirit-saengow` },
-    publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/logo-horizontal.svg" } },
+    publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/RCTLogo-horizontal.svg" } },
     url: `https://rctlabs.co${localePrefix}/editorial-policy`,
     datePublished: "2025-08-11",
     dateModified: "2026-03-01",

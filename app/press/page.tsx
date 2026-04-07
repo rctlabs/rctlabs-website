@@ -99,7 +99,7 @@ export default async function PressPage() {
     name: "RCT Labs",
     alternateName: "Reverse Component Thinking Labs",
     url: "https://rctlabs.co",
-    logo: "https://rctlabs.co/logo-horizontal.svg",
+    logo: "https://rctlabs.co/RCTLogo-horizontal.svg",
     description: "Constitutional AI Operating System built by a solo developer in Bangkok, Thailand — 62 microservices, 4,849 passing tests, 0.3% hallucination rate.",
     foundingDate: "2024",
     founder: { "@type": "Person", name: "Ittirit Saengow", jobTitle: "The Architect" },
