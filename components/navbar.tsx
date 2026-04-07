@@ -31,7 +31,7 @@ const MobileNavDrawer = dynamic(
 )
 
 const LOGO_HORIZONTAL = "/RCTLogo-horizontal.svg"
-const LOGO_MARK = "/RCTLogo-mark.svg"
+const LOGO_MARK = "/RCTicon.svg"
 
 interface NavbarProps {
   variant?: "default" | "article"
@@ -308,18 +308,12 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
                 width={32}
                 height={32}
                 unoptimized
-                className={`h-8 w-8 object-contain object-left sm:hidden ${isDark ? "brightness-0 invert" : ""}`}
+                className="h-8 w-8 object-contain"
                 priority
               />
-              <Image
-                src={LOGO_HORIZONTAL}
-                alt="RCT — Reverse Component Thinking"
-                width={96}
-                height={32}
-                unoptimized
-                className={`hidden h-8 w-auto object-contain object-left sm:block ${isDark ? "brightness-0 invert" : ""}`}
-                priority
-              />
+              <span className={`hidden sm:inline-block text-sm font-semibold tracking-tight leading-none ${isDark ? "text-white" : "text-neutral-900"}`}>
+                RCT Labs
+              </span>
             </Link>
 
             <DesktopNav

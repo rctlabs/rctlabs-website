@@ -28,7 +28,7 @@ const HeroAnimatedBackground = dynamic(() => import("@/components/ui/hero-animat
 })
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
-const LOGO_MARK = "/RCTLogo-mark.svg"
+const LOGO_MARK = "/RCTicon.svg"
 
 type HeroSectionProps = {
   locale: "en" | "th"
@@ -133,7 +133,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                 src={LOGO_MARK}
                 alt="RCT Ecosystem Logo"
                 containerClassName="w-5 h-5"
-                className={isDark ? "brightness-0 invert" : ""}
+                className=""
                 objectFit="contain"
                 priority
                 width={20}

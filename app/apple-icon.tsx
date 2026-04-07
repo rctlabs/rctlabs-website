@@ -6,9 +6,8 @@ export const contentType = "image/png"
 
 /**
  * RCT Labs — Dynamic Apple Touch Icon (180×180)
- * Orbital mark: 3 concentric arcs + diagonal axis + 3 nodes
- * Scaled from native 32×32 design (factor 5.625), center at (90,90)
- * Dark background (#0D0D0D), white arcs, amber center node (#D4A853)
+ * Matches RCTicon.svg aesthetic: gold (#D4A953) orbital mark on white background
+ * Scaled from 26×26 design (factor 6.923), center at (90,90)
  */
 export default function AppleIcon() {
   return new ImageResponse(
@@ -17,7 +16,7 @@ export default function AppleIcon() {
         style={{
           width: 180,
           height: 180,
-          background: "#0D0D0D",
+          background: "#FEFEFE",
           borderRadius: 40,
           display: "flex",
           alignItems: "center",
@@ -25,28 +24,28 @@ export default function AppleIcon() {
           overflow: "hidden",
         }}
       >
-        {/* Orbital mark — 180×180 coordinates (32×32 design × 5.625), center at (90,90) */}
-        <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
-          {/* Diagonal axis: (56,124) → (135,45), passes through (90,90) */}
-          <line x1="56" y1="124" x2="135" y2="45" stroke="white" strokeWidth="8.4" strokeLinecap="round"/>
+        {/* Gold orbital mark — 180×180 coordinates (26×26 × 6.923), matching RCTicon.svg palette */}
+        <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+          {/* Outer arc (r=68): gap at upper-right */}
+          <path d="M 142 68 A 68 68 0 1 1 111 25" stroke="#D4A953" strokeWidth="18.5" strokeLinecap="round"/>
 
-          {/* Outer arc (r=67.5): start -30°(146,56) → end -60°(124,34), clockwise 330° */}
-          <path d="M 146 56 A 67.5 67.5 0 1 1 124 34" stroke="white" strokeWidth="14" strokeLinecap="round"/>
+          {/* Middle arc (r=49) */}
+          <path d="M 130 80 A 49 49 0 1 1 105 43" stroke="#D4A953" strokeWidth="15.4" strokeLinecap="round"/>
 
-          {/* Middle arc (r=50.6): start -30°(135,68) → end -60°(118,45) */}
-          <path d="M 135 68 A 50.6 50.6 0 1 1 118 45" stroke="white" strokeWidth="11.25" strokeLinecap="round"/>
+          {/* Inner arc (r=31) */}
+          <path d="M 111 86 A 31 31 0 1 1 93 55" stroke="#D4A953" strokeWidth="12.3" strokeLinecap="round"/>
 
-          {/* Inner arc (r=33.75): start -30°(118,73) → end -60°(107,62) */}
-          <path d="M 118 73 A 33.75 33.75 0 1 1 107 62" stroke="white" strokeWidth="8.4" strokeLinecap="round"/>
+          {/* Diagonal axis */}
+          <line x1="43" y1="117" x2="123" y2="37" stroke="#D4A953" strokeWidth="9.2" strokeLinecap="round"/>
 
-          {/* Center node — amber accent */}
-          <circle cx="90" cy="90" r="22.5" fill="#D4A853"/>
+          {/* Center node */}
+          <circle cx="80" cy="80" r="18.5" fill="#D4A953"/>
 
-          {/* Outer node — medium, upper-right */}
-          <circle cx="135" cy="45" r="14" fill="white"/>
+          {/* Outer node — upper-right */}
+          <circle cx="123" cy="37" r="12.3" fill="#C49240"/>
 
-          {/* Inner node — small, lower-left */}
-          <circle cx="56" cy="124" r="8.4" fill="white"/>
+          {/* Inner node — lower-left */}
+          <circle cx="43" cy="117" r="9.2" fill="#C49240"/>
         </svg>
       </div>
     ),
