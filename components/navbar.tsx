@@ -30,8 +30,8 @@ const MobileNavDrawer = dynamic(
   { ssr: false, loading: () => null },
 )
 
-const LOGO_HORIZONTAL = "/logo-horizontal.svg"
-const LOGO_MARK = "/logo-mark.svg"
+const LOGO_HORIZONTAL = "/RCTLogo-horizontal.svg"
+const LOGO_MARK = "/RCTLogo-mark.svg"
 
 interface NavbarProps {
   variant?: "default" | "article"

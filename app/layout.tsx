@@ -165,7 +165,7 @@ export async function generateMetadata(): Promise<Metadata> {
     verification,
     icons: {
       icon: [
-        { url: "/icon.svg", type: "image/svg+xml" },
+        { url: "/RCTicon.svg", type: "image/svg+xml" },
       ],
       // Explicit apple entry ensures <link rel="apple-touch-icon"> is included
       // even when explicit icons config overrides file-based metadata merging.

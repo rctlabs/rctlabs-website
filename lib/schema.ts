@@ -20,7 +20,7 @@ export function getOrganizationSchema(locale: Locale) {
     name: 'RCT Labs',
     alternateName: 'Reverse Component Thinking Labs',
     url: `https://rctlabs.co/${locale}`,
-    logo: 'https://rctlabs.co/logo-horizontal.svg',
+    logo: 'https://rctlabs.co/RCTLogo-horizontal.svg',
     description: locale === 'th'
       ? 'ระบบปฏิบัติการ AI แบบรัฐธรรมนูญ — สถาปัตยกรรม 10 ชั้น, การตรวจสอบแบบหลาย LLM, และความเป็นเจ้าของข้อมูลอย่างสมบูรณ์'
       : 'Constitutional AI Operating System — 10-Layer architecture, multi-LLM consensus, and absolute data sovereignty',
@@ -94,7 +94,7 @@ export function getArticleSchema(article: {
       name: 'RCT Labs',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://rctlabs.co/logo-horizontal.svg',
+        url: 'https://rctlabs.co/RCTLogo-horizontal.svg',
       },
     },
     inLanguage: article.locale,

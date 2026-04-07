@@ -38,7 +38,7 @@ export default async function Page() {
       ? "Deep dive สู่ RCT-7 Mental OS — Genome Orchestration ที่ Self-Evolving ขับเคลื่อน IntentLoop 7 สถานะ"
       : "Deep dive into RCT-7 Mental OS — the self-evolving orchestration genome that runs the 7-state IntentLoop.",
     author: { "@type": "Organization", name: "RCT Labs" },
-    publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/logo-horizontal.svg" } },
+    publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/RCTLogo-horizontal.svg" } },
     url: `https://rctlabs.co${localePrefix}/technology/rct-7`,
     inLanguage: locale,
     keywords: "RCT-7, Mental OS, IntentLoop, self-evolving AI, AI orchestration, IDLE RECEIVE PARSE ROUTE EXECUTE VERIFY ADAPT",

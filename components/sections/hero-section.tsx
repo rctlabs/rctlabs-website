@@ -28,7 +28,7 @@ const HeroAnimatedBackground = dynamic(() => import("@/components/ui/hero-animat
 })
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
-const LOGO_MARK = "/logo-mark.svg"
+const LOGO_MARK = "/RCTLogo-mark.svg"
 
 type HeroSectionProps = {
   locale: "en" | "th"

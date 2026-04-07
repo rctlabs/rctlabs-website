@@ -40,7 +40,7 @@ export default async function Page() {
       ? "JITNA RFC-001 v2.0 — โปรโตคอล Routing แบบเปิดที่เลือก LLM, Algorithm Tier และ Voting Method ที่เหมาะสมที่สุดสำหรับทุก Task"
       : "JITNA RFC-001 v2.0 — the open routing protocol that selects the optimal LLM, algorithm tier, and voting method for every task in real-time.",
     author: { "@type": "Organization", name: "RCT Labs" },
-    publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/logo-horizontal.svg" } },
+    publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/RCTLogo-horizontal.svg" } },
     url: `https://rctlabs.co${localePrefix}/technology/jitna`,
     inLanguage: locale,
     keywords: "JITNA, Just-in-Time Neural Architecture, AI routing, multi-LLM routing, open protocol",

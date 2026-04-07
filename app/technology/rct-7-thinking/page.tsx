@@ -43,7 +43,7 @@ export default async function Page() {
     publisher: {
       "@type": "Organization",
       name: "RCT Labs",
-      logo: { "@type": "ImageObject", url: "https://rctlabs.co/logo-horizontal.svg" },
+      logo: { "@type": "ImageObject", url: "https://rctlabs.co/RCTLogo-horizontal.svg" },
     },
     url: `https://rctlabs.co${localePrefix}/technology/rct-7-thinking`,
     inLanguage: locale,

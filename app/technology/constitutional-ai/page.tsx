@@ -38,7 +38,7 @@ export default async function Page() {
       ? "Framework Constitutional AI ของ RCT ด้วยสมการ FDIA F=(D^I)×A — เมื่อ Authorization A=0 Output จะเป็น 0 โดยไม่คำนึงถึงความสามารถ"
       : "RCT's Constitutional AI framework with the FDIA equation F=(D^I)×A — when Authorization A=0, output collapses to zero regardless of capability.",
     author: { "@type": "Organization", name: "RCT Labs" },
-    publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/logo-horizontal.svg" } },
+    publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/RCTLogo-horizontal.svg" } },
     url: `https://rctlabs.co${localePrefix}/technology/constitutional-ai`,
     inLanguage: locale,
     keywords: "Constitutional AI, FDIA equation, A=0 principle, AI safety, sovereign AI, authorization control",

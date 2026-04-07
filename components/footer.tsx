@@ -16,7 +16,7 @@ import { useMounted } from "@/hooks/use-mounted"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { SITE_VERSION, SOCIAL_LINKS } from "@/lib/site-config"
 
-const LOGO_PNG = "/logo-horizontal.svg"
+const LOGO_PNG = "/RCTLogo-horizontal.svg"
 
 type FooterProps = {
   locale?: "en" | "th"
