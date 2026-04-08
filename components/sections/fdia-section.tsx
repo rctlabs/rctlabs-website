@@ -239,7 +239,7 @@ export default function FDIASection() {
                     whileHover={prefersReducedMotion ? undefined : { y: -6, scale: 1.02, rotate: -1.4 }}
                     whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
                     animate={prefersReducedMotion ? undefined : { y: [0, -8, 0], x: [0, 5, 0] }}
-                    transition={prefersReducedMotion ? undefined : { duration: 6.4, repeat: Infinity, ease: "easeInOut" }}
+                    transition={prefersReducedMotion ? undefined : { duration: 6.4, delay: 0.8, repeat: Infinity, ease: "easeInOut" }}
                     className="group relative flex w-full flex-col overflow-hidden rounded-[30px] border border-warm-amber/25 bg-[linear-gradient(180deg,rgba(255,251,245,0.96),rgba(255,246,233,0.92))] p-5 text-left shadow-[0_20px_48px_rgba(212,168,83,0.18)] transition-[border-color,box-shadow,transform] dark:bg-[linear-gradient(180deg,rgba(38,30,20,0.96),rgba(28,23,18,0.94))]"
                   >
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,168,83,0.18),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(123,158,135,0.16),transparent_34%)] opacity-80" />

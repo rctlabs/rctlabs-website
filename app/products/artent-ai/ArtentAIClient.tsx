@@ -6,14 +6,14 @@ import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
-import { Palette, ArrowRight, Target, Layers, Eye, Wand2, Brain, ShieldCheck, Cpu } from "lucide-react"
+import { Palette, ArrowRight, Target, Layers, Eye, Wand2, Brain, ShieldCheck, Cpu, Lock } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
 
 const capabilities = [
-  { icon: Target, color: "#B8A9C9", titleEn: "Intent-Driven Generation", titleTh: "Intent-Driven Generation", descEn: "Understands strategic goals behind creative requests — producing outputs aligned with business objectives, not just aesthetic preferences.", descTh: "เข้าใจเป้าหมายเชิงกลยุทธ์เบื้องหลังคำขอสร้างสรรค์ — สร้างผลลัพธ์ที่สอดคล้องกับวัตถุประสงค์ทางธุรกิจ" },
-  { icon: Layers, color: "#D4A853", titleEn: "Multi-Modal Outputs", titleTh: "Multi-Modal Outputs", descEn: "Generate text, images, code, presentations, and multimedia content from a single intent specification.", descTh: "สร้างข้อความ รูปภาพ โค้ด งานนำเสนอ และเนื้อหามัลติมีเดียจาก Intent Specification เดียว" },
-  { icon: Eye, color: "#7B9E87", titleEn: "Brand Consistency Engine", titleTh: "Brand Consistency Engine", descEn: "Maintains visual and tonal consistency across all outputs — colors, typography, voice, and messaging stay on-brand.", descTh: "รักษาความสม่ำเสมอทางภาพและน้ำเสียงในทุกผลลัพธ์ — สี ตัวอักษร เสียง และข้อความอยู่ในแบรนด์" },
-  { icon: Wand2, color: "#C4745B", titleEn: "Creative Strategy Alignment", titleTh: "Creative Strategy Alignment", descEn: "Connects creative output to measurable KPIs — ensuring every piece of content serves a strategic purpose.", descTh: "เชื่อมต่อผลลัพธ์สร้างสรรค์กับ KPIs ที่วัดได้ — รับประกันว่าทุกชิ้นตอบสนองวัตถุประสงค์เชิงกลยุทธ์" },
+  { icon: Brain, color: "#B8A9C9", titleEn: "L1–L5 Intelligence Ladder", titleTh: "L1–L5 Intelligence Ladder", descEn: "From L1 Chatbot → L2 Recall (RCTDB) → L3 Analysis (FDIA) → L4 Synthesis (Multi-Agent) → L5 Evolution. PA routes each query to the correct intelligence level before any LLM call.", descTh: "จาก L1 Chatbot → L2 Recall (RCTDB) → L3 Analysis (FDIA) → L4 Synthesis (Multi-Agent) → L5 Evolution — Agent กำหนดระดับปัญญาที่เหมาะสมก่อนเรียก LLM ทุกครั้ง" },
+  { icon: ShieldCheck, color: "#D4A853", titleEn: "FDIA Constitutional Scoring", titleTh: "FDIA Constitutional Scoring", descEn: "Every Artent output passes F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A. If Alignment = 0, no output is dispatched. Constitutional AI is mathematics enforced at the equation level — not a policy you configure.", descTh: "ทุก Output ผ่านสมการ F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A — หาก Alignment = 0 ไม่มี Output ใดถูกส่งออก Constitutional AI ไม่ใช่นโยบาย แต่เป็นคณิตศาสตร์ที่บังคับใช้ในระดับสมการ" },
+  { icon: Lock, color: "#7B9E87", titleEn: "Sovereignty Vault", titleTh: "Sovereignty Vault", descEn: "Your preferences, goals, and memory schema stored in RCTDB 8-Dimensional. Encrypted storage, selective disclosure, and zero tenant data sharing — you own every byte.", descTh: "Preference, Goal และ Memory Schema เก็บใน RCTDB 8-Dimensional — Encrypted Storage, Selective Disclosure และไม่มีการแชร์ข้อมูลข้าม Tenant คุณเป็นเจ้าของทุก Byte" },
+  { icon: Eye, color: "#C4745B", titleEn: "Analysearch Integration", titleTh: "Analysearch Integration", descEn: "Before synthesizing, ArtentAI queries the Analysearch Intent Engine in Mirror Mode (PROPOSE → COUNTER → REFINE) for cross-disciplinary depth — GIGO-protected with golden keyword crystallization.", descTh: "ก่อน Synthesize ArtentAI Query Analysearch Intent Engine โหมด Mirror (PROPOSE → COUNTER → REFINE) เพื่อความลึกข้ามสาขา — GIGO-Protected พร้อม Golden Keyword Crystallization" },
 ]
 
 export default function ArtentAIPage() {
@@ -41,8 +41,8 @@ export default function ArtentAIPage() {
           <h1 className="text-5xl font-bold text-foreground">ArtentAI</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             {isTh
-              ? "Personal Agent OS ที่จำแนก Intent ทุกประเภท, จดจำผ่าน RCTDB 9D และรัน Pipeline CLASSIFY→ROUTE→EXECUTE→VERIFY — ขับเคลื่อนโดย SignedAI Verification"
-              : "The Personal Agent OS that classifies any intent, persists memory through RCTDB 9D, and routes every task through CLASSIFY \u2192 ROUTE \u2192 EXECUTE \u2192 VERIFY — powered by SignedAI-verified execution."}
+              ? "Personal Agent OS ที่จำแนก Intent ทุกประเภท, จดจำผ่าน RCTDB 8-Dimensional และรันทุก Task ผ่าน WF00-META 7-Phase Protocol — INIT → PARSE → CLASSIFY → SYNTHESIZE → VALIDATE → DISPATCH → AUDIT"
+              : "The Personal Agent OS that classifies any intent, persists memory in RCTDB 8-Dimensional, and routes every task through the WF00-META 7-phase protocol — INIT → PARSE → CLASSIFY → SYNTHESIZE → VALIDATE → DISPATCH → AUDIT."}
           </p>
         </div>
       </section>
@@ -55,8 +55,8 @@ export default function ArtentAIPage() {
           </h2>
           <p>
             {isTh
-              ? "Artent AI คือ Personal Agent OS ที่จำแนก Input ทุกประเภทเป็น Intent ที่มีโครงสร้าง จดจำผ่าน RCTDB 9D Schema และรันทุก Task ผ่าน Pipeline 4 ขั้นตอน — ไม่ใช่ AI สร้างเนื้อหาทั่วไป แต่เป็น OS ที่ทำงานให้คุณ"
-              : "Artent AI is a Personal Agent OS that classifies every input as a structured intent, persists it through RCTDB 9D schema, and routes every task through a 4-stage pipeline — not a generic content AI, but an OS that works for you."}
+              ? "Artent AI คือ Personal Agent OS ที่จำแนก Input ทุกประเภทเป็น Intent ที่มีโครงสร้าง จดจำผ่าน RCTDB 8-Dimensional Schema และรันทุก Task ผ่าน WF00-META Pipeline 7 ขั้นตอน — ไม่ใช่ AI สร้างเนื้อหาทั่วไป แต่เป็น OS ที่ทำงานให้คุณ"
+              : "Artent AI is a Personal Agent OS that classifies every input as a structured intent, persists it through RCTDB 8-Dimensional schema, and routes every task through the 7-phase WF00-META pipeline — not a generic content AI, but an OS that works for you."}
           </p>
           <p>
             {isTh
@@ -68,6 +68,38 @@ export default function ArtentAIPage() {
               ? "Sovereignty Vault รับประกันว่าคุณเป็นเจ้าของข้อมูลทุกชิ้น: Encrypted Storage, Selective Disclosure และ Constitutional AI Constraints (A=0) ทำให้มั่นใจได้ว่าข้อมูลของคุณจะไม่ถูกนำไปใช้โดยไม่ได้รับอนุญาต"
               : "The Sovereignty Vault guarantees you own every byte: Encrypted Storage, Selective Disclosure, and Constitutional AI Constraints (A=0) ensure your data is never used without permission."}
           </p>
+        </div>
+      </section>
+
+      {/* WF00-META Pipeline */}
+      <section className="mx-auto max-w-4xl px-4 py-16">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold text-foreground mb-3">
+            {isTh ? "WF00-META Protocol (v5.3.0+)" : "WF00-META Protocol (v5.3.0+)"}
+          </h2>
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+            {isTh ? "Pipeline 7 ขั้นตอน — ทุก Task ไหลผ่านทุก Phase โดยไม่มีขั้นตอนใดถูกข้าม" : "7-phase pipeline — every task flows through every phase, no step is skipped."}
+          </p>
+        </div>
+        <div className="space-y-3">
+          {([
+            { phase: "INIT", color: "#B8A9C9", descEn: "Session initialised — Intent ID assigned, WF00 ticket opened, resource quotas allocated.", descTh: "เปิด Session — กำหนด Intent ID, เปิด WF00 Ticket และจัดสรร Resource Quota" },
+            { phase: "PARSE", color: "#D4A853", descEn: "Raw input decomposed into structured Intent fields: goal, context, constraints, priority.", descTh: "แยก Input ดิบออกเป็น Intent Fields ที่มีโครงสร้าง: Goal, Context, Constraints, Priority" },
+            { phase: "CLASSIFY", color: "#7B9E87", descEn: "Intent type and intelligence level (L1\u2013L5) determined — routes to the correct execution tier.", descTh: "กำหนดประเภท Intent และระดับปัญญา (L1\u2013L5) — จัดเส้นทางไปยัง Execution Tier ที่ถูกต้อง" },
+            { phase: "SYNTHESIZE", color: "#C4745B", descEn: "Response constructed via multi-agent orchestration — Analysearch Mirror Mode engaged for complex queries.", descTh: "สร้างคำตอบผ่าน Multi-Agent Orchestration — เรียกใช้ Analysearch Mirror Mode สำหรับ Query ที่ซับซ้อน" },
+            { phase: "VALIDATE", color: "#89B4C8", descEn: "FDIA gate: F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A evaluated. If Alignment = 0, output is blocked — constitutional constraint enforced.", descTh: "FDIA Gate: ประเมิน F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A — หาก Alignment = 0 ผลลัพธ์จะถูกบล็อก Constitutional Constraint บังคับใช้" },
+            { phase: "DISPATCH", color: "#9B7BB8", descEn: "Validated output dispatched — SignedAI signing applied if verification tier is requested.", descTh: "ส่ง Output ที่ผ่านการตรวจสอบไปยังปลายทาง — SignedAI Signing ใช้หากต้องการ Verification Tier" },
+            { phase: "AUDIT", color: "#B8A9C9", descEn: "Full execution trace recorded to RCTDB 8D — SHA-256 checkpoint stored for deterministic replay.", descTh: "บันทึก Execution Trace ทั้งหมดลง RCTDB 8D — SHA-256 Checkpoint สำหรับ Deterministic Replay" },
+          ] as const).map((p, i) => (
+            <m.div key={p.phase} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+              className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card">
+              <div className="shrink-0 flex items-center gap-2">
+                <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: `${p.color}18`, color: p.color }}>{i + 1}</span>
+                <span className="text-xs font-bold font-mono w-24" style={{ color: p.color }}>{p.phase}</span>
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? p.descTh : p.descEn}</p>
+            </m.div>
+          ))}
         </div>
       </section>
 
@@ -105,14 +137,14 @@ export default function ArtentAIPage() {
             </h2>
             <p className="text-sm leading-relaxed mb-6 text-muted-foreground">
               {isTh
-                ? "ARTENT Genome ใช้ RCT Stack ทั้งหมด — JITNA Routing สำหรับเลือกโมเดล, RCTDB 9D สำหรับ Memory Timeline และ SignedAI สำหรับ Verification"
-                : "The ARTENT Genome leverages the full RCT stack — JITNA for model routing, RCTDB 9D for the Memory Timeline, and SignedAI for result verification."}
+                ? "ARTENT Genome ใช้ RCT Stack ทั้งหมด — JITNA RFC-001 สำหรับ Intent Routing, RCTDB 8-Dimensional สำหรับ Memory Timeline และ SignedAI (5th Genome) สำหรับ Result Verification"
+                : "The ARTENT Genome leverages the full RCT stack — JITNA RFC-001 for intent routing, RCTDB 8-Dimensional for the Memory Timeline, and SignedAI (5th Genome) for result verification."}
             </p>
             <div className="grid grid-cols-3 gap-4">
               {[
-                { label: "JITNA", desc: isTh ? "Model Routing" : "Model Routing", color: "#C4745B" },
-                { label: "RCTDB 9D", desc: isTh ? "Memory Timeline" : "Memory Timeline", color: "#7B9E87" },
-                { label: "SignedAI", desc: isTh ? "Verification" : "Verification", color: "#D4A853" },
+                { label: "JITNA RFC-001", desc: isTh ? "Intent Routing" : "Intent Routing", color: "#C4745B" },
+                { label: "RCTDB 8D", desc: isTh ? "Memory Timeline" : "Memory Timeline", color: "#7B9E87" },
+                { label: "SignedAI", desc: isTh ? "5th Genome" : "5th Genome", color: "#D4A853" },
               ].map((item, i) => (
                 <div key={i} className="p-4 rounded-xl text-center bg-muted">
                   <div className="text-lg font-bold mb-1" style={{ color: item.color }}>{item.label}</div>

@@ -6,7 +6,7 @@ import { useLanguage } from "@/components/language-provider"
 import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FlaskConical, Palette, ShieldCheck, ArrowRight, Layers, Cpu, Zap } from "lucide-react"
+import { Palette, ShieldCheck, ArrowRight, Layers, Cpu, Zap } from "lucide-react"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import { pixelIcons } from "@/lib/pixel-icons"
@@ -19,19 +19,19 @@ const products = [
   {
     id: "rctlabs",
     href: "/products/rctlabs",
-    icon: FlaskConical,
+    icon: Cpu,
     color: "#D4A853",
     titleEn: "RCTLabs",
     titleTh: "RCTLabs",
-    tagEn: "Testing Platform",
-    tagTh: "Testing Platform",
-    descEn: "Integrated AI testing platform with 62,205+ test cases — validate, benchmark, and certify AI models across all 9 tiers of the algorithm architecture.",
-    descTh: "แพลตฟอร์มทดสอบ AI แบบบูรณาการพร้อม 62,205+ Test Cases — ตรวจสอบ, Benchmark และรับรอง AI Models ข้าม 9 Tiers",
+    tagEn: "AI Operating Environment",
+    tagTh: "AI Operating Environment",
+    descEn: "Constitutional AI Operating Environment where 7 Genomes converge. 4,849 verified tests, 41 production algorithms, and FDIA governing every inference across 62 microservices.",
+    descTh: "AI Operating Environment ที่ 7 Genome บรรจบกัน พร้อม 4,849 Verified Tests, 41 Production Algorithms และ FDIA Constitutional Scoring กำกับทุก Inference",
     features: [
-      { en: "62,205+ Test Cases", th: "62,205+ Test Cases" },
-      { en: "9-Tier Algorithm Validation", th: "9-Tier Algorithm Validation" },
-      { en: "Automated Regression Testing", th: "Automated Regression Testing" },
-      { en: "Performance Benchmarking", th: "Performance Benchmarking" },
+      { en: "4,849 Verified Tests", th: "4,849 Verified Tests" },
+      { en: "41 Production Algorithms", th: "41 Production Algorithms" },
+      { en: "FDIA Constitutional Scoring", th: "FDIA Constitutional Scoring" },
+      { en: "7 Genome System", th: "7 Genome System" },
     ],
     accentSrc: PIXEL_LABS,
   },
@@ -42,15 +42,15 @@ const products = [
     color: "#B8A9C9",
     titleEn: "Artent AI",
     titleTh: "Artent AI",
-    tagEn: "Creative AI",
-    tagTh: "Creative AI",
-    descEn: "Architecture-driven creative AI that combines intent understanding with artistic generation — producing outputs aligned with strategic goals.",
-    descTh: "Creative AI ที่ขับเคลื่อนด้วยสถาปัตยกรรม ผสมผสาน Intent Understanding กับ Artistic Generation — สร้างผลลัพธ์ที่สอดคล้องกับเป้าหมายเชิงกลยุทธ์",
+    tagEn: "Personal Agent OS",
+    tagTh: "Personal Agent OS",
+    descEn: "Personal Agent OS powered by L1-L5 Intelligence Ladder, RCTDB 8-Dimensional memory, and WF00-META 7-phase protocol — FDIA constitutional scoring on every output.",
+    descTh: "Personal Agent OS ขับเคลื่อนด้วย L1-L5 Intelligence Ladder, RCTDB 8-Dimensional Memory และ WF00-META 7-Phase Protocol พร้อม FDIA Constitutional Scoring",
     features: [
-      { en: "Intent-Driven Generation", th: "Intent-Driven Generation" },
-      { en: "Multi-Modal Outputs", th: "Multi-Modal Outputs" },
-      { en: "Brand Consistency Engine", th: "Brand Consistency Engine" },
-      { en: "Creative Strategy Alignment", th: "Creative Strategy Alignment" },
+      { en: "L1-L5 Intelligence Ladder", th: "L1-L5 Intelligence Ladder" },
+      { en: "RCTDB 8-Dimensional Memory", th: "RCTDB 8-Dimensional Memory" },
+      { en: "WF00-META 7-Phase Protocol", th: "WF00-META 7-Phase Protocol" },
+      { en: "FDIA Constitutional Scoring", th: "FDIA Constitutional Scoring" },
     ],
     accentSrc: PIXEL_ARTENT,
   },
@@ -61,15 +61,15 @@ const products = [
     color: "#7B9E87",
     titleEn: "SignedAI",
     titleTh: "SignedAI",
-    tagEn: "Verification API",
-    tagTh: "Verification API",
-    descEn: "Multi-LLM verification consensus API — cryptographically signed responses from up to 8 LLMs, reducing hallucination to 0.3% with complete audit trails.",
-    descTh: "Multi-LLM Verification Consensus API — Cryptographically Signed Responses จาก LLMs สูงสุด 8 ตัว ลด Hallucination เหลือ 0.3%",
+    tagEn: "5th Genome · Verification API",
+    tagTh: "5th Genome · Verification API",
+    descEn: "5th Genome in the RCT 7-Genome System. HexaCore 7-Model consensus with ED25519 RFC 8032 signing, 4 voting methods, and Constitutional Accuracy AI governance.",
+    descTh: "Genome ที่ 5 ใน RCT 7-Genome System — HexaCore 7-Model Consensus, ED25519 RFC 8032 Signing, 4 Voting Methods และ Constitutional Accuracy",
     features: [
-      { en: "Multi-LLM Consensus", th: "Multi-LLM Consensus" },
-      { en: "Cryptographic Signing", th: "Cryptographic Signing" },
-      { en: "99.7% Accuracy", th: "99.7% Accuracy" },
-      { en: "Complete Audit Trails", th: "Complete Audit Trails" },
+      { en: "HexaCore 7-Model Consensus", th: "HexaCore 7-Model Consensus" },
+      { en: "ED25519 RFC 8032 Signing", th: "ED25519 RFC 8032 Signing" },
+      { en: "Constitutional Accuracy", th: "Constitutional Accuracy" },
+      { en: "4 Geopolitical Voting Zones", th: "4 Geopolitical Voting Zones" },
     ],
     accentSrc: PIXEL_SIGNED,
   },
@@ -84,7 +84,7 @@ export default function ProductsPage() {
   const localHref = (href: string) => `${localePrefix}${href}`
 
   const productMetrics = [
-    { value: "62,205+", labelEn: "Test Cases", labelTh: "กรณีทดสอบ", color: "#D4A853" },
+    { value: "4,849", labelEn: "Verified Tests", labelTh: "Verified Tests", color: "#D4A853" },
     { value: "99.7%", labelEn: "Verified Accuracy", labelTh: "ความแม่นยำที่ตรวจสอบได้", color: "#7B9E87" },
     { value: "3", labelEn: "Core Products", labelTh: "ผลิตภัณฑ์หลัก", color: "#B8A9C9" },
   ]

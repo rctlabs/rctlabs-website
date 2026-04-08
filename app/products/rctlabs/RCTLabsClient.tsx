@@ -6,35 +6,35 @@ import { m } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
-import { FlaskConical, ArrowRight } from "lucide-react"
+import { Cpu, ArrowRight } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { pixelIcons } from "@/lib/pixel-icons"
 
 const features = [
   {
-    iconSrc: pixelIcons.document, color: "#D4A853",
-    titleEn: "62,205+ Test Cases", titleTh: "62,205+ Test Cases",
-    descEn: "Comprehensive test suite covering all 9 tiers of the algorithm architecture — from basic intent parsing to self-evolving orchestration.",
-    descTh: "ชุดทดสอบครอบคลุมทั้ง 9 Tiers ของสถาปัตยกรรม Algorithm — ตั้งแต่ Basic Intent Parsing ถึง Self-Evolving Orchestration",
+    iconSrc: pixelIcons.brain, color: "#D4A853",
+    titleEn: "Intent Loop Engine", titleTh: "Intent Loop Engine",
+    descEn: "Warm recall <50ms. 7-state pipeline: OBSERVE → INTENT → SCORE → CONFLICT → GOVERN → EXECUTE → MEMORY. Every inference has a constitutional score before dispatch.",
+    descTh: "Warm Recall <50ms. Pipeline 7 State: OBSERVE → INTENT → SCORE → CONFLICT → GOVERN → EXECUTE → MEMORY — ทุก Inference มีคะแนน Constitutional ก่อน Dispatch",
   },
   {
-    iconSrc: pixelIcons.layers, color: "#7B9E87",
-    titleEn: "9-Tier Validation", titleTh: "9-Tier Validation",
-    descEn: "Each algorithm tier has dedicated test suites ensuring correctness, performance, and integration compatibility.",
-    descTh: "แต่ละ Algorithm Tier มีชุดทดสอบเฉพาะเพื่อรับรองความถูกต้อง ประสิทธิภาพ และความเข้ากันได้",
+    iconSrc: pixelIcons.formula, color: "#7B9E87",
+    titleEn: "FDIA Constitutional Core", titleTh: "FDIA Constitutional Core",
+    descEn: "F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A — every output is scored against Desire, Intent, and Alignment. If Alignment = 0, no output is dispatched regardless of confidence.",
+    descTh: "F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A — ทุก Output ถูก Score จาก Desire, Intent และ Alignment หาก Alignment = 0 ไม่มี Output ใดถูกส่งออก",
   },
   {
-    iconSrc: pixelIcons.chart, color: "#C4745B",
-    titleEn: "Performance Benchmarking", titleTh: "Performance Benchmarking",
-    descEn: "Automated benchmarking against industry standards — latency, throughput, accuracy, and resource utilization metrics.",
-    descTh: "Benchmarking อัตโนมัติเทียบกับมาตรฐานอุตสาหกรรม — Latency, Throughput, Accuracy และ Resource Utilization",
+    iconSrc: pixelIcons.shield, color: "#C4745B",
+    titleEn: "4,849 Verified Tests / 0 Failures", titleTh: "4,849 Tests ผ่าน / 0 ครั้งผิดพลาด",
+    descEn: "8-level test pyramid: Unit → Integration → System → Performance → Security → Chaos → Digital Twin → Hypothesis. v5.4.5 canonical. Zero errors.",
+    descTh: "8-Level Test Pyramid: Unit → Integration → System → Performance → Security → Chaos → Digital Twin → Hypothesis v5.4.5 Canonical — Zero Errors",
   },
   {
-    iconSrc: pixelIcons.shield, color: "#89B4C8",
-    titleEn: "Regression Testing", titleTh: "Regression Testing",
-    descEn: "Continuous regression testing ensures new updates don't break existing functionality across the entire ecosystem.",
-    descTh: "Regression Testing อย่างต่อเนื่องรับประกันว่าอัปเดตใหม่ไม่ทำลายฟังก์ชันที่มีอยู่ทั้ง Ecosystem",
+    iconSrc: pixelIcons.genome, color: "#89B4C8",
+    titleEn: "7 Genome System", titleTh: "7 Genome System",
+    descEn: "SignedAI, ArtentAI, Analysearch, Delta Engine, Farmer, JITNA, Monitor — all 7 Genomes converge at RCTLabs. This is the operating environment, not an app.",
+    descTh: "SignedAI, ArtentAI, Analysearch, Delta Engine, Farmer, JITNA, Monitor — ทั้ง 7 Genome มาบรรจบที่ RCTLabs นี่คือ Operating Environment ไม่ใช่แอป",
   },
 ]
 
@@ -58,14 +58,38 @@ export default function RCTLabsPage() {
       <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
         <div className="max-w-3xl mx-auto space-y-5">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-amber/10 border border-warm-amber/30 text-warm-amber text-sm font-medium">
-            <FlaskConical className="w-4 h-4" /> {isTh ? "Testing Platform" : "Testing Platform"}
+            <Cpu className="w-4 h-4" /> {isTh ? "AI Operating Environment" : "AI Operating Environment"}
           </span>
           <h1 className="text-5xl font-bold text-foreground">RCTLabs</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             {isTh
-              ? "แพลตฟอร์มทดสอบ AI แบบบูรณาการพร้อม 62,205+ Test Cases — ตรวจสอบ, Benchmark และรับรอง AI Models ข้าม 9 Tiers"
-              : "Integrated AI testing platform with 62,205+ test cases — validate, benchmark, and certify AI models across all 9 tiers."}
+              ? "Constitutional AI Operating Environment — ศูนย์กลางของ RCT Ecosystem ที่ 7 Genome มาบรรจบกัน, รัน 41 Production Algorithms และ FDIA ควบคุมทุก Inference"
+              : "The Constitutional AI Operating Environment where 7 Genomes converge. Runs 41 production algorithms across 62 microservices, with FDIA governing every inference — F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A."}
           </p>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="mx-auto max-w-4xl px-4 pb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {([
+            { value: "4,849", label: isTh ? "Tests ผ่าน / 0 ผิด" : "Verified Tests" },
+            { value: "41", label: isTh ? "Production Algorithms" : "Production Algorithms" },
+            { value: "62", label: isTh ? "Microservices" : "Microservices" },
+            { value: "7", label: isTh ? "Genome System" : "Genome System" },
+          ] as const).map((stat, i) => (
+            <m.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              className="p-5 rounded-2xl border border-border bg-card text-center"
+            >
+              <div className="text-3xl font-bold text-warm-amber">{stat.value}</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{stat.label}</div>
+            </m.div>
+          ))}
         </div>
       </section>
 
@@ -73,17 +97,27 @@ export default function RCTLabsPage() {
       <section className="bg-muted/30 py-16">
         <div className="max-w-4xl mx-auto px-4 space-y-4 text-muted-foreground leading-relaxed">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-5">
-            {isTh ? "ทำไม Enterprise AI ต้องมีการทดสอบอย่างเข้มงวด" : "Why Enterprise AI Needs Rigorous Testing"}
+            {isTh ? "ทำไม RCTLabs ถึงแตกต่าง" : "Why RCTLabs is Different"}
           </h2>
           <p>
             {isTh
-              ? "ระบบ AI ใน Production เผชิญความท้าทายที่การทดสอบซอฟต์แวร์แบบเดิมไม่สามารถจัดการได้ — อัตรา Hallucination, ความสอดคล้องในการให้เหตุผล, ความล้มเหลวในการประสาน Multi-Model และ Context Drift RCTLabs ถูกสร้างเพื่อทดสอบพฤติกรรม AI ครบทั้ง 9 Tiers ของสถาปัตยกรรม"
-              : "AI systems in production face challenges that traditional testing cannot address — hallucination rates, reasoning consistency, multi-model coordination failures, and context drift. RCTLabs validates AI behavior across all 9 tiers of the RCT algorithm architecture."}
+              ? "RCTLabs ไม่ใช่เครื่องมือทดสอบที่คุณรันกับ AI ของคุณ — มันคือ Operating Environment ที่ AI ของคุณทำงานอยู่ภายใน ทุก Inference ถูกควบคุมโดยสมการ FDIA ทุก Output มีคะแนน Constitutional ทุก Agent Interaction ผ่าน JITNA Protocol RFC-001 ก่อน Execution"
+              : "RCTLabs is not a testing tool you run against your AI. It is the operating environment your AI runs inside. Every inference is governed by the FDIA equation. Every output carries a constitutional score. Every agent interaction passes through JITNA Protocol RFC-001 before execution."}
           </p>
           <p>
             {isTh
-              ? "ด้วย Test Cases อัตโนมัติกว่า 62,205 รายการ RCTLabs ครอบคลุม Unit Testing, Integration Testing, Performance Benchmarking และ Regression Analysis แต่ละ Test Case ถูกแมปกับ Algorithm Tiers และ Components ของ RCT Ecosystem"
-              : "With over 62,205 automated test cases covering unit testing, integration testing, performance benchmarking, and regression analysis. Each test case is mapped to specific algorithm tiers and ecosystem components."}
+              ? "4,849 Tests ผ่าน / 0 ที่ล้มเหลว (เวอร์ชัน v5.4.5, 21 มีนาคม 2026) ครอบคลุม 8 ระดับ: Unit → Integration → System → Performance → Security → Chaos → Digital Twin → Hypothesis — ภายใต้ 41 Production Algorithms และ 62 Microservices"
+              : "4,849 tests passing / 0 failures (v5.4.5, March 21 2026). Covers 8 levels: Unit → Integration → System → Performance → Security → Chaos → Digital Twin → Hypothesis — powering 41 production algorithms across 62 microservices."}
+          </p>
+          <p>
+            {isTh
+              ? "ด้วย Test Cases อัตโนมัติ 4,849 รายการที่ผ่าน / 0 ล้มเหลว RCTLabs ครอบคลุม Unit Testing, Integration Testing, Performance Benchmarking และ Regression Analysis ซึ่งแต่ละ Test Case ถูกสร้างเพื่อให้ Algorithm Tier สามารถทำงานได้อย่างถูกต้องใน Production"
+              : "With 4,849 verified passing tests / 0 failures, RCTLabs covers unit testing, integration testing, performance benchmarking, and regression analysis. Each test is mapped to specific algorithm tiers to ensure every component works correctly in production."}
+          </p>
+          <p>
+            {isTh
+              ? "แพลต๏ฟอร์มเชื่อมต่อกับ CI/CD Pipelines และมี Real-Time Dashboards สำหรับ Test Coverage, Pass Rates และ Performance Trends"
+              : "The platform integrates with CI/CD pipelines and provides real-time dashboards for test coverage, pass rates, and performance trends."}
           </p>
           <p>
             {isTh
@@ -97,12 +131,12 @@ export default function RCTLabsPage() {
       <section className="mx-auto max-w-5xl px-4 py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-3">
-            {isTh ? "โครงสร้างพื้นฐานการทดสอบ" : "Testing Infrastructure"}
+            {isTh ? "สถาปัตยกรรมหลัก" : "Core Architecture"}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             {isTh
-              ? "โครงสร้างพื้นฐานการทดสอบระดับ Enterprise ที่ตรวจสอบทุก Layer ของระบบปฏิบัติการ RCT"
-              : "Enterprise-grade testing infrastructure that validates every layer of the RCT operating system."}
+              ? "Constitutional AI OS ที่ตรวจสอบทุก Layer ของระบบปฏิบัติการ RCT — จาก Intent Loop Engine ถึง Genome Orchestration"
+              : "Constitutional AI OS that validates every layer of the RCT operating system — from Intent Loop Engine to Genome orchestration."}
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,6 +156,44 @@ export default function RCTLabsPage() {
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? feat.descTh : feat.descEn}</p>
             </m.div>
           ))}
+        </div>
+      </section>
+
+      {/* Why Different */}
+      <section className="bg-muted/30 py-16">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8">
+            {isTh ? "ทำไมจึงเลือก RCTLabs" : "Why Choose RCTLabs"}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              {
+                titleEn: "Not a Testing Tool", titleTh: "ไม่ใช่เครื่องมือทดสอบ",
+                descEn: "RCTLabs is the operating environment your AI runs inside. Not a tool you point at an existing system — an OS layer that governs it.",
+                descTh: "RCTLabs คือ Operating Environment ที่ AI รันอยู่ภายใน ไม่ใช่เครื่องมือที่คุณชี้ไปที่ระบบที่มีอยู่ — เป็น OS Layer ที่ควบคุมมัน",
+                color: "#D4A853",
+              },
+              {
+                titleEn: "Constitutional by Design", titleTh: "Constitutional by Design",
+                descEn: "Every inference is governed by F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A. Every output carries a constitutional score. Alignment = 0 means no dispatch.",
+                descTh: "ทุก Inference ถูกควบคุมโดย F\u00a0=\u00a0(D\u1da1)\u00a0\u00d7\u00a0A ทุก Output มีคะแนน Constitutional Alignment = 0 หมายความไม่ส่ง Output ออก",
+                color: "#7B9E87",
+              },
+              {
+                titleEn: "JITNA Protocol Gateway", titleTh: "JITNA Protocol Gateway",
+                descEn: "Every agent interaction passes through JITNA RFC-001 before execution — structured, signed, and auditable across all 62 microservices.",
+                descTh: "ทุก Agent Interaction ผ่าน JITNA RFC-001 ก่อน Execution — มีโครงสร้าง, Signed และตรวจสอบได้ทั้ง 62 Microservices",
+                color: "#C4745B",
+              },
+            ].map((item, i) => (
+              <m.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="p-6 rounded-2xl border border-border bg-card">
+                <div className="w-2 h-8 rounded-full mb-4" style={{ backgroundColor: item.color }} />
+                <h3 className="text-base font-bold mb-2 text-foreground">{isTh ? item.titleTh : item.titleEn}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? item.descTh : item.descEn}</p>
+              </m.div>
+            ))}
+          </div>
         </div>
       </section>
 

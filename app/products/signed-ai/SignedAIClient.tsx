@@ -22,7 +22,7 @@ const pipeline = [
   { stage: "SIGNERS", color: "#C4745B", descEn: "All selected models independently process the same request — no cross-contamination.", descTh: "ทุกโมเดลที่เลือกประมวลผลคำขอเดียวกันอย่างอิสระ — ไม่มี Cross-Contamination" },
   { stage: "ATTESTATION", color: "#89B4C8", descEn: "Each response is scored across 8 dimensions: accuracy, completeness, consistency, relevance, safety, confidence, provenance, and timing.", descTh: "คะแนนคำตอบใน  8 มิติ: Accuracy, Completeness, Consistency, Relevance, Safety, Confidence, Provenance, Timing" },
   { stage: "CONSENSUS", color: "#B8A9C9", descEn: "Voting method (MAJORITY / WEIGHTED / RANKED / UNANIMOUS) determines final answer from signed responses.", descTh: "Voting Method (MAJORITY/WEIGHTED/RANKED/UNANIMOUS) ตัดสินคำตอบสุดท้ายจากคำตอบที่ Signed" },
-  { stage: "REPORT", color: "#9B7BB8", descEn: "Returns signed response with ED25519 signature, consensus score, model roster used, and full attestation breakdown.", descTh: "ส่งคืนคำตอบแบบ Signed พร้อม ED25519, Consensus Score, Model Roster และรายละเอียด Attestation" },
+  { stage: "REPORT", color: "#9B7BB8", descEn: "Returns ED25519-signed response (RFC\u00a08032 — 64-byte signature), consensus score, full model roster, and attestation breakdown. Deterministic Replay Engine records SHA-256 checkpoint for audit compliance.", descTh: "ส่งคืนคำตอบ ED25519-Signed (RFC\u00a08032 — 64-byte Signature), Consensus Score, Model Roster ครบและรายละเอียด Attestation Deterministic Replay Engine บันทึก SHA-256 Checkpoint สำหรับ Audit Compliance" },
 ]
 
 const pricingTiers = [
@@ -33,10 +33,10 @@ const pricingTiers = [
 ]
 
 const stats = [
-  { value: "99.7%", label: "Accuracy" },
+  { value: "99.7%", label: "Constitutional Accuracy" },
   { value: "0.3%", label: "Hallucination Rate" },
-  { value: "8", label: "Max LLMs" },
-  { value: "63/63", label: "Tests Passed" },
+  { value: "7", label: "HexaCore Models" },
+  { value: "4", label: "Voting Methods" },
 ]
 
 export default function SignedAIPage() {
@@ -59,13 +59,13 @@ export default function SignedAIPage() {
       <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
         <div className="max-w-3xl mx-auto space-y-5">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-medium" style={{ backgroundColor: "#7B9E8715", borderColor: "#7B9E8730", color: "#7B9E87" }}>
-            <ShieldCheck className="w-4 h-4" /> Verification API
+            <ShieldCheck className="w-4 h-4" /> 5th Genome · Verification API
           </span>
           <h1 className="text-5xl font-bold text-foreground">SignedAI</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             {isTh
-              ? "Multi-LLM Verification Consensus API — Cryptographically Signed Responses จาก LLMs สูงสุด 8 ตัว ลด Hallucination เหลือ 0.3% พร้อม Audit Trails"
-              : "Multi-LLM verification consensus API — cryptographically signed responses from up to 8 LLMs, reducing hallucination to 0.3% with complete audit trails."}
+              ? "Multi-LLM Verification Consensus API — Cryptographically Signed Responses จาก HexaCore 7 Models ลด Hallucination เหลือ 0.3% พร้อม Audit Trails"
+              : "Multi-LLM verification consensus API — cryptographically signed responses from HexaCore 7 Models, reducing hallucination to 0.3% with complete audit trails and ED25519 RFC\u00a08032 signing."}
           </p>
         </div>
       </section>
@@ -97,13 +97,18 @@ export default function SignedAIPage() {
           </h2>
           <p>
             {isTh
-              ? "LLMs แต่ละตัวมีข้อผิดพลาดเฉพาะ — ข้อจำกัดของ Training Data, Model Bias และ Hallucination Patterns SignedAI ใช้ Multi-LLM Consensus เพื่อ Cross-Verify Outputs ผ่าน LLMs สูงสุด 8 ตัว ลด Hallucination จาก 15% เหลือ 0.3%"
-              : "Individual LLMs have unique failure modes — training data cutoffs, model bias, and hallucination patterns. SignedAI uses multi-LLM consensus to cross-verify outputs across up to 8 LLMs, reducing hallucination from 15% to 0.3%."}
+              ? "SignedAI คือ 5th Genome ในระบบ RCT 7-Genome — ให้ Verification Infrastructure แก่ทุก Genome อื่น ทุก Output ของ ArtentAI, ทุกผลลัพธ์ของ Analysearch, ทุก Delta Engine Compression — ตรวจสอบได้ผ่าน SignedAI"
+              : "SignedAI is the 5th Genome in the RCT 7-Genome System. It provides verification infrastructure for all other Genomes — every ArtentAI output, every Analysearch result, every Delta Engine compression is certifiable through SignedAI."}
           </p>
           <p>
             {isTh
-              ? "ทุกคำตอบที่ตรวจสอบแล้วถูก Cryptographically Signed ด้วย ED25519 สร้าง Audit Trail ที่ไม่สามารถแก้ไข ทำให้เหมาะสำหรับ Regulated Industries ที่ต้อง Prove AI Decision Trail"
-              : "Every verified response is cryptographically signed using ED25519, creating an immutable audit trail. This is essential for regulated industries that require proof of AI decision trails."}
+              ? "LLMs แต่ละตัวมีข้อผิดพลาดเฉพาะ — ข้อจำกัดของ Training Data, Model Bias และ Hallucination Patterns SignedAI ใช้ Multi-LLM Consensus เพื่อ Cross-Verify Outputs ผ่าน HexaCore 7-Model Roster ลด Hallucination จาก 15% เหลือ 0.3%"
+              : "Individual LLMs have unique failure modes — training data cutoffs, model bias, and hallucination patterns. SignedAI uses multi-LLM consensus to cross-verify outputs across the HexaCore 7-model roster, reducing hallucination from 15% to 0.3%."}
+          </p>
+          <p>
+            {isTh
+              ? "ทุกคำตอบที่ตรวจสอบแล้วถูก Cryptographically Signed ด้วย ED25519 (RFC\u00a08032) สร้าง Audit Trail ที่ไม่สามารถแก้ไข เหมาะสำหรับ Regulated Industries ที่ต้อง Prove AI Decision Trail"
+              : "Every verified response is cryptographically signed using ED25519 (RFC\u00a08032), creating an immutable audit trail. Essential for regulated industries that require proof of AI decision trails."}
           </p>
         </div>
       </section>
@@ -130,6 +135,43 @@ export default function SignedAIPage() {
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? p.descTh : p.descEn}</p>
             </m.div>
           ))}
+        </div>
+      </section>
+
+      {/* Geopolitical Balance */}
+      <section className="bg-muted/30 py-16">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+            {isTh ? "ความสมดุลทางภูมิรัฐศาสตร์โดยการออกแบบ" : "Geopolitical Balance by Design"}
+          </h2>
+          <p className="text-sm text-muted-foreground mb-8 max-w-2xl">
+            {isTh
+              ? "SignedAI ไม่ใช่โซลูชันจาก Vendor เดียว HexaCore 7 Models ถูกกระจายอย่างตั้งใจใน 3 เขตภูมิรัฐศาสตร์ — ไม่มี Cloud Provider หรือเขตอำนาจศาลใดควบคุม Consensus Output"
+              : "SignedAI is not a 1-vendor solution. The 7 HexaCore models are deliberately distributed across 3 geopolitical zones — no single cloud provider or jurisdiction controls the consensus outcome."}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { zone: "3W", label: isTh ? "Western Infrastructure" : "Western Infrastructure", color: "#89B4C8", models: ["Claude Opus 4.6", "Gemini 3 Flash", "Grok 4.1 Fast"] },
+              { zone: "3E", label: isTh ? "Eastern / Alternative" : "Eastern / Alternative", color: "#7B9E87", models: ["Kimi K2.5", "MiniMax M2.1", "DeepSeek V3.2"] },
+              { zone: "1R", label: isTh ? "Regional Specialist" : "Regional Specialist", color: "#D4A853", models: ["Typhoon v2 70B (TH)"] },
+            ].map((z, i) => (
+              <m.div key={z.zone} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="p-5 rounded-2xl border-2 bg-card" style={{ borderColor: `${z.color}40`, background: `${z.color}08` }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-lg font-bold font-mono" style={{ color: z.color }}>{z.zone}</span>
+                  <span className="text-xs text-muted-foreground">{z.label}</span>
+                </div>
+                <ul className="space-y-1">
+                  {z.models.map((m) => (
+                    <li key={m} className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: z.color }} />
+                      {m}
+                    </li>
+                  ))}
+                </ul>
+              </m.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -161,9 +203,9 @@ export default function SignedAIPage() {
           {/* Model rows */}
           <div className="divide-y divide-border">
             {([
-              { model: "GPT-4o", confidence: 97, agree: true, noteEn: "Verified against ADA Guidelines 2024", noteTh: "ตรวจสอบแล้วตรงกับ ADA Guidelines 2024", color: "#10A37F" },
-              { model: "Claude 3.5 Sonnet", confidence: 94, agree: true, noteEn: "Confirmed — with weight-based dosing caveat", noteTh: "ยืนยัน พร้อมข้อแม้เรื่อง Weight-based dosing", color: "#D97706" },
-              { model: "Gemini 1.5 Pro", confidence: 91, agree: true, noteEn: "Aligned — recommends Endocrinologist consult", noteTh: "ตรงกัน — แนะนำ Endocrinologist consult เพิ่มเติม", color: "#4285F4" },
+              { model: "Claude Opus 4.6", confidence: 97, agree: true, noteEn: "Verified against ADA Guidelines 2024 — Supreme Architect (3W tier)", noteTh: "ตรวจสอบแล้วตรงกับ ADA Guidelines 2024 — Supreme Architect (3W Tier)", color: "#D97706" },
+              { model: "Kimi K2.5", confidence: 94, agree: true, noteEn: "Confirmed — with weight-based dosing caveat \u00b7 Lead Builder (3E tier)", noteTh: "ยืนยัน พร้อมข้อแม้เรื่อง Weight-based dosing \u00b7 Lead Builder (3E Tier)", color: "#10A37F" },
+              { model: "Typhoon v2 70B", confidence: 91, agree: true, noteEn: "Aligned — recommends Endocrinologist consult \u00b7 Regional Specialist (1R-TH)", noteTh: "ตรงกัน — แนะนำ Endocrinologist consult \u00b7 Regional Specialist (1R-TH)", color: "#4285F4" },
             ] as const).map((row, i) => (
               <m.div
                 key={row.model}
@@ -288,7 +330,7 @@ const verifier = new SignedAI({
 
 const result = await verifier.verify({
   prompt: "What is the capital of Thailand?",
-  models: ["gpt-4", "claude-3", "gemini"],
+  models: ["claude-opus-4.6", "kimi-k2.5", "typhoon-v2-70b"],
   threshold: 0.95
 });
 

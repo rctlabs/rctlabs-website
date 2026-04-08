@@ -9,12 +9,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale()
   return createBilingualMetadata(
     locale,
-    "SignedAI — Multi-LLM Verification Consensus API | 99.7% Accuracy",
-    "SignedAI — Multi-LLM Verification Consensus API | ความแม่นยำ 99.7%",
-    "Multi-LLM verification consensus API with cryptographically signed responses from up to 8 LLMs. Reduce hallucination to 0.3% with complete audit trails for regulated industries.",
-    "Multi-LLM Verification Consensus API พร้อม Cryptographic Signing จาก LLMs สูงสุด 8 ตัว ลด Hallucination เหลือ 0.3% พร้อม Audit Trails สำหรับอุตสาหกรรมที่มีการกำกับดูแล",
+    "SignedAI — 5th Genome · HexaCore 7-Model Verification API | ED25519 RFC 8032 | Constitutional Accuracy",
+    "SignedAI — 5th Genome · HexaCore 7-Model Verification API | Constitutional Accuracy",
+    "SignedAI is the 5th Genome in the RCT 7-Genome System. HexaCore 7-Model consensus with ED25519 RFC 8032 signing, 4 geopolitical voting zones (3W/3E/1R), and Constitutional Accuracy AI governance.",
+    "SignedAI คือ Genome ที่ 5 ใน RCT 7-Genome System — HexaCore 7-Model Consensus พร้อม ED25519 RFC 8032 Signing, 4 Voting Zones (3W/3E/1R) และ Constitutional Accuracy",
     "/products/signed-ai",
-    ["SignedAI", "multi-LLM verification", "AI consensus API", "cryptographic AI", "audit trail AI"]
+    ["SignedAI", "5th genome", "HexaCore 7 models", "multi-LLM verification", "ED25519 RFC 8032", "constitutional AI", "geopolitical AI balance", "AI consensus API"]
   )
 }
 
@@ -24,7 +24,7 @@ export default async function Page() {
     { name: "Products", url: `/products` },
     { name: "SignedAI", url: `/products/signed-ai` },
   ])
-  const productSchema = { "@context": "https://schema.org", "@type": "SoftwareApplication", "name": "SignedAI", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "description": "Multi-LLM verification consensus API. Reduces hallucination to 0.3% with cryptographic signing and complete audit trails.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "featureList": "Multi-LLM Consensus, Cryptographic Signing, 0.3% Hallucination Rate, Complete Audit Trails, 99.7% Accuracy", "url": `/products/signed-ai`, "publisher": { "@type": "Organization", "name": "RCT Labs", "url": SITE_URL } }
+  const productSchema = { "@context": "https://schema.org", "@type": "SoftwareApplication", "name": "SignedAI — 5th Genome Verification API", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "description": "5th Genome in the RCT 7-Genome System. HexaCore 7-Model consensus with ED25519 RFC 8032 signing, 4 geopolitical voting zones, and Constitutional Accuracy AI governance.", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "featureList": "HexaCore 7-Model Consensus, ED25519 RFC 8032 Signing, Constitutional Accuracy, 4 Geopolitical Voting Zones (3W/3E/1R), Deterministic Replay Engine, 5th Genome in 7-Genome System", "url": `/products/signed-ai`, "publisher": { "@type": "Organization", "name": "RCT Labs", "url": SITE_URL } }
   return (
     <>
       <script type={"application/ld+json"} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />

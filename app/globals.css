@@ -785,6 +785,7 @@
 .homepage-global-backdrop__mesh {
   position: absolute;
   inset: 0;
+  animation: backdrop-mesh-enter 600ms 0ms ease both;
   background:
     linear-gradient(180deg, rgba(247,241,235,0.3), rgba(247,241,235,0.06) 24%, rgba(247,241,235,0.22) 100%),
     radial-gradient(circle at 14% 12%, rgba(212, 168, 83, 0.08), transparent 28%),
@@ -804,8 +805,7 @@
   position: absolute;
   border-radius: 9999px;
   filter: blur(48px);
-  opacity: 0.38;
-  animation: homepage-ambient-drift-slow 28s ease-in-out infinite;
+  /* animation declared per-variant below for staggered directional entry */
 }
 
 .homepage-global-backdrop__orb--amber {
@@ -814,6 +814,10 @@
   width: 24rem;
   height: 24rem;
   background: radial-gradient(circle, rgba(212, 168, 83, 0.16), rgba(212, 168, 83, 0.03) 56%, transparent 76%);
+  animation:
+    backdrop-orb-enter    700ms    0ms  ease-out  both,
+    backdrop-amber-swoop  980ms    0ms  cubic-bezier(0.22, 1, 0.36, 1) both,
+    backdrop-amber-drift   36s   980ms  ease-in-out infinite;
 }
 
 .homepage-global-backdrop__orb--sage {
@@ -822,6 +826,10 @@
   width: 26rem;
   height: 26rem;
   background: radial-gradient(circle, rgba(123, 158, 135, 0.13), rgba(123, 158, 135, 0.03) 56%, transparent 76%);
+  animation:
+    backdrop-orb-enter   700ms  120ms  ease-out  both,
+    backdrop-sage-swoop  980ms  120ms  cubic-bezier(0.22, 1, 0.36, 1) both,
+    backdrop-sage-drift   42s  1100ms  ease-in-out infinite;
 }
 
 .homepage-global-backdrop__orb--terra {
@@ -830,6 +838,10 @@
   width: 22rem;
   height: 22rem;
   background: radial-gradient(circle, rgba(196, 116, 91, 0.1), rgba(196, 116, 91, 0.025) 56%, transparent 76%);
+  animation:
+    backdrop-orb-enter    700ms  240ms  ease-out  both,
+    backdrop-terra-swoop  980ms  240ms  cubic-bezier(0.22, 1, 0.36, 1) both,
+    backdrop-terra-drift   48s  1220ms  ease-in-out infinite;
 }
 
 .dark .homepage-global-backdrop__orb--amber {
@@ -1000,6 +1012,50 @@
   }
 }
 
+@keyframes backdrop-orb-enter {
+  from { opacity: 0; }
+  to   { opacity: 0.38; }
+}
+@keyframes backdrop-mesh-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Backdrop Orb — Directional Swoop Entry (opacity via backdrop-orb-enter above) ─── */
+@keyframes backdrop-amber-swoop {
+  from { transform: translate3d(-72px, 32px, 0) scale(0.84); }
+  to   { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes backdrop-sage-swoop {
+  from { transform: translate3d(72px, -28px, 0) scale(0.84); }
+  to   { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes backdrop-terra-swoop {
+  from { transform: translate3d(-48px, 56px, 0) scale(0.86); }
+  to   { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* ── Backdrop Orb — Independent Organic Drift (desync: 36s / 42s / 48s) ──── */
+@keyframes backdrop-amber-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  20%  { transform: translate3d(14px, -16px, 0) scale(1.04); }
+  50%  { transform: translate3d(6px, -8px, 0) scale(1.06); }
+  75%  { transform: translate3d(-12px, -20px, 0) scale(1.02); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes backdrop-sage-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  30%  { transform: translate3d(-16px, -12px, 0) scale(1.05); }
+  60%  { transform: translate3d(-6px, 8px, 0) scale(1.02); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes backdrop-terra-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  35%  { transform: translate3d(18px, -10px, 0) scale(1.05); }
+  65%  { transform: translate3d(-8px, 6px, 0) scale(0.97); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
 /* ── About Page Backdrop — CSS-only compositor-thread animations ─── */
 @keyframes about-orb-drift-1 {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
@@ -1082,13 +1138,18 @@
 .homepage-ambient-orb {
   border-radius: 9999px;
   filter: blur(36px);
-  opacity: 0.54;
-  animation: homepage-ambient-drift 18s ease-in-out infinite;
+  animation: ambient-orb-enter 700ms 0ms ease-out both,
+             homepage-ambient-drift 18s 700ms ease-in-out infinite;
 }
 
 .homepage-ambient-orb--slow {
-  animation-name: homepage-ambient-drift-slow;
-  animation-duration: 24s;
+  animation: ambient-orb-enter 700ms 100ms ease-out both,
+             homepage-ambient-drift-slow 24s 800ms ease-in-out infinite;
+}
+
+@keyframes ambient-orb-enter {
+  from { opacity: 0; }
+  to   { opacity: 0.54; }
 }
 
 .homepage-ambient-orb--amber {
@@ -1151,6 +1212,11 @@
 .footer-ambient-orb {
   animation: homepage-ambient-drift 22s ease-in-out infinite;
   opacity: 0.46;
+}
+
+@keyframes hero-arch-fade-up {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes hero-architecture-float-cluster {
@@ -1232,13 +1298,13 @@
 }
 
 .hero-architecture-cluster {
-  animation: hero-architecture-float-cluster 6.8s ease-in-out infinite;
+  animation: hero-arch-fade-up 560ms 140ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-cluster 6.8s ease-in-out infinite;
   transform: translate3d(calc(var(--hero-shift-x) * 0.2), calc(var(--hero-shift-y) * 0.18), 0);
   transition: transform 280ms var(--hero-architecture-ease);
 }
 
 .hero-architecture-aura {
-  animation: hero-architecture-float-aura 6.2s ease-in-out infinite;
+  animation: hero-arch-fade-up 560ms 200ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-aura 6.2s ease-in-out infinite;
   transform: translate3d(calc(var(--hero-shift-x) * 0.08), calc(var(--hero-shift-y) * 0.08), 0);
 }
 
@@ -1251,49 +1317,49 @@
 }
 
 .hero-architecture-core__body {
-  animation: hero-architecture-float-a 5.8s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 240ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-a 5.8s ease-in-out infinite;
   transform: translate3d(calc(var(--hero-shift-x) * 0.18), calc(var(--hero-shift-y) * 0.18), 0);
 }
 
 .hero-architecture-node--1 {
-  animation: hero-architecture-float-a 6.1s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 280ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-a 6.1s ease-in-out infinite;
 }
 
 .hero-architecture-node--2 {
-  animation: hero-architecture-float-b 6.4s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 360ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-b 6.4s ease-in-out infinite;
 }
 
 .hero-architecture-node--3 {
-  animation: hero-architecture-float-c 6.7s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 440ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-c 6.7s ease-in-out infinite;
 }
 
 .hero-architecture-badge--1 {
-  animation: hero-architecture-float-b 6.5s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 320ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-b 6.5s ease-in-out infinite;
 }
 
 .hero-architecture-badge--2 {
-  animation: hero-architecture-float-a 6.9s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 400ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-a 6.9s ease-in-out infinite;
 }
 
 .hero-architecture-badge--3 {
-  animation: hero-architecture-float-c 7.1s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 480ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-c 7.1s ease-in-out infinite;
 }
 
 .hero-architecture-metrics {
-  animation: hero-architecture-float-a 6.4s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 520ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-a 6.4s ease-in-out infinite;
   transform: translate3d(calc(var(--hero-shift-x) * 0.12), calc(var(--hero-shift-y) * 0.16), 0);
 }
 
 .hero-architecture-metric--1 {
-  animation: hero-architecture-float-a 5.9s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 560ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-a 5.9s ease-in-out infinite;
 }
 
 .hero-architecture-metric--2 {
-  animation: hero-architecture-float-b 6.2s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 600ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-b 6.2s ease-in-out infinite;
 }
 
 .hero-architecture-metric--3 {
-  animation: hero-architecture-float-c 6.5s ease-in-out infinite;
+  animation: hero-arch-fade-up 480ms 640ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-architecture-float-c 6.5s ease-in-out infinite;
 }
 
 .hero-architecture-panel:hover .hero-architecture-glow,
@@ -1351,7 +1417,6 @@
 @media (prefers-reduced-motion: reduce) {
   .navbar-ambient-orb,
   .footer-ambient-orb,
-  .homepage-ambient-orb,
   .main-page-orchestrated-field__spotlight,
   .hero-architecture-cluster,
   .hero-architecture-aura,
@@ -1361,6 +1426,25 @@
   .hero-architecture-metrics,
   .hero-architecture-metric {
     animation: none;
+  }
+
+  /* Ambient orbs: skip drift but keep at final opacity */
+  .homepage-ambient-orb,
+  .homepage-ambient-orb--slow {
+    animation: none;
+    opacity: 0.54;
+  }
+
+  .homepage-global-backdrop__mesh {
+    animation: none;
+    opacity: 1;
+  }
+
+  .homepage-global-backdrop__orb--amber,
+  .homepage-global-backdrop__orb--sage,
+  .homepage-global-backdrop__orb--terra {
+    animation: none;
+    opacity: 0.38;
   }
 }
 
@@ -1394,7 +1478,16 @@
 
   .homepage-ambient-orb {
     filter: blur(44px);
-    opacity: 0.38;
+    animation: ambient-orb-enter-mobile 700ms 0ms ease-out both,
+               homepage-ambient-drift 18s 700ms ease-in-out infinite;
+  }
+  .homepage-ambient-orb--slow {
+    animation: ambient-orb-enter-mobile 700ms 100ms ease-out both,
+               homepage-ambient-drift-slow 24s 800ms ease-in-out infinite;
+  }
+  @keyframes ambient-orb-enter-mobile {
+    from { opacity: 0; }
+    to   { opacity: 0.38; }
   }
 
   .footer-ambient-orb,
@@ -1423,7 +1516,16 @@
   }
 
   .homepage-ambient-orb {
-    opacity: 0.34;
+    animation: ambient-orb-enter-coarse 700ms 0ms ease-out both,
+               homepage-ambient-drift 18s 700ms ease-in-out infinite;
+  }
+  .homepage-ambient-orb--slow {
+    animation: ambient-orb-enter-coarse 700ms 100ms ease-out both,
+               homepage-ambient-drift-slow 24s 800ms ease-in-out infinite;
+  }
+  @keyframes ambient-orb-enter-coarse {
+    from { opacity: 0; }
+    to   { opacity: 0.34; }
   }
 
   .main-page-orchestrated-field__guide--horizontal {

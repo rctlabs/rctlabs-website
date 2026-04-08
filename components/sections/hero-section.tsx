@@ -18,7 +18,9 @@ import { SITE_ALGORITHM_COUNT, SITE_LAYER_COUNT, SITE_HEXACORE_COUNT, SITE_UPTIM
 
 const HeroArchitectureVisual = dynamic(() => import("@/components/sections/hero-architecture-visual"), {
   loading: () => (
-    <div className="h-112 w-full rounded-4xl border border-[#e6ddd0] bg-white/50 shadow-[0_20px_48px_rgba(84,61,31,0.08)] dark:border-border dark:bg-card/45" />
+    <div className="mx-auto w-full max-w-105 sm:max-w-115 lg:ml-auto lg:max-w-121">
+      <div className="aspect-[1/1.04] sm:aspect-5/4 w-full rounded-4xl border border-[#e6ddd0] bg-white/50 shadow-[0_20px_48px_rgba(84,61,31,0.08)] dark:border-border dark:bg-card/45" />
+    </div>
   ),
 })
 
@@ -41,7 +43,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
   const localePrefix = getLocalePrefix(locale)
   const prefersReducedMotion = useReducedMotion()
   const isDark = mounted && resolvedTheme === "dark"
-  const deferredHeroAssetsReady = useIdleActivation({ timeoutMs: 1800 })
+  const deferredHeroAssetsReady = useIdleActivation({ timeoutMs: 300 })
   const shouldAnimate = !prefersReducedMotion
   const statCardSpotlight = useCardSpotlight<HTMLDivElement>()
 
@@ -59,7 +61,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
   ]
 
   return (
-    <section id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(44rem,100svh)] items-center overflow-hidden bg-[#f7f1eb] dark:bg-[#0D0D0D]">
+    <section id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(44rem,100svh)] items-center overflow-hidden">
       {/* Hero image (hidden on CDN error) */}
       {!heroBgError && deferredHeroAssetsReady && (
         <div className="absolute inset-0">
@@ -74,13 +76,16 @@ export default function HeroSection({ locale }: HeroSectionProps) {
           />
         </div>
       )}
-      {/* Gradient overlay blends image into section background */}
-      <div
+      {/* Gradient overlay blends image into section background — fades in with body */}
+      <m.div
         className={`absolute inset-0 ${
           isDark
             ? "bg-linear-to-r from-[#0D0D0D]/96 via-[#0D0D0D]/84 to-[#0D0D0D]/56"
             : "bg-linear-to-r from-[#f7f1eb]/88 via-[#f7f1eb]/74 to-[#f7f1eb]/42"
         }`}
+        initial={shouldAnimate ? { opacity: 0 } : false}
+        animate={shouldAnimate ? { opacity: 1 } : undefined}
+        transition={shouldAnimate ? { duration: 0.7, delay: 0.1, ease: "easeOut" } : undefined}
       />
       <div className="homepage-ambient-layer absolute inset-0">
         <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute -left-24 top-[16%] h-72 w-72 rounded-full" />
@@ -237,19 +242,21 @@ export default function HeroSection({ locale }: HeroSectionProps) {
             className="group relative mx-auto w-full max-w-105 lg:-mr-2 lg:ml-0 lg:max-w-none"
           >
             {deferredHeroAssetsReady ? <HeroArchitectureVisual /> : (
-              <div className={`h-112 w-full rounded-4xl border shadow-[0_20px_48px_rgba(84,61,31,0.08)] overflow-hidden ${isDark ? "border-border bg-card/45" : "border-[#e6ddd0] bg-white/50"}`}>
-                {/* Skeleton: orbit label hints shown while HeroArchitectureVisual loads */}
-                <div className="flex h-full flex-col items-center justify-center gap-3 px-8 opacity-40">
-                  <div className={`h-2 w-24 animate-pulse rounded-full ${isDark ? "bg-warm-amber/30" : "bg-warm-amber/40"}`} />
-                  <div className="grid grid-cols-2 gap-2 w-full max-w-50">
-                    {["Intent", "Verify", "Memory", "Kernel"].map((label) => (
-                      <div key={label} className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 ${isDark ? "border-border/60 bg-card/60" : "border-[#e6ddd0] bg-warm-sand/50"}`}>
-                        <div className={`h-1.5 w-1.5 rounded-full bg-warm-amber/60`} />
-                        <span className={`text-[10px] font-medium ${isDark ? "text-warm-muted" : "text-warm-gray"}`}>{label}</span>
-                      </div>
-                    ))}
+              <div className="mx-auto w-full max-w-105 sm:max-w-115 lg:ml-auto lg:max-w-121">
+                <div className={`aspect-[1/1.04] sm:aspect-5/4 w-full rounded-4xl border shadow-[0_20px_48px_rgba(84,61,31,0.08)] overflow-hidden ${isDark ? "border-border bg-card/45" : "border-[#e6ddd0] bg-white/50"}`}>
+                  {/* Skeleton: orbit label hints shown while HeroArchitectureVisual loads */}
+                  <div className="flex h-full flex-col items-center justify-center gap-3 px-8 opacity-40">
+                    <div className={`h-2 w-24 animate-pulse rounded-full ${isDark ? "bg-warm-amber/30" : "bg-warm-amber/40"}`} />
+                    <div className="grid grid-cols-2 gap-2 w-full max-w-50">
+                      {["Intent", "Verify", "Memory", "Kernel"].map((label) => (
+                        <div key={label} className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 ${isDark ? "border-border/60 bg-card/60" : "border-[#e6ddd0] bg-warm-sand/50"}`}>
+                          <div className={`h-1.5 w-1.5 rounded-full bg-warm-amber/60`} />
+                          <span className={`text-[10px] font-medium ${isDark ? "text-warm-muted" : "text-warm-gray"}`}>{label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={`h-1.5 w-16 animate-pulse rounded-full ${isDark ? "bg-warm-sage/20" : "bg-warm-sage/30"}`} />
                   </div>
-                  <div className={`h-1.5 w-16 animate-pulse rounded-full ${isDark ? "bg-warm-sage/20" : "bg-warm-sage/30"}`} />
                 </div>
               </div>
             )}
