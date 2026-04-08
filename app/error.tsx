@@ -27,13 +27,13 @@ export default function Error({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={reset}
-            className="px-6 py-2.5 rounded-xl bg-warm-sage text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+            className="px-6 py-3 rounded-xl bg-warm-sage text-white text-sm font-semibold hover:opacity-90 transition-opacity"
           >
             Try Again
           </button>
           <Link
             href="/"
-            className="px-6 py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
+            className="px-6 py-3 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
           >
             Go Home
           </Link>
