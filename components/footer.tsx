@@ -294,7 +294,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
               onClick={toggleLanguage}
               suppressHydrationWarning
               className="flex items-center gap-1.5 px-2.5 py-1 min-h-11 min-w-11 rounded-lg border text-[11px] font-semibold transition-colors text-warm-secondary hover:text-warm-charcoal border-warm-light-gray hover:border-warm-gray/40 bg-white hover:bg-warm-sand/60 dark:text-[#777] dark:hover:text-[#DDD] dark:border-[#333] dark:hover:border-[#555] dark:bg-[#1a1a1a] dark:hover:bg-[#222]"
-              aria-label={language === "en" ? "Switch to Thai / เปลี่ยนภาษา" : "Switch to English"}
+              aria-label={language === "en" ? "EN – Switch to Thai / เปลี่ยนภาษา" : "TH – Switch to English"}
             >
               <Globe size={11} className="shrink-0" />
               <span className="tracking-wide">{language === "en" ? "EN" : "TH"}</span>

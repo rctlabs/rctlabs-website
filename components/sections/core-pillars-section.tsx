@@ -15,6 +15,7 @@ type CorePillarsSectionProps = {
 
 type PillarCardProps = {
   locale: "en" | "th"
+  index: number
   pillar: {
     stat: string
     title: string
@@ -28,7 +29,7 @@ type PillarCardProps = {
   }
 }
 
-function PillarCard({ locale, pillar }: PillarCardProps) {
+function PillarCard({ locale, pillar, index }: PillarCardProps) {
   const [hovered, setHovered] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   const cardSpotlight = useCardSpotlight<HTMLAnchorElement>()
@@ -54,9 +55,12 @@ function PillarCard({ locale, pillar }: PillarCardProps) {
 
   return (
     <m.div
-      whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.007 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 24, scale: 0.97 }}
+      whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.44, delay: index * 0.09, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.007, transition: { type: "spring", stiffness: 260, damping: 22, mass: 0.7 } }}
       whileTap={prefersReducedMotion ? undefined : { scale: 0.995 }}
-      transition={{ type: "spring", stiffness: 260, damping: 22, mass: 0.7 }}
       className="h-full"
     >
       <Link
@@ -191,18 +195,24 @@ export default function CorePillarsSection({ locale }: CorePillarsSectionProps) 
       </div>
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-9 text-center">
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-9 text-center"
+        >
           <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#7A5910] dark:text-warm-amber">
             {locale === "en" ? "Core Intelligence Pillars" : "เสาหลักปัญญาประดิษฐ์"}
           </p>
           <h2 className={`text-2xl font-bold text-foreground sm:text-3xl ${locale === "th" ? "font-thai" : "font-display"}`}>
             {locale === "en" ? "Four Engines. One Unified System." : "4 เครื่องยนต์. ระบบเดียวที่สมบูรณ์."}
           </h2>
-        </div>
+        </m.div>
 
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
-          {pillars.map((pillar) => (
-            <PillarCard key={pillar.title} locale={locale} pillar={pillar} />
+          {pillars.map((pillar, i) => (
+            <PillarCard key={pillar.title} locale={locale} pillar={pillar} index={i} />
           ))}
         </div>
 

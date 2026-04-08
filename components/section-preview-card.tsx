@@ -52,7 +52,7 @@ export default function SectionPreviewCard({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay }}
+      transition={{ duration: 0.44, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4, scale: 1.006, transition: { duration: 0.24 } }}
       whileTap={{ scale: 0.996 }}
       className="h-full"

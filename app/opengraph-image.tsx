@@ -24,25 +24,67 @@ export default async function OgImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)",
+          background: "linear-gradient(135deg, #0D0D0D 0%, #161210 50%, #1a1510 100%)",
           fontFamily: "system-ui, sans-serif",
         }}
       >
-        {/* Logo circle */}
+        {/* Orbital logo mark — mirrors RCTicon.svg structure: outer ring + orbital ellipse + center mark */}
         <div
           style={{
-            width: 120,
-            height: 120,
-            borderRadius: 60,
-            background: "linear-gradient(135deg, #f59e0b, #d97706)",
+            position: "relative",
+            width: 116,
+            height: 116,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             marginBottom: 32,
-            boxShadow: "0 0 60px rgba(245,158,11,0.3)",
           }}
         >
-          <span style={{ fontSize: 56, fontWeight: 800, color: "#0a0a0a" }}>R</span>
+          {/* Outer ring */}
+          <div
+            style={{
+              position: "absolute",
+              width: 116,
+              height: 116,
+              borderRadius: "50%",
+              border: "2.5px solid #D4A953",
+              boxShadow: "0 0 40px rgba(212,169,83,0.35), inset 0 0 30px rgba(212,169,83,0.06)",
+            }}
+          />
+          {/* Orbital equatorial ellipse */}
+          <div
+            style={{
+              position: "absolute",
+              width: 116,
+              height: 46,
+              borderRadius: "50%",
+              border: "2px solid #D4A953",
+              opacity: 0.65,
+              transform: "rotate(-18deg)",
+            }}
+          />
+          {/* Secondary tilted ellipse */}
+          <div
+            style={{
+              position: "absolute",
+              width: 60,
+              height: 116,
+              borderRadius: "50%",
+              border: "1.5px solid #D4A953",
+              opacity: 0.35,
+              transform: "rotate(12deg)",
+            }}
+          />
+          {/* Center mark */}
+          <div
+            style={{
+              width: 22,
+              height: 22,
+              borderRadius: "50%",
+              background: "#D4A953",
+              boxShadow: "0 0 16px rgba(212,169,83,0.6)",
+            }}
+          />
         </div>
 
         {/* Title */}

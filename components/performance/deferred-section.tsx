@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, type ReactNode } from "react"
+import { AnimatePresence, m } from "framer-motion"
 import { useIdleActivation } from "@/hooks/use-idle-activation"
 
 interface DeferredSectionProps {
@@ -48,16 +49,28 @@ export function DeferredSection({
 
   return (
     <div ref={wrapperRef}>
-      {shouldRender ? (
-        children
-      ) : (
-        <div
-          aria-hidden="true"
-          className={`relative overflow-hidden rounded-[28px] border border-border/60 bg-white/55 dark:bg-card/45 ${minHeightClassName}`}
-        >
-          <div className="absolute inset-0 animate-pulse bg-[linear-gradient(135deg,rgba(255,255,255,0.58),rgba(247,241,235,0.2))] dark:bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))]" />
-        </div>
-      )}
+      <AnimatePresence mode="wait">
+        {shouldRender ? (
+          <m.div
+            key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.22 }}
+          >
+            {children}
+          </m.div>
+        ) : (
+          <m.div
+            key="skeleton"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            aria-hidden="true"
+            className={`relative overflow-hidden rounded-[28px] border border-border/60 bg-white/55 dark:bg-card/45 ${minHeightClassName}`}
+          >
+            <div className="absolute inset-0 animate-pulse bg-[linear-gradient(135deg,rgba(255,255,255,0.58),rgba(247,241,235,0.2))] dark:bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))]" />
+          </m.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

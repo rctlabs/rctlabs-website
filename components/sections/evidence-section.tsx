@@ -196,7 +196,7 @@ export default function EvidenceSection() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.50, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-12 lg:mb-16"
         >
           <span className="inline-flex items-center gap-1.5 mb-4 rounded-full border border-[#eadfd2] bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground shadow-[0_8px_18px_rgba(84,61,31,0.04)] dark:border-border/70 dark:bg-card/75">
@@ -238,7 +238,7 @@ export default function EvidenceSection() {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeUp}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
+                transition={{ duration: 0.44, delay: i * 0.10, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.008 }}
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.996 }}
                 className="main-page-reactive-card group relative flex h-full flex-col rounded-3xl border border-border bg-white/90 p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/30 hover:bg-white dark:bg-card/90 dark:hover:bg-card"
@@ -314,7 +314,7 @@ export default function EvidenceSection() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.50, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="text-center text-xs font-semibold uppercase tracking-widest mb-6 text-muted-foreground">
             {isTh ? "เทคโนโลยีที่รองรับ" : "Compatible Technologies"}

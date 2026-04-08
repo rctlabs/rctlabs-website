@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { m, useReducedMotion } from "framer-motion"
 import { DesktopNav } from "@/components/navigation/desktop-nav"
 import { UtilityActions } from "@/components/navigation/utility-actions"
 import { useNavAnalytics } from "@/components/navigation/use-nav-analytics"
@@ -31,7 +32,6 @@ const MobileNavDrawer = dynamic(
 )
 
 const LOGO_HORIZONTAL = "/RCTLogo-horizontal.svg"
-const LOGO_MARK = "/RCTicon.svg"
 
 interface NavbarProps {
   variant?: "default" | "article"
@@ -61,6 +61,7 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
   const localePrefix = getLocalePrefix(locale)
   const localHref = (href: string) => `${localePrefix}${href}`
   const isDark = (mounted ? resolvedTheme : "light") === "dark"
+  const prefersReducedMotion = useReducedMotion()
   const searchData = useMemo(() => (searchPrepared ? buildSearchIndex(locale) : []), [locale, searchPrepared])
 
   const prepareAndOpenSearch = () => {
@@ -261,7 +262,12 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
   }
 
   return (
-    <header role="banner">
+    <m.header
+      role="banner"
+      initial={prefersReducedMotion ? undefined : { opacity: 0, y: -16 }}
+      animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.40, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+    >
       <nav
         className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
           isArticleVariant
@@ -303,7 +309,7 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
               aria-label="RCT Ecosystem Home"
             >
               <Image
-                src={LOGO_MARK}
+                src={mounted && isDark ? "/RCTicon.svg" : "/RCTicon-lightVer.svg"}
                 alt="RCT"
                 width={32}
                 height={32}
@@ -375,6 +381,6 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
 
       {searchOpen ? <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} searchData={searchData} /> : null}
       {shortcutsOpen ? <KeyboardShortcutsDialog onOpenSearch={prepareAndOpenSearch} /> : null}
-    </header>
+    </m.header>
   )
 }
