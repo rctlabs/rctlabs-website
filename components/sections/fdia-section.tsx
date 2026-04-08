@@ -120,7 +120,7 @@ export default function FDIASection() {
               whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
               whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.004 }}
               viewport={{ once: true }}
-              transition={prefersReducedMotion ? undefined : { duration: 0.28, delay: index * 0.04 }}
+              transition={prefersReducedMotion ? undefined : { duration: 0.44, delay: index * 0.09, ease: [0.22, 1, 0.36, 1] }}
               className="main-page-reactive-surface rounded-[20px] border border-[rgba(176,150,111,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.72),rgba(250,244,235,0.56))] p-4 dark:bg-[linear-gradient(180deg,rgba(32,28,25,0.92),rgba(24,22,21,0.94))]"
             >
               <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#7A5910] dark:text-warm-amber">{card.eyebrow}</div>
@@ -134,13 +134,13 @@ export default function FDIASection() {
           {stages.map((stage, i) => (
             <React.Fragment key={stage.letter}>
               <m.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                 {...cardSpotlight}
                 whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                 whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.01 }}
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.995 }}
                 viewport={{ once: true }}
-                transition={prefersReducedMotion ? undefined : { duration: 0.3, delay: i * 0.04 }}
+                transition={prefersReducedMotion ? undefined : { duration: 0.44, delay: i * 0.09, ease: [0.22, 1, 0.36, 1] }}
                 className="main-page-reactive-card group flex-1 rounded-[20px] border border-[rgba(176,150,111,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.72),rgba(250,244,235,0.56))] p-3.5 transition-[box-shadow,transform,background-color] duration-200 hover:bg-[rgba(255,251,245,0.84)] dark:bg-[linear-gradient(180deg,rgba(32,28,25,0.92),rgba(24,22,21,0.94))] dark:hover:bg-[linear-gradient(180deg,rgba(38,32,28,0.96),rgba(27,24,22,0.98))]"
               >
                 <div className="flex items-center gap-2.5 mb-2">
@@ -174,7 +174,7 @@ export default function FDIASection() {
               whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.01 }}
               whileTap={prefersReducedMotion ? undefined : { scale: 0.995 }}
               viewport={{ once: true }}
-              transition={prefersReducedMotion ? undefined : { duration: 0.3, delay: i * 0.04 }}
+              transition={prefersReducedMotion ? undefined : { duration: 0.44, delay: i * 0.09, ease: [0.22, 1, 0.36, 1] }}
               className="main-page-reactive-card group rounded-[20px] border border-[rgba(176,150,111,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.72),rgba(250,244,235,0.56))] p-3.5 transition-[box-shadow,transform,background-color] duration-200 hover:bg-[rgba(255,251,245,0.84)] dark:bg-[linear-gradient(180deg,rgba(32,28,25,0.92),rgba(24,22,21,0.94))] dark:hover:bg-[linear-gradient(180deg,rgba(38,32,28,0.96),rgba(27,24,22,0.98))]"
             >
               <div className="flex items-center gap-2.5 mb-2">
@@ -228,7 +228,7 @@ export default function FDIASection() {
             initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
             whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={prefersReducedMotion ? undefined : { duration: 0.32 }}
+            transition={prefersReducedMotion ? undefined : { duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
             className="w-full max-w-100"
           >
             <FDIAExplorerDialog

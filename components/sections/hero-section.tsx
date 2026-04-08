@@ -2,10 +2,10 @@
 
 import dynamic from "next/dynamic"
 import Image from "next/image"
-import { m, useInView, useReducedMotion } from "framer-motion"
+import { m, useReducedMotion } from "framer-motion"
 import { ArrowRight, ArrowDown } from "lucide-react"
 import Link from "next/link"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { getLocalePrefix } from "@/lib/i18n"
@@ -28,7 +28,6 @@ const HeroAnimatedBackground = dynamic(() => import("@/components/ui/hero-animat
 })
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
-const LOGO_MARK = "/RCTicon.svg"
 
 type HeroSectionProps = {
   locale: "en" | "th"
@@ -40,12 +39,10 @@ export default function HeroSection({ locale }: HeroSectionProps) {
   const mounted = useMounted()
   const [heroBgError, setHeroBgError] = useState(false)
   const localePrefix = getLocalePrefix(locale)
-  const heroRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(heroRef, { margin: "-100px" })
   const prefersReducedMotion = useReducedMotion()
   const isDark = mounted && resolvedTheme === "dark"
   const deferredHeroAssetsReady = useIdleActivation({ timeoutMs: 1800 })
-  const shouldAnimate = !prefersReducedMotion && isInView
+  const shouldAnimate = !prefersReducedMotion
   const statCardSpotlight = useCardSpotlight<HTMLDivElement>()
 
   const scrollTo = (id: string) => {
@@ -61,21 +58,8 @@ export default function HeroSection({ locale }: HeroSectionProps) {
     { value: SITE_UPTIME.replace(" SLA", ""), sublabel: "SLA", label: t("hero.stat.uptime"), iconSrc: pixelIcons.cpu },
   ]
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.035, delayChildren: 0.01 },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 16 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.24 } },
-  }
-
   return (
-    <section ref={heroRef} id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(44rem,100svh)] items-center overflow-hidden bg-[#f7f1eb] dark:bg-[#0D0D0D]">
+    <section id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(44rem,100svh)] items-center overflow-hidden bg-[#f7f1eb] dark:bg-[#0D0D0D]">
       {/* Hero image (hidden on CDN error) */}
       {!heroBgError && deferredHeroAssetsReady && (
         <div className="absolute inset-0">
@@ -117,20 +101,17 @@ export default function HeroSection({ locale }: HeroSectionProps) {
       ) : null}
       <div className="relative z-10 mx-auto w-full max-w-300 px-4 pt-20 pb-14 sm:px-6 sm:pb-16 lg:px-8 lg:pt-24 lg:pb-20">
         <div className="grid items-center gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(374px,484px)] lg:gap-8 xl:grid-cols-[minmax(0,1.01fr)_minmax(394px,484px)]">
-          <m.div
-            variants={shouldAnimate ? containerVariants : undefined}
-            initial={shouldAnimate ? "hidden" : undefined}
-            animate={shouldAnimate ? "visible" : undefined}
-            className="space-y-7 lg:space-y-8"
-          >
+          <div className="space-y-7 lg:space-y-8">
             <m.div
-              variants={itemVariants}
+              initial={shouldAnimate ? { opacity: 0, y: 12, scale: 0.96 } : false}
+              animate={shouldAnimate ? { opacity: 1, y: 0, scale: 1 } : undefined}
+              transition={shouldAnimate ? { duration: 0.36, delay: 0.18, ease: [0.22, 1, 0.36, 1] } : undefined}
               className={`inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border shadow-sm ${
                 isDark ? "bg-card/80 border-border" : "border-[#e6ddd0] bg-white/96 shadow-[0_10px_24px_rgba(84,61,31,0.05)]"
               }`}
             >
               <OptimizedImage
-                src={LOGO_MARK}
+                src={isDark ? "/RCTicon.svg" : "/RCTicon-lightVer.svg"}
                 alt="RCT Ecosystem Logo"
                 containerClassName="w-5 h-5"
                 className=""
@@ -143,25 +124,41 @@ export default function HeroSection({ locale }: HeroSectionProps) {
               <div className="h-1.5 w-1.5 rounded-full bg-warm-sage" />
             </m.div>
 
-            <m.div variants={itemVariants} className="space-y-4 lg:space-y-5">
-              <h1 className={`text-4xl font-bold tracking-[-0.03em] leading-[1.12] sm:text-5xl lg:text-[56px] xl:text-[58px] ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
-                {t("hero.title.line1")}
-                <br />
-                <span className="font-display font-semibold text-warm-amber">{t("hero.title.line2")}</span>
-                <br />
-                {t("hero.title.line3")}
-              </h1>
-              <p className={`max-w-xl text-lg leading-relaxed sm:text-xl ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-pale/82" : "text-warm-charcoal/72"}`}>
-                {t("hero.subtitle")}
-              </p>
-              <p className="sr-only">
-                {language === "th"
-                  ? "RCT Ecosystem คือระบบปฏิบัติการ AI แบบรัฐธรรมนูญ 10 ชั้น ใช้ FDIA gating, HexaCore 7 โมเดล และ SignedAI consensus เพื่อลด AI hallucination เหลือ 0.3%"
-                  : "RCT Ecosystem is a 10-layer Constitutional AI Operating System — using FDIA gating, 7-model HexaCore routing, and SignedAI consensus to reduce AI hallucination to 0.3%."}
-              </p>
-            </m.div>
+            <div className="space-y-4 lg:space-y-5">
+              <m.div
+                initial={shouldAnimate ? { y: 20 } : false}
+                animate={shouldAnimate ? { y: 0 } : undefined}
+                transition={shouldAnimate ? { duration: 0.48, delay: 0.34, ease: [0.22, 1, 0.36, 1] } : undefined}
+              >
+                <h1 className={`text-4xl font-bold tracking-[-0.03em] leading-[1.12] sm:text-5xl lg:text-[56px] xl:text-[58px] ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+                  {t("hero.title.line1")}
+                  <br />
+                  <span className="font-display font-semibold text-warm-amber">{t("hero.title.line2")}</span>
+                  <br />
+                  {t("hero.title.line3")}
+                </h1>
+              </m.div>
+              <m.div
+                initial={shouldAnimate ? { opacity: 0, y: 12 } : false}
+                animate={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
+                transition={shouldAnimate ? { duration: 0.40, delay: 0.52, ease: [0.22, 1, 0.36, 1] } : undefined}
+              >
+                <p className={`max-w-xl text-lg leading-relaxed sm:text-xl ${language === "th" ? "subtitle-th" : ""} ${isDark ? "text-warm-pale/82" : "text-warm-charcoal/72"}`}>
+                  {t("hero.subtitle")}
+                </p>
+                <p className="sr-only">
+                  {language === "th"
+                    ? "RCT Ecosystem คือระบบปฏิบัติการ AI แบบรัฐธรรมนูญ 10 ชั้น ใช้ FDIA gating, HexaCore 7 โมเดล และ SignedAI consensus เพื่อลด AI hallucination เหลือ 0.3%"
+                    : "RCT Ecosystem is a 10-layer Constitutional AI Operating System — using FDIA gating, 7-model HexaCore routing, and SignedAI consensus to reduce AI hallucination to 0.3%."}
+                </p>
+              </m.div>
+            </div>
 
-            <m.div variants={itemVariants} className="flex flex-wrap justify-center gap-3 lg:justify-start">
+            <m.div
+              initial={shouldAnimate ? { opacity: 0, y: 8, scale: 0.98 } : false}
+              animate={shouldAnimate ? { opacity: 1, y: 0, scale: 1 } : undefined}
+              transition={shouldAnimate ? { duration: 0.34, delay: 0.72, ease: [0.22, 1, 0.36, 1] } : undefined}
+              className="flex flex-wrap justify-center gap-3 lg:justify-start">
               <m.button
                 onClick={() => scrollTo("#overview")}
                 whileHover={prefersReducedMotion ? undefined : { y: -1.5, scale: 1.01 }}
@@ -187,14 +184,19 @@ export default function HeroSection({ locale }: HeroSectionProps) {
               </m.div>
             </m.div>
 
-            <m.div variants={itemVariants} className="grid grid-cols-2 gap-3 pt-7 md:grid-cols-4">
-              {stats.map((stat) => (
+            <m.div
+              initial={shouldAnimate ? { opacity: 0 } : false}
+              animate={shouldAnimate ? { opacity: 1 } : undefined}
+              transition={shouldAnimate ? { duration: 0.15, delay: 0.88 } : undefined}
+              className="grid grid-cols-2 gap-3 pt-7 md:grid-cols-4"
+            >
+              {stats.map((stat, i) => (
                 <m.div
                   key={stat.label}
                   {...statCardSpotlight}
                   initial={shouldAnimate ? { opacity: 0, scale: 0.96 } : false}
                   animate={shouldAnimate ? { opacity: 1, scale: 1 } : undefined}
-                  transition={shouldAnimate ? { duration: 0.2 } : undefined}
+                  transition={shouldAnimate ? { duration: 0.30, delay: 0.88 + i * 0.08, ease: [0.22, 1, 0.36, 1] } : undefined}
                   whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.02 }}
                   whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
                   className={`main-page-reactive-card rounded-2xl border px-3 py-3 transition-all duration-300 ${isDark ? "border-border bg-card/72 hover:border-warm-amber/20 hover:bg-card/82" : "border-[#e6ddd0] bg-white hover:border-warm-amber/25 hover:bg-white"}`}
@@ -226,12 +228,12 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                 </m.div>
               ))}
             </m.div>
-          </m.div>
+          </div>
 
           <m.div
-            initial={shouldAnimate ? { opacity: 0, x: 24 } : false}
+            initial={shouldAnimate ? { opacity: 0, x: 40 } : false}
             animate={shouldAnimate ? { opacity: 1, x: 0 } : undefined}
-            transition={shouldAnimate ? { duration: 0.26, delay: 0.04 } : undefined}
+            transition={shouldAnimate ? { duration: 0.56, delay: 0.30, ease: [0.22, 1, 0.36, 1] } : undefined}
             className="group relative mx-auto w-full max-w-105 lg:-mr-2 lg:ml-0 lg:max-w-none"
           >
             {deferredHeroAssetsReady ? <HeroArchitectureVisual /> : (
@@ -254,7 +256,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
           </m.div>
         </div>
 
-        <m.div initial={shouldAnimate ? { opacity: 0 } : false} animate={shouldAnimate ? { opacity: 1 } : undefined} transition={shouldAnimate ? { delay: 0.2 } : undefined} className="mt-10 flex justify-center lg:mt-12">
+        <m.div initial={shouldAnimate ? { opacity: 0 } : false} animate={shouldAnimate ? { opacity: 1 } : undefined} transition={shouldAnimate ? { duration: 0.30, delay: 1.05 } : undefined} className="mt-10 flex justify-center lg:mt-12">
           <button
             onClick={() => scrollTo("#overview")}
             className={`group rounded-full px-4 py-3 flex flex-col items-center gap-2 transition-colors ${isDark ? "text-warm-subtle hover:text-warm-pale" : "text-warm-gray hover:text-warm-charcoal"}`}

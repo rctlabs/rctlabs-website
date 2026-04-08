@@ -101,6 +101,7 @@ function LocaleTransitionOverlay() {
   return (
     <div
       className="pointer-events-none fixed inset-0 z-9998 bg-background/90 backdrop-blur-sm"
+      style={{ animation: "rct-page-enter 180ms cubic-bezier(0.22, 1, 0.36, 1) both" }}
       aria-hidden="true"
     />
   )

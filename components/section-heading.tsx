@@ -72,7 +72,7 @@ export default function SectionHeading({
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.50, ease: [0.22, 1, 0.36, 1] }}
       className={`flex flex-col gap-2 mb-6 md:mb-8 lg:mb-10 ${alignClass}`}
     >
       {displayTag && <span className={tagClass}>{displayTag}</span>}

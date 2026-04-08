@@ -174,7 +174,7 @@ export default function OverviewSection({ locale }: OverviewSectionProps) {
           initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={prefersReducedMotion ? undefined : { duration: 0.38 }}
+          transition={prefersReducedMotion ? undefined : { duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
           className="mb-8"
         >
           {/* Desktop: horizontal row */}
@@ -283,7 +283,7 @@ export default function OverviewSection({ locale }: OverviewSectionProps) {
           initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={prefersReducedMotion ? undefined : { duration: 0.28, delay: 0.1 }}
+          transition={prefersReducedMotion ? undefined : { duration: 0.36, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10 grid grid-cols-4 divide-x divide-border/50 rounded-2xl border border-border/50 bg-muted/30 px-2 py-4 dark:bg-card/40"
         >
           {STATS.map(({ value, labelEn, labelTh }) => (
