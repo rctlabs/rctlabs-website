@@ -6,9 +6,9 @@ export const SITE_VERSION = "2026.03 Snapshot"
 export const SITE_TEST_COUNT = 4849
 export const SITE_MICROSERVICE_COUNT = 62
 export const SITE_ALGORITHM_COUNT = 41
-export const SITE_LAYER_COUNT = 10
+export const SITE_LAYER_COUNT = 10 // Product layers L1-L10; L11 = CI/CD pipeline layer (internal only)
 export const SITE_HEXACORE_COUNT = 7
-export const SITE_CONSENSUS_MODELS = 3
+export const SITE_CONSENSUS_MODELS = 7 // HexaCore roster: 3W (Claude/Gemini/Grok) + 3E (Kimi/MiniMax/DeepSeek) + 1TH (Typhoon); mirrors SITE_HEXACORE_COUNT
 export const SITE_UPTIME = "99.98% SLA"
 export const SITE_HALLUCINATION_RATE = "0.3% benchmark"
 

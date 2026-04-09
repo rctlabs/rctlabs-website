@@ -49,7 +49,7 @@ export function DeferredSection({
 
   return (
     <div ref={wrapperRef}>
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         {shouldRender ? (
           <m.div
             key="content"

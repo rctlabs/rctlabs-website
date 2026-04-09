@@ -24,8 +24,8 @@ export async function generateMetadata(): Promise<Metadata> {
     "About RCT Labs — Constitutional AI Platform | Thai-Built Enterprise AI Operating System",
     "เกี่ยวกับ RCT Labs — Constitutional AI Platform ระดับองค์กร สร้างโดยคนไทย",
     // Lengthened meta descriptions for SEO (150-160 chars)
-    "RCT Labs: Enterprise Constitutional AI Operating System — 4,849 passing tests, 62 microservices, 41 algorithms, and 0.3% hallucination control built by a solo architect from Bangkok.",
-    "RCT Labs: ระบบ AI ระดับองค์กร — ผ่านการทดสอบ 4,849 รายการ, 62 microservices, 41 algorithms และ hallucination ต่ำ 0.3% สร้างโดย Solo Architect จากกรุงเทพฯ",
+    "RCT Labs: Enterprise Constitutional AI Operating System — 4,849 passing tests, 62 microservices, 41 algorithms, and sub-0.3% hallucination target on benchmarked workloads — built by a solo architect from Bangkok.",
+    "RCT Labs: ระบบ AI ระดับองค์กร — ผ่านการทดสอบ 4,849 รายการ, 62 microservices, 41 algorithms และเป้าหมาย hallucination ต่ำกว่า 0.3% บน benchmark workloads สร้างโดย Solo Architect จากกรุงเทพฯ",
     "/about",
     ["Constitutional AI", "enterprise AI platform", "AI governance", "Thailand AI", "RCT Labs", "Ittirit Saengow", "multi-LLM consensus"]
   )

@@ -1,6 +1,7 @@
 // next.config.mjs
 /** @type {import('next').NextConfig} */
 const isProduction = process.env.NODE_ENV === "production"
+const isPreview = process.env.VERCEL_ENV === "preview"
 
 const nextConfig = {
   typescript: {
@@ -31,8 +32,8 @@ const nextConfig = {
       "@radix-ui/react-dropdown-menu",
       "@radix-ui/react-tabs",
       "@radix-ui/react-tooltip",
-      "lucide-react",
-      // NOTE: framer-motion intentionally excluded — its `motion` factory uses a
+      "lucide-react",      "recharts",
+      "embla-carousel-react",      // NOTE: framer-motion intentionally excluded — its `motion` factory uses a
       // dynamic Proxy/function pattern that Turbopack's tree-shaking mishandles,
       // causing `motion.div` etc. to become `undefined` after HMR invalidation.
     ],
@@ -135,7 +136,9 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               // GA4 (gtag/js) and GTM (gtm.js) both served from googletagmanager.com
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com",
+              // unsafe-eval: React dev mode needs it for callstack reconstruction; Vercel Live Preview also needs it.
+              // Production builds (NODE_ENV=production) never use eval — React strips it at build time.
+              `script-src 'self' ${!isProduction || isPreview ? "'unsafe-eval' " : ""}'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com`,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               // www.google.com needed for GA4 attribution pixel (1×1 tracking image)

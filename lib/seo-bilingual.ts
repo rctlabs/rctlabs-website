@@ -123,7 +123,7 @@ export const createBilingualMetadata = (
     : undefined
 
   return {
-    title: `${title} | RCT Labs`,
+    title: title,
     description,
     keywords,
     alternates: {

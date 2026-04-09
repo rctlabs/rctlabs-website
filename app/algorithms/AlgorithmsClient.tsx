@@ -65,8 +65,8 @@ export default function AlgorithmsPage() {
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground">41 Algorithms & Analysearch</h1>
           <p className="text-lg text-muted-foreground">
             {isTh
-              ? "41 production algorithms ที่ขับเคลื่อน cognitive workflows พร้อม Analysearch สำหรับการวิเคราะห์และสังเคราะห์แบบหลายระดับ"
-              : "41 production algorithms powering cognitive workflows, with Analysearch providing the multi-depth analysis and synthesis layer."}
+              ? "41-algorithm framework พร้อม staged rollout ใน 9 tiers — Analysearch สำหรับการวิเคราะห์และสังเคราะห์แบบหลายระดับ"
+              : "41-algorithm framework with staged rollout across 9 tiers, with Analysearch providing the multi-depth analysis and synthesis layer."}
           </p>
         </div>
       </section>
