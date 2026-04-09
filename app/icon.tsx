@@ -16,15 +16,15 @@ export default function Icon() {
         style={{
           width: 32,
           height: 32,
-          background: "#FEFEFE",
-          borderRadius: 6,
+          background: "#000000",
+          borderRadius: 7,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           overflow: "hidden",
         }}
       >
-        {/* Gold orbital mark — matching RCTicon.svg color scheme */}
+        {/* Gold orbital mark — matching RCTicon-blackbg.svg: gold on black */}
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
           {/* Outer arc (r=11): gap at upper-right */}
           <path d="M 23 11 A 11 11 0 1 1 18 4" stroke="#D4A953" strokeWidth="3" strokeLinecap="round"/>

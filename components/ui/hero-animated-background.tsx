@@ -135,8 +135,12 @@ export default function HeroAnimatedBackground({
     <m.div
       className={wrapperClass}
       aria-hidden="true"
-      animate={{ x: pointerShiftX, y: pointerShiftY }}
-      transition={{ type: "spring", stiffness: 44, damping: 26, mass: 1.1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, x: pointerShiftX, y: pointerShiftY }}
+      transition={{
+        opacity: { duration: 1.6, ease: "easeOut" },
+        default: { type: "spring", stiffness: 44, damping: 26, mass: 1.1 },
+      }}
     >
       {/* ── Layer 1: Field wash ────────────────────────────────────── */}
       <div
@@ -154,6 +158,7 @@ export default function HeroAnimatedBackground({
           opacity: gridOpacity,
           backgroundImage: "var(--rct-hero-grid-lines)",
           backgroundSize: isGlobal ? "112px 112px" : useEnhancedEffects ? "82px 82px" : "108px 108px",
+          transition: "background-size 1.5s ease-out",
         }}
       />
 

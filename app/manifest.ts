@@ -12,6 +12,12 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: "portrait-primary",
     icons: [
       {
+        src: "/RCTicon-blackbg.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+        purpose: "any maskable",
+      },
+      {
         src: "/RCTicon.svg",
         sizes: "any",
         type: "image/svg+xml",
@@ -27,7 +33,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/apple-icon",
         sizes: "180x180",
         type: "image/png",
-        purpose: "any",
+        purpose: "any maskable",
       },
     ],
   }

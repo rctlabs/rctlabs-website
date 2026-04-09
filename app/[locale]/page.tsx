@@ -91,6 +91,14 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
 
   return (
     <>
+      {/* Preload hero LCP image from CloudFront before JS executes — React 19 hoists to <head> */}
+      <link
+        rel="preload"
+        as="image"
+        href="https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
+        fetchPriority="high"
+        crossOrigin="anonymous"
+      />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />

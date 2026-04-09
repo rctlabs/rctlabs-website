@@ -16,7 +16,7 @@ export default function AppleIcon() {
         style={{
           width: 180,
           height: 180,
-          background: "#FEFEFE",
+          background: "#000000",
           borderRadius: 40,
           display: "flex",
           alignItems: "center",
@@ -24,7 +24,7 @@ export default function AppleIcon() {
           overflow: "hidden",
         }}
       >
-        {/* Gold orbital mark — 180×180 coordinates (26×26 × 6.923), matching RCTicon.svg palette */}
+        {/* Gold orbital mark — matching RCTicon-blackbg.svg: gold arcs on black background */}
         <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
           {/* Outer arc (r=68): gap at upper-right */}
           <path d="M 142 68 A 68 68 0 1 1 111 25" stroke="#D4A953" strokeWidth="18.5" strokeLinecap="round"/>

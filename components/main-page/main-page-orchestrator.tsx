@@ -86,12 +86,17 @@ function MainPageFieldOverlay() {
     <m.div
       aria-hidden="true"
       className="main-page-orchestrated-field"
+      initial={{ opacity: 0 }}
       animate={{
+        opacity: 1,
         x: pointerShiftX * motionSettling,
         y: pointerShiftY * motionSettling,
         scale: 1 + (1 - motionSettling) * 0.012,
       }}
-      transition={{ type: "spring", stiffness: 42, damping: 24, mass: 1.05 }}
+      transition={{
+        opacity: { duration: 1.4, ease: "easeOut" },
+        default: { type: "spring", stiffness: 42, damping: 24, mass: 1.05 },
+      }}
     >
       <m.div
         className="main-page-orchestrated-field__veil"
@@ -204,7 +209,6 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
   const lastScrollSampleRef = useRef({ value: 0, time: 0 })
   const reducedMotion = useReducedMotion() ?? false
   const { scrollY, scrollYProgress } = useScroll()
-  const enhancedFieldReady = useIdleActivation({ enabled: !reducedMotion, timeoutMs: 2500 })
 
   const [pageProgress, setPageProgress] = useState(0)
   const [scrollVelocity, setScrollVelocity] = useState(0)
@@ -217,6 +221,9 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
 
     return window.matchMedia("(pointer: coarse)").matches
   })
+  // Skip field overlay on touch devices: pointer effects are isTouchInput-gated anyway.
+  // Reduced timeout (600ms) + fade-in transition prevents the abrupt 2500ms flash.
+  const enhancedFieldReady = useIdleActivation({ enabled: !reducedMotion && !isTouchInput, timeoutMs: 600 })
   const [debugEnabled] = useState(() => {
     if (typeof window === "undefined") {
       return false

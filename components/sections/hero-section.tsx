@@ -24,10 +24,10 @@ const HeroArchitectureVisual = dynamic(() => import("@/components/sections/hero-
   ),
 })
 
-const HeroAnimatedBackground = dynamic(() => import("@/components/ui/hero-animated-background"), {
-  ssr: false,
-  loading: () => null,
-})
+const HeroAnimatedBackground = dynamic(
+  () => import("@/components/ui/hero-animated-background"),
+  { loading: () => null },
+)
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
 
@@ -62,39 +62,40 @@ export default function HeroSection({ locale }: HeroSectionProps) {
 
   return (
     <section id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(44rem,100svh)] items-center overflow-hidden">
-      {/* Hero image (hidden on CDN error) */}
-      {!heroBgError && deferredHeroAssetsReady && (
+      {/* Hero image — priority load bypasses JS gate for LCP (hidden on CDN error) */}
+      {!heroBgError && (
         <div className="absolute inset-0">
           <OptimizedImage
             src={HERO_BG}
             alt="RCT Ecosystem Hero Background"
             containerClassName="h-full w-full"
             objectFit="cover"
+            priority
             sizes="100vw"
             className={isDark ? "scale-[1.03] opacity-[0.12]" : "scale-[1.02] opacity-[0.24]"}
             onError={() => setHeroBgError(true)}
           />
         </div>
       )}
-      {/* Gradient overlay blends image into section background — fades in with body */}
+      {/* Gradient overlay — starts almost fully opaque to prevent flash, settles to full opacity */}
       <m.div
         className={`absolute inset-0 ${
           isDark
             ? "bg-linear-to-r from-[#0D0D0D]/96 via-[#0D0D0D]/84 to-[#0D0D0D]/56"
             : "bg-linear-to-r from-[#f7f1eb]/88 via-[#f7f1eb]/74 to-[#f7f1eb]/42"
         }`}
-        initial={shouldAnimate ? { opacity: 0 } : false}
+        initial={shouldAnimate ? { opacity: 0.85 } : false}
         animate={shouldAnimate ? { opacity: 1 } : undefined}
-        transition={shouldAnimate ? { duration: 0.7, delay: 0.1, ease: "easeOut" } : undefined}
+        transition={shouldAnimate ? { duration: 0.25, ease: "easeOut" } : undefined}
       />
-      <div className="homepage-ambient-layer absolute inset-0">
+      <div className="homepage-ambient-layer absolute inset-0" suppressHydrationWarning>
         <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute -left-24 top-[16%] h-72 w-72 rounded-full" />
         <div className="homepage-ambient-orb homepage-ambient-orb--sage homepage-ambient-orb--slow absolute -right-16 top-[34%] h-80 w-80 rounded-full" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-b from-transparent via-[#f7f1eb]/26 to-[#f7f1eb]/84 dark:via-[#121212]/16 dark:to-[#121212]/72" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,241,235,0.12),transparent_24%,rgba(212,168,83,0.04)_100%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_30%,rgba(212,168,83,0.02)_100%)]" />
       </div>
-      {/* Structured background layers rendered above the image blend and below the content */}
-      {deferredHeroAssetsReady ? <HeroAnimatedBackground variant="hero" /> : null}
+      {/* Structured background layers — rendered immediately; component fades in via initial={{ opacity:0 }} */}
+      <HeroAnimatedBackground variant="hero" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-3 h-56 bg-[linear-gradient(180deg,transparent_0%,rgba(247,241,235,0.18)_34%,rgba(247,241,235,0.78)_72%,#f7f1eb_100%)] dark:bg-[linear-gradient(180deg,transparent_0%,rgba(13,13,13,0.08)_30%,rgba(13,13,13,0.72)_72%,#0D0D0D_100%)]" />
       {deferredHeroAssetsReady ? (
         <m.div
