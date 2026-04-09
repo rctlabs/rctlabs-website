@@ -106,7 +106,7 @@ export async function generateMetadata({ params }: EntityPageProps): Promise<Met
   if (!entity) return { title: "Entity Not Found" }
 
   return {
-    title: `${entity.name} — Defined | RCT Labs`,
+    title: `${entity.name} — Defined`,
     description: entity.definition,
     alternates: { canonical: `https://rctlabs.co/en/entity/${term}` },
   }

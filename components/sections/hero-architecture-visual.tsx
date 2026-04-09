@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useMemo, useState, type CSSProperties } from "react"
+import { memo, useMemo, useState, type CSSProperties } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { useMounted } from "@/hooks/use-mounted"
@@ -28,7 +28,7 @@ const metrics = [
   { en: "Genomes", th: "Genomes", value: "7", accent: "text-warm-sky" },
 ] as const
 
-export default function HeroArchitectureVisual() {
+function HeroArchitectureVisual() {
   const { language } = useLanguage()
   const { resolvedTheme } = useTheme()
   const pathname = usePathname()
@@ -215,3 +215,5 @@ export default function HeroArchitectureVisual() {
     </div>
   )
 }
+
+export default memo(HeroArchitectureVisual)

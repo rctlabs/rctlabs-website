@@ -1516,12 +1516,10 @@
   }
 
   .homepage-ambient-orb {
-    animation: ambient-orb-enter-coarse 700ms 0ms ease-out both,
-               homepage-ambient-drift 18s 700ms ease-in-out infinite;
+    animation: ambient-orb-enter-coarse 700ms 0ms ease-out both;
   }
   .homepage-ambient-orb--slow {
-    animation: ambient-orb-enter-coarse 700ms 100ms ease-out both,
-               homepage-ambient-drift-slow 24s 800ms ease-in-out infinite;
+    animation: ambient-orb-enter-coarse 700ms 100ms ease-out both;
   }
   @keyframes ambient-orb-enter-coarse {
     from { opacity: 0; }

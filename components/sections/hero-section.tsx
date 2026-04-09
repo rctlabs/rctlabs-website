@@ -154,8 +154,8 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                 </p>
                 <p className="sr-only">
                   {language === "th"
-                    ? "RCT Ecosystem คือระบบปฏิบัติการ AI แบบรัฐธรรมนูญ 10 ชั้น ใช้ FDIA gating, HexaCore 7 โมเดล และ SignedAI consensus เพื่อลด AI hallucination เหลือ 0.3%"
-                    : "RCT Ecosystem is a 10-layer Constitutional AI Operating System — using FDIA gating, 7-model HexaCore routing, and SignedAI consensus to reduce AI hallucination to 0.3%."}
+                    ? "RCT Ecosystem คือระบบปฏิบัติการ AI แบบรัฐธรรมนูญ 10 ชั้น ใช้ FDIA gating, HexaCore 7 โมเดล และ SignedAI consensus มุ่งสู่ hallucination ต่ำกว่า 0.3% บน benchmark workloads สำหรับองค์กร"
+                    : "RCT Ecosystem is a 10-layer Constitutional AI Operating System — using FDIA gating, 7-model HexaCore routing, and SignedAI consensus to target under 0.3% hallucination on benchmarked enterprise workloads."}
                 </p>
               </m.div>
             </div>

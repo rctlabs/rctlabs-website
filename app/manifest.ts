@@ -15,7 +15,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/RCTicon-blackbg.svg",
         sizes: "any",
         type: "image/svg+xml",
-        purpose: "any maskable",
+        purpose: "maskable",
       },
       {
         src: "/RCTicon.svg",
@@ -33,7 +33,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/apple-icon",
         sizes: "180x180",
         type: "image/png",
-        purpose: "any maskable",
+        purpose: "maskable",
       },
     ],
   }

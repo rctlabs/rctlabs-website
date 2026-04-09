@@ -32,7 +32,7 @@ const systems = {
     },
     {
       name: "Delta Memory Engine",
-      stat: "74% compression",
+      stat: "74% compression†",
       description: "Stores state changes rather than full snapshots, giving enterprise memory continuity without runaway storage costs.",
       accent: "#C4745B",
       icon: Database,
@@ -62,7 +62,7 @@ const systems = {
     },
     {
       name: "Delta Memory Engine",
-      stat: "compression 74%",
+      stat: "compression 74%†",
       description: "จัดเก็บเฉพาะ state changes แทน full snapshots ทำให้ memory continuity ระดับองค์กรไม่สร้างต้นทุน storage เกินจำเป็น",
       accent: "#C4745B",
       icon: Database,
@@ -129,6 +129,9 @@ export default function CoreSystemsClient() {
             </div>
           ))}
         </div>
+        <p className="mt-4 text-xs text-muted-foreground/60 text-center">
+          {isTh ? "† วัดผลบน 10,000 เซสชันสแบบต่อเนื่องในสภาพแวดล้อม benchmark" : "† Measured on 10,000 sequential query sessions in benchmark environment"}
+        </p>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-20">
