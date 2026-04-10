@@ -1,40 +1,40 @@
 {
-  "timestamp": "2026-04-10T04:06:04.799Z",
+  "timestamp": "2026-04-10T06:18:43.912Z",
   "thresholdMs": 4000,
   "runsPerLocale": 3,
   "results": [
     {
       "locale": "en",
-      "url": "http://localhost:3040/en",
-      "medianLcp": 3166.475000000001,
-      "medianTbt": 0,
-      "medianTtfb": 9.728,
+      "url": "http://localhost:3061/en",
+      "medianLcp": 6775.618500000002,
+      "medianTbt": 142,
+      "medianTtfb": 7.0600000000000005,
       "runs": [
         {
-          "lcp": 3021.3036,
-          "tbt": 0,
-          "ttfb": 49.187999999999995
+          "lcp": 6632.527,
+          "tbt": 142,
+          "ttfb": 42.727999999999994
         },
         {
-          "lcp": 3169.908999999999,
-          "tbt": 0,
-          "ttfb": 9.728
+          "lcp": 6775.618500000002,
+          "tbt": 123.50000000000091,
+          "ttfb": 7.0600000000000005
         },
         {
-          "lcp": 3166.475000000001,
-          "tbt": 0,
-          "ttfb": 6.721
+          "lcp": 6852.57325,
+          "tbt": 162.5,
+          "ttfb": 5.857
         }
       ],
       "renderBlockingCount": 2,
       "renderBlockingItems": [
         {
-          "url": "http://localhost:3040/_next/static/chunks/0lws4qi0vgnyp.css",
-          "wastedMs": 305
+          "url": "http://localhost:3061/_next/static/chunks/0i1xjkhlyfko_.css",
+          "wastedMs": 757
         },
         {
-          "url": "http://localhost:3040/_next/static/chunks/0qwab5xohd~0b.css",
-          "wastedMs": 155
+          "url": "http://localhost:3061/_next/static/chunks/0wdyr94fjbrwa.css",
+          "wastedMs": 157
         }
       ],
       "lcpElementSnippet": "",
@@ -47,36 +47,36 @@
     },
     {
       "locale": "th",
-      "url": "http://localhost:3040/th",
-      "medianLcp": 3088.5519999999988,
-      "medianTbt": 0,
-      "medianTtfb": 6.905,
+      "url": "http://localhost:3061/th",
+      "medianLcp": 6783.178249999999,
+      "medianTbt": 166.5,
+      "medianTtfb": 9.192,
       "runs": [
         {
-          "lcp": 3163.4704000000015,
-          "tbt": 0,
-          "ttfb": 10.726
+          "lcp": 6783.178249999999,
+          "tbt": 425.5000000000018,
+          "ttfb": 11.945
         },
         {
-          "lcp": 3088.5519999999988,
-          "tbt": 0,
-          "ttfb": 6.905
+          "lcp": 6848.13325,
+          "tbt": 148.00000000000273,
+          "ttfb": 5.677
         },
         {
-          "lcp": 3087.271999999999,
-          "tbt": 0,
-          "ttfb": 5.334999999999999
+          "lcp": 6403.71225,
+          "tbt": 166.5,
+          "ttfb": 9.192
         }
       ],
       "renderBlockingCount": 2,
       "renderBlockingItems": [
         {
-          "url": "http://localhost:3040/_next/static/chunks/0lws4qi0vgnyp.css",
-          "wastedMs": 303
+          "url": "http://localhost:3061/_next/static/chunks/0i1xjkhlyfko_.css",
+          "wastedMs": 757
         },
         {
-          "url": "http://localhost:3040/_next/static/chunks/0qwab5xohd~0b.css",
-          "wastedMs": 153
+          "url": "http://localhost:3061/_next/static/chunks/0wdyr94fjbrwa.css",
+          "wastedMs": 157
         }
       ],
       "lcpElementSnippet": "",

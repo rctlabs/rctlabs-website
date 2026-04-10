@@ -132,11 +132,13 @@
 
 @theme inline {
   /* Typography: Space Grotesk display, Inter/Kanit body, Space Mono code */
-  /* NOTE: "Kanit" literal string does NOT match next/font hashed @font-face name.
-     Always use var(--rct-font-thai) to reference the loaded Kanit font. */
+  /* IMPORTANT: Use var() references — NOT literal font name strings.
+     next/font registers fonts under hashed @font-face names (e.g. '__Inter_d2a1ec3b').
+     Literal "Inter"/"Space Grotesk" strings ≠ hashed names → system font fallback.
+     var(--font-sans)/var(--font-display) cascade through body class → resolve to correct hashed name. */
   --font-thai-fallback: "Noto Sans Thai", "Leelawadee UI", Tahoma, system-ui, sans-serif;
-  --font-sans: "Inter", var(--rct-font-thai), var(--font-thai-fallback);
-  --font-display: "Space Grotesk", var(--rct-font-thai), var(--font-thai-fallback);
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
   --font-mono: "Space Mono", "JetBrains Mono", "Fira Code", "Geist Mono", monospace;
 
   /* Custom font sizes */
