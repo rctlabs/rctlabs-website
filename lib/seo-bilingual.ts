@@ -20,6 +20,10 @@ import { Metadata } from "next"
 
 export type Locale = "en" | "th"
 
+function resolveLocale(locale: Locale | string | null | undefined): Locale {
+  return locale === "th" ? "th" : "en"
+}
+
 function normalizeLocalePath(locale: Locale, path: string) {
   return path === "/" ? `https://rctlabs.co/${locale}` : `https://rctlabs.co/${locale}${path}`
 }
@@ -94,7 +98,7 @@ export const baseKeywords: Record<Locale, string[]> = {
 }
 
 export const createBilingualMetadata = (
-  locale: Locale,
+  locale: Locale | string | null | undefined,
   titleEN: string,
   titleTH: string,
   descEN: string,
@@ -102,13 +106,14 @@ export const createBilingualMetadata = (
   path: string,
   additionalKeywords?: string[]
 ): Metadata => {
-  const title = locale === "th" ? titleTH : titleEN
-  const description = locale === "th" ? descTH : descEN
+  const safeLocale = resolveLocale(locale)
+  const title = safeLocale === "th" ? titleTH : titleEN
+  const description = safeLocale === "th" ? descTH : descEN
   const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION
   const bingSiteVerification = process.env.BING_SITE_VERIFICATION
   const keywords = [
-    ...baseKeywords[locale],
-    ...(additionalKeywords || [])
+    ...(baseKeywords[safeLocale] ?? []),
+    ...(additionalKeywords ?? [])
   ]
 
   const verification = googleSiteVerification || bingSiteVerification
@@ -127,7 +132,7 @@ export const createBilingualMetadata = (
     description,
     keywords,
     alternates: {
-      canonical: normalizeLocalePath(locale, path),
+      canonical: normalizeLocalePath(safeLocale, path),
       languages: {
         "en": normalizeLocalePath("en", path),
         "th": normalizeLocalePath("th", path),
@@ -137,10 +142,10 @@ export const createBilingualMetadata = (
     openGraph: {
       title: `${title} | RCT Labs`,
       description,
-      url: normalizeLocalePath(locale, path),
+      url: normalizeLocalePath(safeLocale, path),
       siteName: "RCT Labs",
-      locale: locale === "th" ? "th_TH" : "en_US",
-      alternateLocale: locale === "th" ? ["en_US"] : ["th_TH"],
+      locale: safeLocale === "th" ? "th_TH" : "en_US",
+      alternateLocale: safeLocale === "th" ? ["en_US"] : ["th_TH"],
       type: "website",
       images: [
         {

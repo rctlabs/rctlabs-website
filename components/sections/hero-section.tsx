@@ -40,7 +40,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
   const localePrefix = getLocalePrefix(locale)
   const isThai = locale === "th"
   const isDark = mounted && resolvedTheme === "dark"
-  const deferredHeroAssetsReady = useIdleActivation({ timeoutMs: 450 })
+  const deferredHeroAssetsReady = useIdleActivation({ timeoutMs: 900 })
   const statCardSpotlight = useCardSpotlight<HTMLDivElement>()
 
   const copy = isThai

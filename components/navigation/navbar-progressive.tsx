@@ -18,6 +18,7 @@ type NavbarProgressiveProps = {
 
 function NavbarShell({ locale }: { locale: "en" | "th" }) {
   const localePrefix = getLocalePrefix(locale)
+  const isThai = locale === "th"
 
   return (
     <header role="banner" aria-label="Main navigation shell">
@@ -31,9 +32,9 @@ function NavbarShell({ locale }: { locale: "en" | "th" }) {
             </Link>
 
             <div className="hidden items-center gap-5 lg:flex">
-              <Link href={`${localePrefix}/solutions`} className="text-[13px] font-medium text-warm-gray hover:text-warm-charcoal dark:text-warm-light-gray/85 dark:hover:text-white">Solutions</Link>
-              <Link href={`${localePrefix}/technology`} className="text-[13px] font-medium text-warm-gray hover:text-warm-charcoal dark:text-warm-light-gray/85 dark:hover:text-white">Technology</Link>
-              <Link href={`${localePrefix}/docs`} className="text-[13px] font-medium text-warm-gray hover:text-warm-charcoal dark:text-warm-light-gray/85 dark:hover:text-white">Docs</Link>
+              <Link href={`${localePrefix}/solutions`} className="text-[13px] font-medium text-warm-gray hover:text-warm-charcoal dark:text-warm-light-gray/85 dark:hover:text-white">{isThai ? "โซลูชัน" : "Solutions"}</Link>
+              <Link href={`${localePrefix}/technology`} className="text-[13px] font-medium text-warm-gray hover:text-warm-charcoal dark:text-warm-light-gray/85 dark:hover:text-white">{isThai ? "เทคโนโลยี" : "Technology"}</Link>
+              <Link href={`${localePrefix}/docs`} className="text-[13px] font-medium text-warm-gray hover:text-warm-charcoal dark:text-warm-light-gray/85 dark:hover:text-white">{isThai ? "เอกสาร" : "Docs"}</Link>
             </div>
 
             <div className="h-9 w-9 rounded-full border border-[#e6ddd0] bg-white/82 dark:border-border dark:bg-card/70" aria-hidden="true" />

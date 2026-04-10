@@ -48,19 +48,19 @@ const verification = googleSiteVerification || bingSiteVerification
     }
   : undefined
 
-/* Display: Space Grotesk (headings) */
+/* Display: Space Grotesk (headings) — preload=true: above-the-fold LCP font */
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
-  display: "optional",
-  preload: false,
+  display: "swap",
+  preload: true,
 })
 
-/* Body: Inter */
+/* Body: Inter — preload=false: body text loads after LCP */
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "optional",
+  display: "swap",
   preload: false,
 })
 
@@ -69,17 +69,18 @@ const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-mono",
-  display: "optional",
+  display: "swap",
   preload: false,
 })
 
-/* Thai: Kanit (matches Space Grotesk geometric style) */
+/* Thai: Kanit (matches Space Grotesk geometric style) — preload=true: LCP font for /th pages
+   Weights: 300 (subtitle-th uses font-weight:300 + font-synthesis:none), 400, 500, 600, 700 */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
-  weight: ["400", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--rct-font-thai",
-  display: "optional",
-  preload: false,
+  display: "swap",
+  preload: true,
 })
 
 
