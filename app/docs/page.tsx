@@ -269,8 +269,8 @@ export default async function DocsPage() {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <pre className="text-xs font-mono text-muted-foreground overflow-x-auto">
 {`# Clone the repository
-git clone https://github.com/rctlabs/ecosystem.git
-cd ecosystem
+git clone https://github.com/rctlabs/rct-platform.git
+cd rct-platform
 
 # Start all services
 docker-compose up -d

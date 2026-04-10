@@ -43,7 +43,8 @@ export default async function AboutPage() {
     "description": "Solo architect from Khlong Toei, Bangkok. Creator of RCT Labs, FDIA equation, and the 7 Genome System.",
     "url": "https://rctlabs.co/about",
     "sameAs": [
-      "https://github.com/rct-ecosystem",
+      "https://github.com/ittirit720",
+      "https://github.com/rctlabs",
       "https://www.linkedin.com/in/ittirit-saengow/"
     ],
     "affiliation": {
