@@ -3,17 +3,56 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { ArrowLeft, Zap, Network, Shield, Lightbulb } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 export default function IntentOSPage() {
+  const pathname = usePathname()
+  const localePrefix = getLocalePrefix(resolveLocale(pathname))
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `https://rctlabs.co${localePrefix}` },
+      { "@type": "ListItem", position: 2, name: "Philosophy", item: `https://rctlabs.co${localePrefix}/philosophy` },
+      { "@type": "ListItem", position: 3, name: "Intent OS", item: `https://rctlabs.co${localePrefix}/philosophy/intent-os` },
+    ],
+  }
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is Intent OS?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Intent OS is a concept for operating systems that optimize around goals and values instead of only files and processes.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How does Intent OS relate to FDIA and JITNA?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "FDIA provides the decision equation and JITNA provides intent communication primitives; Intent OS uses both as its architectural substrate.",
+        },
+      },
+    ],
+  }
+
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       {/* Breadcrumb */}
       <section className="mx-auto max-w-7xl px-4 py-8 flex items-center gap-2 text-sm text-muted-foreground">
-        <Link href="/philosophy" className="hover:text-foreground transition flex items-center gap-2">
+        <Link href={`${localePrefix}/philosophy`} className="hover:text-foreground transition flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" /> Philosophy
         </Link>
         <span>/</span>
@@ -83,7 +122,7 @@ export default function IntentOSPage() {
       </section>
 
       {/* Architectural Layers */}
-      <section className="mx-auto max-w-7xl px-4 py-24 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg">
+      <section className="mx-auto max-w-7xl px-4 py-24 bg-linear-to-r from-accent/5 to-secondary/5 rounded-lg">
         <h2 className="text-4xl font-bold text-foreground mb-12">Architectural Layers</h2>
         <div className="space-y-4">
           {[
@@ -115,7 +154,7 @@ export default function IntentOSPage() {
           ].map((item, i) => (
             <div key={i} className="bg-background rounded-lg p-6 border border-border/50 relative">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0 text-accent font-bold">
+                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center shrink-0 text-accent font-bold">
                   {i + 1}
                 </div>
                 <div className="flex-1">
@@ -177,10 +216,10 @@ export default function IntentOSPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-6">
             <Button size="lg" variant="secondary" asChild>
-              <Link href="/research">View Research</Link>
+              <Link href={`${localePrefix}/research`}>View Research</Link>
             </Button>
             <Button size="lg" variant="secondary" asChild className="bg-secondary text-secondary-foreground">
-              <Link href="/contact">Get Involved</Link>
+              <Link href={`${localePrefix}/contact`}>Get Involved</Link>
             </Button>
           </div>
         </div>
@@ -192,12 +231,13 @@ export default function IntentOSPage() {
           <p className="text-sm text-accent font-semibold uppercase tracking-wide">Philosophy Hub</p>
           <h2 className="text-3xl font-bold text-foreground">Ready to explore more?</h2>
           <Button asChild variant="outline" size="lg" className="mt-4 bg-transparent">
-            <Link href="/philosophy">Return to Philosophy</Link>
+            <Link href={`${localePrefix}/philosophy`}>Return to Philosophy</Link>
           </Button>
         </div>
       </section>
 
       <Footer />
     </main>
+    </>
   )
 }

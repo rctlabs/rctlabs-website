@@ -147,7 +147,7 @@ export default async function EntityPage({ params }: EntityPageProps) {
         <article className="mx-auto max-w-4xl px-4 py-24">
           {/* Breadcrumb */}
           <nav className="text-sm text-warm-dim mb-8 flex items-center gap-2">
-            <Link href="/en/glossary" className="hover:text-warm-amber transition">Glossary</Link>
+            <Link href="/glossary" className="hover:text-warm-amber transition">Glossary</Link>
             <span>/</span>
             <span className="text-warm-light-gray">{entity.name}</span>
           </nav>

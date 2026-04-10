@@ -41,13 +41,12 @@ const dimensions = [
   { dim: "6D", nameEn: "Social", nameTh: "Social", descEn: "Relationship graph — links to related memories, parent entities, and cross-agent references for collective recall.", descTh: "กราฟความสัมพันธ์ — ลิงก์ไปยังความจำที่เกี่ยวข้องและ Cross-Agent References" },
   { dim: "7D", nameEn: "Delta", nameTh: "Delta", descEn: "Change log and versioning — tracks what changed, when, and why, enabling 74% delta compression over raw storage.", descTh: "Change Log และ Versioning — ติดตามการเปลี่ยนแปลง เปิดใช้ Delta Compression 74%" },
   { dim: "8D", nameEn: "Verification", nameTh: "Verification", descEn: "SignedAI attestation scores, consensus level, and trust rating — proof that the memory passed multi-model review.", descTh: "คะแนน SignedAI Attestation และระดับ Consensus — หลักฐานผ่าน Multi-Model Review" },
-  { dim: "9D", nameEn: "Evolution", nameTh: "Evolution", descEn: "Learning patterns, adaptation history, and feedback loops — how this memory changes and improves over time.", descTh: "รูปแบบการเรียนรู้และประวัติการปรับตัว — วิธีที่ความจำเปลี่ยนแปลงและดีขึ้นตามเวลา" },
 ]
 
 const stats = [
   { value: "74%", label: "Delta Compression", color: "#7B9E87" },
   { value: "3", label: "Memory Layers", color: "#D4A853" },
-  { value: "9D", label: "Context Dimensions", color: "#C4745B" },
+  { value: "8D", label: "Context Dimensions", color: "#C4745B" },
   { value: "<50ms", label: "Recall Latency", color: "#89B4C8" },
 ]
 
@@ -175,13 +174,13 @@ export default function EnterpriseAIMemoryPage() {
           <div className="max-w-5xl mx-auto">
             <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: textPrimary }}>
-                <span style={{ color: "#D4A853" }}>{isEn ? "9D Context" : "9D Context"}</span>
+                <span style={{ color: "#D4A853" }}>{isEn ? "8D Context" : "8D Context"}</span>
                 {isEn ? " Dimensions" : " Dimensions"}
               </h2>
               <p className="text-base max-w-2xl mx-auto" style={{ color: textSecondary }}>
                 {isEn
-                  ? "Each memory item in RCTDB v2.0 carries 9 structured dimensions — the full RCTDB schema powering identity, sovereignty, payload, social graph, delta compression, SignedAI verification, and evolution."
-                  : "ข้อมูลความจำแต่ละชิ้นใน RCTDB v2.0 มาพร้อม  9 มิติ — Schema RCTDB เต็มรูปที่ขับเคลื่อน Identity, Sovereignty, Payload, Social Graph, Delta Compression, SignedAI Verification และ Evolution"}
+                  ? "Each memory item in RCTDB v2.0 carries 8 structured dimensions — the full RCTDB schema powering identity, sovereignty, payload, social graph, delta compression, and SignedAI verification."
+                  : "ข้อมูลความจำแต่ละชิ้นใน RCTDB v2.0 มาพร้อม 8 มิติ — Schema RCTDB เต็มรูปที่ขับเคลื่อน Identity, Sovereignty, Payload, Social Graph, Delta Compression และ SignedAI Verification"}
               </p>
             </m.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

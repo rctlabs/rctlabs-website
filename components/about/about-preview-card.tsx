@@ -1,10 +1,4 @@
-"use client"
-
 import Image from "next/image"
-import { m } from "framer-motion"
-import { useTheme } from "@/components/theme-provider"
-import { useMounted } from "@/hooks/use-mounted"
-import { useCardSpotlight } from "@/hooks/use-card-spotlight"
 
 type AboutPreviewCardProps = {
   eyebrow: string
@@ -18,33 +12,19 @@ type AboutPreviewCardProps = {
 }
 
 export function AboutPreviewCard({ eyebrow, title, description, footer, iconSrc, color, bg, iconPlacement = "corner" }: AboutPreviewCardProps) {
-  const { resolvedTheme } = useTheme()
-  const mounted = useMounted()
-  const isDark = mounted && resolvedTheme === "dark"
-  const cardSpotlight = useCardSpotlight<HTMLDivElement>()
   const showCornerIcon = iconPlacement === "corner"
   const showInlineIcon = iconPlacement === "inline"
 
   const iconBadge = (
-    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-transform duration-300 group-hover:scale-110" style={{ backgroundColor: isDark ? `${color}20` : bg, borderColor: `${color}40` }}>
+    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-transform duration-300 group-hover:scale-110" style={{ backgroundColor: bg, borderColor: `${color}40` }}>
       <Image src={iconSrc} alt="" width={28} height={28} className="object-contain" style={{ imageRendering: "pixelated" }} />
     </div>
   )
 
   return (
-    <m.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.4 }}
-      whileHover={{ y: -4, scale: 1.006, transition: { duration: 0.24 } }}
-      className="h-full"
-    >
+    <div className="h-full">
       <div
-        {...cardSpotlight}
-        className={`main-page-reactive-card group relative flex h-full flex-col overflow-hidden rounded-2xl border p-5 sm:p-6 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:shadow-[0_14px_32px_rgba(84,61,31,0.07)] ${
-          isDark ? "border-border bg-card hover:border-warm-amber/40" : "border-[#e6ddd0] bg-white hover:border-warm-amber/40 hover:bg-white"
-        }`}
+        className="main-page-reactive-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#e6ddd0] bg-white p-5 transition-[transform,border-color,box-shadow,background-color] duration-300 hover:border-warm-amber/40 hover:shadow-[0_14px_32px_rgba(84,61,31,0.07)] sm:p-6 dark:border-border dark:bg-card"
       >
         <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.14),transparent_40%)]" />
@@ -74,6 +54,6 @@ export function AboutPreviewCard({ eyebrow, title, description, footer, iconSrc,
           </div>
         </div>
       </div>
-    </m.div>
+    </div>
   )
 }

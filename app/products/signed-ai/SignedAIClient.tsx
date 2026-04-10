@@ -10,26 +10,26 @@ import { ShieldCheck, ArrowRight, Lock, Eye, BarChart3, Layers } from "lucide-re
 import { getBreadcrumbSchema } from "@/lib/schema"
 
 const features = [
-  { icon: Layers, color: "#7B9E87", titleEn: "Multi-LLM Consensus", titleTh: "Multi-LLM Consensus", descEn: "Query up to 8 LLMs simultaneously and achieve consensus through cross-verification algorithms.", descTh: "Query LLMs สูงสุด 8 ตัวพร้อมกันและบรรลุ Consensus ผ่าน Cross-Verification Algorithms" },
+  { icon: Layers, color: "#7B9E87", titleEn: "Multi-LLM Consensus", titleTh: "Multi-LLM Consensus", descEn: "Standard 7-model HexaCore roster (3W+3E+1TH) for consensus verification. Tier 8 God Mode engages all 8 signers for critical decisions. Cross-verification benchmarks hallucination below 0.3%.", descTh: "HexaCore 7 Models มาตรฐาน (3W+3E+1TH) สำหรับ Consensus Verification Tier 8 God Mode ใช้ 8 Signers สำหรับการตัดสินใจสำคัญ Cross-Verification Benchmark Hallucination ต่ำกว่า 0.3%" },
   { icon: Lock, color: "#D4A853", titleEn: "Cryptographic Signing", titleTh: "Cryptographic Signing", descEn: "Every verified response is cryptographically signed — tamper-proof and legally auditable.", descTh: "ทุกคำตอบที่ตรวจสอบแล้วถูก Cryptographically Signed — ป้องกันการแก้ไขและตรวจสอบทางกฎหมายได้" },
   { icon: Eye, color: "#C4745B", titleEn: "Complete Audit Trails", titleTh: "Complete Audit Trails", descEn: "Full transparency — every step from query to response is logged and traceable.", descTh: "ความโปร่งใสเต็มรูปแบบ — ทุกขั้นตอนจาก Query ถึง Response ถูกบันทึกและตรวจสอบย้อนหลังได้" },
-  { icon: BarChart3, color: "#89B4C8", titleEn: "99.7% Accuracy", titleTh: "99.7% Accuracy", descEn: "Reduce hallucination from 15% to 0.3% — enterprise-grade accuracy for critical applications.", descTh: "ลด Hallucination จาก 15% เหลือ 0.3% — ความแม่นยำระดับ Enterprise สำหรับแอปพลิเคชันสำคัญ" },
+  { icon: BarChart3, color: "#89B4C8", titleEn: "99.7% Benchmark Accuracy", titleTh: "99.7% Benchmark Accuracy", descEn: "Benchmark hallucination below 0.3% on standard workloads — enterprise-grade accuracy for critical applications.", descTh: "Benchmark Hallucination ต่ำกว่า 0.3% บน Workloads มาตรฐาน — ความแม่นยำระดับ Enterprise สำหรับแอปพลิเคชันสำคัญ" },
 ]
 
 const pipeline = [
   { stage: "INTAKE", color: "#D4A853", descEn: "Receives the request, validates schema, assigns session ID, and classifies task priority.", descTh: "รับคำขอ ตรวจ Schema, กำหนด Session ID และจัดสำดับความสำคัญ" },
   { stage: "ROUTER", color: "#7B9E87", descEn: "JITNA selects which models to engage from the HexaCore 7-model roster based on task type.", descTh: "JITNA เลือกโมเดลจาก HexaCore 7 ตัวตามประเภทของ Task" },
   { stage: "SIGNERS", color: "#C4745B", descEn: "All selected models independently process the same request — no cross-contamination.", descTh: "ทุกโมเดลที่เลือกประมวลผลคำขอเดียวกันอย่างอิสระ — ไม่มี Cross-Contamination" },
-  { stage: "ATTESTATION", color: "#89B4C8", descEn: "Each response is scored across 8 dimensions: accuracy, completeness, consistency, relevance, safety, confidence, provenance, and timing.", descTh: "คะแนนคำตอบใน  8 มิติ: Accuracy, Completeness, Consistency, Relevance, Safety, Confidence, Provenance, Timing" },
+  { stage: "ATTESTATION", color: "#89B4C8", descEn: "Each response is scored across 8 dimensions: Safety, Security, Correctness, Performance, Compliance, Quality, Maintainability, and Documentation.", descTh: "คะแนนคำตอบใน 8 มิติ: Safety, Security, Correctness, Performance, Compliance, Quality, Maintainability, Documentation" },
   { stage: "CONSENSUS", color: "#B8A9C9", descEn: "Voting method (MAJORITY / WEIGHTED / RANKED / UNANIMOUS) determines final answer from signed responses.", descTh: "Voting Method (MAJORITY/WEIGHTED/RANKED/UNANIMOUS) ตัดสินคำตอบสุดท้ายจากคำตอบที่ Signed" },
   { stage: "REPORT", color: "#9B7BB8", descEn: "Returns ED25519-signed response (RFC\u00a08032 — 64-byte signature), consensus score, full model roster, and attestation breakdown. Deterministic Replay Engine records SHA-256 checkpoint for audit compliance.", descTh: "ส่งคืนคำตอบ ED25519-Signed (RFC\u00a08032 — 64-byte Signature), Consensus Score, Model Roster ครบและรายละเอียด Attestation Deterministic Replay Engine บันทึก SHA-256 Checkpoint สำหรับ Audit Compliance" },
 ]
 
 const pricingTiers = [
   { tier: "S", label: "Solo", price: "$0.10", models: 1, voting: "N/A", color: "#7B9E87", descEn: "Single best-match model. Fast and cheap for non-critical AI queries.", descTh: "โมเดลเดียวที่เหมาะที่สุด เร็วและถูก" },
-  { tier: "4", label: "Standard", price: "$0.75", models: 4, voting: "MAJORITY", color: "#D4A853", descEn: "4 models, majority consensus. Balanced accuracy for production workflows.", descTh: "4 โมเดล, Majority Consensus — ความแม่นยำสมดุล" },
+  { tier: "4", label: "Standard", price: "$0.75", models: 4, voting: "MAJORITY 75% (3/4)", color: "#D4A853", descEn: "4 models, majority consensus. Balanced accuracy for production workflows.", descTh: "4 โมเดล, Majority Consensus — ความแม่นยำสมดุล" },
   { tier: "6", label: "Advanced", price: "$2.00", models: 6, voting: "WEIGHTED", color: "#C4745B", descEn: "6 models, weighted by domain proficiency. High confidence for regulated sectors.", descTh: "6 โมเดล, Weighted ตามความชำนาญ — คอนเฟลมั่นใจสูง" },
-  { tier: "8", label: "Supreme", price: "$5.00", models: 8, voting: "UNANIMOUS 75%", color: "#9B7BB8", descEn: "All 8 models, 75% unanimous consensus required. Maximum trust for legal, medical, and financial AI.", descTh: "8 โมเดล, ต้องการฉันทามติ 75% — ความเชื่อถือสูงสุด สำหรับกฎหมาย, การแพทย์, การเงิน" },
+  { tier: "8", label: "Supreme", price: "$5.00", models: 7, voting: "UNANIMOUS 75%", color: "#9B7BB8", descEn: "All 7 HexaCore models, 75% unanimous consensus required. Maximum trust for legal, medical, and financial AI.", descTh: "7 โมเดล HexaCore ทั้งหมด, ต้องการฉันทามติ 75% — ความเชื่อถือสูงสุด สำหรับกฎหมาย, การแพทย์, การเงิน" },
 ]
 
 const stats = [
@@ -64,8 +64,8 @@ export default function SignedAIPage() {
           <h1 className="text-5xl font-bold text-foreground">SignedAI</h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             {isTh
-              ? "Multi-LLM Verification Consensus API — Cryptographically Signed Responses จาก HexaCore 7 Models ลด Hallucination เหลือ 0.3% พร้อม Audit Trails"
-              : "Multi-LLM verification consensus API — cryptographically signed responses from HexaCore 7 Models, reducing hallucination to 0.3% with complete audit trails and ED25519 RFC\u00a08032 signing."}
+              ? "Multi-LLM Verification Consensus API — Cryptographically Signed Responses จาก HexaCore 7 Models ลด Hallucination ลงต่ำกว่า 0.3% ในการทดสอบ Benchmark พร้อม Audit Trails"
+              : "Multi-LLM verification consensus API — cryptographically signed responses from HexaCore 7 Models, benchmarking hallucination below 0.3% on standard workloads, with complete audit trails and ED25519 RFC 8032 signing."}
           </p>
         </div>
       </section>
@@ -102,8 +102,8 @@ export default function SignedAIPage() {
           </p>
           <p>
             {isTh
-              ? "LLMs แต่ละตัวมีข้อผิดพลาดเฉพาะ — ข้อจำกัดของ Training Data, Model Bias และ Hallucination Patterns SignedAI ใช้ Multi-LLM Consensus เพื่อ Cross-Verify Outputs ผ่าน HexaCore 7-Model Roster ลด Hallucination จาก 15% เหลือ 0.3%"
-              : "Individual LLMs have unique failure modes — training data cutoffs, model bias, and hallucination patterns. SignedAI uses multi-LLM consensus to cross-verify outputs across the HexaCore 7-model roster, reducing hallucination from 15% to 0.3%."}
+              ? "LLMs แต่ละตัวมีข้อผิดพลาดเฉพาะ — ข้อจำกัดของ Training Data, Model Bias และ Hallucination Patterns SignedAI ใช้ Multi-LLM Consensus เพื่อ Cross-Verify Outputs ผ่าน HexaCore 7-Model Roster ลด Hallucination ลงต่ำกว่า 0.3% ในการทดสอบ Benchmark"
+              : "Individual LLMs have unique failure modes — training data cutoffs, model bias, and hallucination patterns. SignedAI uses multi-LLM consensus to cross-verify outputs across the HexaCore 7-model roster, benchmarking hallucination below 0.3% on standard workloads."}
           </p>
           <p>
             {isTh

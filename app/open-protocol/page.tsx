@@ -19,6 +19,41 @@ export default function ProtocolPage() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const isTh = locale === "th"
+  const localePrefix = isTh ? "/th" : "/en"
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `https://rctlabs.co${localePrefix}` },
+      { "@type": "ListItem", position: 2, name: "Open Protocol", item: `https://rctlabs.co${localePrefix}/open-protocol` },
+    ],
+  }
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: isTh ? "RCT Open Protocol เปิดให้ใช้เชิงพาณิชย์ได้หรือไม่?" : "Can RCT Open Protocol be used in commercial products?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: isTh
+            ? "สามารถนำไปใช้เชิงพาณิชย์ได้ตามเงื่อนไขของ license และแนวทางความปลอดภัยขององค์กร"
+            : "Yes, it is intended for practical adoption with commercial usage governed by the relevant licensing and security policies.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: isTh ? "เริ่มต้นใช้งานควรเริ่มจากส่วนไหน?" : "Where should teams start?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: isTh
+            ? "เริ่มจาก Quick Start, ตามด้วย API Reference และ JITNA guide เพื่อทำ prototype ก่อนขยายสเกล"
+            : "Start with the Quick Start guide, then API reference and JITNA guide to prototype before scaling.",
+        },
+      },
+    ],
+  }
 
   const features = [
     {
@@ -75,7 +110,10 @@ export default function ProtocolPage() {
   ]
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       {/* Hero */}
@@ -276,7 +314,7 @@ export default function ProtocolPage() {
                 description: isTh ? "แนวทางสำหรับการ implement protocol อย่างปลอดภัย" : "Guidelines for secure protocol implementation.",
               },
             ].map((doc, i) => (
-              <Link key={i} href="/docs">
+              <Link key={i} href={`${localePrefix}/docs`}>
                 <div className="group p-8 rounded-lg border border-border hover:border-accent/50 transition bg-card cursor-pointer">
                   <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-accent transition">
                     {doc.title}
@@ -303,7 +341,7 @@ export default function ProtocolPage() {
               </Link>
             </Button>
             <Button size="lg" variant="secondary" asChild className="bg-secondary text-secondary-foreground">
-              <Link href="/contact">{isTh ? "ขอความช่วยเหลือ" : "Get Support"}</Link>
+              <Link href={`${localePrefix}/contact`}>{isTh ? "ขอความช่วยเหลือ" : "Get Support"}</Link>
             </Button>
           </div>
         </div>
@@ -311,5 +349,6 @@ export default function ProtocolPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

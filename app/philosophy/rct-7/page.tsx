@@ -60,9 +60,48 @@ const translations = {
 export default function RCT7Page() {
   const { language } = useLanguage()
   const t = translations[language] || translations.en
+  const localePrefix = language === "th" ? "/th" : "/en"
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `https://rctlabs.co${localePrefix}` },
+      { "@type": "ListItem", position: 2, name: "Philosophy", item: `https://rctlabs.co${localePrefix}/philosophy` },
+      { "@type": "ListItem", position: 3, name: "RCT-7", item: `https://rctlabs.co${localePrefix}/philosophy/rct-7` },
+    ],
+  }
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: language === "th" ? "RCT-7 ใช้กับทีมแบบไหนได้บ้าง?" : "What teams can use RCT-7?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: language === "th"
+            ? "ใช้ได้ทั้งทีมเล็กและองค์กรขนาดใหญ่ เพราะโครง 7 ขั้นยืดหยุ่นและวัดผลได้"
+            : "RCT-7 works for both small teams and enterprise environments because the seven-step flow is modular and measurable.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: language === "th" ? "ขั้น Validation สำคัญอย่างไร?" : "Why is the validation step critical?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: language === "th"
+            ? "Validation ยืนยันว่าผลลัพธ์ยังสอดคล้องกับเจตนาเดิมก่อนส่งต่อไปใช้งานจริง"
+            : "Validation confirms that outputs remain aligned with original intent before production use.",
+        },
+      },
+    ],
+  }
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       {/* Breadcrumb */}
@@ -95,7 +134,7 @@ export default function RCT7Page() {
             <div key={i} className="relative">
               <div className="bg-card border border-border rounded-lg p-8 hover:border-accent/50 transition">
                 <div className="flex gap-8">
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-accent/10 text-accent font-bold text-2xl">{i + 1}</div>
                   </div>
                   <div className="flex-1 space-y-2">
@@ -107,7 +146,7 @@ export default function RCT7Page() {
               </div>
               {i < t.steps.length - 1 && (
                 <div className="flex justify-center py-4">
-                  <div className="w-1 h-8 bg-gradient-to-b from-accent to-transparent rounded-full" />
+                  <div className="w-1 h-8 bg-linear-to-b from-accent to-transparent rounded-full" />
                 </div>
               )}
             </div>
@@ -116,7 +155,7 @@ export default function RCT7Page() {
       </section>
 
       {/* Implementation Guide */}
-      <section className="mx-auto max-w-7xl px-4 py-24 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg">
+      <section className="mx-auto max-w-7xl px-4 py-24 bg-linear-to-r from-accent/5 to-secondary/5 rounded-lg">
         <div className="space-y-8">
           <h2 className="text-4xl font-bold text-foreground">{t.getting_started}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -125,7 +164,7 @@ export default function RCT7Page() {
               <ul className="space-y-3">
                 {t.individuals_points.map((point, j) => (
                   <li key={j} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-accent mt-0.5 shrink-0" />
                     <span className="text-muted-foreground">{point}</span>
                   </li>
                 ))}
@@ -136,7 +175,7 @@ export default function RCT7Page() {
               <ul className="space-y-3">
                 {t.organizations_points.map((point, j) => (
                   <li key={j} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-accent mt-0.5 shrink-0" />
                     <span className="text-muted-foreground">{point}</span>
                   </li>
                 ))}
@@ -164,5 +203,6 @@ export default function RCT7Page() {
 
       <Footer />
     </main>
+    </>
   )
 }

@@ -66,6 +66,42 @@ const translations = {
 export default function FDIAPage() {
   const { language } = useLanguage()
   const t = translations[language] || translations.en
+  const localePrefix = language === "th" ? "/th" : "/en"
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `https://rctlabs.co${localePrefix}` },
+      { "@type": "ListItem", position: 2, name: "Philosophy", item: `https://rctlabs.co${localePrefix}/philosophy` },
+      { "@type": "ListItem", position: 3, name: "FDIA", item: `https://rctlabs.co${localePrefix}/philosophy/fdia` },
+    ],
+  }
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: language === "th" ? "สมการ FDIA ใช้ทำอะไร?" : "What is the FDIA equation used for?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: language === "th"
+            ? "ใช้เป็นกรอบคณิตศาสตร์สำหรับเชื่อมคุณภาพข้อมูล เจตนา และการกระทำ เพื่อให้ผลลัพธ์ AI ตรวจสอบได้"
+            : "It provides a mathematical framework to connect data quality, intent clarity, and action authorization for verifiable AI outcomes.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: language === "th" ? "ทำไม Intent อยู่ในรูปเลขชี้กำลัง?" : "Why is intent modeled as an exponent?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: language === "th"
+            ? "เพื่อสะท้อนผลกระทบแบบทวีคูณของเจตนาที่ชัดเจนต่อคุณค่าของข้อมูลในการตัดสินใจ"
+            : "To represent the multiplicative amplification effect of clear intent on the utility of data.",
+        },
+      },
+    ],
+  }
 
   const components = [
     { letter: "D", title: t.d_title, description: t.d_desc, details: t.d_details },
@@ -74,7 +110,10 @@ export default function FDIAPage() {
   ]
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       {/* Breadcrumb */}
@@ -140,7 +179,7 @@ export default function FDIAPage() {
       </section>
 
       {/* Why It Matters */}
-      <section className="mx-auto max-w-7xl px-4 py-24 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg">
+      <section className="mx-auto max-w-7xl px-4 py-24 bg-linear-to-r from-accent/5 to-secondary/5 rounded-lg">
         <div className="space-y-8 max-w-3xl">
           <h2 className="text-4xl font-bold text-foreground">{t.why_title}</h2>
           <div className="space-y-6">
@@ -178,5 +217,6 @@ export default function FDIAPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

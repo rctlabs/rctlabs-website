@@ -4,9 +4,8 @@ import dynamic from "next/dynamic"
 import Link from "next/link"
 import { m } from "framer-motion"
 import { ArrowRight } from "lucide-react"
-import { Navbar } from "@/components/navbar"
+import type { ReactNode } from "react"
 import { getLocalePrefix } from "@/lib/i18n"
-import HeroSection from "@/components/sections/hero-section"
 import { MainPageOrchestrator } from "@/components/main-page/main-page-orchestrator"
 import { MainPageSection } from "@/components/main-page/main-page-section"
 import { DeferredSection } from "@/components/performance/deferred-section"
@@ -29,28 +28,24 @@ const Footer = dynamic(() => import("@/components/footer").then((module) => modu
 
 type HomePageClientProps = {
   locale: "en" | "th"
+  navSlot?: ReactNode
+  heroSlot?: ReactNode
 }
 
-export default function HomePage({ locale }: HomePageClientProps) {
+export default function HomePage({ locale, navSlot, heroSlot }: HomePageClientProps) {
   const localePrefix = getLocalePrefix(locale)
 
   return (
     <MainPageOrchestrator>
       <main id="main-content" className="relative min-h-screen overflow-hidden bg-(--rct-bg-primary) transition-colors duration-300">
-        <Navbar locale={locale} />
+        {navSlot}
         <div className="homepage-global-backdrop" aria-hidden="true">
           <div className="homepage-global-backdrop__mesh" />
           <div className="homepage-global-backdrop__orb homepage-global-backdrop__orb--amber" />
           <div className="homepage-global-backdrop__orb homepage-global-backdrop__orb--sage" />
           <div className="homepage-global-backdrop__orb homepage-global-backdrop__orb--terra" />
         </div>
-        <HeroSection locale={locale} />
-
-        <h1 className="sr-only">
-          {locale === "en"
-            ? "RCT Ecosystem - Intent-Centric AI Operating System"
-            : "RCT Ecosystem - ระบบปฏิบัติการ AI ที่เน้น Intent"}
-        </h1>
+        {heroSlot}
 
         {/* ── Phase A4: ภาพรวม RCT Ecosystem ขึ้นมาก่อน ──────────── */}
         <MainPageSection sectionId="overview" tone="base">

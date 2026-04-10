@@ -204,7 +204,7 @@ export default async function CompareConstitutionalAIvsRAG() {
               <p className="text-warm-dim">Complete architectural comparison with implementation examples</p>
             </div>
             <Link
-              href="/en/blog/constitutional-ai-vs-rag-comparison"
+              href={`${localePrefix}/blog/constitutional-ai-vs-rag-comparison`}
               className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-warm-amber text-background font-semibold text-sm hover:bg-warm-amber/90 transition shrink-0"
             >
               Read Article <ArrowRight className="w-4 h-4" />

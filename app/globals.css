@@ -134,8 +134,9 @@
   /* Typography: Space Grotesk display, Inter/Kanit body, Space Mono code */
   /* NOTE: "Kanit" literal string does NOT match next/font hashed @font-face name.
      Always use var(--rct-font-thai) to reference the loaded Kanit font. */
-  --font-sans: "Inter", var(--rct-font-thai, 'Noto Sans Thai'), system-ui, sans-serif;
-  --font-display: "Space Grotesk", var(--rct-font-thai, 'Noto Sans Thai'), system-ui, sans-serif;
+  --font-thai-fallback: "Noto Sans Thai", "Leelawadee UI", Tahoma, system-ui, sans-serif;
+  --font-sans: "Inter", var(--rct-font-thai), var(--font-thai-fallback);
+  --font-display: "Space Grotesk", var(--rct-font-thai), var(--font-thai-fallback);
   --font-mono: "Space Mono", "JetBrains Mono", "Fira Code", "Geist Mono", monospace;
 
   /* Custom font sizes */
@@ -272,7 +273,7 @@
   }
 
   .font-display { font-family: var(--font-display); }
-  .font-thai    { font-family: var(--rct-font-thai, 'Kanit', 'Noto Sans Thai', sans-serif); }
+  .font-thai    { font-family: var(--rct-font-thai), var(--font-thai-fallback); }
 
   .article-safe-top {
     padding-top: var(--article-nav-offset);
@@ -280,8 +281,9 @@
 
   /* Thai subtitle — Kanit ExtraLight for visual contrast vs bold headlines */
   .subtitle-th {
-    font-family: var(--rct-font-thai, 'Kanit', 'Noto Sans Thai', sans-serif);
-    font-weight: 200;
+    font-family: var(--rct-font-thai), var(--font-thai-fallback);
+    font-weight: 300;
+    font-synthesis: none;
     letter-spacing: 0.01em;
   }
 
@@ -300,7 +302,8 @@
   html[lang="th"] dd,
   html[lang="th"] dt,
   html[lang="th"] small {
-    font-family: var(--rct-font-thai, 'Kanit', 'Noto Sans Thai', sans-serif);
+    font-family: var(--rct-font-thai), var(--font-thai-fallback);
+    font-synthesis: none;
   }
 
   html[lang="th"] h1,
@@ -311,8 +314,9 @@
   html[lang="th"] h6,
   html[lang="th"] .font-display,
   html[lang="th"] .font-sans {
-    font-family: var(--rct-font-thai, 'Kanit', 'Noto Sans Thai', sans-serif);
+    font-family: var(--rct-font-thai), var(--font-thai-fallback);
     letter-spacing: -0.02em;
+    font-synthesis: none;
   }
 
   html[lang="th"] h1 {
@@ -322,7 +326,7 @@
 
   html[lang="th"] .font-thai,
   html[lang="th"] .subtitle-th {
-    font-family: var(--rct-font-thai, 'Kanit', 'Noto Sans Thai', sans-serif);
+    font-family: var(--rct-font-thai), var(--font-thai-fallback);
   }
 
   /* Interactive element cursors */

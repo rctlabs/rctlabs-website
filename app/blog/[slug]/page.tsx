@@ -9,6 +9,7 @@ import Link from "next/link"
 import { UserRound } from "lucide-react"
 import { MDXContent } from "@/components/mdx-content"
 import { SITE_URL } from "@/lib/site-config"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { ArticleTrustSummary } from "@/components/blog/article-trust-summary"
 import { ArticleCtaPanel } from "@/components/blog/article-cta-panel"
 import { ReadingProgress } from "@/components/blog/reading-progress"
@@ -167,10 +168,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       }
     }
   }
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: `${SITE_URL}${localePrefix || "/en"}` },
+    { name: "Blog", url: `${SITE_URL}${localePrefix}/blog` },
+    { name: post.title, url: `${SITE_URL}${localePrefix}/blog/${slug}` },
+  ])
 
   return (
     <main className="min-h-screen bg-background">
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Navbar variant="article" />
       <ReadingProgress />
 
@@ -265,7 +272,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <Link href={`${localePrefix}/blog/${prevPost.slug}`} className="group">
                     <div className="rounded-3xl border border-border/70 bg-card/80 p-5 transition group-hover:border-warm-amber/35 group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
                       <p className="text-xs font-semibold text-muted-foreground uppercase">{locale === "th" ? "บทความก่อนหน้า" : "Previous Post"}</p>
-                      <h3 className="mt-2 text-lg font-bold text-foreground transition group-hover:text-accent">
+                      <h3 className="mt-2 text-lg font-bold text-foreground transition group-hover:text-warm-amber">
                         {prevPost.title}
                       </h3>
                       <p className="mt-2 text-sm leading-6 text-muted-foreground">{prevPost.excerpt}</p>
@@ -278,7 +285,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <Link href={`${localePrefix}/blog/${nextPost.slug}`} className="group md:text-right">
                     <div className="rounded-3xl border border-border/70 bg-card/80 p-5 transition group-hover:border-warm-amber/35 group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
                       <p className="text-xs font-semibold text-muted-foreground uppercase">{locale === "th" ? "บทความถัดไป" : "Next Post"}</p>
-                      <h3 className="mt-2 text-lg font-bold text-foreground transition group-hover:text-accent">
+                      <h3 className="mt-2 text-lg font-bold text-foreground transition group-hover:text-warm-amber">
                         {nextPost.title}
                       </h3>
                       <p className="mt-2 text-sm leading-6 text-muted-foreground">{nextPost.excerpt}</p>
@@ -349,12 +356,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             .slice(0, 3)
             .map((relatedPost) => (
               <Link key={relatedPost.slug} href={`${localePrefix}/blog/${relatedPost.slug}`}>
-                <article className="group h-full p-8 rounded-lg border border-border hover:border-accent/50 hover:shadow-lg transition bg-card">
+                <article className="group h-full p-8 rounded-lg border border-border hover:border-warm-amber/50 hover:shadow-lg transition bg-card">
                   <div className="space-y-3">
-                    <span className="inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-semibold rounded capitalize">
+                    <span className="inline-block px-3 py-1 bg-warm-amber/10 text-warm-amber text-xs font-semibold rounded capitalize">
                       {getBlogCategoryLabel(relatedPost.category, locale)}
                     </span>
-                    <h3 className="text-lg font-bold text-foreground group-hover:text-accent transition line-clamp-2">
+                    <h3 className="text-lg font-bold text-foreground group-hover:text-warm-amber transition line-clamp-2">
                       {relatedPost.title}
                     </h3>
                     <p className="text-sm text-muted-foreground line-clamp-2">{relatedPost.excerpt}</p>

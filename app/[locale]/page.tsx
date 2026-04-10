@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getBreadcrumbSchema, getFAQSchema, getOrganizationSchema, getSoftwareApplicationSchema } from "@/lib/schema"
 import HomePageClient from "../HomePageClient"
+import { HeroServer } from "@/components/sections/hero-server"
+import { NavbarProgressive } from "@/components/navigation/navbar-progressive"
 
 // ISR: cache the homepage for 1 hour, then regenerate in the background.
 // No headers() call here — root layout is also headers()-free → statically renderable.
@@ -104,7 +106,7 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
-      <HomePageClient locale={locale} />
+      <HomePageClient locale={locale} navSlot={<NavbarProgressive locale={locale} />} heroSlot={<HeroServer locale={locale} />} />
     </>
   )
 }

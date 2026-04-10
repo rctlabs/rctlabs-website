@@ -21,10 +21,13 @@ import { Footer } from "@/components/footer"
 const benchmarks = [
   { metricEn: "Accuracy", metricTh: "ความแม่นยำ", rct: "99.7%", single: "85%", rctVal: 99.7, singleVal: 85, color: "#7B9E87", icon: Shield },
   { metricEn: "Hallucination Rate", metricTh: "อัตรา Hallucination", rct: "0.3%", single: "15%", rctVal: 0.3, singleVal: 15, color: "#C4745B", icon: TrendingUp, inverted: true },
-  { metricEn: "Response Latency", metricTh: "Latency การตอบสนอง", rct: "<200ms", single: "~300ms", rctVal: 200, singleVal: 300, color: "#D4A853", icon: Clock, inverted: true },
-  { metricEn: "Cost Efficiency", metricTh: "ประสิทธิภาพต้นทุน", rct: "60% savings", single: "Baseline", rctVal: 60, singleVal: 0, color: "#89B4C8", icon: DollarSign },
+  { metricEn: "Warm Recall Latency (p95)", metricTh: "Warm Recall Latency (p95)", rct: "<50ms", single: "~300ms", rctVal: 50, singleVal: 300, color: "#D4A853", icon: Clock, inverted: true },
+  { metricEn: "Cost Efficiency", metricTh: "ประสิทธิภาพต้นทุน", rct: "3.74× less", single: "Baseline", rctVal: 73, singleVal: 0, color: "#89B4C8", icon: DollarSign },
   { metricEn: "Audit Trail", metricTh: "Audit Trail", rct: "Full", single: "None", rctVal: 100, singleVal: 0, color: "#B8A9C9", icon: CheckCircle },
   { metricEn: "Cryptographic Signing", metricTh: "Cryptographic Signing", rct: "Yes", single: "No", rctVal: 100, singleVal: 0, color: "#D4A853", icon: Shield },
+  { metricEn: "FDIA Protocol Score", metricTh: "FDIA Protocol Score", rct: "0.92", single: "~0.65", rctVal: 92, singleVal: 65, color: "#C4745B", icon: TrendingUp },
+  { metricEn: "L4 Virtuoso Benchmark", metricTh: "L4 Virtuoso Benchmark", rct: "389/390", single: "N/A", rctVal: 99.7, singleVal: 0, color: "#B8A9C9", icon: Shield },
+  { metricEn: "Uptime SLA", metricTh: "Uptime SLA", rct: "99.98%", single: "No SLA", rctVal: 100, singleVal: 80, color: "#7B9E87", icon: CheckCircle },
 ]
 
 const radarData = [
@@ -61,18 +64,18 @@ const featureComparison = [
 const counterStats = [
   { value: 99.7, suffix: "%", labelEn: "Accuracy", labelTh: "ความแม่นยำ", color: "#7B9E87", icon: Shield },
   { value: 0.3, suffix: "%", labelEn: "Hallucination Rate", labelTh: "อัตรา Hallucination", color: "#C4745B", icon: Activity },
-  { value: 60, suffix: "%", labelEn: "Cost Savings", labelTh: "ประหยัดต้นทุน", color: "#D4A853", icon: DollarSign },
-  { value: 200, suffix: "ms", labelEn: "Response Latency", labelTh: "Latency", color: "#89B4C8", icon: Zap, prefix: "<" },
+  { value: 73, suffix: "%", labelEn: "Cost Savings", labelTh: "ประหยัดต้นทุน", color: "#D4A853", icon: DollarSign },
+  { value: 50, suffix: "ms", labelEn: "Warm Recall (p95)", labelTh: "Warm Recall (p95)", color: "#89B4C8", icon: Zap, prefix: "<" },
 ]
 
 const platformRows = [
   { cap: { en: "Hallucination Rate", th: "อัตรา Hallucination" }, rct: { label: "0.3%", type: "good" }, lc: { label: "~12–15%", type: "bad" }, agpt: { label: "~10–20%", type: "bad" } },
   { cap: { en: "Accuracy Rate", th: "ความแม่นยำ" }, rct: { label: "99.7%", type: "good" }, lc: { label: "~85%", type: "mid" }, agpt: { label: "~80%", type: "mid" } },
   { cap: { en: "Cryptographic Audit Trail", th: "Cryptographic Audit Trail" }, rct: { label: "✓ Full", type: "check" }, lc: { label: "✗ None", type: "cross" }, agpt: { label: "✗ None", type: "cross" } },
-  { cap: { en: "Multi-LLM Consensus", th: "Multi-LLM Consensus" }, rct: { label: "✓ Up to 8 LLMs", type: "check" }, lc: { label: "~ Manual wiring", type: "partial" }, agpt: { label: "✗ Single model", type: "cross" } },
+  { cap: { en: "Multi-LLM Consensus", th: "Multi-LLM Consensus" }, rct: { label: "✓ 7 HexaCore LLMs", type: "check" }, lc: { label: "~ Manual wiring", type: "partial" }, agpt: { label: "✗ Single model", type: "cross" } },
   { cap: { en: "Persistent Memory", th: "Persistent Memory" }, rct: { label: "✓ RCTDB v2.0", type: "check" }, lc: { label: "~ Plugin-based", type: "partial" }, agpt: { label: "~ Limited", type: "partial" } },
-  { cap: { en: "Response Latency", th: "Response Latency" }, rct: { label: "<200ms", type: "good" }, lc: { label: "~350–600ms", type: "bad" }, agpt: { label: "~500ms–2s", type: "bad" } },
-  { cap: { en: "Cost per Query", th: "ต้นทุนต่อ Query" }, rct: { label: "60% less vs baseline", type: "good" }, lc: { label: "Baseline", type: "mid" }, agpt: { label: "+20–40% overhead", type: "bad" } },
+  { cap: { en: "Warm Recall (p95)", th: "Warm Recall (p95)" }, rct: { label: "<50ms", type: "good" }, lc: { label: "~350–600ms", type: "bad" }, agpt: { label: "~500ms–2s", type: "bad" } },
+  { cap: { en: "Cost per Query", th: "ต้นทุนต่อ Query" }, rct: { label: "3.74× vs all-Claude baseline", type: "good" }, lc: { label: "Baseline", type: "mid" }, agpt: { label: "+20–40% overhead", type: "bad" } },
   { cap: { en: "Enterprise Compliance", th: "Enterprise Compliance" }, rct: { label: "✓ Full audit+sign", type: "check" }, lc: { label: "✗ DIY only", type: "cross" }, agpt: { label: "✗ None", type: "cross" } },
   { cap: { en: "Intent-Centric Processing", th: "Intent-Centric Processing" }, rct: { label: "✓ FDIA equation", type: "check" }, lc: { label: "✗ Prompt-centric", type: "cross" }, agpt: { label: "✗ Goal-decomp only", type: "cross" } },
   { cap: { en: "Self-Evolution (Learning)", th: "Self-Evolution" }, rct: { label: "✓ 7-Genome system", type: "check" }, lc: { label: "✗ Static chains", type: "cross" }, agpt: { label: "~ Experimental", type: "partial" } },

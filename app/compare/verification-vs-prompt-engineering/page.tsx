@@ -183,7 +183,7 @@ export default async function VerificationVsPromptEngineering() {
               <p className="text-warm-dim">Detailed explanation of 4 prompt engineering failure modes and FDIA's 3-level verification</p>
             </div>
             <Link
-              href="/en/blog/verification-vs-prompt-engineering"
+              href={`${localePrefix}/blog/verification-vs-prompt-engineering`}
               className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-warm-amber text-background font-semibold text-sm hover:bg-warm-amber/90 transition shrink-0"
             >
               Read Article <ArrowRight className="w-4 h-4" />

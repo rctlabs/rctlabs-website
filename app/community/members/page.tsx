@@ -1,91 +1,109 @@
+import type { Metadata } from "next"
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
+import { Clock, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
-import { Input } from "@/components/ui/input"
 
-export default function MembersPage() {
-  const members = [
-    { name: "Sarah Anderson", title: "Product Manager", company: "TechCorp", joined: "Jan 2024" },
-    { name: "Michael Chen", title: "Software Engineer", company: "StartupXYZ", joined: "Mar 2024" },
-    { name: "Jessica Martinez", title: "Design Lead", company: "Creative Inc", joined: "Feb 2024" },
-    { name: "David Kim", title: "Data Scientist", company: "Analytics Pro", joined: "Apr 2024" },
-    { name: "Emma Wilson", title: "Marketing Director", company: "Brand Solutions", joined: "May 2024" },
-    { name: "James Robinson", title: "CEO", company: "Innovation Labs", joined: "Jun 2024" },
-    { name: "Lisa Zhang", title: "UX Researcher", company: "Design Systems", joined: "Jul 2024" },
-    { name: "Robert Taylor", title: "DevOps Engineer", company: "Cloud Platforms", joined: "Aug 2024" },
-  ]
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return createBilingualMetadata(
+    locale,
+    "Community Members — Coming Soon | RCT Labs",
+    "สมาชิกชุมชน — เร็วๆ นี้ | RCT Labs",
+    "RCT Labs community member directory is under construction. Connect with developers and researchers building on the RCT Labs platform.",
+    "ไดเรกทอรีสมาชิกชุมชนของ RCT Labs อยู่ระหว่างการพัฒนา เชื่อมต่อกับนักพัฒนาและนักวิจัยที่สร้างบน RCT Labs platform",
+    "/community/members"
+  )
+}
+
+export default async function CommunityMembersPage() {
+  const locale = await getRequestLocale()
+  const isEn = locale === "en"
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Community", url: `https://rctlabs.co${localePrefix}/community` },
+    { name: "Members", url: `https://rctlabs.co${localePrefix}/community/members` },
+  ])
+  const faq = getFAQSchema([
+    {
+      question: isEn ? "Who should join the member directory?" : "ใครควรเข้าร่วม member directory?",
+      answer: isEn
+        ? "Engineers, researchers, product builders, and technical operators active in the RCT Labs ecosystem."
+        : "วิศวกร นักวิจัย นักสร้างผลิตภัณฑ์ และผู้ปฏิบัติการเทคนิคที่ทำงานในระบบนิเวศ RCT Labs",
+    },
+    {
+      question: isEn ? "What does early access include?" : "early access จะได้อะไรบ้าง?",
+      answer: isEn
+        ? "Profile listing, interest tags, and early invitations to technical sessions and collaboration calls."
+        : "ได้สิทธิ์ลงโปรไฟล์ ใส่แท็กความสนใจ และรับเชิญรอบต้นสำหรับ technical session และ collaboration call",
+    },
+  ])
 
   return (
-    <main className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-foreground">
-            YourBrand
-          </Link>
-          <div className="flex gap-8 items-center">
-            <Link href="/community" className="text-sm text-foreground hover:text-foreground/80 transition">
-              Community
-            </Link>
-            <Link href="/company" className="text-sm text-foreground hover:text-foreground/80 transition">
-              Company
-            </Link>
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />
+      <main className="min-h-screen bg-background">
+      <Navbar />
+      <section className="mx-auto max-w-3xl px-4 pt-24 pb-16 text-center">
+        <Link
+          href={`${localePrefix}/community`}
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-12 transition"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>{isEn ? "Back to Community" : "กลับสู่ Community"}</span>
+        </Link>
+
+        <div className="flex justify-center mb-8">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
+            <Clock className="w-8 h-8 text-emerald-500" />
           </div>
         </div>
-      </nav>
 
-      {/* Header */}
-      <section className="mx-auto max-w-6xl px-4 py-24">
-        <Button variant="ghost" size="sm" asChild className="mb-8">
-          <Link href="/community">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Link>
-        </Button>
+        <h1 className="text-4xl font-bold text-foreground mb-4">
+          {isEn ? "Community Members" : "สมาชิกชุมชน"}
+        </h1>
+        <p className="text-xl text-muted-foreground mb-8">
+          {isEn ? "Early Access Enrollment" : "เปิดรับ Early Access"}
+        </p>
+        <p className="text-muted-foreground max-w-lg mx-auto mb-12">
+          {isEn
+            ? "The member directory is now open in minimum production mode for early ecosystem contributors and cross-team collaborators."
+            : "ไดเรกทอรีสมาชิกเปิดใช้งานในโหมดขั้นต่ำสำหรับโปรดักชันแล้ว สำหรับผู้ร่วมพัฒนาระบบนิเวศและผู้ร่วมงานข้ามทีม"}
+        </p>
 
-        <div className="space-y-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">Community Members</h1>
-          <p className="text-lg text-foreground/70">Connect with thousands of professionals.</p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <Button asChild>
+            <Link href={`${localePrefix}/community`}>{isEn ? "Community Hub" : "ศูนย์ชุมชน"}</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href={`${localePrefix}/contact`}>{isEn ? "Register Interest" : "ลงทะเบียนความสนใจ"}</Link>
+          </Button>
         </div>
       </section>
-
-      {/* Search */}
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <Input placeholder="Search members by name or title..." className="w-full" />
-      </section>
-
-      {/* Members Grid */}
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {members.map((member, i) => (
-            <div
-              key={i}
-              className="p-6 rounded-lg border border-border hover:border-foreground/50 hover:shadow-lg transition text-center cursor-pointer"
-            >
-              <div className="w-20 h-20 bg-muted rounded-full mx-auto mb-4"></div>
-              <h3 className="font-bold text-foreground mb-1">{member.name}</h3>
-              <p className="text-sm text-foreground/70 mb-2">{member.title}</p>
-              <p className="text-xs text-foreground/60 mb-4">{member.company}</p>
-              <p className="text-xs text-foreground/50">Joined {member.joined}</p>
-            </div>
-          ))}
+      <section className="mx-auto max-w-5xl px-4 pb-24">
+        <div className="grid gap-4 md:grid-cols-3">
+          <article className="rounded-xl border border-border bg-card p-5">
+            <h2 className="text-base font-semibold text-foreground mb-2">{isEn ? "Builder Profile" : "โปรไฟล์นักพัฒนา"}</h2>
+            <p className="text-sm text-muted-foreground">{isEn ? "Highlight your current stack, domain focus, and collaboration preferences." : "ระบุ stack ที่ใช้งาน, domain focus และรูปแบบการร่วมงานที่ต้องการ"}</p>
+          </article>
+          <article className="rounded-xl border border-border bg-card p-5">
+            <h2 className="text-base font-semibold text-foreground mb-2">{isEn ? "Research Interest Tags" : "แท็กความสนใจวิจัย"}</h2>
+            <p className="text-sm text-muted-foreground">{isEn ? "Map members by FDIA, JITNA, RCTDB, and governance themes." : "จัดกลุ่มสมาชิกตามหัวข้อ FDIA, JITNA, RCTDB และ governance"}</p>
+          </article>
+          <article className="rounded-xl border border-border bg-card p-5">
+            <h2 className="text-base font-semibold text-foreground mb-2">{isEn ? "Collaboration Match" : "การจับคู่ความร่วมมือ"}</h2>
+            <p className="text-sm text-muted-foreground">{isEn ? "Connect contributors with complementary skills for practical delivery tracks." : "เชื่อมต่อผู้ร่วมพัฒนาที่มีทักษะเสริมกันเพื่อเดินงานเชิงปฏิบัติ"}</p>
+          </article>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border mt-24 py-12">
-        <div className="mx-auto max-w-6xl px-4 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-foreground font-semibold">YourBrand © 2025</div>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <Link href="/community" className="text-sm text-foreground/70 hover:text-foreground transition">
-              Community
-            </Link>
-            <Link href="/company" className="text-sm text-foreground/70 hover:text-foreground transition">
-              Company
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
+    </>
   )
 }

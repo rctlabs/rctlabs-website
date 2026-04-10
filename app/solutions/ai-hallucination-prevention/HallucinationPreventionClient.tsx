@@ -15,8 +15,8 @@ const verificationSteps = [
   {
     step: 1, icon: Layers,
     titleEn: "Multi-LLM Query Distribution", titleTh: "กระจาย Query ไปยัง Multi-LLM",
-    descEn: "The same query is sent to up to 8 different LLMs simultaneously, each processing independently without knowledge of other responses.",
-    descTh: "Query เดียวกันถูกส่งไปยัง LLMs สูงสุด 8 ตัวพร้อมกัน แต่ละตัวประมวลผลอิสระโดยไม่รู้คำตอบของตัวอื่น",
+    descEn: "The same query is sent to up to 7 different LLMs simultaneously, each processing independently without knowledge of other responses.",
+    descTh: "Query เดียวกันถูกส่งไปยัง LLMs สูงสุด 7 ตัวพร้อมกัน แต่ละตัวประมวลผลอิสระโดยไม่รู้คำตอบของตัวอื่น",
   },
   {
     step: 2, icon: Eye,
@@ -39,10 +39,10 @@ const verificationSteps = [
 ]
 
 const comparisonData = [
-  { metric: "Accuracy Rate", single: "85%", signedAI: "99.7%", improvement: "+17.3%" },
-  { metric: "Hallucination Rate", single: "15%", signedAI: "0.3%", improvement: "-98%" },
+  { metric: "Accuracy Rate", single: "85%", signedAI: "99.7%*", improvement: "+17.3%" },
+  { metric: "Hallucination Rate", single: "15%", signedAI: "0.3%*", improvement: "-98%" },
   { metric: "Audit Trail", single: "None", signedAI: "Complete", improvement: "New" },
-  { metric: "Verification", single: "Self-check", signedAI: "Multi-LLM", improvement: "8x" },
+  { metric: "Verification", single: "Self-check", signedAI: "Multi-LLM", improvement: "7x" },
   { metric: "Tamper Proof", single: "No", signedAI: "Cryptographic", improvement: "New" },
 ]
 
@@ -128,8 +128,8 @@ export default function HallucinationPreventionPage() {
             <m.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg mb-10" style={{ color: textSecondary }}>
               {isEn
-                ? "Reduce AI hallucination from 15% to 0.3% using SignedAI Multi-LLM consensus verification with cryptographic audit trails."
-                : "ลด AI Hallucination จาก 15% เป็น 0.3% ด้วย SignedAI Multi-LLM Consensus Verification พร้อม Cryptographic Audit Trails"}
+                ? "Target AI hallucination below 0.3% using SignedAI Multi-LLM consensus verification — benchmarked against standard single-LLM baselines."
+                : "เป้าหมาย AI Hallucination ต่ำกว่า 0.3% ด้วย SignedAI Multi-LLM Consensus Verification — Benchmarked เทียบกับ Single-LLM มาตรฐาน"}
             </m.p>
             <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -265,6 +265,9 @@ export default function HallucinationPreventionPage() {
                   <div className="text-center font-semibold" style={{ color: "#D4A853" }}>{row.improvement}</div>
                 </div>
               ))}
+              <p className="text-xs px-4 py-2.5" style={{ color: textMuted, borderTop: `1px solid ${cardBorder}` }}>
+                * {isEn ? "Based on internal benchmark testing — not from live enterprise deployments." : "อ้างอิงจากการทดสอบ Benchmark ภายใน ไม่ใช่จาก Enterprise ที่ Deploy จริง"}
+              </p>
             </m.div>
           </div>
         </section>
@@ -274,11 +277,11 @@ export default function HallucinationPreventionPage() {
           <div className="max-w-6xl mx-auto">
             <m.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: textPrimary }}>
-                {isEn ? "Real-World " : "ผลลัพธ์"}{" "}
-                <span style={{ color: "#7B9E87" }}>{isEn ? "Case Studies" : "จริง"}</span>
+                {isEn ? "Illustrative " : "สถานการณ์"}{" "}
+                <span style={{ color: "#7B9E87" }}>{isEn ? "Scenarios" : "จำลอง"}</span>
               </h2>
               <p className="text-sm max-w-xl mx-auto" style={{ color: textMuted }}>
-                {isEn ? "Verified results from enterprise deployments across regulated industries." : "ผลลัพธ์ที่ตรวจสอบได้จากการ Deploy ใน Enterprise ในอุตสาหกรรมที่มีการกำกับดูแล"}
+                {isEn ? "Projected outcomes based on internal benchmark modeling — not from live enterprise deployments." : "ผลลัพธ์ที่คาดการณ์จากการทดสอบ Benchmark ภายใน — ไม่ใช่จากการ Deploy ใน Enterprise จริง"}
               </p>
             </m.div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -1,0 +1,91 @@
+{
+  "timestamp": "2026-04-10T04:06:04.799Z",
+  "thresholdMs": 4000,
+  "runsPerLocale": 3,
+  "results": [
+    {
+      "locale": "en",
+      "url": "http://localhost:3040/en",
+      "medianLcp": 3166.475000000001,
+      "medianTbt": 0,
+      "medianTtfb": 9.728,
+      "runs": [
+        {
+          "lcp": 3021.3036,
+          "tbt": 0,
+          "ttfb": 49.187999999999995
+        },
+        {
+          "lcp": 3169.908999999999,
+          "tbt": 0,
+          "ttfb": 9.728
+        },
+        {
+          "lcp": 3166.475000000001,
+          "tbt": 0,
+          "ttfb": 6.721
+        }
+      ],
+      "renderBlockingCount": 2,
+      "renderBlockingItems": [
+        {
+          "url": "http://localhost:3040/_next/static/chunks/0lws4qi0vgnyp.css",
+          "wastedMs": 305
+        },
+        {
+          "url": "http://localhost:3040/_next/static/chunks/0qwab5xohd~0b.css",
+          "wastedMs": 155
+        }
+      ],
+      "lcpElementSnippet": "",
+      "phases": {
+        "ttfb": null,
+        "loadDelay": null,
+        "loadTime": null,
+        "renderDelay": null
+      }
+    },
+    {
+      "locale": "th",
+      "url": "http://localhost:3040/th",
+      "medianLcp": 3088.5519999999988,
+      "medianTbt": 0,
+      "medianTtfb": 6.905,
+      "runs": [
+        {
+          "lcp": 3163.4704000000015,
+          "tbt": 0,
+          "ttfb": 10.726
+        },
+        {
+          "lcp": 3088.5519999999988,
+          "tbt": 0,
+          "ttfb": 6.905
+        },
+        {
+          "lcp": 3087.271999999999,
+          "tbt": 0,
+          "ttfb": 5.334999999999999
+        }
+      ],
+      "renderBlockingCount": 2,
+      "renderBlockingItems": [
+        {
+          "url": "http://localhost:3040/_next/static/chunks/0lws4qi0vgnyp.css",
+          "wastedMs": 303
+        },
+        {
+          "url": "http://localhost:3040/_next/static/chunks/0qwab5xohd~0b.css",
+          "wastedMs": 153
+        }
+      ],
+      "lcpElementSnippet": "",
+      "phases": {
+        "ttfb": null,
+        "loadDelay": null,
+        "loadTime": null,
+        "renderDelay": null
+      }
+    }
+  ]
+}

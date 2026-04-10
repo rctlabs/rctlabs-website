@@ -159,7 +159,7 @@ Tool-calling treats AI as a function executor. JITNA treats AI as a **collaborat
 Every JITNA packet's `intent` field is evaluated by the FDIA gatekeeper. If the computed F score falls below threshold, the entire transaction is blocked before any agent begins work.
 
 ### JITNA + SignedAI
-For high-criticality tasks, JITNA routes execution through the SignedAI consensus system. Multiple models independently process the task and must reach agreement (Tier 4: 50%, Tier 6: 67%, Tier 8: 75%) before the result is committed.
+For high-criticality tasks, JITNA routes execution through the SignedAI consensus system. Multiple models independently process the task and must reach agreement (Tier 4: 75% (3/4), Tier 6: 67%, Tier 8: 75%) before the result is committed.
 
 ### JITNA + RCTDB
 Every completed JITNA transaction is committed to RCTDB — the 8-dimensional universal memory schema. This means:

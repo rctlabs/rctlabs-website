@@ -65,6 +65,11 @@ export const PUBLIC_ROUTE_PRIORITIES: Record<string, number> = {
   "/philosophy/jitna": 0.73,
   "/philosophy/rct-7": 0.72,
   "/philosophy/intent-os": 0.70,
+  "/philosophy/vision": 0.74,
+  "/philosophy/values": 0.72,
+  "/philosophy/ethics": 0.72,
+  "/philosophy/approach": 0.72,
+  "/philosophy/impact": 0.71,
   "/open-protocol": 0.76,
   "/genome": 0.80,
   "/algorithms": 0.79,
@@ -77,6 +82,15 @@ export const PUBLIC_ROUTE_PRIORITIES: Record<string, number> = {
   "/entity/intent-profiles": 0.78,
   "/entity/governance-layer": 0.78,
   "/entity/memory-architecture": 0.78,
+  // High-traffic routes without explicit priority (previously falling back to 0.65)
+  "/benchmark": 0.78,
+  "/whitepaper": 0.77,
+  "/faq": 0.73,
+  "/changelog": 0.72,
+  "/use-cases": 0.70,
+  "/integration": 0.70,
+  "/platform": 0.68,
+  "/community": 0.68,
 }
 
 export const PUBLIC_ROUTES = [
@@ -149,6 +163,11 @@ export const PUBLIC_ROUTES = [
   "/philosophy/jitna",
   "/philosophy/rct-7",
   "/philosophy/intent-os",
+  "/philosophy/values",
+  "/philosophy/vision",
+  "/philosophy/ethics",
+  "/philosophy/approach",
+  "/philosophy/impact",
   "/open-protocol",
   // Entity pages — knowledge graph nodes for AI-optimized search
   "/entity/fdia-equation",

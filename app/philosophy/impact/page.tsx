@@ -1,105 +1,161 @@
+import type { Metadata } from "next"
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
+import { User2, FlaskConical, Award, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
 
-export default function ImpactPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return createBilingualMetadata(
+    locale,
+    "Impact — What RCT Labs Has Proven",
+    "ผลกระทบ — สิ่งที่ RCT Labs พิสูจน์แล้ว",
+    "RCT Labs real-world impact: solo-developer enterprise-grade AI, 4,849 tests, projected GAIA 84-89% (pending formal validation), and Thailand-to-global Constitutional AI standard.",
+    "ผลกระทบจริงของ RCT Labs: ระบบ AI ระดับองค์กรโดยนักพัฒนาคนเดียว 4,849 tests, projected GAIA 84-89% (pending formal validation) และมาตรฐาน Constitutional AI จากไทยสู่โลก",
+    "/philosophy/impact"
+  )
+}
+
+export default async function ImpactPage() {
+  const locale = await getRequestLocale()
+  const isEn = locale === "en"
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Philosophy", url: `https://rctlabs.co${localePrefix}/philosophy` },
+    { name: "Impact", url: `https://rctlabs.co${localePrefix}/philosophy/impact` },
+  ])
+  const faq = getFAQSchema([
+    {
+      question: isEn ? "Are benchmark numbers formally validated?" : "ตัวเลข benchmark ผ่านการรับรองอย่างเป็นทางการหรือยัง?",
+      answer: isEn
+        ? "Projected ranges are labeled explicitly as pending formal leaderboard validation until official submission is complete."
+        : "ช่วงคะแนนที่เป็น projection จะระบุชัดเจนว่า pending formal leaderboard validation จนกว่าจะส่งอย่างเป็นทางการ",
+    },
+    {
+      question: isEn ? "What makes the impact claims verifiable?" : "อะไรทำให้ impact claims ตรวจสอบได้?",
+      answer: isEn
+        ? "Claims are tied to documented tests, release records, and publicly inspectable architecture decisions."
+        : "ทุกคำอ้างผูกกับเอกสารทดสอบ ประวัติรีลีส และการตัดสินใจสถาปัตยกรรมที่ตรวจสอบได้สาธารณะ",
+    },
+  ])
+
+  const pillars = [
+    {
+      icon: User2,
+      color: "text-amber-500",
+      bg: "bg-amber-500/10",
+      titleEn: "Solo-Developer Proof of Possibility",
+      titleTh: "Solo-Developer Proof of Possibility",
+      descEn:
+        "One engineer, zero-dollar infrastructure budget, 30-day bootstrap sprint. The result: a multi-LLM consensus platform with Constitutional AI enforcement, PDPA-native architecture, and 4,849 automated tests. This is the most important claim RCT Labs has proven — that enterprise-grade AI systems do not require enterprise-sized teams or budgets.",
+      descTh:
+        "วิศวกรหนึ่งคน งบประมาณ infrastructure เป็นศูนย์ sprint bootstrap 30 วัน ผลลัพธ์: platform multi-LLM consensus พร้อม Constitutional AI enforcement สถาปัตยกรรม PDPA-native และการทดสอบอัตโนมัติ 4,849 รายการ นี่คือข้อพิสูจน์ที่สำคัญที่สุดของ RCT Labs — ระบบ AI ระดับองค์กรไม่จำเป็นต้องมีทีมหรืองบประมาณขนาดองค์กร",
+    },
+    {
+      icon: FlaskConical,
+      color: "text-sky-500",
+      bg: "bg-sky-500/10",
+      titleEn: "Evidence-Culture Discipline",
+      titleTh: "วัฒนธรรม Evidence-Culture",
+      descEn:
+        "4,849 automated tests across unit, integration, and end-to-end layers. Backend-validated coverage at 66.7% with a public 100% target. The test count is not a vanity metric — it is the organization's commitment to evidence culture, visible and trackable from day one.",
+      descTh:
+        "การทดสอบอัตโนมัติ 4,849 รายการครอบคลุม unit, integration และ end-to-end coverage ที่ backend-validated 66.7% โดยมีเป้าหมาย 100% สาธารณะ จำนวนการทดสอบไม่ใช่ตัวชี้วัดความภาคภูมิใจ — มันคือความมุ่งมั่นขององค์กรต่อ evidence culture ที่มองเห็นและติดตามได้ตั้งแต่วันแรก",
+    },
+    {
+      icon: Award,
+      color: "text-emerald-500",
+      bg: "bg-emerald-500/10",
+      titleEn: "GAIA Benchmark Performance",
+      titleTh: "ประสิทธิภาพ GAIA Benchmark",
+      descEn:
+        "Projected GAIA benchmark: 84–89% (pending formal leaderboard validation). The HexaCore 7-model consensus architecture is designed to exceed single-LLM performance on multi-step reasoning tasks. The qualifier 'pending formal leaderboard validation' is non-negotiable — we do not claim a score we have not yet formally submitted.",
+      descTh:
+        "Projected GAIA benchmark: 84-89% (pending formal leaderboard validation) สถาปัตยกรรม HexaCore 7-model consensus ได้รับการออกแบบเพื่อเกินประสิทธิภาพ single-LLM ในงาน multi-step reasoning qualifier 'pending formal leaderboard validation' ไม่อาจละเลยได้ — เราไม่อ้างคะแนนที่ยังไม่ได้ส่งอย่างเป็นทางการ",
+    },
+    {
+      icon: Globe,
+      color: "text-violet-500",
+      bg: "bg-violet-500/10",
+      titleEn: "Thailand → Global Constitutional AI Standard",
+      titleTh: "จากไทย → มาตรฐาน Constitutional AI ระดับโลก",
+      descEn:
+        "RCT Labs began in Bangkok with a PDPA-compliance-first architecture. The same Constitutional AI enforcement layer that satisfies Thai regulatory requirements is portable to GDPR (EU), CCPA (California), and APAC privacy frameworks. The vision is a single verifiable AI governance specification that works across jurisdictions — building it first in Thailand is the strategic starting point.",
+      descTh:
+        "RCT Labs เริ่มต้นในกรุงเทพฯ ด้วยสถาปัตยกรรมที่ PDPA-compliance-first ชั้น Constitutional AI enforcement เดียวกันที่ตอบสนองข้อกำหนดของกฎระเบียบไทยสามารถย้ายไปใช้กับ GDPR (EU), CCPA (California) และกรอบความเป็นส่วนตัวของ APAC วิสัยทัศน์คือ specification การกำกับดูแล AI ที่ตรวจสอบได้ชุดเดียวที่ทำงานได้ทั่วทุกเขตอำนาจศาล",
+    },
+  ]
+
   return (
-    <main className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-foreground">
-            YourBrand
-          </Link>
-          <div className="flex gap-8 items-center">
-            <Link href="/about" className="text-sm text-foreground hover:text-foreground/80 transition">
-              About
-            </Link>
-            <Link href="/philosophy" className="text-sm text-foreground hover:text-foreground/80 transition">
-              Philosophy
-            </Link>
-            <Link href="/contact" className="text-sm text-foreground hover:text-foreground/80 transition">
-              Contact
-            </Link>
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />
+      <main className="min-h-screen bg-background">
+      <Navbar />
+      <section className="mx-auto max-w-5xl px-4 py-24">
+        <Link
+          href={`${localePrefix}/philosophy`}
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 transition"
+        >
+          <span>←</span>
+          <span>{isEn ? "Back to Philosophy" : "กลับสู่ Philosophy"}</span>
+        </Link>
+
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          {isEn ? "Impact at RCT Labs" : "ผลกระทบของ RCT Labs"}
+        </h1>
+        <p className="text-xl text-muted-foreground mb-16 max-w-3xl">
+          {isEn
+            ? "What RCT Labs has already proven — in working code, passing tests, and documented benchmarks."
+            : "สิ่งที่ RCT Labs พิสูจน์แล้ว — ในโค้ดที่ใช้งานได้ การทดสอบที่ผ่าน และ benchmark ที่มีเอกสาร"}
+        </p>
+
+        <div className="grid gap-8 md:gap-10">
+          {pillars.map((p, i) => {
+            const Icon = p.icon
+            return (
+              <article key={i} className="flex gap-6">
+                <div className={`shrink-0 w-12 h-12 rounded-xl ${p.bg} flex items-center justify-center`}>
+                  <Icon className={`w-6 h-6 ${p.color}`} />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground mb-2">{isEn ? p.titleEn : p.titleTh}</h2>
+                  <p className="text-muted-foreground leading-relaxed">{isEn ? p.descEn : p.descTh}</p>
+                </div>
+              </article>
+            )
+          })}
+        </div>
+
+        <div className="mt-20 p-8 rounded-2xl bg-muted/40 border border-border">
+          <h2 className="text-2xl font-bold text-foreground mb-4">
+            {isEn ? "Review the Evidence" : "ตรวจสอบหลักฐาน"}
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            {isEn
+              ? "Every claim on this page is backed by documented benchmarks, test suites, and public specifications."
+              : "ทุกข้อเรียกร้องในหน้านี้มี benchmark ที่มีเอกสาร test suite และ specification สาธารณะรองรับ"}
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <Button asChild>
+              <Link href={`${localePrefix}/benchmark`}>{isEn ? "View Benchmarks" : "ดู Benchmark"}</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href={`${localePrefix}/philosophy/fdia`}>{isEn ? "FDIA Framework" : "กรอบ FDIA"}</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href={`${localePrefix}/whitepaper`}>{isEn ? "Whitepaper" : "Whitepaper"}</Link>
+            </Button>
           </div>
         </div>
-      </nav>
-
-      {/* Content */}
-      <section className="mx-auto max-w-4xl px-4 py-24">
-        <Button variant="ghost" size="sm" asChild className="mb-8">
-          <Link href="/philosophy">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Link>
-        </Button>
-
-        <article className="space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground">Our Impact</h1>
-            <p className="text-xl text-foreground/70">The positive change we create in the world</p>
-          </div>
-
-          <div className="space-y-8 text-foreground/80">
-            <h2 className="text-2xl font-bold text-foreground">Empowering Teams</h2>
-            <p>
-              Our primary impact is enabling teams to work more effectively and efficiently. When teams have better
-              tools and processes, they can focus on what matters most: creating value for their customers and achieving
-              their goals.
-            </p>
-
-            <h2 className="text-2xl font-bold text-foreground">Economic Growth</h2>
-            <p>
-              By reducing friction and eliminating barriers, we help businesses grow faster and create more jobs. Our
-              customers report significant improvements in productivity and profitability.
-            </p>
-
-            <h2 className="text-2xl font-bold text-foreground">Industry Leadership</h2>
-            <p>
-              We're raising standards across our industry. By demonstrating what's possible with great design,
-              engineering, and customer service, we inspire others to improve as well.
-            </p>
-
-            <h2 className="text-2xl font-bold text-foreground">Social Responsibility</h2>
-            <p>
-              We believe companies have a responsibility to give back. We contribute to communities through
-              volunteering, donations, and pro bono services for nonprofits and social enterprises.
-            </p>
-
-            <h2 className="text-2xl font-bold text-foreground">Environmental Commitment</h2>
-            <p>
-              We're committed to minimizing our environmental impact. From carbon-neutral operations to sustainable
-              practices, we take our responsibility to the planet seriously.
-            </p>
-
-            <div className="bg-primary text-primary-foreground p-8 rounded-lg space-y-4 mt-8">
-              <h3 className="text-xl font-bold">Measuring Impact</h3>
-              <p>
-                We track our impact regularly and report transparently to stakeholders. Our goal is to ensure that every
-                decision we make creates positive value for our customers, communities, and the world.
-              </p>
-            </div>
-          </div>
-        </article>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border mt-24 py-12">
-        <div className="mx-auto max-w-6xl px-4 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-foreground font-semibold">YourBrand © 2025</div>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <Link href="/about" className="text-sm text-foreground/70 hover:text-foreground transition">
-              About
-            </Link>
-            <Link href="/philosophy" className="text-sm text-foreground/70 hover:text-foreground transition">
-              Philosophy
-            </Link>
-            <Link href="/contact" className="text-sm text-foreground/70 hover:text-foreground transition">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
+    </>
   )
 }
