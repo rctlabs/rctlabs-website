@@ -1,141 +1,120 @@
+import type { Metadata } from "next"
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
+import { Clock, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, Users, ArrowLeft } from "lucide-react"
 
-export default function EventsPage() {
-  const events = [
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return createBilingualMetadata(
+    locale,
+    "Community Events — Coming Soon | RCT Labs",
+    "กิจกรรมชุมชน — เร็วๆ นี้ | RCT Labs",
+    "RCT Labs community events page is under construction. Join our community to be notified when events are announced.",
+    "หน้ากิจกรรมชุมชนของ RCT Labs อยู่ระหว่างการพัฒนา เข้าร่วมชุมชนเพื่อรับการแจ้งเตือนเมื่อมีการประกาศกิจกรรม",
+    "/community/events"
+  )
+}
+
+export default async function CommunityEventsPage() {
+  const locale = await getRequestLocale()
+  const isEn = locale === "en"
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Community", url: `https://rctlabs.co${localePrefix}/community` },
+    { name: "Events", url: `https://rctlabs.co${localePrefix}/community/events` },
+  ])
+  const faq = getFAQSchema([
     {
-      title: "The Future of Work: Expert Panel",
-      date: "January 15, 2025",
-      time: "2:00 PM EST",
-      attendees: 2456,
-      type: "Webinar",
+      question: isEn ? "When will community events start?" : "กิจกรรมชุมชนจะเริ่มเมื่อไร?",
+      answer: isEn
+        ? "The event calendar is in pilot mode. Monthly online sessions are prioritized first, followed by local meetups."
+        : "ปฏิทินกิจกรรมอยู่ในช่วงทดลอง โดยจะเริ่มจากออนไลน์รายเดือนก่อน และตามด้วยมีตอัปออนไซต์",
     },
     {
-      title: "AI Workshop: Getting Started",
-      date: "January 22, 2025",
-      time: "10:00 AM EST",
-      attendees: 1203,
-      type: "Workshop",
+      question: isEn ? "How can I get notified?" : "จะรับการแจ้งเตือนได้อย่างไร?",
+      answer: isEn
+        ? "Use the contact form to register interest and we will send schedule updates and event registration links."
+        : "กรอกฟอร์มติดต่อเพื่อลงทะเบียนความสนใจ แล้วทีมงานจะส่งกำหนดการและลิงก์ลงทะเบียนให้",
     },
-    {
-      title: "Community Networking Hour",
-      date: "January 29, 2025",
-      time: "4:00 PM EST",
-      attendees: 834,
-      type: "Networking",
-    },
-    {
-      title: "Digital Transformation Masterclass",
-      date: "February 5, 2025",
-      time: "1:00 PM EST",
-      attendees: 1567,
-      type: "Masterclass",
-    },
-    {
-      title: "Q&A: Leadership Insights",
-      date: "February 12, 2025",
-      time: "3:00 PM EST",
-      attendees: 892,
-      type: "Q&A",
-    },
-    {
-      title: "Annual Community Meetup",
-      date: "March 15, 2025",
-      time: "All Day",
-      attendees: 5000,
-      type: "Meetup",
-    },
-  ]
+  ])
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": isEn ? "Community Event Programs" : "รูปแบบกิจกรรมชุมชน",
+    "itemListElement": [
+      { "@type": "ListItem", position: 1, name: isEn ? "Monthly Office Hours" : "Office Hours รายเดือน" },
+      { "@type": "ListItem", position: 2, name: isEn ? "Architecture Deep-Dive" : "เซสชันเจาะลึกสถาปัตยกรรม" },
+      { "@type": "ListItem", position: 3, name: isEn ? "Regional Meetup" : "มีตอัประดับภูมิภาค" },
+    ],
+  }
 
   return (
-    <main className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-foreground">
-            YourBrand
-          </Link>
-          <div className="flex gap-8 items-center">
-            <Link href="/community" className="text-sm text-foreground hover:text-foreground/80 transition">
-              Community
-            </Link>
-            <Link href="/company" className="text-sm text-foreground hover:text-foreground/80 transition">
-              Company
-            </Link>
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      <main className="min-h-screen bg-background">
+      <Navbar />
+      <section className="mx-auto max-w-3xl px-4 pt-24 pb-16 text-center">
+        <Link
+          href={`${localePrefix}/community`}
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-12 transition"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>{isEn ? "Back to Community" : "กลับสู่ Community"}</span>
+        </Link>
+
+        <div className="flex justify-center mb-8">
+          <div className="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center">
+            <Clock className="w-8 h-8 text-amber-500" />
           </div>
         </div>
-      </nav>
 
-      {/* Header */}
-      <section className="mx-auto max-w-6xl px-4 py-24">
-        <Button variant="ghost" size="sm" asChild className="mb-8">
-          <Link href="/community">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Link>
-        </Button>
+        <h1 className="text-4xl font-bold text-foreground mb-4">
+          {isEn ? "Community Events" : "กิจกรรมชุมชน"}
+        </h1>
+        <p className="text-xl text-muted-foreground mb-8">
+          {isEn ? "Program Track Now Open" : "เปิดรับเข้าร่วมโปรแกรมแล้ว"}
+        </p>
+        <p className="text-muted-foreground max-w-lg mx-auto mb-12">
+          {isEn
+            ? "We now run a minimum production track: monthly office hours, technical deep-dives, and early regional meetup planning for the RCT Labs ecosystem."
+            : "ตอนนี้เราเปิดแทร็กขั้นต่ำสำหรับโปรดักชันแล้ว: office hours รายเดือน, technical deep-dive และแผนมีตอัประดับภูมิภาคสำหรับระบบนิเวศ RCT Labs"}
+        </p>
 
-        <div className="space-y-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">Upcoming Events</h1>
-          <p className="text-lg text-foreground/70 max-w-2xl">
-            Join our community for webinars, workshops, and networking events.
-          </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <Button asChild>
+            <Link href={`${localePrefix}/community`}>{isEn ? "Community Hub" : "ศูนย์ชุมชน"}</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href={`${localePrefix}/contact`}>{isEn ? "Get Notified" : "รับการแจ้งเตือน"}</Link>
+          </Button>
         </div>
       </section>
-
-      {/* Events List */}
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="space-y-4">
-          {events.map((event, i) => (
-            <div
-              key={i}
-              className="p-6 rounded-lg border border-border hover:border-foreground/50 hover:shadow-lg transition cursor-pointer"
-            >
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-muted text-foreground">
-                      {event.type}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">{event.title}</h3>
-                  <div className="flex flex-wrap gap-4 text-sm text-foreground/70">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      {event.date}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      {event.time}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4" />
-                      {event.attendees.toLocaleString()} attending
-                    </div>
-                  </div>
-                </div>
-                <Button variant="outline">Register</Button>
-              </div>
-            </div>
-          ))}
+      <section className="mx-auto max-w-5xl px-4 pb-24">
+        <div className="grid gap-4 md:grid-cols-3">
+          <article className="rounded-xl border border-border bg-card p-5">
+            <h2 className="text-base font-semibold text-foreground mb-2">{isEn ? "Monthly Office Hours" : "Office Hours รายเดือน"}</h2>
+            <p className="text-sm text-muted-foreground">{isEn ? "Open Q&A with maintainers on architecture and implementation decisions." : "ช่วงถามตอบกับทีมผู้ดูแลเรื่องสถาปัตยกรรมและการตัดสินใจเชิง implementation"}</p>
+          </article>
+          <article className="rounded-xl border border-border bg-card p-5">
+            <h2 className="text-base font-semibold text-foreground mb-2">{isEn ? "Technical Deep-Dive" : "Technical Deep-Dive"}</h2>
+            <p className="text-sm text-muted-foreground">{isEn ? "Focused sessions on FDIA, JITNA, RCTDB, and production readiness patterns." : "เซสชันเฉพาะทางด้าน FDIA, JITNA, RCTDB และแนวทาง production readiness"}</p>
+          </article>
+          <article className="rounded-xl border border-border bg-card p-5">
+            <h2 className="text-base font-semibold text-foreground mb-2">{isEn ? "Regional Meetup" : "Regional Meetup"}</h2>
+            <p className="text-sm text-muted-foreground">{isEn ? "Pilot in-person sessions for builders and research collaborators." : "กิจกรรมออนไซต์นำร่องสำหรับนักพัฒนาและผู้ร่วมวิจัย"}</p>
+          </article>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border mt-24 py-12">
-        <div className="mx-auto max-w-6xl px-4 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-foreground font-semibold">YourBrand © 2025</div>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <Link href="/community" className="text-sm text-foreground/70 hover:text-foreground transition">
-              Community
-            </Link>
-            <Link href="/company" className="text-sm text-foreground/70 hover:text-foreground transition">
-              Company
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
+    </>
   )
 }

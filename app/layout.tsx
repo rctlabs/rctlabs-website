@@ -1,6 +1,5 @@
 import type React from "react"
 import type { Metadata } from "next"
-import Script from "next/script"
 import { Inter, Space_Grotesk, Space_Mono, Kanit } from "next/font/google"
 import { LocaleLangSync } from "@/components/locale-lang-sync"
 import { Analytics } from "@vercel/analytics/react"
@@ -9,6 +8,7 @@ import "./globals.css"
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema"
 import { AppProviders } from "@/components/app-providers"
 import { DeferredGlobalBackground } from "@/components/performance/deferred-global-background"
+import { DeferredAnalytics } from "@/components/performance/deferred-analytics"
 import { Toaster } from "sonner"
 import { SITE_OG_IMAGE, SITE_URL, SOCIAL_LINKS } from "@/lib/site-config"
 
@@ -52,14 +52,16 @@ const verification = googleSiteVerification || bingSiteVerification
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
-  display: "swap",
+  display: "optional",
+  preload: false,
 })
 
 /* Body: Inter */
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
+  display: "optional",
+  preload: false,
 })
 
 /* Mono: Space Mono */
@@ -67,15 +69,17 @@ const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-mono",
-  display: "swap",
+  display: "optional",
+  preload: false,
 })
 
 /* Thai: Kanit (matches Space Grotesk geometric style) */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "600"],
   variable: "--rct-font-thai",
-  display: "swap",
+  display: "optional",
+  preload: false,
 })
 
 
@@ -200,27 +204,8 @@ export default async function RootLayout({
         {/* Preconnect to image CDN for faster LCP */}
         <link rel="preconnect" href="https://d2xsxph8kpxj0f.cloudfront.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://d2xsxph8kpxj0f.cloudfront.net" />
-        {/* Google Analytics 4 — always loaded directly so Google can verify the tag.
-            Initialises window.dataLayer before GTM so GTM reuses the same queue. */}
-        {ga4Id && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
-              strategy="lazyOnload"
-            />
-            <Script id="ga4-init" strategy="lazyOnload">
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}',{page_path:window.location.pathname,send_page_view:true});`}
-            </Script>
-          </>
-        )}
-        {/* Google Tag Manager — piggy-backs on the dataLayer initialised above.
-            When using GTM, disable the GA4 Configuration tag's built-in page_view
-            inside GTM to prevent double-counting. */}
-        {gtmId && (
-          <Script id="gtm-head" strategy="lazyOnload">
-            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f)})(window,document,'script','dataLayer','${gtmId}');`}
-          </Script>
-        )}
+        {/* Third-party analytics scripts are intentionally deferred in body
+            to avoid competing with above-the-fold rendering and LCP. */}
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
@@ -255,6 +240,7 @@ export default async function RootLayout({
         <AppProviders>
           <LocaleLangSync />
           <DeferredGlobalBackground />
+          <DeferredAnalytics ga4Id={ga4Id} gtmId={gtmId} />
           <div id="main-content" className="relative z-10" tabIndex={-1}>
             {children}
           </div>

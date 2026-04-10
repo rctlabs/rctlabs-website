@@ -15,8 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
     locale,
     "Press & Media — Constitutional AI from Thailand",
     "สื่อมวลชนและข่าวประชาสัมพันธ์ — Constitutional AI จากประเทศไทย",
-    "Press kit, fact sheet, story angles, and media contact for RCT Labs — a constitutional AI operating system built by a solo developer in Bangkok, Thailand. 62 microservices, 4,849 passing tests, 0.3% hallucination rate.",
-    "Press kit, fact sheet, มุมข่าว และข้อมูลติดต่อสื่อสำหรับ RCT Labs — constitutional AI operating system ที่สร้างโดยผู้พัฒนาคนเดียวจากกรุงเทพฯ ประเทศไทย พร้อม 62 microservices, 4,849 passing tests และ hallucination rate 0.3%",
+    "Press kit, fact sheet, story angles, and media contact for RCT Labs — a constitutional AI operating system built by a solo developer in Bangkok, Thailand. 62 microservices, 4,849 passing tests, benchmark hallucination target: 0.3%.",
+    "Press kit, fact sheet, มุมข่าว และข้อมูลติดต่อสื่อสำหรับ RCT Labs — constitutional AI operating system ที่สร้างโดยผู้พัฒนาคนเดียวจากกรุงเทพฯ ประเทศไทย พร้อม 62 microservices, 4,849 passing tests และ Benchmark Hallucination Target 0.3%",
     "/press",
     ["press kit", "media contact", "constitutional AI Thailand", "RCT Labs press"]
   )
@@ -30,10 +30,10 @@ const facts = [
   { label: "Algorithms", labelTh: "Algorithms", value: "41 (Tier 1–9)" },
   { label: "AI Models (HexaCore)", labelTh: "โมเดล AI (HexaCore)", value: "7 (3 Western + 3 Eastern + 1 Thai)" },
   { label: "Test Suite", labelTh: "ชุดทดสอบ", value: "4,849 passed / 0 failed / 0 errors" },
-  { label: "Hallucination Rate", labelTh: "อัตรา Hallucination", value: "0.3% (industry: 12–15%)" },
-  { label: "FDIA Accuracy", labelTh: "ความแม่นยำ FDIA", value: "0.92 (industry baseline: ~0.65)" },
+  { label: "Benchmark Hallucination Target", labelTh: "เป้าหมาย Benchmark Hallucination", value: "0.3% (industry: 12–15%)" },
+  { label: "FDIA Benchmark Accuracy", labelTh: "ความแม่นยำ FDIA (Benchmark)", value: "0.92 vs ~0.65 baseline" },
   { label: "Memory Compression", labelTh: "การบีบอัดหน่วยความจำ", value: "74% lossless (Delta Engine)" },
-  { label: "Uptime SLA", labelTh: "SLA Uptime", value: "99.98%" },
+  { label: "Uptime Design SLA Target", labelTh: "เป้าหมาย Design SLA", value: "99.98% (design target)" },
   { label: "Warm Recall", labelTh: "Warm Recall", value: "<50ms" },
   { label: "Budget", labelTh: "งบประมาณ", value: "$0 (bootstrapped)" },
   { label: "Team Size", labelTh: "ขนาดทีม", value: "1 (sole developer)" },
@@ -49,14 +49,18 @@ const storyAngles = [
     angleTh: "ความสนใจมนุษย์ / ผู้ประกอบการ",
     hook: "While Silicon Valley needs $100M and 50 engineers, Ittirit Saengow built a production-grade AI operating system with 62 microservices from a single Android phone in Bangkok.",
     hookTh: "ขณะที่ Silicon Valley ต้องใช้เงิน 100 ล้านดอลลาร์และวิศวกร 50 คน อิทธิฤทธิ์ แซ่โง้ว สร้าง AI OS ระดับ production ที่มี 62 microservices จากโทรศัพท์ Android เครื่องเดียวในกรุงเทพฯ",
+    badgeClass: "border-warm-amber/30 bg-warm-amber/10 text-warm-amber",
+    cardClass: "border-warm-amber/20",
   },
   {
     headline: "Constitutional AI: The Architecture That Provably Prevents Hallucination",
     headlineTh: "Constitutional AI: สถาปัตยกรรมที่พิสูจน์ได้ว่าป้องกัน Hallucination",
     angle: "Technology / AI safety",
     angleTh: "เทคโนโลยี / ความปลอดภัย AI",
-    hook: "FDIA equation F = (D^I) × A introduces a mathematical kill switch: when A=0, no AI output is produced — regardless of model, prompt, or context. 0.3% hallucination vs 12–15% industry average.",
-    hookTh: "สมการ FDIA F = (D^I) × A สร้างสวิตช์ตัดทางคณิตศาสตร์: เมื่อ A=0 จะไม่มี AI output เกิดขึ้นเลย ไม่ว่าโมเดล prompt หรือบริบทจะเป็นอะไร อัตรา Hallucination 0.3% เทียบกับค่าเฉลี่ยอุตสาหกรรม 12–15%",
+    hook: "FDIA equation F = (D^I) × A introduces a mathematical kill switch: when A=0, no AI output is produced — regardless of model, prompt, or context. Benchmark hallucination target: 0.3% vs 12–15% industry average.",
+    hookTh: "สมการ FDIA F = (D^I) × A สร้างสวิตช์ตัดทางคณิตศาสตร์: เมื่อ A=0 จะไม่มี AI output เกิดขึ้นเลย ไม่ว่าโมเดล prompt หรือบริบทจะเป็นอะไร Benchmark Hallucination Target: 0.3% เทียบกับค่าเฉลี่ยอุตสาหกรรม 12–15%",
+    badgeClass: "border-sky-400/30 bg-sky-400/10 text-sky-400",
+    cardClass: "border-sky-400/20",
   },
   {
     headline: "JITNA: The Open Protocol That Could Become the 'HTTP of Agentic AI'",
@@ -65,6 +69,8 @@ const storyAngles = [
     angleTh: "เทคโนโลยี / มาตรฐาน",
     hook: "Just In Time Nodal Assembly (JITNA RFC-001 v2.0) is the first open-standard communication protocol for AI agents. It defines how agents negotiate, execute, and verify tasks — PROPOSE → COUNTER → ACCEPT.",
     hookTh: "Just In Time Nodal Assembly (JITNA RFC-001 v2.0) คือโปรโตคอลการสื่อสารแบบ open standard ตัวแรกสำหรับ AI Agents กำหนดวิธีที่ agents เจรจา ดำเนินการ และตรวจสอบงาน — PROPOSE → COUNTER → ACCEPT",
+    badgeClass: "border-sky-400/30 bg-sky-400/10 text-sky-400",
+    cardClass: "border-sky-400/20",
   },
   {
     headline: "50–100 Billion THB: Thailand's Path to AI Infrastructure Independence",
@@ -73,6 +79,8 @@ const storyAngles = [
     angleTh: "ธุรกิจ / การพัฒนาชาติ",
     hook: "Thailand currently sends billions THB/year in AI API fees to foreign cloud vendors. RCT Labs proposes a constitutional AI infrastructure that generates 50–100B THB in national value by 2030.",
     hookTh: "ปัจจุบันไทยส่งเงินหลายพันล้านบาทต่อปีเป็นค่า AI API ให้ cloud vendors ต่างประเทศ RCT Labs เสนอโครงสร้างพื้นฐาน AI แบบ constitutional ที่จะสร้างมูลค่าแห่งชาติ 5 หมื่น – 1 แสนล้านบาทภายในปี 2030",
+    badgeClass: "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    cardClass: "border-emerald-500/20",
   },
   {
     headline: "The PDPA Compliance Crisis Hidden in Every Enterprise AI Deployment",
@@ -81,6 +89,8 @@ const storyAngles = [
     angleTh: "Compliance / ความเสี่ยง",
     hook: "Most Thai enterprise AI deployments have undocumented cross-border transfers, no right-to-erasure mechanism, and no Section 33 explanation capability. Constitutional AI solves this architecturally.",
     hookTh: "การติดตั้ง Enterprise AI ของไทยส่วนใหญ่มีการโอนข้อมูลข้ามประเทศที่ไม่ได้บันทึก ไม่มีกลไก right-to-erasure และไม่มีความสามารถอธิบายตามมาตรา 33 Constitutional AI แก้ปัญหานี้ในเชิงสถาปัตยกรรม",
+    badgeClass: "border-orange-400/30 bg-orange-400/10 text-orange-500 dark:text-orange-400",
+    cardClass: "border-orange-400/20",
   },
 ]
 
@@ -125,11 +135,26 @@ export default async function PressPage() {
             <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight mb-4">
               RCT Labs Media Kit
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mb-8">
+            <p className="text-xl text-muted-foreground max-w-2xl mb-6">
               {isTh
                 ? "Fact sheet, มุมข่าว และข้อมูลติดต่อสำหรับนักข่าวที่รายงานข่าว AI, เทคโนโลยีระดับองค์กร และระบบนิเวศเทคโนโลยีของไทย"
                 : "Fact sheet, story angles, and media contact for journalists covering AI, enterprise technology, and Thailand's technology ecosystem."}
             </p>
+
+            {/* Hero stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+              {[
+                { value: "62", label: isTh ? "Microservices" : "Microservices" },
+                { value: "4,849", label: isTh ? "Tests ผ่าน" : "Tests Passing" },
+                { value: "0.3%", label: isTh ? "Hallucination Rate" : "Hallucination Rate" },
+                { value: "99.98%", label: isTh ? "Uptime SLA" : "Uptime SLA" },
+              ].map((s) => (
+                <div key={s.label} className="rounded-xl border border-warm-amber/20 bg-warm-amber/5 px-4 py-3">
+                  <p className="text-2xl font-bold text-warm-amber">{s.value}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
+                </div>
+              ))}
+            </div>
 
             {/* Media contact */}
             <div className="inline-flex flex-col sm:flex-row gap-3">
@@ -206,9 +231,9 @@ export default async function PressPage() {
           </h2>
           <div className="space-y-4">
             {storyAngles.map((story) => (
-              <div key={story.headline} className="rounded-xl border border-border bg-muted/30 p-6">
+              <div key={story.headline} className={`rounded-xl border bg-muted/30 p-6 ${story.cardClass}`}>
                 <div className="flex items-start gap-4">
-                  <span className="px-2.5 py-0.5 rounded-full border border-warm-amber/30 bg-warm-amber/10 text-warm-amber text-xs font-semibold shrink-0">{isTh ? story.angleTh : story.angle}</span>
+                  <span className={`px-2.5 py-0.5 rounded-full border text-xs font-semibold shrink-0 ${story.badgeClass}`}>{isTh ? story.angleTh : story.angle}</span>
                 </div>
                 <h3 className="text-lg font-bold text-foreground mt-3 mb-2">"{isTh ? story.headlineTh : story.headline}"</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{isTh ? story.hookTh : story.hook}</p>

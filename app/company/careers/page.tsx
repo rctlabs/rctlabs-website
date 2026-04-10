@@ -86,7 +86,7 @@ export default async function CareersPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
         <div className="mx-auto max-w-4xl space-y-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-4 py-1.5 text-sm font-medium text-accent">
+          <div className="inline-flex items-center gap-2 rounded-full border border-warm-amber/25 bg-warm-amber/8 px-4 py-1.5 text-sm font-medium text-warm-amber">
             <ShieldCheck className="h-4 w-4" />
             <span>{isTh ? "Collaboration & Future Opportunities" : "Collaboration & Future Opportunities"}</span>
           </div>
@@ -107,8 +107,8 @@ export default async function CareersPage() {
             const Icon = track.icon
             return (
               <div key={track.title} className="rounded-2xl border border-border bg-card p-6 text-center space-y-4 shadow-[0_12px_32px_rgba(0,0,0,0.04)]">
-                <div className="w-16 h-16 bg-accent/10 rounded-lg flex items-center justify-center mx-auto">
-                  <Icon className="w-8 h-8 text-accent" />
+                <div className="w-16 h-16 bg-warm-amber/10 rounded-lg flex items-center justify-center mx-auto">
+                  <Icon className="w-8 h-8 text-warm-amber" />
                 </div>
                 <h2 className="text-xl font-semibold text-foreground">{track.title}</h2>
                 <p className="text-muted-foreground leading-relaxed">{track.description}</p>
@@ -127,7 +127,7 @@ export default async function CareersPage() {
             <ul className="space-y-3 text-muted-foreground">
               {expectations.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-warm-amber" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -171,7 +171,7 @@ export default async function CareersPage() {
             </Button>
             <a
               href={GENERAL_CONTACT_MAILTO}
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-3 text-sm font-medium text-foreground transition hover:border-accent/40 hover:text-accent"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-3 text-sm font-medium text-foreground transition hover:border-warm-amber/40 hover:text-warm-amber"
             >
               <Mail className="h-4 w-4" />
               {GENERAL_CONTACT_EMAIL}

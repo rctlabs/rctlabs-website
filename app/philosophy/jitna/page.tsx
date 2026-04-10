@@ -84,9 +84,48 @@ const translations = {
 export default function JITNAPage() {
   const { language } = useLanguage()
   const t = translations[language] || translations.en
+  const localePrefix = language === "th" ? "/th" : "/en"
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `https://rctlabs.co${localePrefix}` },
+      { "@type": "ListItem", position: 2, name: "Philosophy", item: `https://rctlabs.co${localePrefix}/philosophy` },
+      { "@type": "ListItem", position: 3, name: "JITNA", item: `https://rctlabs.co${localePrefix}/philosophy/jitna` },
+    ],
+  }
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: language === "th" ? "JITNA ต่างจาก prompt ธรรมดาอย่างไร?" : "How is JITNA different from normal prompts?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: language === "th"
+            ? "JITNA มีโครงสร้าง intent/context/priority/action/validate ทำให้ตรวจสอบและนำไปใช้ซ้ำได้ง่ายกว่า"
+            : "JITNA uses structured blocks for intent, context, priorities, actions, and validation, enabling repeatable and auditable execution.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: language === "th" ? "JITNA รองรับการทำงานร่วมกันอย่างไร?" : "How does JITNA improve collaboration?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: language === "th"
+            ? "เพราะทีมเทคนิคและทีมธุรกิจสามารถอ้างถึงสเปก intent เดียวกันและตรวจผลจากเกณฑ์เดียวกันได้"
+            : "It provides a shared intent specification language that both technical and non-technical stakeholders can verify against the same criteria.",
+        },
+      },
+    ],
+  }
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <main className="min-h-screen bg-background">
       <Navbar />
 
       {/* Breadcrumb */}
@@ -109,7 +148,7 @@ export default function JITNAPage() {
           {/* Code Example */}
           <div className="bg-card border border-border rounded-lg p-8 font-mono text-sm mt-12">
             <div className="flex items-start gap-4">
-              <Code2 className="w-6 h-6 text-accent mt-2 flex-shrink-0" />
+              <Code2 className="w-6 h-6 text-accent mt-2 shrink-0" />
               <div className="space-y-2 overflow-x-auto w-full">
                 <div className="text-muted-foreground">{t.code_example.intent}</div>
                 <div className="text-accent">{t.code_example.context}</div>
@@ -140,14 +179,14 @@ export default function JITNAPage() {
       </section>
 
       {/* Example Specifications */}
-      <section className="mx-auto max-w-7xl px-4 py-24 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg">
+      <section className="mx-auto max-w-7xl px-4 py-24 bg-linear-to-r from-accent/5 to-secondary/5 rounded-lg">
         <div className="space-y-8">
           <h2 className="text-4xl font-bold text-foreground">{t.examples_title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {t.examples.map((example, i) => (
               <div key={i} className="bg-background rounded-lg p-6 border border-border">
                 <h3 className="text-lg font-semibold text-foreground mb-4">{example.title}</h3>
-                <pre className="text-xs text-muted-foreground leading-relaxed font-mono whitespace-pre-wrap break-words">{example.content}</pre>
+                <pre className="text-xs text-muted-foreground leading-relaxed font-mono whitespace-pre-wrap wrap-break-word">{example.content}</pre>
               </div>
             ))}
           </div>
@@ -213,5 +252,6 @@ export default function JITNAPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

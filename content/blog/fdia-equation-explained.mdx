@@ -163,7 +163,7 @@ For production-critical queries (SignedAI Tier 4/6/8), multiple models independe
 - Weighted voting (confidence-scored)
 - Jaccard similarity (agreement measurement)
 
-Consensus threshold depends on tier: Tier 4 = 50%, Tier 6 = 67%, Tier 8 = 75%.
+Consensus threshold depends on tier: Tier 4 = 75% (3/4), Tier 6 = 67%, Tier 8 = 75%.
 
 ### State 6: COMMITTING (RCTDB)
 The verified response and its full provenance chain are stored in RCTDB — the 8-dimensional universal memory schema. This includes: the original query, D/I/A scores, model selections, consensus results, and timestamps.

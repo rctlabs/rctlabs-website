@@ -3,10 +3,15 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { ArrowRight, Lightbulb, Zap, BookOpen, Brain } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 
 export default function PhilosophyPage() {
+  const pathname = usePathname()
+  const localePrefix = getLocalePrefix(resolveLocale(pathname))
+
   const concepts = [
     {
       slug: "fdia",
@@ -60,11 +65,34 @@ export default function PhilosophyPage() {
       { "@type": "ListItem", position: 6, name: "Ethics", url: "https://rctlabs.co/en/philosophy/ethics" },
     ],
   }
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is the RCT Philosophy?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "RCT Philosophy combines FDIA, RCT-7, JITNA, and Intent OS into a verifiable framework for intent-driven AI systems.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How should I start exploring the philosophy stack?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Start with FDIA to understand the mathematical core, then move through RCT-7 implementation flow, JITNA language, and finally Intent OS architecture.",
+        },
+      },
+    ],
+  }
 
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <main className="min-h-screen bg-background">
       <Navbar />
 
@@ -106,7 +134,7 @@ export default function PhilosophyPage() {
       </section>
 
       {/* Philosophy Overview */}
-      <section className="mx-auto max-w-7xl px-4 py-24 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg my-12">
+      <section className="mx-auto max-w-7xl px-4 py-24 bg-linear-to-r from-accent/5 to-secondary/5 rounded-lg my-12">
         <div className="space-y-8">
           <div className="max-w-3xl">
             <h2 className="text-4xl font-bold mb-6 text-foreground">The Intent Revolution</h2>
@@ -140,12 +168,12 @@ export default function PhilosophyPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button size="lg" variant="secondary" asChild>
-              <Link href="/research" className="gap-2">
+              <Link href={`${localePrefix}/research`} className="gap-2">
                 View Research <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
             <Button size="lg" variant="secondary" asChild className="bg-secondary text-secondary-foreground">
-              <Link href="/community">Join Community</Link>
+              <Link href={`${localePrefix}/community`}>Join Community</Link>
             </Button>
           </div>
         </div>

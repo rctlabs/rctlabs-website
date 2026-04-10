@@ -9,12 +9,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return createBilingualMetadata(
     locale,
-    "41 Proprietary Algorithms",
-    "41 อัลกอริทึมเฉพาะ",
-    "RCT Labs 41 proprietary algorithms across 9 tiers: from foundation processing to meta-cognitive orchestration. Public references describe a 41-algorithm framework with benchmark-backed validation evidence.",
-    "อัลกอริทึมเฉพาะ 41 ตัวของ RCT Labs ใน 9 Tiers: จากการประมวลผลพื้นฐานถึง Meta-cognitive Orchestration ผ่านการทดสอบใน 62,205+ Test Cases",
+    "41 Algorithms & Analysearch",
+    "41 อัลกอริทึม & Analysearch",
+    "RCT Labs 41 proprietary algorithms across 9 capability tiers — from foundation intent processing to autonomous planning. Includes Analysearch: a multi-depth analysis engine with Quick, Standard, Deep, and Mirror modes. Validated by 4,849 automated tests.",
+    "อัลกอริทึมเฉพาะ 41 ตัวของ RCT Labs ใน 9 Tiers: จาก foundation intent processing ถึง autonomous planning รวมถึง Analysearch — analysis engine ที่มี 4 โหมด ผ่านการทดสอบด้วย automated tests 4,849 รายการ",
     "/algorithms",
-    ["41 algorithms", "AI algorithms", "9-tier algorithm", "production AI algorithms", "AI orchestration algorithms"]
+    ["41 algorithms", "Analysearch", "AI algorithms", "9-tier algorithm", "production AI algorithms", "AI orchestration algorithms"]
   )
 }
 
@@ -31,12 +31,27 @@ export default async function AlgorithmsPage() {
     {
       question: "How are the RCT Labs algorithms organized?",
       answer:
-        "The 41 proprietary algorithms are grouped into 9 tiers covering foundation processing, analysis, reasoning, orchestration, verification, memory, adaptation, synthesis, and autonomy.",
+        "The 41 proprietary algorithms are grouped into 9 capability tiers: Foundation (4), Analysis (5), Reasoning (5), Orchestration (4), Verification (5), Memory (4), Adaptation (5), Synthesis (5), and Autonomy (4). Each tier extends the one below it.",
     },
     {
-      question: "What is Analysearch on the algorithms page?",
+      question: "What is Analysearch?",
       answer:
-        "Analysearch is RCT Labs' hybrid analysis-and-research runtime that exposes multiple execution modes for traceable reasoning and research-grade synthesis.",
+        "Analysearch is RCT Labs' proprietary multi-depth analysis and synthesis engine. It operates in four modes — Quick (<200ms), Standard (2–5s), Deep (10–30s), and Mirror (15–45s) — each activating different algorithm tiers to match the required reasoning depth.",
+    },
+    {
+      question: "What is the difference between Quick, Standard, Deep, and Mirror modes in Analysearch?",
+      answer:
+        "Quick mode returns a direct cached or pattern-matched answer in under 200ms using Tier 1–2 algorithms. Standard adds multi-source evidence grading at 2–5s. Deep runs cross-domain synthesis for comprehensive research-grade output at 10–30s. Mirror adds a JITNA-based Socratic challenge and consensus merge at 15–45s for maximum accuracy.",
+    },
+    {
+      question: "What validates the 41-algorithm framework?",
+      answer:
+        "The algorithm framework is validated by 4,849 automated tests across the full RCT Ecosystem, producing a measured hallucination rate of 0.3% against a 12–15% industry average. Each tier is gated by benchmark tests before activation in production.",
+    },
+    {
+      question: "How does the algorithm tier system relate to the RCT 10-layer architecture?",
+      answer:
+        "The 9 algorithm tiers map directly into the RCT 10-layer cognitive architecture. Tier 1–2 algorithms operate in the foundation and perception layers, Tier 3–5 in the reasoning and verification layers, Tier 6–7 in the memory and adaptation layers, and Tier 8–9 in the synthesis and autonomy layers.",
     },
   ])
 
@@ -45,15 +60,15 @@ export default async function AlgorithmsPage() {
     "@type": "ItemList",
     name: "RCT Labs 41 Algorithms",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Tier 1 Foundation", url: `https://rctlabs.co${localePrefix}/algorithms#tier-1` },
-      { "@type": "ListItem", position: 2, name: "Tier 2 Analysis", url: `https://rctlabs.co${localePrefix}/algorithms#tier-2` },
-      { "@type": "ListItem", position: 3, name: "Tier 3 Reasoning", url: `https://rctlabs.co${localePrefix}/algorithms#tier-3` },
-      { "@type": "ListItem", position: 4, name: "Tier 4 Orchestration", url: `https://rctlabs.co${localePrefix}/algorithms#tier-4` },
-      { "@type": "ListItem", position: 5, name: "Tier 5 Verification", url: `https://rctlabs.co${localePrefix}/algorithms#tier-5` },
-      { "@type": "ListItem", position: 6, name: "Tier 6 Memory", url: `https://rctlabs.co${localePrefix}/algorithms#tier-6` },
-      { "@type": "ListItem", position: 7, name: "Tier 7 Adaptation", url: `https://rctlabs.co${localePrefix}/algorithms#tier-7` },
-      { "@type": "ListItem", position: 8, name: "Tier 8 Synthesis", url: `https://rctlabs.co${localePrefix}/algorithms#tier-8` },
-      { "@type": "ListItem", position: 9, name: "Tier 9 Autonomy", url: `https://rctlabs.co${localePrefix}/algorithms#tier-9` },
+      { "@type": "ListItem", position: 1, name: "Tier 1 Foundation", description: "4 algorithms — Intent parsing, normalization, token discipline, and baseline routing.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-1` },
+      { "@type": "ListItem", position: 2, name: "Tier 2 Analysis", description: "5 algorithms — Entity detection, context classification, semantic tagging, and pattern recognition.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-2` },
+      { "@type": "ListItem", position: 3, name: "Tier 3 Reasoning", description: "5 algorithms — Structured reasoning strategies that expand, compare, and validate solution paths.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-3` },
+      { "@type": "ListItem", position: 4, name: "Tier 4 Orchestration", description: "4 algorithms — Task-to-model coordination for speed, cost, and quality balancing.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-4` },
+      { "@type": "ListItem", position: 5, name: "Tier 5 Verification", description: "5 algorithms — Consensus, hallucination checks, evidence scoring, and quality gates.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-5` },
+      { "@type": "ListItem", position: 6, name: "Tier 6 Memory", description: "4 algorithms — Compression, semantic indexing, retrieval, and session continuity.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-6` },
+      { "@type": "ListItem", position: 7, name: "Tier 7 Adaptation", description: "5 algorithms — Personalization, execution tuning, and enterprise learning loops.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-7` },
+      { "@type": "ListItem", position: 8, name: "Tier 8 Synthesis", description: "5 algorithms — Cross-domain signal fusion for multi-disciplinary insights.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-8` },
+      { "@type": "ListItem", position: 9, name: "Tier 9 Autonomy", description: "4 algorithms — Longer-horizon planning, constraint handling, and governed autonomous execution.", url: `https://rctlabs.co${localePrefix}/algorithms#tier-9` },
     ],
   }
 

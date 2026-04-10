@@ -301,13 +301,13 @@ export default async function RCTDBvsVectorDBs() {
             </div>
             <div className="flex gap-3 shrink-0">
               <Link
-                href="/en/entity/memory-architecture"
+                href={`${localePrefix}/entity/memory-architecture`}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-warm-amber text-background font-semibold text-sm hover:bg-warm-amber/90 transition"
               >
                 Memory Architecture <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="/en/benchmark-summary"
+                href={`${localePrefix}/benchmark-summary`}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/10 text-warm-dim hover:border-warm-amber/30 hover:text-warm-amber transition text-sm"
               >
                 Benchmarks

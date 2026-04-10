@@ -78,40 +78,7 @@ const nextConfig = {
         destination: "/en/blog/fdia-equation-explained",
         permanent: true,
       },
-      // Redirect v0-scaffold sub-pages that still contain placeholder content
-      // to their parent pages — prevents Google from indexing "YourBrand" copy.
-      // Philosophy sub-pages (approach/ethics/values/vision/impact)
-      {
-        source: "/philosophy/:sub(approach|ethics|values|vision|impact)",
-        destination: "/philosophy",
-        permanent: true,
-      },
-      {
-        source: "/en/philosophy/:sub(approach|ethics|values|vision|impact)",
-        destination: "/en/philosophy",
-        permanent: true,
-      },
-      {
-        source: "/th/philosophy/:sub(approach|ethics|values|vision|impact)",
-        destination: "/th/philosophy",
-        permanent: true,
-      },
-      // Community sub-pages (events/forums/members)
-      {
-        source: "/community/:sub(events|forums|members)",
-        destination: "/community",
-        permanent: true,
-      },
-      {
-        source: "/en/community/:sub(events|forums|members)",
-        destination: "/en/community",
-        permanent: true,
-      },
-      {
-        source: "/th/community/:sub(events|forums|members)",
-        destination: "/th/community",
-        permanent: true,
-      },
+
     ]
   },
   async headers() {

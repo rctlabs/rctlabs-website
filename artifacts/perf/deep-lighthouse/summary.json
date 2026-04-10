@@ -1,0 +1,101 @@
+[
+    {
+        "url":  "/en",
+        "exit":  1,
+        "performance":  94,
+        "accessibility":  96,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  3024,
+        "tbt":  0,
+        "cls":  0
+    },
+    {
+        "url":  "/en/pricing",
+        "exit":  1,
+        "performance":  76,
+        "accessibility":  96,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  5261,
+        "tbt":  187,
+        "cls":  0
+    },
+    {
+        "url":  "/en/solutions",
+        "exit":  1,
+        "performance":  77,
+        "accessibility":  96,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  5333,
+        "tbt":  131,
+        "cls":  0
+    },
+    {
+        "url":  "/en/about",
+        "exit":  1,
+        "performance":  56,
+        "accessibility":  100,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  6107,
+        "tbt":  696,
+        "cls":  0
+    },
+    {
+        "url":  "/en/technology/jitna",
+        "exit":  0,
+        "performance":  80,
+        "accessibility":  96,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  4636,
+        "tbt":  97,
+        "cls":  0
+    },
+    {
+        "url":  "/en/compare/constitutional-ai-vs-rag",
+        "exit":  1,
+        "performance":  78,
+        "accessibility":  96,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  5258,
+        "tbt":  103,
+        "cls":  0
+    },
+    {
+        "url":  "/en/benchmark-summary",
+        "exit":  0,
+        "performance":  71,
+        "accessibility":  96,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  5785,
+        "tbt":  227,
+        "cls":  0
+    },
+    {
+        "url":  "/en/open-protocol",
+        "exit":  1,
+        "performance":  76,
+        "accessibility":  94,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  5409,
+        "tbt":  153,
+        "cls":  0
+    },
+    {
+        "url":  "/en/genome",
+        "exit":  1,
+        "performance":  79,
+        "accessibility":  96,
+        "bestPractices":  96,
+        "seo":  100,
+        "lcp":  4497,
+        "tbt":  174,
+        "cls":  0
+    }
+]

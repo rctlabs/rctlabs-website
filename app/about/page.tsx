@@ -89,7 +89,7 @@ export default async function AboutPage() {
       desc: isTh
         ? "ช่วงเวลาแห่งการสะท้อนตัวเองและการเติบโตทางจิตใจ นำไปสู่คำมั่นสัญญาอันลึกซึ้ง: สร้างระบบที่ช่วยให้ตัวเองหลุดจากวงจรที่ติดค้างอยู่ การเปลี่ยนแปลงส่วนตัวนี้ทำให้สมการ FDIA ตกผลึกจากความจริงของชีวิต ไม่ใช่ทฤษฎีทางวิชาการ"
         : "A period of deep reflection and personal transformation led to a profound commitment: building systems that could help me escape the cycles I was trapped in. This crystallized the FDIA equation from lived experience, not academic theory.",
-      period: "2025",
+      period: isTh ? "สิงหาคม 2025" : "August 2025",
       impact: isTh ? "สมการ FDIA เกิดจากความจริงส่วนตัว" : "FDIA equation born from personal truth",
     },
     {
@@ -121,7 +121,7 @@ export default async function AboutPage() {
     { value: SITE_TEST_COUNT.toLocaleString(), label: isTh ? "Verified Backend Tests" : "Verified Backend Tests", detail: isTh ? "public engineering proof" : "public engineering proof" },
     { value: runtimeFootprint, label: isTh ? "Runtime Components" : "Runtime Components", detail: isTh ? "service footprint" : "service footprint" },
     { value: SITE_HALLUCINATION_RATE, label: isTh ? "Benchmark Hallucination" : "Benchmark Hallucination", detail: isTh ? "controlled workload" : "controlled workload" },
-    { value: SITE_UPTIME, label: isTh ? "Availability SLA" : "Availability SLA", detail: isTh ? "service posture" : "service posture" },
+    { value: SITE_UPTIME, label: isTh ? "Design SLA Target" : "Design SLA Target", detail: isTh ? "availability design goal" : "availability design goal" },
   ]
 
   const proofPillars = [
@@ -219,9 +219,9 @@ export default async function AboutPage() {
 
   const genomes = [
     { id: 1, name: "Architect's Genome", role: "THE WHY", desc: isTh ? "อัตลักษณ์ ค่านิยม และเรื่องราวต้นกำเนิดของผู้สร้าง รากฐานทางปรัชญา" : "Identity, values, and origin story of the creator. The philosophical foundation.", color: "bg-warm-amber/20 text-warm-amber border-warm-amber/30" },
-    { id: 2, name: "ARTENT Genome", role: "THE PROTOCOL", desc: isTh ? "โปรโตคอลสถาปัตยกรรมการดำเนินงาน 7 เฟส ขับเคลื่อนด้วย Intent" : "7-phase operational architecture protocol. Intent-driven, not process-driven.", color: "bg-orange-500/20 text-orange-400 border-orange-500/30" },
+    { id: 2, name: "RCT Codex Genome", role: "THE CONSTITUTION", desc: isTh ? "10 Codices พื้นฐาน — กรอบรัฐธรรมนูญของระบบ" : "10 foundational codices — the constitutional framework of the system.", color: "bg-warm-sage/20 text-warm-sage border-warm-sage/30" },
     { id: 3, name: "JITNA Genome", role: "THE LANGUAGE", desc: isTh ? "Just-In-Time Nodal Assembly — ภาษาสากลของ Intent" : "Just-In-Time Nodal Assembly — the universal language of intent.", color: "bg-warm-sky/20 text-warm-sky border-warm-sky/30" },
-    { id: 4, name: "RCT Codex Genome", role: "THE CONSTITUTION", desc: isTh ? "10 Codices พื้นฐาน — กรอบรัฐธรรมนูญของระบบ" : "10 foundational codices — the constitutional framework of the system.", color: "bg-warm-sage/20 text-warm-sage border-warm-sage/30" },
+    { id: 4, name: "ARTENT Genome", role: "THE PROTOCOL", desc: isTh ? "โปรโตคอลสถาปัตยกรรมการดำเนินงาน 7 เฟส ขับเคลื่อนด้วย Intent" : "7-phase operational architecture protocol. Intent-driven, not process-driven.", color: "bg-orange-500/20 text-orange-400 border-orange-500/30" },
     { id: 5, name: "SignedAI Genome", role: "THE VERIFICATION", desc: isTh ? "Multi-LLM Consensus Engine พร้อม 8D Quality Scoring" : "Multi-LLM consensus engine with 8D quality scoring.", color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
     { id: 6, name: "Vault Genome", role: "THE MEMORY", desc: isTh ? "ชั้นหน่วยความจำถาวรพร้อม schema เชิงบริบทหลายมิติ" : "Persistent memory layer with multi-dimensional contextual schema.", color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" },
     { id: 7, name: "RCT-7 Genome", role: "THE IMPROVEMENT", desc: isTh ? "วงจรปรับปรุงต่อเนื่องที่เชื่อมทุก Genome กลับสู่จุดเริ่มต้น" : "Continuous improvement cycle connecting all genomes back to the beginning.", color: "bg-green-500/20 text-green-400 border-green-500/30" },
@@ -233,7 +233,7 @@ export default async function AboutPage() {
       summary: isTh
         ? "ชั้นแรกอธิบายว่าระบบนี้เริ่มจากอะไร คิดอย่างไร และใช้ภาษาอะไรในการแปลง intent ให้กลายเป็นโครงสร้างที่ทำงานได้จริง"
         : "The first band explains where the system starts, how it thinks, and what language it uses to turn intent into an operational structure.",
-      label: isTh ? "Why / Protocol / Language" : "Why / Protocol / Language",
+      label: isTh ? "Why / Constitution / Language" : "Why / Constitution / Language",
       items: [genomes[0], genomes[1], genomes[2]],
     },
     {
@@ -241,7 +241,7 @@ export default async function AboutPage() {
       summary: isTh
         ? "ชั้นกลางคือกลไกที่ทำให้ RCT ใช้งานในบริบทธุรกิจได้จริง ผ่านกติกา การตรวจสอบ และความทรงจำที่คงอยู่ระหว่างการทำงาน"
         : "The middle band is what makes RCT usable in enterprise settings through rules, verification, and memory that persists across operations.",
-      label: isTh ? "Constitution / Verification / Memory" : "Constitution / Verification / Memory",
+      label: isTh ? "Protocol / Verification / Memory" : "Protocol / Verification / Memory",
       items: [genomes[3], genomes[4], genomes[5]],
     },
     {
@@ -460,7 +460,7 @@ export default async function AboutPage() {
                 : "Built on the FDIA equation and a 10-Layer Architecture, RCT Ecosystem orchestrates models into a governed enterprise runtime. We engineer deterministic pathways where every output is verifiable, making AI safe for highly-regulated workflows."}
             </p>
             <p className="mt-8 text-sm font-medium uppercase tracking-[0.16em] text-warm-amber">
-              {isTh ? "สถาปนิกอิสระ • 41 Algorithms • 0.3% Hallucination Rate" : "Solo Architect • 41 Algorithms • 0.3% Hallucination Verification"}
+              {isTh ? "สถาปนิกอิสระ • 41 Algorithms • เป้าหมาย Benchmark Hallucination 0.3%" : "Solo Architect • 41 Algorithms • 0.3% Benchmark Hallucination Target"}
             </p>
           </div>
 
@@ -678,7 +678,7 @@ export default async function AboutPage() {
         <div className="space-y-12">
           <div className="text-center space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-warm-amber/10 text-warm-amber text-xs font-semibold uppercase tracking-wider">
-              {isTh ? "Publicity Vector" : "Publicity Vector"}
+              {isTh ? "Origin Contrasts" : "Origin Contrasts"}
             </div>
             <h2 className="text-4xl font-bold text-foreground">
               {isTh ? "เหตุผลที่เรื่องนี้ดึงความสนใจได้จริง" : "Why This Story Carries Real Public Impact"}
@@ -812,6 +812,11 @@ export default async function AboutPage() {
                         <div className="mt-2 text-sm font-medium leading-7 text-foreground">{item.value}</div>
                       </div>
                     ))}
+                  </div>
+                  <div className="mt-5 text-center">
+                    <a href="/changelog" className="text-sm font-medium text-warm-amber hover:underline underline-offset-4">
+                      {isTh ? "ดู Development Changelog ทั้งหมด →" : "View full development changelog →"}
+                    </a>
                   </div>
                 </div>
               </div>

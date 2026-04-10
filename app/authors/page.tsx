@@ -58,13 +58,13 @@ export default async function AuthorsPage() {
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {authors.map((author) => (
-            <Link key={author.id} href={`${localePrefix}/authors/${author.id}`} className="rounded-2xl border border-border bg-card p-6 transition hover:border-accent/50 hover:shadow-sm">
+            <Link key={author.id} href={`${localePrefix}/authors/${author.id}`} className="rounded-2xl border border-border bg-card p-6 transition hover:border-warm-amber/50 hover:shadow-sm">
               <div className="text-xl font-semibold text-foreground">{author.name}</div>
-              <div className="mt-2 text-sm text-accent">{author.role[locale]}</div>
+              <div className="mt-2 text-sm text-warm-amber">{author.role[locale]}</div>
               <p className="mt-3 text-sm text-muted-foreground">{author.bio[locale]}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {author.expertise.slice(0, 3).map((item) => (
-                  <span key={item} className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">{item}</span>
+                  <span key={item} className="rounded-full bg-warm-amber/10 px-3 py-1 text-xs font-medium text-warm-amber">{item}</span>
                 ))}
               </div>
             </Link>

@@ -8,6 +8,7 @@ import { m, AnimatePresence } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { getLocaleFromPathname } from "@/lib/i18n"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
@@ -205,10 +206,43 @@ export default function FDIADemoPage() {
     "operatingSystem": "Cross-platform",
     "publisher": { "@type": "Organization", "name": "RCT Labs", "url": "https://rctlabs.co" }
   }
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co/${locale}` },
+    { name: "Demo", url: `https://rctlabs.co/${locale}/demo` },
+    { name: "FDIA", url: `https://rctlabs.co/${locale}/demo/fdia` },
+  ])
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: isEn ? "What does the FDIA score represent?" : "คะแนน FDIA สื่อถึงอะไร?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: isEn
+            ? "It is a normalized readiness score derived from data quality, intent clarity, and architect oversight."
+            : "เป็นคะแนนความพร้อมที่ปรับสเกลจากคุณภาพข้อมูล ความชัดเจนของเจตนา และระดับการกำกับดูแลโดยสถาปนิกระบบ",
+        },
+      },
+      {
+        "@type": "Question",
+        name: isEn ? "Can this demo be used for production decisions?" : "เดโมนี้ใช้ตัดสินใจโปรดักชันได้เลยหรือไม่?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: isEn
+            ? "Use it as a diagnostic aid for discussion and calibration, then validate with your operational benchmarks."
+            : "ควรใช้เป็นเครื่องมือช่วยวิเคราะห์และปรับเทียบเบื้องต้น แล้วตรวจยืนยันด้วย benchmark การปฏิบัติงานจริงขององค์กร",
+        },
+      },
+    ],
+  }
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 

@@ -11,8 +11,12 @@ import SectionHeading from "@/components/section-heading"
 import AnalysearchDemo from "@/components/demos/analysearch-demo"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { pixelIcons } from "@/lib/pixel-icons"
+import { SITE_HALLUCINATION_RATE } from "@/lib/site-config"
 
 const PIXEL_ALGO = pixelIcons.algorithms
+
+// Algorithm count per tier (total = 41)
+const TIER_ALGO_COUNTS = [4, 5, 5, 4, 5, 4, 5, 5, 4]
 
 const tiers = {
   en: [
@@ -50,6 +54,7 @@ export default function AlgorithmsPage() {
   const pathname = usePathname()
   const locale = getLocaleFromPathname(pathname)
   const isTh = locale === "th"
+  const localePrefix = isTh ? "/th" : "/en"
   const localTiers = isTh ? tiers.th : tiers.en
 
   return (
@@ -68,6 +73,21 @@ export default function AlgorithmsPage() {
               ? "41-algorithm framework พร้อม staged rollout ใน 9 tiers — Analysearch สำหรับการวิเคราะห์และสังเคราะห์แบบหลายระดับ"
               : "41-algorithm framework with staged rollout across 9 tiers, with Analysearch providing the multi-depth analysis and synthesis layer."}
           </p>
+
+          {/* Hero stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
+            {[
+              { value: "41", label: isTh ? "Algorithms" : "Algorithms" },
+              { value: "9", label: isTh ? "Capability Tiers" : "Capability Tiers" },
+              { value: "4", label: isTh ? "Analysearch Modes" : "Analysearch Modes" },
+              { value: SITE_HALLUCINATION_RATE, label: isTh ? "Hallucination Rate" : "Hallucination Rate" },
+            ].map((s) => (
+              <div key={s.label} className="rounded-xl border border-warm-amber/20 bg-warm-amber/5 px-4 py-3 text-left">
+                <p className="text-2xl font-bold text-warm-amber">{s.value}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -80,7 +100,7 @@ export default function AlgorithmsPage() {
                 tagColor="terracotta"
                 title={isTh ? "Analysearch Intent Engine" : "Analysearch Intent Engine"}
                 italicWord="Intent"
-                description={isTh ? "ดึง interaction จริงจาก Manus เข้ามาให้ผู้ใช้ทดลองโหมด Quick, Standard, Deep และ Mirror ได้โดยตรง พร้อมลำดับการประมวลผลและผลลัพธ์จำลอง" : "A direct Manus-style interactive layer for testing Quick, Standard, Deep, and Mirror processing with visible execution stages and simulated outputs."}
+                description={isTh ? "ทดลอง Analysearch โดยตรง — เลือกโหมด Quick, Standard, Deep หรือ Mirror เพื่อดูลำดับการประมวลผลและผลลัพธ์จำลองแบบ step-by-step" : "Test Analysearch directly — select Quick, Standard, Deep, or Mirror mode to see the full execution pipeline and simulated output at each reasoning depth."}
                 pixelIcon={PIXEL_ALGO}
               />
               <div className="grid gap-3 sm:grid-cols-3">
@@ -134,7 +154,7 @@ export default function AlgorithmsPage() {
             {isTh ? "ทดลอง Analysearch แบบโต้ตอบ" : "Try Analysearch Interactively"}
           </h2>
           <p className="mt-3 max-w-3xl text-sm text-muted-foreground sm:text-base">
-            {isTh ? "ผู้ใช้สามารถสลับโหมด วิเคราะห์ query ตัวอย่าง และเห็น execution trace ที่แตกต่างกันตามความลึกของ reasoning ได้ทันที เหมือนต้นฉบับ Manus" : "Users can switch modes, test example queries, and inspect how execution traces change with reasoning depth, closely matching the Manus interaction model."}
+            {isTh ? "เติมคำถามหรือ เลือกตัวอย่าง query แล้วเปลี่ยนโหมดเพื่อดูว่า execution trace เปลี่ยนไปตามความลึกของ reasoning อย่างไร (ผลลัพธ์ที่แสดงเป็น simulation ไม่ใช่การเชื่อมต่อ backend จริง)" : "Enter a question or select an example query, then switch modes to observe how the execution trace changes with reasoning depth. (Results shown are a simulation — not a live backend connection.)"}
           </p>
         </div>
         <AnalysearchDemo language={isTh ? "th" : "en"} />
@@ -144,15 +164,20 @@ export default function AlgorithmsPage() {
       <section className="mx-auto max-w-4xl px-4 py-20">
         <div className="space-y-3">
           {localTiers.map((t, i) => (
-            <m.div key={t.tier} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.04 }} whileHover={{ y: -3, scale: 1.005, transition: { duration: 0.2 } }}
+            <m.div id={`tier-${i + 1}`} key={t.tier} initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.04 }} whileHover={{ y: -3, scale: 1.005, transition: { duration: 0.2 } }}
               className="p-4 rounded-xl border border-border bg-card main-page-reactive-card group hover:border-warm-amber/40 hover:shadow-[0_8px_20px_rgba(212,168,83,0.08)] transition-[border-color,box-shadow] duration-300">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-warm-amber/10 text-warm-amber">{t.tier}</span>
                 <span className="font-semibold text-sm text-foreground">{t.name}</span>
                 <span className="text-xs text-muted-foreground">({t.algos})</span>
+                <span className="ml-auto text-xs font-semibold text-warm-amber">{TIER_ALGO_COUNTS[i]} alg.</span>
               </div>
-              <p className="text-xs leading-relaxed text-muted-foreground">{t.desc}</p>
-              <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
+              <p className="text-sm leading-relaxed text-muted-foreground">{t.desc}</p>
+              <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground mb-1">
+                <span>{isTh ? "ระดับความซับซ้อน" : "Complexity level"}</span>
+                <span>T{i + 1}/9</span>
+              </div>
+              <div className="h-1.5 rounded-full bg-muted overflow-hidden">
                 <div className="h-full rounded-full" style={{ backgroundColor: t.color, width: `${15 + i * 9.5}%` }} />
               </div>
             </m.div>
@@ -187,9 +212,9 @@ export default function AlgorithmsPage() {
         <h2 className="text-2xl font-bold text-foreground text-center mb-8">{isTh ? "หัวข้อที่เกี่ยวข้อง" : "Related Topics"}</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { href: "/architecture", icon: "🏗️", label: isTh ? "สถาปัตยกรรม 10 ชั้น" : "10-Layer Architecture", desc: isTh ? "อัลกอริทึมอยู่ตรงไหนใน Cognitive Stack" : "Where algorithms fit in the cognitive stack" },
-            { href: "/fdia", icon: "📐", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "รากฐานทางคณิตศาสตร์ของ Reasoning Tier" : "Mathematical foundation of the reasoning tier" },
-            { href: "/benchmark", icon: "📊", label: isTh ? "เกณฑ์มาตรฐาน" : "Benchmarks", desc: isTh ? "เมตริกประสิทธิภาพของ 41 อัลกอริทึม" : "Performance metrics for all 41 algorithms" },
+            { href: `${localePrefix}/architecture`, icon: "🏗️", label: isTh ? "สถาปัตยกรรม 10 ชั้น" : "10-Layer Architecture", desc: isTh ? "อัลกอริทึมอยู่ตรงไหนใน Cognitive Stack" : "Where algorithms fit in the cognitive stack" },
+            { href: `${localePrefix}/fdia`, icon: "📐", label: isTh ? "สมการ FDIA" : "FDIA Equation", desc: isTh ? "รากฐานทางคณิตศาสตร์ของ Reasoning Tier" : "Mathematical foundation of the reasoning tier" },
+            { href: `${localePrefix}/benchmark`, icon: "📊", label: isTh ? "เกณฑ์มาตรฐาน" : "Benchmarks", desc: isTh ? "เมตริกประสิทธิภาพของ 41 อัลกอริทึม" : "Performance metrics for all 41 algorithms" },
           ].map((link) => (
             <Link key={link.href} href={link.href} className="block p-4 rounded-xl border border-border bg-card hover:border-warm-amber/50 transition-all">
               <span className="text-2xl mb-2 block">{link.icon}</span>
@@ -205,10 +230,10 @@ export default function AlgorithmsPage() {
         <div className="mx-auto max-w-3xl px-4 text-center space-y-6">
           <h2 className="text-3xl font-bold text-foreground">{isTh ? "สนใจ 41 Algorithms?" : "Explore Our 41 Algorithms"}</h2>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-[#C49A48] transition-colors">
+            <Link href={`${localePrefix}/contact`} className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-warm-amber text-white font-medium text-sm hover:bg-warm-amber/90 transition-colors">
               {isTh ? "ขอ Demo" : "Request Demo"} <ArrowRight size={16} />
             </Link>
-            <Link href="/docs" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
+            <Link href={`${localePrefix}/docs`} className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
               {isTh ? "อ่าน Docs" : "Read Docs"}
             </Link>
           </div>

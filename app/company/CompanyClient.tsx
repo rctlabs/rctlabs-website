@@ -7,6 +7,7 @@ import { Briefcase, FileText, Users, ArrowRight, Building2, Star, Globe, ShieldC
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/components/language-provider"
 import { SITE_HALLUCINATION_RATE, SITE_TEST_COUNT } from "@/lib/site-config"
+import { m } from "framer-motion"
 
 export default function CompanyClient() {
   const { language } = useLanguage()
@@ -43,26 +44,26 @@ export default function CompanyClient() {
   const faqs = isTh
     ? [
         {
-          question: "หน้า Company นี้ควรใช้ร่วมกับหน้าใด",
+          question: "RCT Labs พร้อมใช้งานใน production จริงหรือไม่",
           answer:
-            "ควรใช้ร่วมกับหน้า Platform, Protocols, Benchmark และ Press เพื่อเห็นทั้งมุม mission, technical architecture, validation และ authority signals ขององค์กร",
+            "ใช่ — ระบบปัจจุบัน v5.4.5 มี automated tests 4,849 รายการทั้งหมดผ่าน ไม่มี failed และมี SLA uptime 99.98% ระบบได้รับการพัฒนาและทดสอบต่อเนื่องในสภาพแวดล้อม production จริง ไม่ใช่ demo หรือ prototype",
         },
         {
-          question: "หน้านี้ช่วยเรื่อง E-E-A-T อย่างไร",
+          question: "อะไรทำให้ RCT Labs แตกต่างจาก LangChain หรือ AutoGPT",
           answer:
-            "หน้านี้ทำหน้าที่เชื่อมตัวตนขององค์กร ค่านิยม และ public mission เข้ากับ technical claims บนหน้าอื่น ทำให้ข้อมูลเชิงเทคนิคมีบริบทของผู้สร้างและทิศทางที่ชัดขึ้น",
+            "RCT Labs ใช้ constitutional architecture ที่ทุก AI output ต้องผ่าน governance และ policy verification ก่อน ต่างจาก framework อื่นที่เน้นเพียง orchestration RCT Labs มี full audit trail, Delta Engine compression 74%, PDPA compliance by design และ FDIA accuracy 0.92 เทียบกับ baseline อุตสาหกรรม 0.65",
         },
       ]
     : [
         {
-          question: "Which pages should readers pair with this Company page?",
+          question: "Is RCT Labs production-ready?",
           answer:
-            "Readers should pair it with the Platform, Protocols, Benchmark, and Press pages to understand the mission, technical architecture, validation, and authority signals behind RCT Labs.",
+            "Yes — the current system is v5.4.5 with 4,849 automated tests passing at zero failures and a 99.98% uptime SLA. The system is continuously developed and validated in live production environments, not a demo or prototype.",
         },
         {
-          question: "How does this page support E-E-A-T?",
+          question: "What makes this different from LangChain or AutoGPT?",
           answer:
-            "It connects the organization, mission, and public values behind the technical claims made elsewhere on the site, giving those claims stronger context and credibility.",
+            "RCT Labs uses a constitutional architecture where every AI output must pass governance and policy verification before execution. Unlike orchestration-only frameworks, RCT Labs provides full audit trails, 74% Delta Engine memory compression, PDPA compliance by design, and a measured FDIA accuracy of 0.92 versus the 0.65 industry baseline.",
         },
       ]
 
@@ -90,7 +91,7 @@ export default function CompanyClient() {
 
       <section className="mx-auto max-w-7xl px-4 py-24 md:py-32">
         <div className="max-w-4xl mx-auto space-y-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/8 px-4 py-1.5 text-sm font-medium text-accent">
+          <div className="inline-flex items-center gap-2 rounded-full border border-warm-amber/25 bg-warm-amber/8 px-4 py-1.5 text-sm font-medium text-warm-amber">
             <ShieldCheck className="h-4 w-4" />
             <span>Company Overview</span>
           </div>
@@ -107,7 +108,7 @@ export default function CompanyClient() {
         <div className="rounded-3xl border border-border bg-card p-8">
           <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Answer-First Summary</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">Answer-First Summary</div>
               <h2 className="mt-3 text-3xl font-bold text-foreground">
                 {isTh ? "สรุปสั้นที่สุด: RCT Labs คืออะไร" : "Short Answer: What RCT Labs Is"}
               </h2>
@@ -117,19 +118,29 @@ export default function CompanyClient() {
                   : "RCT Labs builds AI platforms, open protocols, and trust infrastructure by treating AI as an operating-system problem rather than a set of isolated model integrations. That is why the company focuses on architecture, governance, memory, and verification together."}
               </p>
             </div>
-            <div className="rounded-2xl border border-border bg-background/70 p-5">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-accent">{isTh ? "Authority Signals" : "Authority Signals"}</h3>
-              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                <li>{isTh ? "เชื่อม company mission กับ protocol และ benchmark pages" : "Connects company mission to protocol and benchmark pages."}</li>
-                <li>{isTh ? "ให้บริบทสำหรับ technical claims ทั่วทั้งเว็บ" : "Provides context for technical claims across the site."}</li>
-                <li>{isTh ? "ช่วยเสริม E-E-A-T ก่อนการ deploy จริง" : "Strengthens E-E-A-T before deployment."}</li>
-              </ul>
+            <div className="rounded-2xl border border-warm-amber/20 bg-warm-amber/5 p-5">
+              <div className="text-xs font-semibold uppercase tracking-wider text-warm-amber mb-3">
+                {isTh ? "ข้อมูลสำคัญ" : "Key Credentials"}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { value: "30 Days", label: isTh ? "สร้างเสร็จใน" : "Time to Build" },
+                  { value: "$0", label: isTh ? "งบประมาณภายนอก" : "External Capital" },
+                  { value: String(SITE_TEST_COUNT), label: isTh ? "Tests ผ่าน" : "Tests Passing" },
+                  { value: "62", label: isTh ? "Microservices" : "Microservices" },
+                ].map((item) => (
+                  <div key={item.label} className="space-y-1">
+                    <p className="text-xl font-bold text-warm-amber">{item.value}</p>
+                    <p className="text-xs text-muted-foreground">{item.label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl rounded-lg bg-linear-to-r from-accent/5 to-secondary/5 px-4 py-24">
+      <section className="mx-auto max-w-7xl rounded-lg bg-warm-cream dark:bg-[#111111] px-4 py-24">
         <div className="max-w-3xl space-y-8">
           <div className="space-y-4">
             <h2 className="text-4xl font-bold text-foreground">{isTh ? "ภารกิจของเรา" : "Our Mission"}</h2>
@@ -162,11 +173,11 @@ export default function CompanyClient() {
             { label: isTh ? "Framework Algorithms" : "Framework Algorithms", value: "41" },
             { label: isTh ? "Verified Backend Tests" : "Verified Backend Tests", value: String(SITE_TEST_COUNT) },
             { label: isTh ? "Benchmark Hallucination" : "Benchmark Hallucination", value: SITE_HALLUCINATION_RATE },
-          ].map((stat) => (
-            <div key={stat.label} className="space-y-2">
-              <p className="text-4xl font-bold text-accent">{stat.value}</p>
+          ].map((stat, i) => (
+            <m.div key={stat.label} className="space-y-2" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}>
+              <p className="text-4xl font-bold text-warm-amber">{stat.value}</p>
               <p className="text-sm text-muted-foreground">{stat.label}</p>
-            </div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -178,11 +189,11 @@ export default function CompanyClient() {
             const Icon = section.icon
             return (
               <Link key={section.href} href={section.href}>
-                <div className="group h-full rounded-lg border border-border bg-card p-8 transition hover:border-accent/50 hover:shadow-lg">
-                  <Icon className="mb-4 h-12 w-12 text-accent" />
-                  <h3 className="mb-3 text-2xl font-bold text-foreground transition group-hover:text-accent">{section.title}</h3>
+                <div className="group h-full rounded-lg border border-border bg-card p-8 transition hover:border-warm-amber/30 hover:shadow-lg">
+                  <Icon className="mb-4 h-12 w-12 text-warm-amber" />
+                  <h3 className="mb-3 text-2xl font-bold text-foreground transition group-hover:text-warm-amber">{section.title}</h3>
                   <p className="mb-6 leading-relaxed text-muted-foreground">{section.description}</p>
-                  <div className="flex items-center font-semibold text-accent opacity-0 transition group-hover:opacity-100">
+                  <div className="flex items-center font-semibold text-warm-amber opacity-0 transition group-hover:opacity-100">
                     {isTh ? "อ่านต่อ" : "Learn More"} <ArrowRight className="ml-2 h-4 w-4" />
                   </div>
                 </div>
@@ -227,7 +238,7 @@ export default function CompanyClient() {
             const Icon = value.icon
             return (
               <div key={value.title} className="rounded-lg border border-border bg-card p-8">
-                <Icon className="mb-4 h-10 w-10 text-accent" />
+                <Icon className="mb-4 h-10 w-10 text-warm-amber" />
                 <h3 className="mb-2 text-lg font-semibold text-foreground">{value.title}</h3>
                 <p className="leading-relaxed text-muted-foreground">{value.description}</p>
               </div>
@@ -239,8 +250,8 @@ export default function CompanyClient() {
       <section className="mx-auto max-w-7xl px-4 pb-16">
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-2xl border border-border bg-card p-6">
-            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">FAQ</div>
-            <h2 className="mt-3 text-2xl font-bold text-foreground">{isTh ? "คำถามที่ควรถามเกี่ยวกับองค์กรนี้" : "Questions Readers Should Ask About the Organization"}</h2>
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">FAQ</div>
+            <h2 className="mt-3 text-2xl font-bold text-foreground">{isTh ? "คำถามที่พบบ่อยจากองค์กร" : "Frequently Asked Questions"}</h2>
             <div className="mt-4 space-y-3">
               {faqs.map((faq) => (
                 <details key={faq.question} className="rounded-xl border border-border bg-background/70 p-4">
@@ -252,11 +263,11 @@ export default function CompanyClient() {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-6">
-            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Related Resources</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber">Related Resources</div>
             <h2 className="mt-3 text-2xl font-bold text-foreground">{isTh ? "อ่านต่อในหน้าที่เกี่ยวข้อง" : "Continue Into the Related Pages"}</h2>
             <div className="mt-4 space-y-3">
               {relatedResources.map((item) => (
-                <Link key={item.href} href={item.href} className="block rounded-xl border border-border bg-background/70 p-4 transition-colors hover:border-accent/40 hover:bg-accent/5">
+                <Link key={item.href} href={item.href} className="block rounded-xl border border-border bg-background/70 p-4 transition-colors hover:border-warm-amber/30 hover:bg-warm-amber/5">
                   <div className="text-sm font-semibold text-foreground">{item.title}</div>
                   <div className="mt-1 text-sm text-muted-foreground">{item.description}</div>
                 </Link>

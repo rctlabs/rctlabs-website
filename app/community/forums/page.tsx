@@ -1,139 +1,104 @@
+import type { Metadata } from "next"
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { createBilingualMetadata } from "@/lib/seo-bilingual"
+import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
+import { Clock, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { MessageSquare, ArrowLeft, TrendingUp } from "lucide-react"
 
-export default function ForumsPage() {
-  const topics = [
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale()
+  return createBilingualMetadata(
+    locale,
+    "Community Forums — Coming Soon | RCT Labs",
+    "ฟอรัมชุมชน — เร็วๆ นี้ | RCT Labs",
+    "RCT Labs community forums are under construction. A space for developers and researchers to discuss AI infrastructure, FDIA, and the HexaCore platform.",
+    "ฟอรัมชุมชนของ RCT Labs อยู่ระหว่างการพัฒนา พื้นที่สำหรับนักพัฒนาและนักวิจัยสนทนาเรื่อง AI infrastructure, FDIA และ HexaCore platform",
+    "/community/forums"
+  )
+}
+
+export default async function CommunityForumsPage() {
+  const locale = await getRequestLocale()
+  const isEn = locale === "en"
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const breadcrumb = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Community", url: `https://rctlabs.co${localePrefix}/community` },
+    { name: "Forums", url: `https://rctlabs.co${localePrefix}/community/forums` },
+  ])
+  const faq = getFAQSchema([
     {
-      title: "Best practices for remote team management",
-      category: "Best Practices",
-      posts: 234,
-      replies: 1203,
-      lastActivity: "2 hours ago",
+      question: isEn ? "What can I discuss in the forum?" : "ในฟอรัมคุยเรื่องอะไรได้บ้าง?",
+      answer: isEn
+        ? "Architecture topics, implementation questions, benchmark interpretation, and integration practices are all welcome."
+        : "สามารถพูดคุยเรื่องสถาปัตยกรรม, ปัญหา implementation, การตีความ benchmark และแนวทาง integration ได้ทั้งหมด",
     },
     {
-      title: "Implementing AI tools in your workflow",
-      category: "Technology",
-      posts: 156,
-      replies: 892,
-      lastActivity: "4 hours ago",
+      question: isEn ? "Is the forum public?" : "ฟอรัมเปิดสาธารณะไหม?",
+      answer: isEn
+        ? "The initial release is moderated and invite-based while quality and governance guidelines are finalized."
+        : "ช่วงแรกจะเป็นแบบ moderated และเชิญเข้าร่วมก่อน ขณะทีมสรุปแนวทางคุณภาพและ governance",
     },
-    {
-      title: "Building a strong company culture",
-      category: "Culture",
-      posts: 189,
-      replies: 945,
-      lastActivity: "1 hour ago",
-    },
-    {
-      title: "Scaling your startup efficiently",
-      category: "Growth",
-      posts: 203,
-      replies: 1056,
-      lastActivity: "3 hours ago",
-    },
-    {
-      title: "Data privacy and security concerns",
-      category: "Security",
-      posts: 142,
-      replies: 678,
-      lastActivity: "5 hours ago",
-    },
-    {
-      title: "Career development and upskilling",
-      category: "Career",
-      posts: 178,
-      replies: 834,
-      lastActivity: "30 min ago",
-    },
-  ]
+  ])
 
   return (
-    <main className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-foreground">
-            YourBrand
-          </Link>
-          <div className="flex gap-8 items-center">
-            <Link href="/community" className="text-sm text-foreground hover:text-foreground/80 transition">
-              Community
-            </Link>
-            <Link href="/company" className="text-sm text-foreground hover:text-foreground/80 transition">
-              Company
-            </Link>
+    <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />
+      <main className="min-h-screen bg-background">
+      <Navbar />
+      <section className="mx-auto max-w-3xl px-4 pt-24 pb-16 text-center">
+        <Link
+          href={`${localePrefix}/community`}
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-12 transition"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>{isEn ? "Back to Community" : "กลับสู่ Community"}</span>
+        </Link>
+
+        <div className="flex justify-center mb-8">
+          <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center">
+            <Clock className="w-8 h-8 text-sky-500" />
           </div>
         </div>
-      </nav>
 
-      {/* Header */}
-      <section className="mx-auto max-w-6xl px-4 py-24">
-        <Button variant="ghost" size="sm" asChild className="mb-8">
-          <Link href="/community">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Link>
-        </Button>
+        <h1 className="text-4xl font-bold text-foreground mb-4">
+          {isEn ? "Community Forums" : "ฟอรัมชุมชน"}
+        </h1>
+        <p className="text-xl text-muted-foreground mb-8">
+          {isEn ? "Pilot Access Active" : "เปิดใช้งานแบบนำร่องแล้ว"}
+        </p>
+        <p className="text-muted-foreground max-w-lg mx-auto mb-12">
+          {isEn
+            ? "The forum now runs as a moderated pilot for developers, researchers, and engineers building with FDIA, JITNA, and HexaCore workflows."
+            : "ฟอรัมเปิดแบบนำร่องภายใต้การดูแลสำหรับนักพัฒนา นักวิจัย และวิศวกรที่ทำงานกับ FDIA, JITNA และ HexaCore"}
+        </p>
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground">Community Forums</h1>
-            <p className="text-lg text-foreground/70">Join discussions and share knowledge with community members.</p>
-          </div>
+        <div className="flex flex-wrap justify-center gap-4">
           <Button asChild>
-            <Link href="/contact">Start a Topic</Link>
+            <Link href={`${localePrefix}/community`}>{isEn ? "Community Hub" : "ศูนย์ชุมชน"}</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href={`${localePrefix}/docs`}>{isEn ? "Documentation" : "เอกสาร"}</Link>
           </Button>
         </div>
       </section>
-
-      {/* Topics List */}
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="space-y-3">
-          {topics.map((topic, i) => (
-            <div
-              key={i}
-              className="p-6 rounded-lg border border-border hover:border-foreground/50 hover:shadow-lg transition cursor-pointer"
-            >
-              <div className="flex flex-col md:flex-row md:items-center gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <MessageSquare className="w-4 h-4 text-primary" />
-                    <span className="text-xs font-semibold px-2 py-1 rounded bg-muted text-foreground">
-                      {topic.category}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">{topic.title}</h3>
-                  <div className="flex flex-wrap gap-4 text-sm text-foreground/70">
-                    <span>{topic.posts} posts</span>
-                    <span>{topic.replies} replies</span>
-                    <span>Last activity: {topic.lastActivity}</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-foreground/70">
-                  <TrendingUp className="w-4 h-4" />
-                  <span className="text-sm font-medium">Popular</span>
-                </div>
-              </div>
-            </div>
-          ))}
+      <section className="mx-auto max-w-5xl px-4 pb-24">
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
+          <h2 className="text-lg font-semibold text-foreground mb-4">{isEn ? "Forum Scope" : "ขอบเขตฟอรัมนำร่อง"}</h2>
+          <ul className="grid gap-3 md:grid-cols-2 text-sm text-muted-foreground">
+            <li>{isEn ? "Implementation troubleshooting threads" : "เธรดช่วยแก้ปัญหา implementation"}</li>
+            <li>{isEn ? "Architecture review discussions" : "การสนทนาทบทวนสถาปัตยกรรม"}</li>
+            <li>{isEn ? "Benchmark and evaluation interpretation" : "การตีความผล benchmark และ evaluation"}</li>
+            <li>{isEn ? "Governance and compliance Q&A" : "ถามตอบด้าน governance และ compliance"}</li>
+          </ul>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border mt-24 py-12">
-        <div className="mx-auto max-w-6xl px-4 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-foreground font-semibold">YourBrand © 2025</div>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <Link href="/community" className="text-sm text-foreground/70 hover:text-foreground transition">
-              Community
-            </Link>
-            <Link href="/company" className="text-sm text-foreground/70 hover:text-foreground transition">
-              Company
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
+    </>
   )
 }

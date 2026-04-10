@@ -72,11 +72,11 @@ export default function ContactPageClient() {
               <Link
                 key={i}
                 href={item.href}
-                className="group block p-6 rounded-lg border border-border bg-card hover:border-accent/50 transition"
+                className="group block p-6 rounded-lg border border-border bg-card hover:border-warm-amber/50 transition"
               >
-                <Icon className="w-8 h-8 text-accent mb-4" />
+                <Icon className="w-8 h-8 text-warm-amber mb-4" />
                 <h3 className="font-semibold text-foreground mb-2">{item.label}</h3>
-                <p className="text-sm text-muted-foreground group-hover:text-accent transition">{item.value}</p>
+                <p className="text-sm text-muted-foreground group-hover:text-warm-amber transition">{item.value}</p>
               </Link>
             )
           })}
@@ -101,19 +101,19 @@ export default function ContactPageClient() {
           <div className="text-center space-y-4">
             <h3 className="text-xl font-semibold text-foreground">{isTh ? "สอบถามทั่วไป" : "General Inquiries"}</h3>
             <p className="text-muted-foreground">{isTh ? "สำหรับคำถามทั่วไปและข้อมูลเกี่ยวกับ RCT Labs" : "For general questions and information about RCT Labs"}</p>
-            <p className="text-sm font-medium text-accent">{GENERAL_CONTACT_EMAIL}</p>
+            <p className="text-sm font-medium text-warm-amber">{GENERAL_CONTACT_EMAIL}</p>
           </div>
           <div className="text-center space-y-4">
             <h3 className="text-xl font-semibold text-foreground">{isTh ? "พาร์ตเนอร์" : "Partnership"}</h3>
             <p className="text-muted-foreground">{isTh ? "สนใจร่วมงานหรือเป็นพาร์ตเนอร์กับเรา" : "Interested in collaborating or partnering with us"}</p>
-            <Link href={buildContactHref(language, "pricing:rctlabs:sales")} className="text-sm font-medium text-accent hover:underline">
+            <Link href={buildContactHref(language, "pricing:rctlabs:sales")} className="text-sm font-medium text-warm-amber hover:underline">
               {isTh ? "ดูรายละเอียด →" : "Learn More →"}
             </Link>
           </div>
           <div className="text-center space-y-4">
             <h3 className="text-xl font-semibold text-foreground">{isTh ? "ร่วมงานกับเรา" : "Careers"}</h3>
             <p className="text-muted-foreground">{isTh ? "ร่วมเป็นส่วนหนึ่งของทีมที่กำลังสร้างอนาคตของ AI" : "Join our team and help shape the future of AI"}</p>
-            <Link href="/company/careers" className="text-sm font-medium text-accent hover:underline">
+            <Link href="/company/careers" className="text-sm font-medium text-warm-amber hover:underline">
               {isTh ? "ดูตำแหน่งงาน →" : "View Openings →"}
             </Link>
           </div>

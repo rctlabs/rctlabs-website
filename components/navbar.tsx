@@ -315,7 +315,6 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
                 height={32}
                 unoptimized
                 className="h-8 w-8 object-contain"
-                priority
               />
               <span className={`hidden sm:inline-block text-sm font-semibold tracking-tight leading-none ${isDark ? "text-white" : "text-neutral-900"}`}>
                 RCT Labs

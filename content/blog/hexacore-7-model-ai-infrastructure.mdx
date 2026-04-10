@@ -33,8 +33,8 @@ The result: **0.3% hallucination rate** (industry: 12–15%), **30–40% cost re
 | Role | Model | Region | Cost/1M Tokens | Context | Best For |
 |---|---|---|---|---|---|
 | **Supreme Architect** | Claude Opus 4.6 | 🇺🇸 US | $5/$25 | 1M | Critical decisions |
-| **Lead Builder** | Kimi K2.5 | 🇨🇳 CN | $0.45/$2.25 | 200K | Complex programming |
-| **Junior Builder** | MiniMax M2.1 | 🇨🇳 CN | $0.27/$0.95 | 128K | Routine code |
+| **Lead Builder** | Kimi K2.5 | 🇨🇳 CN | $0.45/$2.25 | 1M | Complex programming |
+| **Junior Builder** | MiniMax M2.1 | 🇨🇳 CN | $0.27/$0.95 | 200K | Routine code |
 | **Specialist** | Gemini 3 Flash | 🇺🇸 US | $0.50/$3.00 | 1M | Finance & health |
 | **Librarian** | Grok 4.1 Fast | 🇺🇸 US | $0.20/$0.50 | 2M | Long-context reading |
 | **Humanizer** | DeepSeek V3.2 | 🇨🇳 CN | $0.25/$0.38 | 128K | Chat & creative |
@@ -78,7 +78,7 @@ For production-critical queries, HexaCore routes through **SignedAI** — a mult
 | Tier | Models | Threshold | Cost/1M | Use Case |
 |---|---|---|---|---|
 | **S** | 1 model | N/A | $0.32 | Fast, low-stakes |
-| **4** | 4 (2W:2E) | 50% (2/4) | $0.45 | Standard operations |
+| **4** | 4 (2W:2E) | 75% (3/4) | $0.45 | Standard operations |
 | **6** | 6 (3W:3E) | 67% (4/6) | $1.00 | Production consensus |
 | **8** | 8 (4W:4E) | 75% (6/8) | $2.60 | Critical decisions |
 

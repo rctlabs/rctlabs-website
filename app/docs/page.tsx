@@ -67,7 +67,7 @@ export default async function DocsPage() {
         <div className="absolute inset-0 grid-background opacity-30" />
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-24 md:py-32">
           <div className="max-w-3xl space-y-6">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "เอกสารประกอบ" : "Documentation"}</p>
+            <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{isTh ? "เอกสารประกอบ" : "Documentation"}</p>
             <h1 className="text-foreground">{isTh ? "เอกสารประกอบ RCT Ecosystem" : "RCT Ecosystem Documentation"}</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               {isTh
@@ -75,7 +75,7 @@ export default async function DocsPage() {
                 : "Technical documentation for the Constitutional AI Operating System. Architecture, APIs, RFCs, deployment guides, and public-safe references aligned to the March 2026 engineering snapshot."}
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">{SITE_VERSION}</span>
+              <span className="text-xs font-mono text-warm-amber bg-warm-amber/10 px-2 py-1 rounded">{SITE_VERSION}</span>
               <span className="text-xs font-mono text-muted-foreground">{SITE_TEST_COUNT} {isTh ? "ผลการทดสอบ backend ที่ผ่าน" : "verified backend tests"}</span>
               <span className="text-xs font-mono text-muted-foreground">•</span>
               <span className="text-xs font-mono text-muted-foreground">{isTh ? "สถาปัตยกรรม 10 ชั้น" : "10-Layer Architecture"}</span>
@@ -95,10 +95,10 @@ export default async function DocsPage() {
             <Link
               key={i}
               href={item.href}
-              className="group bg-card border border-border rounded-lg p-6 hover:border-accent/50 transition-all duration-300 space-y-3"
+              className="group bg-card border border-border rounded-lg p-6 hover:border-warm-amber/50 transition-all duration-300 space-y-3"
             >
-              <item.icon className="w-6 h-6 text-accent" />
-              <h3 className="text-base font-semibold text-foreground group-hover:text-accent transition">{item.title}</h3>
+              <item.icon className="w-6 h-6 text-warm-amber" />
+              <h3 className="text-base font-semibold text-foreground group-hover:text-warm-amber transition">{item.title}</h3>
               <p className="text-sm text-muted-foreground">{item.desc}</p>
             </Link>
           ))}
@@ -110,7 +110,7 @@ export default async function DocsPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="space-y-10">
             <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "สถาปัตยกรรม" : "Architecture"}</p>
+              <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{isTh ? "สถาปัตยกรรม" : "Architecture"}</p>
               <h2 className="text-foreground">{isTh ? "ภาพรวมสถาปัตยกรรม 10 ชั้น" : "10-Layer System Overview"}</h2>
             </div>
 
@@ -127,9 +127,9 @@ export default async function DocsPage() {
                 { layer: "L2", name: "OS Primitives", icon: Terminal, desc: "Process Model, Scheduler, IPC, 6 RFCs" },
                 { layer: "L1", name: "7 Genome System", icon: Layers, desc: "Architect, ARTENT, JITNA, Codex, SignedAI, Vault, RCT-7" },
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-4 bg-card border border-border rounded-lg p-4 hover:border-accent/30 transition-colors">
+                <div key={i} className="flex items-center gap-4 bg-card border border-border rounded-lg p-4 hover:border-warm-amber/30 transition-colors">
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-xs font-mono text-accent w-8">{item.layer}</span>
+                    <span className="text-xs font-mono text-warm-amber w-8">{item.layer}</span>
                     <item.icon className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div className="min-w-0">
@@ -147,7 +147,7 @@ export default async function DocsPage() {
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
         <div className="space-y-10">
           <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "ข้อกำหนด" : "Specifications"}</p>
+              <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{isTh ? "ข้อกำหนด" : "Specifications"}</p>
               <h2 className="text-foreground">{isTh ? "Kernel RFCs" : "Kernel RFCs"}</h2>
               <p className="text-muted-foreground">{isTh ? "ข้อกำหนดทางเทคนิคสำหรับ kernel ของ RCT Ecosystem" : "Formal specifications governing the RCT Ecosystem kernel."}</p>
             </div>
@@ -161,9 +161,9 @@ export default async function DocsPage() {
               { rfc: "RFC-005", title: "Syscall Interface", desc: "System call specification, error handling, permissions" },
               { rfc: "RFC-006", title: "Fault Isolation", desc: "Process isolation, error boundaries, recovery protocols" },
             ].map((item, i) => (
-              <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-2 hover:border-accent/30 transition-colors">
+              <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-2 hover:border-warm-amber/30 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-accent">{item.rfc}</span>
+                  <span className="text-xs font-mono text-warm-amber">{item.rfc}</span>
                   <BookOpen className="w-4 h-4 text-muted-foreground" />
                 </div>
                 <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
@@ -179,7 +179,7 @@ export default async function DocsPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="space-y-10">
             <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "อ้างอิง API" : "API Reference"}</p>
+              <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{isTh ? "อ้างอิง API" : "API Reference"}</p>
               <h2 className="text-foreground">OpenAPI 3.1.0 — 14 Endpoints</h2>
               <p className="text-muted-foreground">{isTh ? "RESTful API พร้อม JWT RS256 และการอนุญาต RBAC" : "RESTful API with JWT RS256 authentication and RBAC authorization."}</p>
             </div>
@@ -188,9 +188,9 @@ export default async function DocsPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">Method</th>
-                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">Endpoint</th>
-                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{isTh ? "คำอธิบาย" : "Description"}</th>
+                    <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">Method</th>
+                    <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">Endpoint</th>
+                    <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{isTh ? "คำอธิบาย" : "Description"}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -206,7 +206,7 @@ export default async function DocsPage() {
                     { method: "POST", endpoint: "/cache/clear", desc: "Cache invalidation" },
                     { method: "GET", endpoint: "/context", desc: "Dynamic LLM context builder" },
                   ].map((row, i) => (
-                    <tr key={i} className="border-b border-border/50 hover:bg-accent/5 transition-colors">
+                    <tr key={i} className="border-b border-border/50 hover:bg-warm-amber/5 transition-colors">
                       <td className="py-2.5 px-4">
                         <span className={`text-xs font-mono px-2 py-0.5 rounded ${
                           row.method === "POST" ? "text-warning bg-warning/10" : "text-success bg-success/10"
@@ -229,7 +229,7 @@ export default async function DocsPage() {
       <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
         <div className="space-y-10">
           <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "การติดตั้ง" : "Deployment"}</p>
+              <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{isTh ? "การติดตั้ง" : "Deployment"}</p>
               <h2 className="text-foreground">{isTh ? "คู่มือโครงสร้างพื้นฐาน" : "Infrastructure Guide"}</h2>
             </div>
 
@@ -245,7 +245,7 @@ export default async function DocsPage() {
               <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-2">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
-                  <span className="text-xs font-mono text-accent">{item.stat}</span>
+                  <span className="text-xs font-mono text-warm-amber">{item.stat}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">{item.desc}</p>
               </div>
@@ -259,7 +259,7 @@ export default async function DocsPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="space-y-10">
             <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">{isTh ? "เริ่มต้น" : "Getting Started"}</p>
+              <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{isTh ? "เริ่มต้น" : "Getting Started"}</p>
               <h2 className="text-foreground">{isTh ? "เริ่มต้นใช้งาน" : "Quick Start"}</h2>
             </div>
 
@@ -316,7 +316,7 @@ const result = await client.execute({
               : "Explore the full architecture, review the RFCs, or contact our team for enterprise support."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button asChild className="gap-2 bg-warm-amber hover:bg-warm-amber/90 text-white">
               <Link href={`${localePrefix}/platform`}>
                 {isTh ? "ดูแพลตฟอร์ม" : "View Platform"} <ArrowRight className="w-4 h-4" />
               </Link>

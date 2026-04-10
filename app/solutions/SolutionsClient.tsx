@@ -26,12 +26,12 @@ const solutions = [
     color: "#C4745B",
     titleEn: "AI Hallucination Prevention",
     titleTh: "การป้องกัน AI Hallucination",
-    descEn: "Reduce hallucination from 15% to 0.3% with Multi-LLM consensus verification via SignedAI — achieving 99.7% accuracy through cryptographic audit trails.",
-    descTh: "ลด Hallucination จาก 15% เหลือ 0.3% ด้วย Multi-LLM Consensus Verification ผ่าน SignedAI — บรรลุความแม่นยำ 99.7%",
+    descEn: "Target hallucination below 0.3% with Multi-LLM consensus verification via SignedAI — benchmarked at 99.7% accuracy through cryptographic audit trails.",
+    descTh: "ลดเป้าหมาย Hallucination ให้ต่ำกว่า 0.3% ด้วย Multi-LLM Consensus Verification ผ่าน SignedAI — ความแม่นยำ 99.7% ในการทดสอบ Benchmark",
     stats: [
       { label: "Accuracy", value: "99.7%" },
       { label: "Hallucination", value: "0.3%" },
-      { label: "LLMs Verified", value: "Up to 8" },
+      { label: "LLMs Verified", value: "Up to 7" },
     ],
     features: [
       { en: "Multi-LLM Consensus Mechanism", th: "Multi-LLM Consensus Mechanism" },
@@ -102,7 +102,7 @@ export default function SolutionsPage() {
   const proofPoints = [
     { value: "0.3%", labelEn: "Hallucination", labelTh: "Hallucination", color: "#C4745B" },
     { value: "99.7%", labelEn: "Verified Accuracy", labelTh: "ความแม่นยำที่ตรวจสอบได้", color: "#7B9E87" },
-    { value: "8", labelEn: "LLMs in Consensus", labelTh: "LLMs ในฉันทามติ", color: "#D4A853" },
+    { value: "7", labelEn: "HexaCore Models", labelTh: "HexaCore Models", color: "#D4A853" },
   ]
   const faqs = isTh
     ? [

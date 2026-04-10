@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getAllBlogPosts } from "@/lib/blog"
 import { getRequestLocale } from "@/lib/request-locale"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { BlogPageClient } from "./BlogPageClient"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -37,10 +38,15 @@ export default async function BlogPage() {
       "author": { "@type": "Person", "name": post.author }
     }))
   }
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Blog", url: `https://rctlabs.co${localePrefix}/blog` },
+  ])
 
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <BlogPageClient posts={posts} localePrefix={localePrefix} />
     </>
   )

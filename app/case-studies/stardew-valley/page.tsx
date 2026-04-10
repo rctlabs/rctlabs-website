@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { createBilingualMetadata, getFAQSchema, type Locale } from "@/lib/seo-bilingual"
+import { getBreadcrumbSchema } from "@/lib/schema"
 
 type LocaleContent = {
   pageTitle: string
@@ -337,9 +338,15 @@ export default async function StardewValleyCaseStudyPage() {
     about: ["FDIA", "JITNA Protocol", "Game AI", "Deterministic agent systems"],
     url: `https://rctlabs.co${localePrefix}/case-studies/stardew-valley`,
   }
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: locale === "th" ? "กรณีศึกษา" : "Case Studies", url: `https://rctlabs.co${localePrefix}/case-studies` },
+    { name: "Stardew Valley", url: `https://rctlabs.co${localePrefix}/case-studies/stardew-valley` },
+  ])
 
   return (
     <>
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />

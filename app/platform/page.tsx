@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { createBilingualMetadata, getFAQSchema, getSoftwareApplicationSchema, type Locale } from "@/lib/seo-bilingual"
+import { getBreadcrumbSchema } from "@/lib/schema"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -138,6 +139,11 @@ export default async function PlatformPage() {
         },
       ]
   const faqSchema = getFAQSchema(locale, faqItems)
+  const localePrefix = locale === "th" ? "/th" : "/en"
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Platform", url: `https://rctlabs.co${localePrefix}/platform` },
+  ])
   const relatedResources = locale === "th"
     ? [
         { href: "/architecture", title: "สถาปัตยกรรม 10 ชั้น", description: "ดู layer ทั้งระบบและ service boundaries" },
@@ -156,6 +162,7 @@ export default async function PlatformPage() {
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <main className="min-h-screen bg-background dark">
         <Navbar />
 
@@ -164,13 +171,13 @@ export default async function PlatformPage() {
         <div className="absolute inset-0 grid-background opacity-30" />
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-24 md:py-32">
           <div className="max-w-3xl space-y-6">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">{p("breadcrumb")}</p>
+            <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{p("breadcrumb")}</p>
             <h1 className="text-foreground">{p("title")}</h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               {p("subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button asChild className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button asChild className="gap-2 bg-warm-amber hover:bg-warm-amber/90 text-white">
                 <Link href="/docs">
                   {p("cta_primary")} <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -184,10 +191,10 @@ export default async function PlatformPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="rounded-3xl border border-accent/20 bg-card/60 p-6 md:p-8">
+        <div className="rounded-3xl border border-warm-amber/20 bg-card/60 p-6 md:p-8">
           <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
             <div className="space-y-3">
-              <p className="text-sm font-mono text-accent uppercase tracking-wider">
+              <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">
                 {locale === "th" ? "Platform Summary" : "Platform Summary"}
               </p>
               <h2 className="text-foreground">
@@ -200,7 +207,7 @@ export default async function PlatformPage() {
               </p>
             </div>
             <div className="rounded-2xl border border-border bg-background/80 p-5">
-              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-accent">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-warm-amber">
                 {locale === "th" ? "Why Buyers Evaluate This Page" : "Why Buyers Evaluate This Page"}
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
@@ -222,7 +229,7 @@ export default async function PlatformPage() {
       <section id="kernel" className="mx-auto max-w-6xl px-4 py-24">
         <div className="space-y-12">
           <div className="max-w-2xl space-y-4">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">{locale === 'th' ? 'สถาปัตยกรรม' : 'Architecture'}</p>
+            <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{locale === 'th' ? 'สถาปัตยกรรม' : 'Architecture'}</p>
             <h2 className="text-foreground">{p("architecture_title")}</h2>
             <p className="text-muted-foreground">
               {p("architecture_desc")}
@@ -231,11 +238,11 @@ export default async function PlatformPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {layers.map((item, i) => (
-              <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-3 hover:border-accent/50 transition-colors">
+              <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-3 hover:border-warm-amber/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <item.icon className="w-5 h-5 text-accent" />
-                    <span className="text-xs font-mono text-accent">{item.layer}</span>
+                    <item.icon className="w-5 h-5 text-warm-amber" />
+                    <span className="text-xs font-mono text-warm-amber">{item.layer}</span>
                   </div>
                   <span className="text-xs font-mono text-muted-foreground bg-secondary px-2 py-0.5 rounded">{item.badge}</span>
                 </div>
@@ -301,7 +308,7 @@ export default async function PlatformPage() {
           <div className="order-2 lg:order-1 bg-card border border-border rounded-lg p-6 space-y-4">
             <div className="grid grid-cols-3 gap-4">
               {[
-                { name: "Vector", desc: "Semantic search", color: "text-accent" },
+                { name: "Vector", desc: "Semantic search", color: "text-warm-amber" },
                 { name: "Graph", desc: "Relationships", color: "text-success" },
                 { name: "SQL", desc: "Structured data", color: "text-warning" },
               ].map((layer, i) => (
@@ -317,8 +324,8 @@ export default async function PlatformPage() {
             </div>
           </div>
           <div className="order-1 lg:order-2 space-y-6">
-            <div className="p-3 rounded-lg bg-accent/10 w-fit">
-              <Database className="w-6 h-6 text-accent" />
+            <div className="p-3 rounded-lg bg-warm-amber/10 w-fit">
+              <Database className="w-6 h-6 text-warm-amber" />
             </div>
             <h2 className="text-foreground">{p("rctdb_title")}</h2>
             <p className="text-muted-foreground leading-relaxed">
@@ -327,7 +334,7 @@ export default async function PlatformPage() {
             <ul className="space-y-3">
               {[p("rctdb_feature_1"), p("rctdb_feature_2"), p("rctdb_feature_3"), p("rctdb_feature_4")].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <Zap className="w-4 h-4 text-accent shrink-0" />
+                  <Zap className="w-4 h-4 text-warm-amber shrink-0" />
                   {item}
                 </li>
               ))}
@@ -341,8 +348,8 @@ export default async function PlatformPage() {
         <div className="mx-auto max-w-6xl px-4 py-24">
           <div className="space-y-12">
             <div className="max-w-2xl space-y-4">
-              <div className="p-3 rounded-lg bg-accent/10 w-fit">
-                <Cpu className="w-6 h-6 text-accent" />
+              <div className="p-3 rounded-lg bg-warm-amber/10 w-fit">
+                <Cpu className="w-6 h-6 text-warm-amber" />
               </div>
               <h2 className="text-foreground">{p("studio_title")}</h2>
               <p className="text-muted-foreground">
@@ -356,8 +363,8 @@ export default async function PlatformPage() {
                 { name: p("studio_medical"), desc: p("studio_medical_desc"), icon: Shield },
                 { name: p("studio_finance"), desc: p("studio_finance_desc"), icon: Lock },
               ].map((module, i) => (
-                <div key={i} className="bg-card border border-border rounded-lg p-6 space-y-4 hover:border-accent/50 transition-colors">
-                  <module.icon className="w-8 h-8 text-accent" />
+                <div key={i} className="bg-card border border-border rounded-lg p-6 space-y-4 hover:border-warm-amber/50 transition-colors">
+                  <module.icon className="w-8 h-8 text-warm-amber" />
                   <div>
                     <h3 className="text-lg font-semibold text-foreground">{module.name}</h3>
                     <p className="text-sm text-muted-foreground mt-2">{module.desc}</p>
@@ -373,7 +380,7 @@ export default async function PlatformPage() {
       <section id="infrastructure" className="mx-auto max-w-6xl px-4 py-24">
         <div className="space-y-12">
           <div className="max-w-2xl space-y-4">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">{locale === 'th' ? 'โครงสร้างพื้นฐาน' : 'Infrastructure'}</p>
+            <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{locale === 'th' ? 'โครงสร้างพื้นฐาน' : 'Infrastructure'}</p>
             <h2 className="text-foreground">{p("infra_title")}</h2>
             <p className="text-muted-foreground">
               {p("infra_desc")}
@@ -382,10 +389,10 @@ export default async function PlatformPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {infraItems.map((item, i) => (
-              <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-3 hover:border-accent/50 transition-colors">
+              <div key={i} className="bg-card border border-border rounded-lg p-5 space-y-3 hover:border-warm-amber/50 transition-colors">
                 <div className="flex items-center justify-between">
-                  <item.icon className="w-5 h-5 text-accent" />
-                  <span className="text-xs font-mono text-accent">{item.stat}</span>
+                  <item.icon className="w-5 h-5 text-warm-amber" />
+                  <span className="text-xs font-mono text-warm-amber">{item.stat}</span>
                 </div>
                 <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
                 <p className="text-xs text-muted-foreground">{item.desc}</p>
@@ -399,7 +406,7 @@ export default async function PlatformPage() {
       <section id="integrations" className="mx-auto max-w-6xl px-4 py-24">
         <div className="space-y-12">
           <div className="max-w-2xl space-y-4">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">{SITE_VERSION} — {locale === 'th' ? 'ชุดการรวมระบบองค์กร' : 'Enterprise Integration Suite'}</p>
+            <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{SITE_VERSION} — {locale === 'th' ? 'ชุดการรวมระบบองค์กร' : 'Enterprise Integration Suite'}</p>
             <h2 className="text-foreground">{p("integrations_title")}</h2>
             <p className="text-muted-foreground leading-relaxed">
               {p("integrations_desc")}
@@ -407,38 +414,38 @@ export default async function PlatformPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-card border border-border rounded-lg p-6 space-y-4 hover:border-accent/50 transition-colors">
+            <div className="bg-card border border-border rounded-lg p-6 space-y-4 hover:border-warm-amber/50 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-lg bg-accent/10">
-                  <Activity className="w-6 h-6 text-accent" />
+                <div className="p-3 rounded-lg bg-warm-amber/10">
+                  <Activity className="w-6 h-6 text-warm-amber" />
                 </div>
-                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">{locale === "th" ? "สแนปช็อตสาธารณะ" : "Public snapshot"}</span>
+                <span className="text-xs font-mono text-warm-amber bg-warm-amber/10 px-2 py-1 rounded">{locale === "th" ? "สแนปช็อตสาธารณะ" : "Public snapshot"}</span>
               </div>
               <h3 className="text-lg font-semibold text-foreground">{p("slack_title")}</h3>
               <p className="text-sm text-muted-foreground">{p("slack_desc")}</p>
               <ul className="space-y-2">
                 {[p("slack_feature_1"), p("slack_feature_2"), p("slack_feature_3"), p("slack_feature_4")].map((f, i) => (
                   <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <CheckCircle className="w-3 h-3 text-accent shrink-0" />
+                    <CheckCircle className="w-3 h-3 text-warm-amber shrink-0" />
                     {f}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-card border border-border rounded-lg p-6 space-y-4 hover:border-accent/50 transition-colors">
+            <div className="bg-card border border-border rounded-lg p-6 space-y-4 hover:border-warm-amber/50 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-lg bg-accent/10">
-                  <Database className="w-6 h-6 text-accent" />
+                <div className="p-3 rounded-lg bg-warm-amber/10">
+                  <Database className="w-6 h-6 text-warm-amber" />
                 </div>
-                <span className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">{locale === "th" ? "สแนปช็อตสาธารณะ" : "Public snapshot"}</span>
+                <span className="text-xs font-mono text-warm-amber bg-warm-amber/10 px-2 py-1 rounded">{locale === "th" ? "สแนปช็อตสาธารณะ" : "Public snapshot"}</span>
               </div>
               <h3 className="text-lg font-semibold text-foreground">{p("notion_title")}</h3>
               <p className="text-sm text-muted-foreground">{p("notion_desc")}</p>
               <ul className="space-y-2">
                 {[p("notion_feature_1"), p("notion_feature_2"), p("notion_feature_3"), p("notion_feature_4")].map((f, i) => (
                   <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <CheckCircle className="w-3 h-3 text-accent shrink-0" />
+                    <CheckCircle className="w-3 h-3 text-warm-amber shrink-0" />
                     {f}
                   </li>
                 ))}
@@ -454,10 +461,10 @@ export default async function PlatformPage() {
           <div className="space-y-12">
             <div className="max-w-2xl space-y-4">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-lg bg-accent/10">
-                  <Globe className="w-6 h-6 text-accent" />
+                <div className="p-3 rounded-lg bg-warm-amber/10">
+                  <Globe className="w-6 h-6 text-warm-amber" />
                 </div>
-                <span className="text-xs font-mono text-accent">{locale === 'th' ? '8 ตลาดที่ใช้งาน' : '8 Markets Active'}</span>
+                <span className="text-xs font-mono text-warm-amber">{locale === 'th' ? '8 ตลาดที่ใช้งาน' : '8 Markets Active'}</span>
               </div>
               <h2 className="text-foreground">{p("regional_title")}</h2>
               <p className="text-muted-foreground">
@@ -469,15 +476,15 @@ export default async function PlatformPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{locale === 'th' ? 'ภาษา' : 'Language'}</th>
-                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{locale === 'th' ? 'ภูมิภาค' : 'Region'}</th>
-                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{locale === 'th' ? 'Model เริ่มต้น' : 'Default Model'}</th>
-                    <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{locale === 'th' ? 'การปฏิบัติตาม' : 'Compliance'}</th>
+                    <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{locale === 'th' ? 'ภาษา' : 'Language'}</th>
+                    <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{locale === 'th' ? 'ภูมิภาค' : 'Region'}</th>
+                    <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{locale === 'th' ? 'Model เริ่มต้น' : 'Default Model'}</th>
+                    <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{locale === 'th' ? 'การปฏิบัติตาม' : 'Compliance'}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {regionalMarkets.map((row, i) => (
-                    <tr key={i} className="border-b border-border/50 hover:bg-accent/5 transition-colors">
+                    <tr key={i} className="border-b border-border/50 hover:bg-warm-amber/5 transition-colors">
                       <td className="py-3 px-4 text-foreground">{row.lang}</td>
                       <td className="py-3 px-4 font-mono text-muted-foreground">{row.region}</td>
                       <td className="py-3 px-4 font-mono text-muted-foreground">{row.model}</td>
@@ -501,7 +508,7 @@ export default async function PlatformPage() {
       <section className="mx-auto max-w-6xl px-4 py-24">
         <div className="space-y-10">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider">{locale === 'th' ? 'ประสิทธิภาพ' : 'Performance'}</p>
+            <p className="text-sm font-mono text-warm-amber uppercase tracking-wider">{locale === 'th' ? 'ประสิทธิภาพ' : 'Performance'}</p>
             <h2 className="text-foreground">{p("performance_title")}</h2>
           </div>
 
@@ -509,17 +516,17 @@ export default async function PlatformPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{locale === 'th' ? 'ตัวชี้วัด' : 'Metric'}</th>
-                  <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{SITE_VERSION}</th>
-                  <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{locale === 'th' ? 'ค่าเฉลี่ยอุตสาหกรรม' : 'Industry Avg'}</th>
-                  <th className="text-left py-3 px-4 text-xs font-mono text-accent uppercase">{locale === 'th' ? 'การปรับปรุง' : 'Improvement'}</th>
+                  <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{locale === 'th' ? 'ตัวชี้วัด' : 'Metric'}</th>
+                  <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{SITE_VERSION}</th>
+                  <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{locale === 'th' ? 'ค่าเฉลี่ยอุตสาหกรรม' : 'Industry Avg'}</th>
+                  <th className="text-left py-3 px-4 text-xs font-mono text-warm-amber uppercase">{locale === 'th' ? 'การปรับปรุง' : 'Improvement'}</th>
                 </tr>
               </thead>
               <tbody>
                 {performanceMetrics.map((row, i) => (
                   <tr key={i} className="border-b border-border/50">
                     <td className="py-3 px-4 font-medium text-foreground">{row.metric}</td>
-                    <td className="py-3 px-4 font-mono text-accent">{row.rct}</td>
+                    <td className="py-3 px-4 font-mono text-warm-amber">{row.rct}</td>
                     <td className="py-3 px-4 font-mono text-muted-foreground">{row.industry}</td>
                     <td className="py-3 px-4 text-success text-xs">{row.improvement}</td>
                   </tr>
@@ -533,7 +540,7 @@ export default async function PlatformPage() {
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-2xl border border-border bg-card p-6">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider mb-3">
+            <p className="text-sm font-mono text-warm-amber uppercase tracking-wider mb-3">
               {locale === "th" ? "FAQ" : "FAQ"}
             </p>
             <h2 className="text-foreground mb-4">
@@ -550,7 +557,7 @@ export default async function PlatformPage() {
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-6">
-            <p className="text-sm font-mono text-accent uppercase tracking-wider mb-3">
+            <p className="text-sm font-mono text-warm-amber uppercase tracking-wider mb-3">
               {locale === "th" ? "Related Resources" : "Related Resources"}
             </p>
             <h2 className="text-foreground mb-4">
@@ -558,7 +565,7 @@ export default async function PlatformPage() {
             </h2>
             <div className="space-y-3">
               {relatedResources.map((item) => (
-                <Link key={item.href} href={item.href} className="block rounded-xl border border-border bg-background/70 p-4 transition-colors hover:border-accent/40 hover:bg-accent/5">
+                <Link key={item.href} href={item.href} className="block rounded-xl border border-border bg-background/70 p-4 transition-colors hover:border-warm-amber/40 hover:bg-warm-amber/5">
                   <div className="text-sm font-semibold text-foreground">{item.title}</div>
                   <div className="mt-1 text-sm text-muted-foreground">{item.description}</div>
                 </Link>
@@ -576,7 +583,7 @@ export default async function PlatformPage() {
             {p("cta_final_desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button asChild className="gap-2 bg-warm-amber hover:bg-warm-amber/90 text-white">
               <Link href="/docs">
                 {p("cta_docs")} <ArrowRight className="w-4 h-4" />
               </Link>
