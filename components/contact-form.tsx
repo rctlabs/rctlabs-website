@@ -181,7 +181,7 @@ export default function ContactForm({ language, initialContext = "contact", init
     return (
       <div className="py-12 text-center space-y-6">
         <div className="flex justify-center">
-          <CheckCircle className="h-16 w-16 text-accent" />
+          <CheckCircle className="h-16 w-16 text-warm-amber" />
         </div>
         <div className="space-y-2">
           <h2 className="text-3xl font-bold text-foreground">{copy.success.title}</h2>

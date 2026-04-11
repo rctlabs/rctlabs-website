@@ -110,7 +110,7 @@ export default async function PressPage() {
     alternateName: "Reverse Component Thinking Labs",
     url: "https://rctlabs.co",
     logo: "https://rctlabs.co/RCTLogo-horizontal.svg",
-    description: "Constitutional AI Operating System built by a solo developer in Bangkok, Thailand — 62 microservices, 4,849 passing tests, 0.3% hallucination rate.",
+    description: "Constitutional AI Operating System built by a solo developer in Bangkok, Thailand — 62 microservices, 4,849 passing tests, 0.3% benchmark hallucination target.",
     foundingDate: "2024",
     founder: { "@type": "Person", name: "Ittirit Saengow", jobTitle: "The Architect" },
     location: { "@type": "Place", addressLocality: "Bangkok", addressCountry: "TH" },
@@ -146,8 +146,8 @@ export default async function PressPage() {
               {[
                 { value: "62", label: isTh ? "Microservices" : "Microservices" },
                 { value: "4,849", label: isTh ? "Tests ผ่าน" : "Tests Passing" },
-                { value: "0.3%", label: isTh ? "Hallucination Rate" : "Hallucination Rate" },
-                { value: "99.98%", label: isTh ? "Uptime SLA" : "Uptime SLA" },
+                { value: "0.3%", label: isTh ? "เป้าหมาย Benchmark Hallucination" : "Benchmark Hallucination Target" },
+                { value: "99.98%", label: isTh ? "เป้าหมาย Design SLA" : "Uptime Design SLA Target" },
               ].map((s) => (
                 <div key={s.label} className="rounded-xl border border-warm-amber/20 bg-warm-amber/5 px-4 py-3">
                   <p className="text-2xl font-bold text-warm-amber">{s.value}</p>

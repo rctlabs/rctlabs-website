@@ -244,7 +244,7 @@
     "layer_2_name": "OS Primitives",
     "layer_2_desc": "Process Model, Scheduler, IPC, Syscall Interface, Fault Isolation — 6 RFCs",
     "layer_1_name": "7 Genome System",
-    "layer_1_desc": "Architect, ARTENT, JITNA, Codex, SignedAI, Vault-1010, RCT-7 + SHA256 proof",
+    "layer_1_desc": "Architect, ARTENT, JITNA, Codex, SignedAI, RCT Knowledge Vault, RCT-7 + SHA256 proof",
     "signedai_title": "SignedAI",
     "signedai_desc": "Multi-LLM attestation achieving 0.3% hallucination rate (vs industry 12-15%). GPT-4 + Claude 3.5 + Gemini Pro consensus verification with ED25519 cryptographic signatures.",
     "signedai_feature_1": "0.3% hallucination rate (95% better than industry)",

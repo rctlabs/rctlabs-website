@@ -68,7 +68,7 @@ export function FDIACalculator() {
       <div className="bg-gradient-to-r from-accent/10 to-secondary/10 rounded-lg p-8 space-y-4">
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground font-mono">F = (D^I) × A</p>
-          <div className="text-3xl md:text-4xl font-bold text-accent font-mono">
+          <div className="text-3xl md:text-4xl font-bold text-warm-amber font-mono">
             ({(data / 100).toFixed(2)}
             <sup>{((intent / 100) * 2).toFixed(2)}</sup>) × {(action / 100).toFixed(2)} = {result.toFixed(2)}
           </div>
@@ -88,7 +88,7 @@ export function FDIACalculator() {
         </div>
         <div className="space-y-2">
           <p className="text-xs text-muted-foreground uppercase font-semibold">Intent Exponent</p>
-          <p className="text-2xl font-bold text-accent">{((intent / 100) * 2).toFixed(2)}</p>
+          <p className="text-2xl font-bold text-warm-amber">{((intent / 100) * 2).toFixed(2)}</p>
         </div>
         <div className="space-y-2">
           <p className="text-xs text-muted-foreground uppercase font-semibold">Final Output</p>

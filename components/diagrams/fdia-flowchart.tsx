@@ -262,7 +262,7 @@ export default function FDIAFlowchart({ compact = false, forceDark = false, blue
             <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full">
               <defs>
                 {nodes.map((node) => (
-                  <filter key={`glow-${node.id}`} id={`glow-${node.id}`} x="-50%" y="-50%" width="200%" height="200%">
+                  <filter key={`glow-${node.id}`} id={`glow-${node.id}`} x="-50%" y="-50%" width="200%" height="200%" colorInterpolationFilters="sRGB">
                     <feGaussianBlur stdDeviation="2.8" result="blur" />
                     <feFlood floodColor={node.color} floodOpacity="0.24" result="color" />
                     <feComposite in="color" in2="blur" operator="in" result="glow" />

@@ -68,13 +68,13 @@ const genomes: Genome[] = [
   },
   {
     id: 6,
-    name: "Vault-1010",
-    nameTh: "Vault-1010",
+    name: "RCT Knowledge Vault",
+    nameTh: "RCT Knowledge Vault",
     description: "Secure memory storage with quantum-resistant encryption. Stores sensitive context and credentials.",
     descriptionTh: "การจัดเก็บหน่วยความจำอย่างปลอดภัยด้วยการเข้ารหัสที่ทนต่อควอนตัม จัดเก็บบริบทที่ละเอียดอ่อนและข้อมูลประจำตัว",
     color: "#6366f1",
     icon: "Lock",
-    dna: "ATCG-VAULT-1010"
+    dna: "ATCG-VAULT-RKV"
   },
   {
     id: 7,

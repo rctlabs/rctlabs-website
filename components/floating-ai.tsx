@@ -18,7 +18,8 @@ import {
   Maximize2,
   CheckCircle,
 } from "lucide-react"
-import { API_URL } from "@/lib/constants"
+// Chat is proxied through /api/chat (server-side route) to hide backend credentials
+// and provide graceful fallback when the backend is not yet deployed.
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -114,7 +115,7 @@ export function FloatingAI() {
       setShowScenarios(false)
 
       try {
-        const res = await fetch(`${API_URL}/rctlabs/assistant/chat`, {
+        const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -153,10 +154,11 @@ export function FloatingAI() {
           {
             id: (Date.now() + 1).toString(),
             role: "assistant",
-            content: "ขออภัย — ระบบ backend ยังไม่พร้อมใช้งานในขณะนี้ กรุณาลองอีกครั้ง",
+            content: "ขณะนี้ระบบ AI กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\nสามารถติดต่อทีมงานได้ที่ contact@rctlabs.co หรือดูข้อมูลเพิ่มเติมได้ที่ /docs",
             timestamp: new Date(),
             verified: false,
             feedback: null,
+            source: "fallback" as const,
           },
         ])
       } finally {
@@ -213,8 +215,8 @@ export function FloatingAI() {
 
       try {
         const endpoint = mode === "mirror" 
-          ? `${API_URL}/rctlabs/assistant/mirror?max_iterations=3`
-          : `${API_URL}/rctlabs/assistant/analyze`
+          ? `/api/mirror?max_iterations=3`
+          : `/api/analyze`
         
         const res = await fetch(endpoint, {
           method: "POST",

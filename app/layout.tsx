@@ -60,7 +60,7 @@ const spaceGrotesk = Space_Grotesk({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
+  display: "optional",
   preload: false,
 })
 
@@ -69,7 +69,7 @@ const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-mono",
-  display: "swap",
+  display: "optional",
   preload: false,
 })
 

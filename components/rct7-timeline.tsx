@@ -131,7 +131,7 @@ export function RCT7Timeline({ locale = "en" }: { locale?: "en" | "th" }) {
           <span className="text-sm text-muted-foreground">
             {t("Progress", "ความคืบหน้า")}: {completedSteps.length}/7 {t("steps", "ขั้นตอน")}
           </span>
-          <span className="text-sm font-medium text-accent">
+          <span className="text-sm font-medium text-warm-amber">
             {Math.round((completedSteps.length / 7) * 100)}%
           </span>
         </div>
@@ -201,7 +201,7 @@ export function RCT7Timeline({ locale = "en" }: { locale?: "en" | "th" }) {
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-semibold text-foreground mb-1">{t(step.title, step.titleTh)}</h3>
-                        <p className="text-accent font-medium text-sm mb-2">{t(step.description, step.descriptionTh)}</p>
+                        <p className="text-warm-amber font-medium text-sm mb-2">{t(step.description, step.descriptionTh)}</p>
                         <p className="text-sm text-muted-foreground">{t(step.details, step.detailsTh)}</p>
                       </div>
                       <button

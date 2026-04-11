@@ -355,9 +355,9 @@ export default async function GlossaryPage() {
         <div className="mt-10 rounded-2xl border border-border bg-card p-8">
           <h2 className="text-2xl font-bold text-foreground">{isTh ? "อ่านต่อ" : "Continue exploring"}</h2>
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
-            <Link href={`${localePrefix}/methodology`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "วิธีวิทยา" : "Methodology"}</Link>
-            <Link href={`${localePrefix}/evaluation`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "ศูนย์กลางการประเมิน" : "Evaluation"}</Link>
-            <Link href={`${localePrefix}/architecture`} className="rounded-full bg-accent/10 px-4 py-2 font-medium text-accent hover:underline">{isTh ? "สถาปัตยกรรม" : "Architecture"}</Link>
+            <Link href={`${localePrefix}/methodology`} className="rounded-full bg-warm-amber/10 px-4 py-2 font-medium text-warm-amber hover:underline">{isTh ? "วิธีวิทยา" : "Methodology"}</Link>
+            <Link href={`${localePrefix}/evaluation`} className="rounded-full bg-warm-amber/10 px-4 py-2 font-medium text-warm-amber hover:underline">{isTh ? "ศูนย์กลางการประเมิน" : "Evaluation"}</Link>
+            <Link href={`${localePrefix}/architecture`} className="rounded-full bg-warm-amber/10 px-4 py-2 font-medium text-warm-amber hover:underline">{isTh ? "สถาปัตยกรรม" : "Architecture"}</Link>
           </div>
         </div>
       </section>
