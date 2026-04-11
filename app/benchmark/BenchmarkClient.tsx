@@ -155,6 +155,21 @@ export default function BenchmarkPage() {
       .catch(() => {})
   }, [])
 
+  type LiveStatsData = {
+    testCount?: number
+    microserviceCount?: number
+    algorithmCount?: number
+    source?: "live" | "static"
+    updatedAt?: string
+  }
+  const [sysStats, setSysStats] = useState<LiveStatsData | null>(null)
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: LiveStatsData | null) => d && setSysStats(d))
+      .catch(() => {})
+  }, [])
+
   const activeRadarData = liveData?.radarData ?? radarData
   const activeBarData = liveData?.barData ?? barData
   const activeCounterStats = liveData?.counterStats
@@ -376,6 +391,40 @@ export default function BenchmarkPage() {
             </div>
           </div>
         </section>
+
+        {/* System Stats — sourced from /api/stats */}
+        {sysStats && (
+          <section className={`py-12 transition-colors duration-300 ${isDark ? "bg-[#0D0D0D]" : "bg-[#F5F0E8]"}`} aria-label="System Statistics">
+            <div className="max-w-4xl mx-auto px-4">
+              <div className="flex items-center gap-3 mb-6">
+                <h2 className={`text-lg font-bold ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+                  {isEn ? "System Statistics" : "สถิติระบบ"}
+                </h2>
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${sysStats.source === "live" ? "bg-warm-sage/15 text-warm-sage border border-warm-sage/25" : "bg-muted text-muted-foreground border border-border"}`}>
+                  {sysStats.source === "live" && <span className="h-1.5 w-1.5 rounded-full bg-warm-sage animate-pulse" />}
+                  {sysStats.source === "live" ? (isEn ? "Live" : "Live") : (isEn ? "Static" : "Static")}
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { value: sysStats.testCount?.toLocaleString() ?? "—", label: isEn ? "Test Cases" : "Test Cases" },
+                  { value: sysStats.microserviceCount ?? "—", label: isEn ? "Microservices" : "Microservices" },
+                  { value: sysStats.algorithmCount ?? "—", label: isEn ? "Algorithms" : "Algorithms" },
+                ].map((item) => (
+                  <div key={item.label} className={`rounded-xl border p-4 ${isDark ? "border-[#2A2A2A] bg-[#1A1A1A]" : "border-warm-light-gray bg-white"}`}>
+                    <div className="text-2xl font-bold text-warm-sage">{item.value}</div>
+                    <div className={`text-xs ${isDark ? "text-[#888]" : "text-warm-gray"}`}>{item.label}</div>
+                  </div>
+                ))}
+              </div>
+              {sysStats.updatedAt && (
+                <p className={`mt-3 text-[11px] ${isDark ? "text-[#666]" : "text-warm-gray"}`}>
+                  {isEn ? "Last verified:" : "ตรวจสอบล่าสุด:"} {sysStats.updatedAt}
+                </p>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* Feature Comparison Table */}
         <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-[#141414]" : "bg-white"}`} aria-label="Feature Comparison">

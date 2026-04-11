@@ -62,9 +62,9 @@ export function NewsletterSignup() {
       </form>
 
       {status === "success" && (
-        <div className="flex gap-2 p-3 bg-accent/10 border border-accent/30 rounded-lg">
-          <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-accent">{message}</p>
+        <div className="flex gap-2 p-3 bg-warm-amber/10 border border-warm-amber/30 rounded-lg">
+          <CheckCircle className="w-4 h-4 text-warm-amber flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-warm-amber">{message}</p>
         </div>
       )}
 

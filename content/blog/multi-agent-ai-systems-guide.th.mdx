@@ -1,0 +1,145 @@
+---
+title: "ระบบ AI แบบหลาย Agent: สถาปัตยกรรม โปรโตคอล และการติดตั้งในองค์กร"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-04-01"
+lastReviewed: "2026-04-01"
+category: "research"
+excerpt: "ระบบ AI แบบ Multi-Agent ประสานโมเดลหลายตัวผ่าน protocol เพื่อแก้งานที่โมเดลเดียวไม่สามารถทำได้อย่างน่าเชื่อถือ บทความนี้อธิบายสถาปัตยกรรม JITNA Protocol การตรวจสอบ consensus และสิ่งที่ต้องพิจารณาในการติดตั้งสำหรับองค์กร"
+tags: ["Multi-Agent AI", "Agentic AI", "JITNA Protocol", "Enterprise AI", "AI Architecture", "Consensus AI", "RCT Labs"]
+readTime: 16
+references:
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://arxiv.org/abs/2303.17760"
+  - "https://hai.stanford.edu/"
+  - "https://arxiv.org/abs/2210.03629"
+  - "https://owasp.org/www-project-ai-security-and-privacy-guide/"
+---
+
+# ระบบ AI แบบหลาย Agent: สถาปัตยกรรม โปรโตคอล และการติดตั้งในองค์กร
+
+การเปลี่ยนผ่านจาก AI โมเดลเดียวสู่ **ระบบ AI แบบ Multi-Agent** คือการเปลี่ยนแปลงทางสถาปัตยกรรมที่สำคัญที่สุดในวงการ Enterprise AI นับตั้งแต่ยุค Large Language Models โมเดลเดียวผลิต output จากคำถามหนึ่ง แต่ระบบ Multi-Agent ประสานหลายโมเดลเฉพาะทาง ตรวจสอบ output ซึ่งกันและกัน และผลิต consensus result ที่แม่นยำและตรวจสอบได้มากกว่าที่โมเดลใดโมเดลหนึ่งจะทำได้เพียงลำพัง
+
+บทความนี้อธิบายหลักการทำงานของระบบ Multi-Agent เหตุผลว่าทำไมสถาปัตยกรรมนี้จำเป็นสำหรับ Enterprise AI และวิธีที่ JITNA Protocol ทำให้การสื่อสาร agent-to-agent เชื่อถือและยืนยันได้
+
+## ทำไม Single-Model จึงไม่เพียงพอสำหรับ Enterprise AI
+
+โมเดลขนาดใหญ่ตัวเดียว ไม่ว่าจะได้คะแนน benchmark สูงแค่ไหน มีปัญหาพื้นฐาน 3 ข้อสำหรับการติดตั้งในองค์กร
+
+**Hallucination ในระดับ scale** ข้อมูล benchmark ในอุตสาหกรรมแสดงอัตรา hallucination 12–15% สำหรับ single-model deployments บนคำถามข้อเท็จจริง ในองค์กรที่ประมวลผลหลายพันคำถามต่อวัน แม้อัตรา 12% ก็ผลิต response ที่ผิดหลายร้อยรายการต่อวัน ซึ่งไม่เป็นที่ยอมรับสำหรับงานด้านกฎหมาย การเงิน การแพทย์ หรือการปฏิบัติตามกฎระเบียบ
+
+**ไม่มีเส้นทาง verification** โมเดลเดียวไม่สามารถยืนยัน output ของตัวเองได้อย่างมีนัยสำคัญ เมื่อถูกขอให้ตรวจคำตอบ โมเดลใช้ weights และ probability distributions เดิมที่ผลิตคำตอบแรก การตรวจสอบตัวเองด้วยเครื่องมือเดิมไม่สามารถจับ systematic bias ได้
+
+**Reasoning ที่ทึบ** ผู้ซื้อ Enterprise AI ต้องอธิบายการตัดสินใจ AI ต่อหน่วยงานกำกับดูแล ผู้ตรวจสอบ และลูกค้า โมเดลเดียวผลิต output แต่ไม่มี audit trail ที่ signed และทำซ้ำได้ซึ่งพิสูจน์ว่ากระบวนการตัดสินใจถูกจัดการอย่างถูกต้อง
+
+ระบบ Multi-Agent แก้ปัญหาทั้งสามข้อพร้อมกัน
+
+## สถาปัตยกรรมของระบบ AI แบบ Multi-Agent
+
+ระบบ AI แบบ Multi-Agent มี 4 ชั้น:
+
+**1. Communication layer** Agent ต้องการ protocol ร่วมกันเพื่ออธิบาย intent แลกเปลี่ยนผลลัพธ์บางส่วน และเจรจา output สุดท้าย หากไม่มี protocol มาตรฐาน ทุก connection agent-to-agent ต้องการ integration แบบกำหนดเอง JITNA Protocol (RFC-001) ทำให้ชั้นนี้เป็นมาตรฐาน โดยกำหนดโครงสร้าง packet สากลที่มี 6 primitives: Intent, Data, Delta, Approach, Reflection และ Memory
+
+**2. Routing layer** ไม่ใช่ทุก query ที่ควรส่งไปทุกโมเดล Routing layer เลือกกลุ่มโมเดลที่เหมาะสมตามความซับซ้อนของ query โดเมน ข้อกำหนดด้าน latency และ cost การ routing ที่มีประสิทธิภาพคือความแตกต่างระหว่างระบบที่แพงกว่า single model 10 เท่า กับระบบที่ลดต้นทุนได้ 3.74 เท่าผ่านการกระจายงานอย่างฉลาด
+
+**3. Verification layer** หลังจากหลาย agent ผลิต response อิสระ verification layer ประเมินแต่ละ response บนหลายมิติ แล้วใช้ consensus protocol เพื่อเลือกหรือสังเคราะห์ผลลัพธ์สุดท้าย
+
+**4. Memory layer** Agent ต้องเข้าถึง context ร่วมกันจากการโต้ตอบก่อนหน้า Memory layer เก็บ context เป็น delta ที่บีบอัดแทน transcript เต็ม ทำให้ retrieve ได้เร็วและรักษาความต่อเนื่องข้าม session โดยไม่เก็บข้อมูลไว้เกิน TTL
+
+## JITNA Protocol: HTTP ของ Agentic AI
+
+JITNA Protocol (Just-In-Time Nodal Assembly, RFC-001 v2.0) คือ open standard สำหรับการสื่อสาร AI agent ถูกเรียกว่า "HTTP ของ Agentic AI" เพราะทำให้การสื่อสารเป็นมาตรฐานเช่นเดียวกับที่ HTTP ทำสำหรับ web: รูปแบบข้อความสากลที่ระบบใดก็ตามสามารถเข้าใจและตอบสนองได้
+
+### 6 Primitives
+
+ทุก JITNA packet บรรจุ 6 primitives:
+
+| Primitive | บทบาท | ตัวอย่าง |
+|---|---|---|
+| **I** — Intent | เป้าหมายเดิม | "วิเคราะห์ความผิดปกติของรายได้ Q3" |
+| **D** — Data | ข้อเท็จจริงที่มีโครงสร้าง | ["รายได้", "Q3", "ความผิดปกติ", "การเงิน"] |
+| **Δ** — Delta | การสังเคราะห์ที่บีบอัด | "การลดลงของรายได้เกิดจาก churn ของลูกค้ารายเดียว" |
+| **A** — Approach | กลยุทธ์การดำเนินการ | "Cross-reference CRM + ERP ด้วย statistical outlier detection" |
+| **R** — Reflection | การประเมินตัวเอง | "ความเชื่อมั่นสูง (94%) มีข้อสมมติที่ยังไม่ยืนยัน 1 ข้อ" |
+| **M** — Memory | Context ที่ควรเก็บรักษา | "ลูกค้า X มีสัดส่วน 23% ของรายได้ segment" |
+
+### Negotiation Flow
+
+JITNA กำหนด negotiation loop 3 สถานะ: **PROPOSE → COUNTER → ACCEPT** ทำให้ agent ชี้แจง constraints เพิ่มความเชี่ยวชาญด้านโดเมน และยืนยัน specification ก่อนเริ่มงาน — สร้างบันทึก signed ของ reasoning path ทั้งหมด
+
+### Cryptographic Verification
+
+ทุก JITNA packet ถูก sign ด้วย Ed25519 (RFC 8032) ณ จุดส่ง ทำให้ผู้ใช้ทุกคนยืนยันได้ว่า:
+- packet ไม่ถูกแก้ไขระหว่างส่ง
+- agent ต้นทางคือผู้ที่อ้างตัวเอง
+- reasoning path ถูกดำเนินการตามลำดับที่ระบุ
+
+## Consensus Verification: วิธีที่ Multi-Agent ลด Hallucination
+
+ระบบ RCT SignedAI แสดงศักยภาพการลด hallucination ของ multi-agent consensus การส่ง query ผ่าน 4–8 โมเดลพร้อมกันและต้องการ agreement ก่อนส่งผลลัพธ์ ทำให้ SignedAI ได้อัตรา **hallucination 0.3%** เทียบกับ 12–15% ค่าเฉลี่ยอุตสาหกรรม
+
+Consensus pipeline ทำงาน 6 ขั้นตอน:
+
+1. **INTAKE** — ตรวจสอบและ normalize คำขอที่เข้ามา
+2. **ROUTER** — JITNA เลือกโมเดลตาม geopolitical zone ต้นทุน และความเชี่ยวชาญด้านโดเมน
+3. **SIGNERS** — โมเดลที่เลือกประมวลผลอิสระกัน แต่ละตัวผลิต signed partial response
+4. **ATTESTATION** — 8-dimension scoring ประเมินแต่ละ response
+5. **CONSENSUS** — voting protocol (MAJORITY / WEIGHTED / RANKED / UNANIMOUS) รวมผลลัพธ์
+6. **REPORT** — ส่งคืน ED25519-signed bundle พร้อม audit trail ครบถ้วน
+
+สิ่งสำคัญคือการประมวลผลอิสระป้องกัน inter-model contamination โมเดลแต่ละตัวไม่สามารถเห็น output ของโมเดลอื่นก่อนผลิต output ของตัวเอง ซึ่งเป็นสิ่งที่ทำให้ consensus มีความหมายจริงไม่ใช่เป็นวงจรวนซ้ำ
+
+## 8-Dimension Scoring Model
+
+ก่อนใช้ consensus ต้องประเมิน response ของแต่ละ agent ก่อน RCT Ecosystem ใช้โมเดลประเมิน 8 มิติ:
+
+1. **Factual accuracy** — ข้ออ้างที่ยืนยันได้กับแหล่งที่รู้จัก
+2. **Internal consistency** — ความสอดคล้องทางตรรกะภายใน response
+3. **Evidence quality** — การมีอยู่และความน่าเชื่อถือของการอ้างอิง
+4. **Policy compliance** — ความสอดคล้องกับกฎ governance ขององค์กร
+5. **Language precision** — รูปแบบความคลุมเครือและการเลี่ยงบาลี
+6. **Contextual relevance** — ความเหมาะสมกับ intent ที่ระบุของ query
+7. **Safety alignment** — การขาดเนื้อหาอันตรายหรือการละเมิด policy
+8. **Provenance traceability** — audit trail ที่สอดคล้อง PDPA (UUID lineage)
+
+มิติที่ 8 มีความสำคัญเป็นพิเศษสำหรับการติดตั้งในองค์กรในอุตสาหกรรมที่มีการกำกับดูแล PDPA มาตรา 33 ของไทยกำหนดให้องค์กรต้องอธิบายการตัดสินใจอัตโนมัติ ระบบที่เก็บข้อมูล provenance มิติที่ 8 สามารถผลิตคำอธิบายที่สอดคล้อง PDPA ได้อย่างสมบูรณ์
+
+## สิ่งที่ต้องพิจารณาในการติดตั้งสำหรับองค์กร
+
+### Latency กับความลึกของ Verification
+
+การตรวจสอบ multi-agent เพิ่ม latency JITNA Protocol มีเป้าหมาย latency ต่ำกว่า 200ms สำหรับ round-trip ครบถ้วน ที่ Tier S (unanimous consensus ข้ามทุกโมเดล) latency เพิ่มขึ้นแต่ accuracy เข้าใกล้ 100% การติดตั้งในองค์กรต้องปรับความลึกของ verification ให้เหมาะกับความสำคัญของ query แต่ละประเภท:
+
+| ประเภท Query | Tier ที่แนะนำ | โหมด Consensus | เป้าหมาย Latency |
+|---|---|---|---|
+| FAQ ข้อมูลทั่วไป | Tier 4 | MAJORITY (50%) | < 100ms |
+| วิเคราะห์สัญญา | Tier 6 | WEIGHTED (67%) | < 500ms |
+| การตัดสินใจด้าน compliance | Tier 8 | RANKED (75%) | < 1 วินาที |
+| Output ที่มีการกำกับดูแล | Tier S | UNANIMOUS (100%) | < 3 วินาที |
+
+### Cost Architecture
+
+สมมติฐานที่ผิดคือการส่งผ่าน 7 โมเดลแพงกว่าโมเดลเดียว 7 เท่า การ routing อัจฉริยะใช้โมเดลขนาดเล็กสำหรับ query ง่าย (ต้นทุนต่ำ) ใช้โมเดลหนักสำหรับ query ซับซ้อน (ต้นทุนคุ้มค่า) และให้ผลลัพธ์สำหรับรูปแบบที่เกิดซ้ำจาก semantic cache (ไม่เสีย model cost) RCT HexaCore ทำให้ **ลดต้นทุน 3.74 เท่า** เมื่อเทียบกับ single-model
+
+### Governance Integration
+
+ระบบ Multi-Agent ต้องผสานกับ governance framework ขององค์กรที่มีอยู่ FDIA Equation (F = (D^I) × A) มี constitutional layer: Architect variable (A) คือ runtime authorization token ที่เพิกถอนได้ทุกเมื่อ เมื่อ A=0 output ของระบบทั้งหมดถูกบล็อกไม่ว่าคุณภาพโมเดลจะเป็นอย่างไร — constitutional kill switch ที่ทำให้ AI governance บังคับใช้ได้จริง ไม่ใช่เพียงแค่ปณิธาน
+
+## สิ่งที่ควรมองหาในการประเมิน Multi-Agent AI Platform
+
+**Protocol openness** vendor ใช้ open standard เช่น JITNA หรือ format เฉพาะที่ล็อคคุณไว้กับระบบนิเวศของพวกเขา? Open protocol ช่วยให้เกิด interoperability ในอนาคต
+
+**คุณภาพ audit trail** คุณได้รับบันทึก signed ที่ทำซ้ำได้ของการตัดสินใจ agent ทุกรายการและขั้นตอน consensus ทุกขั้นหรือไม่? สิ่งนี้จำเป็นสำหรับการปฏิบัติตาม PDPA และการจัดการความเสี่ยงขององค์กร
+
+**การวัด hallucination** vendor วัดอัตรา hallucination อย่างเป็นทางการและเปิดเผย methodology หรือไม่? vendor ที่อ้าง "hallucination ต่ำ" โดยไม่มี measurement framework กำลังอ้างสิ่งทางการตลาด ไม่ใช่ทางวิศวกรรม
+
+**Kill-switch capability** ผู้ปฏิบัติงานมนุษย์สามารถบล็อก AI output ได้อย่างสมบูรณ์ที่ระดับระบบหรือไม่? สิ่งนี้ควรเป็นประตูแข็ง ไม่ใช่การตั้งค่าที่อ่อน
+
+**ความโปร่งใสในการสร้างแบบจำลองต้นทุน** vendor แสดง cost model ที่เปรียบเทียบ single-model กับ multi-agent routing ข้าม query type ได้หรือไม่? การลดต้นทุนผ่าน routing ควรแสดงให้เห็นได้จริง ไม่ใช่แค่อ้าง
+
+องค์กรที่ประเมิน multi-agent AI platform ตามเกณฑ์เหล่านี้จะได้การตัดสินใจที่สามารถปกป้องได้ต่อหน่วยงานกำกับดูแล ผู้ตรวจสอบ และคณะกรรมการ ซึ่งเป็นสิ่งที่ AI governance ขององค์กรต้องการอย่างแท้จริง
+
+---
+
+*RCT Ecosystem ใช้งาน multi-agent AI ผ่าน JITNA Protocol (RFC-001), SignedAI (HexaCore 7-model consensus) และ constitutional governance layer แบบ FDIA สำหรับเอกสารการประเมิน ดู [Whitepaper Hub](/th/whitepaper) หรือ [JITNA Protocol page](/th/protocols/jitna-rfc-001)*

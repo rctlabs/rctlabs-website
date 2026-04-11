@@ -32,11 +32,11 @@ function DetailedTooltip({
             {/* Content */}
             <div className="relative space-y-3">
               <div className="flex items-center gap-3">
-                <span className="text-3xl font-mono font-bold text-accent">{variable}</span>
+                <span className="text-3xl font-mono font-bold text-warm-amber">{variable}</span>
                 <div>
                   <span className="text-sm font-semibold text-foreground">{name}</span>
                   {variable === "A" && (
-                    <span className="block text-xs text-accent">*Human in the Loop</span>
+                    <span className="block text-xs text-warm-amber">*Human in the Loop</span>
                   )}
                 </div>
               </div>
@@ -81,11 +81,11 @@ function OverviewTooltip({ isVisible }: { isVisible: boolean }) {
                   <span className="text-xs text-muted-foreground">= Future</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-mono font-bold text-accent">D</span>
+                  <span className="text-lg font-mono font-bold text-warm-amber">D</span>
                   <span className="text-xs text-muted-foreground">= Data</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-mono font-bold text-accent">I</span>
+                  <span className="text-lg font-mono font-bold text-warm-amber">I</span>
                   <span className="text-xs text-muted-foreground">= Intent</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -202,7 +202,7 @@ export function FDIAEquation() {
           <m.div variants={itemVariants} className="relative">
             <m.span
               className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl cursor-pointer transition-all duration-300 ${
-                hoveredVar === "F" ? "text-accent" : "text-foreground"
+                hoveredVar === "F" ? "text-warm-amber" : "text-foreground"
               }`}
               onMouseEnter={() => setHoveredVar("F")}
               onMouseLeave={() => setHoveredVar(null)}
@@ -241,7 +241,7 @@ export function FDIAEquation() {
               <m.span
                 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl cursor-pointer transition-all duration-300 ${
                   hoveredVar === "D" ? "brightness-125" : ""
-                } text-accent`}
+                } text-warm-amber`}
                 onMouseEnter={() => setHoveredVar("D")}
                 onMouseLeave={() => setHoveredVar(null)}
                 whileHover={{ scale: 1.1 }}
@@ -261,7 +261,7 @@ export function FDIAEquation() {
               <m.span
                 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl cursor-pointer transition-all duration-300 inline-block align-super ${
                   hoveredVar === "I" ? "brightness-125" : ""
-                } text-accent`}
+                } text-warm-amber`}
                 style={{ marginTop: "-1.5rem" }}
                 onMouseEnter={() => setHoveredVar("I")}
                 onMouseLeave={() => setHoveredVar(null)}
@@ -298,7 +298,7 @@ export function FDIAEquation() {
           <m.div variants={itemVariants} className="relative">
             <m.span
               className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl cursor-pointer transition-all duration-300 ${
-                hoveredVar === "A" ? "text-accent" : "text-foreground"
+                hoveredVar === "A" ? "text-warm-amber" : "text-foreground"
               }`}
               onMouseEnter={() => setHoveredVar("A")}
               onMouseLeave={() => setHoveredVar(null)}

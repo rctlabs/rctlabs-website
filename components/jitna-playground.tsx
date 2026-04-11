@@ -56,27 +56,27 @@ INTENT user_satisfaction {
         <div className="space-y-4 max-h-96 overflow-y-auto">
           <div className="space-y-3">
             <div className="bg-background rounded-lg p-4 border border-border space-y-2">
-              <p className="font-mono text-xs text-accent font-semibold">INTENT</p>
+              <p className="font-mono text-xs text-warm-amber font-semibold">INTENT</p>
               <p className="text-xs text-muted-foreground">Define intention blocks for system behavior</p>
             </div>
 
             <div className="bg-background rounded-lg p-4 border border-border space-y-2">
-              <p className="font-mono text-xs text-accent font-semibold">GOAL</p>
+              <p className="font-mono text-xs text-warm-amber font-semibold">GOAL</p>
               <p className="text-xs text-muted-foreground">Primary objective or desired outcome</p>
             </div>
 
             <div className="bg-background rounded-lg p-4 border border-border space-y-2">
-              <p className="font-mono text-xs text-accent font-semibold">CONSTRAINTS</p>
+              <p className="font-mono text-xs text-warm-amber font-semibold">CONSTRAINTS</p>
               <p className="text-xs text-muted-foreground">Boundaries and limitations for execution</p>
             </div>
 
             <div className="bg-background rounded-lg p-4 border border-border space-y-2">
-              <p className="font-mono text-xs text-accent font-semibold">ACTION</p>
+              <p className="font-mono text-xs text-warm-amber font-semibold">ACTION</p>
               <p className="text-xs text-muted-foreground">Specific operations or tasks to execute</p>
             </div>
 
             <div className="bg-background rounded-lg p-4 border border-border space-y-2">
-              <p className="font-mono text-xs text-accent font-semibold">FILTER, SORT_BY, LIMIT</p>
+              <p className="font-mono text-xs text-warm-amber font-semibold">FILTER, SORT_BY, LIMIT</p>
               <p className="text-xs text-muted-foreground">Query operations for data manipulation</p>
             </div>
           </div>

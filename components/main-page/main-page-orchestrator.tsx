@@ -9,8 +9,9 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import { m, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion"
+import { m, useMotionValueEvent, useScroll } from "framer-motion"
 import { useIdleActivation } from "@/hooks/use-idle-activation"
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
 
 type MainPageSectionId = "hero" | "overview" | "core-pillars" | "fdia" | "evidence" | "cta"
 
@@ -207,7 +208,7 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
   const activeFrameRef = useRef<number | null>(null)
   const activeSectionRef = useRef<MainPageSectionId>("hero")
   const lastScrollSampleRef = useRef({ value: 0, time: 0 })
-  const reducedMotion = useReducedMotion() ?? false
+  const reducedMotion = usePrefersReducedMotion()
   const { scrollY, scrollYProgress } = useScroll()
 
   const [pageProgress, setPageProgress] = useState(0)

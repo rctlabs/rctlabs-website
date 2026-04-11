@@ -18,6 +18,24 @@ const PIXEL_ALGO = pixelIcons.algorithms
 // Algorithm count per tier (total = 41)
 const TIER_ALGO_COUNTS = [4, 5, 5, 4, 5, 4, 5, 5, 4]
 
+const KEY_ALGOS: string[][] = [
+  ["Intent Parser", "Token Normalizer", "Schema Validator", "Baseline Router"],
+  ["Entity Extractor", "Context Classifier", "Semantic Tagger", "Pattern Recognizer", "Priority Scorer"],
+  ["Chain-of-Thought Engine", "Counterfactual Comparator", "Hypothesis Generator", "Path Evaluator", "Delta Validator"],
+  ["Task-to-Model Router", "Load Balancer", "Priority Queue", "Session Coordinator"],
+  ["Consensus Aggregator", "Hallucination Detector", "Evidence Scorer", "Quality Gate", "Audit Logger"],
+  ["Delta Engine Compressor", "Semantic Indexer", "Context Retriever", "TTL Manager"],
+  ["Personalization Engine", "Feedback Processor", "Profile Tuner", "Behavior Calibrator", "Domain Adapter"],
+  ["Cross-Domain Fusion", "Insight Generator", "Multi-Source Merger", "Output Assembler", "Format Renderer"],
+  ["Long-Horizon Planner", "Constraint Solver", "Goal Decomposer", "Execution Monitor"],
+]
+
+const TIER_CROSS_LINKS: Record<number, { labelEn: string; labelTh: string; href: string }> = {
+  2: { labelEn: "See: FDIA Equation →", labelTh: "ดู: FDIA Equation →", href: "/protocols/fdia-equation" },
+  3: { labelEn: "See: JITNA RFC-001 →", labelTh: "ดู: JITNA RFC-001 →", href: "/protocols/jitna-rfc-001" },
+  4: { labelEn: "See: SignedAI →", labelTh: "ดู: SignedAI →", href: "/products/signed-ai" },
+}
+
 const tiers = {
   en: [
     { tier: "Tier 1", name: "Foundation", algos: "Core primitives", desc: "Intent parsing, normalization, token discipline, and baseline routing used across every workflow.", color: "#89B4C8" },
@@ -173,6 +191,16 @@ export default function AlgorithmsPage() {
                 <span className="ml-auto text-xs font-semibold text-warm-amber">{TIER_ALGO_COUNTS[i]} alg.</span>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">{t.desc}</p>
+              <div className="mt-2 flex flex-wrap gap-1">
+                {KEY_ALGOS[i].map((algoName) => (
+                  <span key={algoName} className="inline-block text-[10px] px-2 py-0.5 rounded-full bg-muted border border-border text-muted-foreground">{algoName}</span>
+                ))}
+                {TIER_CROSS_LINKS[i] && (
+                  <Link href={`${localePrefix}${TIER_CROSS_LINKS[i].href}`} className="inline-block text-[10px] px-2 py-0.5 rounded-full border text-warm-amber border-warm-amber/40 hover:bg-warm-amber/8 transition-colors">
+                    {isTh ? TIER_CROSS_LINKS[i].labelTh : TIER_CROSS_LINKS[i].labelEn}
+                  </Link>
+                )}
+              </div>
               <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground mb-1">
                 <span>{isTh ? "ระดับความซับซ้อน" : "Complexity level"}</span>
                 <span>T{i + 1}/9</span>

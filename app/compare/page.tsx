@@ -36,10 +36,10 @@ export default async function ComparePage() {
     "url": `${SITE_URL}${localePrefix}/compare`,
     "description": "Side-by-side comparisons of Constitutional AI, RAG, verification-first methods, and more. Evidence-based analysis from RCT Labs.",
     "hasPart": [
-      { "@type": "WebPage", "name": "Constitutional AI vs RAG", "url": `${SITE_URL}/en/compare/constitutional-ai-vs-rag` },
-      { "@type": "WebPage", "name": "RCT Labs vs LLM APIs", "url": `${SITE_URL}/en/compare/rct-labs-vs-llm-apis` },
-      { "@type": "WebPage", "name": "Verification vs Prompt Engineering", "url": `${SITE_URL}/en/compare/verification-vs-prompt-engineering` },
-      { "@type": "WebPage", "name": "RCTDB vs Vector Databases", "url": `${SITE_URL}/en/compare/rctdb-vs-vector-databases` }
+      { "@type": "WebPage", "name": "Constitutional AI vs RAG", "url": `${SITE_URL}${localePrefix}/compare/constitutional-ai-vs-rag` },
+      { "@type": "WebPage", "name": "RCT Labs vs LLM APIs", "url": `${SITE_URL}${localePrefix}/compare/rct-labs-vs-llm-apis` },
+      { "@type": "WebPage", "name": "Verification vs Prompt Engineering", "url": `${SITE_URL}${localePrefix}/compare/verification-vs-prompt-engineering` },
+      { "@type": "WebPage", "name": "RCTDB vs Vector Databases", "url": `${SITE_URL}${localePrefix}/compare/rctdb-vs-vector-databases` }
     ]
   }
 

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { getBreadcrumbSchema } from "@/lib/schema"
+import { getRequestLocale } from "@/lib/request-locale"
 import Link from "next/link"
 import { ArrowRight, BookOpen, ExternalLink } from "lucide-react"
 
@@ -115,6 +116,8 @@ export async function generateMetadata({ params }: EntityPageProps): Promise<Met
 export default async function EntityPage({ params }: EntityPageProps) {
   const { term } = await params
   const entity = entities[term]
+  const locale = await getRequestLocale()
+  const localePrefix = locale === "th" ? "/th" : "/en"
 
   if (!entity) notFound()
 
@@ -126,15 +129,15 @@ export default async function EntityPage({ params }: EntityPageProps) {
     "inDefinedTermSet": {
       "@type": "DefinedTermSet",
       "name": "RCT Labs Glossary",
-      "url": "https://rctlabs.co/en/glossary",
+      "url": `https://rctlabs.co${localePrefix}/glossary`,
     },
-    "url": `https://rctlabs.co/en/entity/${term}`,
+    "url": `https://rctlabs.co${localePrefix}/entity/${term}`,
   }
 
   const breadcrumb = getBreadcrumbSchema([
-    { name: "Home", url: "https://rctlabs.co/en" },
-    { name: "Glossary", url: "https://rctlabs.co/en/glossary" },
-    { name: entity.name, url: `https://rctlabs.co/en/entity/${term}` },
+    { name: "Home", url: `https://rctlabs.co${localePrefix}` },
+    { name: "Glossary", url: `https://rctlabs.co${localePrefix}/glossary` },
+    { name: entity.name, url: `https://rctlabs.co${localePrefix}/entity/${term}` },
   ])
 
   return (
@@ -147,7 +150,7 @@ export default async function EntityPage({ params }: EntityPageProps) {
         <article className="mx-auto max-w-4xl px-4 py-24">
           {/* Breadcrumb */}
           <nav className="text-sm text-warm-dim mb-8 flex items-center gap-2">
-            <Link href="/glossary" className="hover:text-warm-amber transition">Glossary</Link>
+            <Link href={`${localePrefix}/glossary`} className="hover:text-warm-amber transition">Glossary</Link>
             <span>/</span>
             <span className="text-warm-light-gray">{entity.name}</span>
           </nav>
@@ -187,12 +190,16 @@ export default async function EntityPage({ params }: EntityPageProps) {
           <section className="mb-12">
             <h2 className="text-xl font-bold text-warm-light-gray mb-4">Related Articles</h2>
             <div className="space-y-3">
-              {entity.relatedArticles.map(({ title, href }) => (
-                <Link key={href} href={href} className="flex items-center justify-between p-4 rounded-xl border border-white/8 hover:border-warm-amber/30 hover:bg-warm-amber/5 transition group">
-                  <span className="text-warm-dim group-hover:text-warm-light-gray text-sm transition">{title}</span>
-                  <ArrowRight className="w-4 h-4 text-warm-dim group-hover:text-warm-amber transition" />
-                </Link>
-              ))}
+              {entity.relatedArticles.map(({ title, href }) => {
+                // Replace hardcoded /en/ prefix with current locale prefix
+                const localizedHref = href.replace(/^\/en\//, `${localePrefix}/`)
+                return (
+                  <Link key={href} href={localizedHref} className="flex items-center justify-between p-4 rounded-xl border border-white/8 hover:border-warm-amber/30 hover:bg-warm-amber/5 transition group">
+                    <span className="text-warm-dim group-hover:text-warm-light-gray text-sm transition">{title}</span>
+                    <ArrowRight className="w-4 h-4 text-warm-dim group-hover:text-warm-amber transition" />
+                  </Link>
+                )
+              })}
             </div>
           </section>
 

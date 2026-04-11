@@ -207,7 +207,7 @@ export function TenLayerArchitecture({ locale = "en" }: { locale?: "en" | "th" }
                         {t(layer.name, layer.nameTh)}
                       </h3>
                       {layer.badge && (
-                        <span className="px-2 py-0.5 text-xs rounded-full bg-accent/20 text-accent font-medium">
+                        <span className="px-2 py-0.5 text-xs rounded-full bg-warm-amber/15 text-warm-amber font-medium">
                           {layer.badge}
                         </span>
                       )}
@@ -279,11 +279,11 @@ export function TenLayerArchitecture({ locale = "en" }: { locale?: "en" | "th" }
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">{t("Algorithms", "อัลกอริทึม")}</span>
-                  <span className="font-medium text-accent">41</span>
+                  <span className="font-medium text-warm-amber">41</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">{t("Runtime Components", "องค์ประกอบ Runtime")}</span>
-                  <span className="font-medium text-accent">{SITE_MICROSERVICE_COUNT}+</span>
+                  <span className="font-medium text-warm-amber">{SITE_MICROSERVICE_COUNT}+</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">{t("Verified Tests", "การทดสอบที่ยืนยันแล้ว")}</span>

@@ -20,7 +20,7 @@ export default function WhitepaperClient() {
       href: `${localePrefix}/architecture`,
       icon: BookOpen,
       badge: "Core",
-      meta: language === "th" ? "Architecture dossier" : "Architecture dossier",
+      meta: language === "th" ? "Architecture dossier · Jan 2026" : "Architecture dossier · Jan 2026",
       tags: ["Architecture", "FDIA", "Operating system"],
     },
     {
@@ -29,7 +29,7 @@ export default function WhitepaperClient() {
       href: `${localePrefix}/protocols/jitna-rfc-001`,
       icon: Network,
       badge: "RFC-001",
-      meta: language === "th" ? "Protocol specification" : "Protocol specification",
+      meta: language === "th" ? "Protocol specification · Feb 2026" : "Protocol specification · Feb 2026",
       tags: ["Protocol", "Negotiation", "Control plane"],
     },
     {
@@ -38,7 +38,7 @@ export default function WhitepaperClient() {
       href: `${localePrefix}/solutions/ai-hallucination-prevention`,
       icon: ShieldCheck,
       badge: "Trust",
-      meta: language === "th" ? "Verification dossier" : "Verification dossier",
+      meta: language === "th" ? "Verification dossier · Nov 2025" : "Verification dossier · Nov 2025",
       tags: ["Verification", "Auditability", "Safety"],
     },
     {
@@ -47,7 +47,7 @@ export default function WhitepaperClient() {
       href: `${localePrefix}/protocols/rct-7-mental-model`,
       icon: GitBranch,
       badge: "Model",
-      meta: language === "th" ? "Cognitive framework" : "Cognitive framework",
+      meta: language === "th" ? "Cognitive framework · Dec 2025" : "Cognitive framework · Dec 2025",
       tags: ["Cognition", "Behavior", "Framework"],
     },
   ]

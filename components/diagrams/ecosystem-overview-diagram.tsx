@@ -103,7 +103,7 @@ export default function EcosystemOverviewDiagram() {
       <svg viewBox="0 0 500 420" className="mx-auto w-full max-w-120" role="application" aria-label="RCT Ecosystem Overview Diagram" tabIndex={0} onKeyDown={handleKeyDown}>
         {/* SVG filter definition — replaces CSS drop-shadow, fully Safari-compatible */}
         <defs>
-          <filter id="tooltip-shadow" x="-5%" y="-10%" width="110%" height="130%">
+          <filter id="tooltip-shadow" x="-5%" y="-10%" width="110%" height="130%" colorInterpolationFilters="sRGB">
             <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="rgba(0,0,0,0.5)" />
           </filter>
         </defs>

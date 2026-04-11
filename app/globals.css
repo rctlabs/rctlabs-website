@@ -227,7 +227,9 @@
     text-rendering: optimizeLegibility;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
-    animation: rct-page-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    /* rct-page-enter animation removed — it started body at opacity:0 and blocked LCP
+       by preventing the browser from measuring the hero image as "visually displayed"
+       until the 420ms fade completed. Page transitions are now handled per-section. */
   }
 
   :root {
@@ -509,7 +511,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body { animation: none; }
+  /* Disable decorative animations site-wide for accessibility */
+  .animate-equation-reveal,
+  .animate-equation-breathe,
+  .animate-grid-drift,
+  .animate-glow-pulse,
+  .animate-fade-in-up {
+    animation: none !important;
+  }
 }
 
 /* Animation classes */

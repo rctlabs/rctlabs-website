@@ -141,7 +141,7 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
               {/* RCT Value */}
               <div>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-accent font-medium">RCT</span>
+                  <span className="text-warm-amber font-medium">RCT</span>
                   <span className="text-foreground font-bold">{metric.rctValue}{metric.unit}</span>
                 </div>
                 <div className="h-3 bg-muted rounded-full overflow-hidden">
@@ -194,19 +194,19 @@ export function PerformanceMetricsComparison({ locale = "en" }: { locale?: "en" 
       >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <p className="text-3xl font-bold text-accent">{SITE_TEST_COUNT}</p>
+            <p className="text-3xl font-bold text-warm-amber">{SITE_TEST_COUNT}</p>
             <p className="text-sm text-muted-foreground">{t("Verified Tests", "การทดสอบที่ยืนยันแล้ว")}</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-accent">41</p>
+            <p className="text-3xl font-bold text-warm-amber">41</p>
             <p className="text-sm text-muted-foreground">{t("Algorithms", "อัลกอริทึม")}</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-accent">{SITE_MICROSERVICE_COUNT}+</p>
+            <p className="text-3xl font-bold text-warm-amber">{SITE_MICROSERVICE_COUNT}+</p>
             <p className="text-sm text-muted-foreground">{t("Runtime Components", "องค์ประกอบ Runtime")}</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-accent">8</p>
+            <p className="text-3xl font-bold text-warm-amber">8</p>
             <p className="text-sm text-muted-foreground">{t("Regional Markets", "ตลาดภูมิภาค")}</p>
           </div>
         </div>
