@@ -1,5 +1,5 @@
 {
-  "name": "rctlabs-v0",
+  "name": "rctlabs-website",
   "version": "1.0.0",
   "description": "RCT Labs — Constitutional AI Operating System",
   "author": "Ittirit Saengow",
@@ -7,7 +7,7 @@
   "homepage": "https://rctlabs.co",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ittirit720/rctlabs-v0"
+    "url": "https://github.com/rctlabs/rctlabs-website"
   },
   "private": true,
   "scripts": {
