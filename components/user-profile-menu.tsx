@@ -5,11 +5,12 @@
  * Currently shows Sign In / Early Access CTAs (Supabase auth in Phase 8)
  * Props: isAuthenticated, user for when auth is wired
  */
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { User, LogOut, Settings, ChevronDown, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
+import { getSupabaseBrowserClient } from "@/lib/auth/browser-client"
 import { buildContactHref } from "@/lib/funnel"
 import { resolveLocale, getLocalePrefix } from "@/lib/i18n"
 
@@ -21,8 +22,75 @@ interface UserProfileMenuProps {
 
 export function UserProfileMenu({ user = null, isAuthenticated = false }: UserProfileMenuProps) {
   const [open, setOpen] = useState(false)
+  const [resolvedUser, setResolvedUser] = useState<UserProfileMenuProps["user"]>(user)
+  const [resolvedAuth, setResolvedAuth] = useState(isAuthenticated)
   const { language } = useLanguage()
   const pathname = usePathname()
+
+  useEffect(() => {
+    let active = true
+
+    if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return () => {
+        active = false
+      }
+    }
+
+    const supabase = getSupabaseBrowserClient()
+
+    void supabase.auth.getSession().then(({ data }) => {
+      if (!active) return
+
+      if (!data.session?.user) {
+        setResolvedAuth(isAuthenticated)
+        setResolvedUser(user)
+        return
+      }
+
+      setResolvedAuth(true)
+      setResolvedUser({
+        name:
+          (typeof data.session.user.user_metadata?.full_name === "string" && data.session.user.user_metadata.full_name) ||
+          (typeof data.session.user.user_metadata?.name === "string" && data.session.user.user_metadata.name) ||
+          undefined,
+        email: data.session.user.email,
+        avatarUrl:
+          typeof data.session.user.user_metadata?.avatar_url === "string"
+            ? data.session.user.user_metadata.avatar_url
+            : undefined,
+      })
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!active) return
+
+      if (!session?.user) {
+        setResolvedAuth(false)
+        setResolvedUser(null)
+        return
+      }
+
+      setResolvedAuth(true)
+      setResolvedUser({
+        name:
+          (typeof session.user.user_metadata?.full_name === "string" && session.user.user_metadata.full_name) ||
+          (typeof session.user.user_metadata?.name === "string" && session.user.user_metadata.name) ||
+          undefined,
+        email: session.user.email,
+        avatarUrl:
+          typeof session.user.user_metadata?.avatar_url === "string"
+            ? session.user.user_metadata.avatar_url
+            : undefined,
+      })
+    })
+
+    return () => {
+      active = false
+      subscription.unsubscribe()
+    }
+  }, [isAuthenticated, user])
 
   const copy = language === "th"
     ? {
@@ -43,7 +111,7 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
   const accessHref = buildContactHref(language, "launch:request-access")
 
   // ── Authenticated state (Phase 8) ──────────────────────────────────────
-  if (isAuthenticated && user) {
+  if (resolvedAuth && resolvedUser) {
     return (
       <div className="relative">
         <button
@@ -52,13 +120,13 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
           aria-expanded={open}
           aria-haspopup="menu"
         >
-          {user.avatarUrl ? (
+          {resolvedUser.avatarUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={user.avatarUrl} alt="avatar" className="h-6 w-6 rounded-full object-cover" />
+            <img src={resolvedUser.avatarUrl} alt="avatar" className="h-6 w-6 rounded-full object-cover" />
           ) : (
             <User className="h-4 w-4" />
           )}
-          <span className="hidden sm:block max-w-30 truncate">{user.name ?? user.email}</span>
+          <span className="hidden sm:block max-w-30 truncate">{resolvedUser.name ?? resolvedUser.email}</span>
           <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
         </button>
 
@@ -75,7 +143,10 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
               </Link>
               <div className="my-1 h-px bg-border" />
               <button
-                onClick={() => { setOpen(false); /* TODO: supabase signOut */ }}
+                onClick={() => {
+                  setOpen(false)
+                  window.location.assign('/auth/signout?next=/auth/signin')
+                }}
                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors"
               >
                 <LogOut className="h-4 w-4" /> {copy.signOut}
