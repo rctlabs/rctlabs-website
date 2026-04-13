@@ -74,12 +74,14 @@ const spaceMono = Space_Mono({
 })
 
 /* Thai: Kanit (matches Space Grotesk geometric style) — preload=true: LCP font for /th pages
+   display: "optional" — eliminates font-swap LCP re-measurement; font loads within block period
+   when preloaded from same-origin CDN (Vercel edge). Fallback: Leelawadee UI / system Thai.
    Weights: 300 (subtitle-th uses font-weight:300 + font-synthesis:none), 400, 500, 600, 700 */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--rct-font-thai",
-  display: "swap",
+  display: "optional",
   preload: true,
 })
 
@@ -218,7 +220,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} font-sans antialiased`}
+        className={`${spaceGrotesk.variable} ${inter.variable} ${spaceMono.variable} ${kanit.variable} antialiased`}
       >
         {/* GTM noscript fallback */}
         {gtmId && (

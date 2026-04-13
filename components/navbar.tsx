@@ -6,12 +6,10 @@ import { Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { m, useReducedMotion } from "framer-motion"
 import { DesktopNav } from "@/components/navigation/desktop-nav"
 import { UtilityActions } from "@/components/navigation/utility-actions"
 import { useNavAnalytics } from "@/components/navigation/use-nav-analytics"
 import { useLanguage } from "@/components/language-provider"
-import { useMounted } from "@/hooks/use-mounted"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
 import { buildSearchIndex, findActiveResourceTrack, navigationGroups, resourceTracks } from "@/lib/navigation"
 import { useTheme } from "@/components/theme-provider"
@@ -41,7 +39,6 @@ interface NavbarProps {
 export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProps) {
   const { language } = useLanguage()
   const { resolvedTheme } = useTheme()
-  const mounted = useMounted()
   const pathname = usePathname()
   const { trackGroupOpen, trackLeafClick, trackResourceTrack, trackUtility } = useNavAnalytics()
 
@@ -60,8 +57,7 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
   const locale = forcedLocale ?? resolveLocale(pathname, language)
   const localePrefix = getLocalePrefix(locale)
   const localHref = (href: string) => `${localePrefix}${href}`
-  const isDark = (mounted ? resolvedTheme : "light") === "dark"
-  const prefersReducedMotion = useReducedMotion()
+  const isDark = resolvedTheme === "dark"
   const searchData = useMemo(() => (searchPrepared ? buildSearchIndex(locale) : []), [locale, searchPrepared])
 
   const prepareAndOpenSearch = () => {
@@ -262,12 +258,7 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
   }
 
   return (
-    <m.header
-      role="banner"
-      initial={prefersReducedMotion ? undefined : { opacity: 0, y: -16 }}
-      animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-      transition={{ duration: 0.40, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <header role="banner">
       <nav
         className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
           isArticleVariant
@@ -308,14 +299,8 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
               className="flex shrink-0 items-center gap-2"
               aria-label="RCT Ecosystem Home"
             >
-              <Image
-                src={mounted && isDark ? "/RCTicon.svg" : "/RCTicon-lightVer.svg"}
-                alt="RCT"
-                width={32}
-                height={32}
-                unoptimized
-                className="h-8 w-8 object-contain"
-              />
+              <Image src="/RCTicon-lightVer.svg" alt="RCT" width={32} height={32} className="h-8 w-8 object-contain dark:hidden" />
+              <Image src="/RCTicon.svg" alt="RCT" width={32} height={32} className="hidden h-8 w-8 object-contain dark:block" />
               <span className={`hidden sm:inline-block text-sm font-semibold tracking-tight leading-none ${isDark ? "text-white" : "text-neutral-900"}`}>
                 RCT Labs
               </span>
@@ -380,6 +365,6 @@ export function Navbar({ variant = "default", locale: forcedLocale }: NavbarProp
 
       {searchOpen ? <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} searchData={searchData} /> : null}
       {shortcutsOpen ? <KeyboardShortcutsDialog onOpenSearch={prepareAndOpenSearch} /> : null}
-    </m.header>
+    </header>
   )
 }

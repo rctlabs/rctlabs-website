@@ -2,9 +2,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, ArrowDown } from "lucide-react"
 import { getLocalePrefix } from "@/lib/i18n"
+import { pixelIcons } from "@/lib/pixel-icons"
 import { SITE_ALGORITHM_COUNT, SITE_LAYER_COUNT, SITE_HEXACORE_COUNT, SITE_UPTIME } from "@/lib/site-config"
-
-const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663194929524/dtmGiwqwKJmsY6Rj8xtHTM/rct-hero-human-v2-JuuABknjMqUydZ7t62H8ez.webp"
+import { HeroArchitectureIsland } from "@/components/sections/hero-architecture-island"
 
 type HeroServerProps = {
   locale: "en" | "th"
@@ -46,33 +46,41 @@ export function HeroServer({ locale }: HeroServerProps) {
       }
 
   const stats = [
-    { value: String(SITE_ALGORITHM_COUNT), label: copy.statAlgorithms },
-    { value: String(SITE_LAYER_COUNT), label: copy.statLayers },
-    { value: String(SITE_HEXACORE_COUNT), label: copy.statGenomes },
-    { value: SITE_UPTIME.replace(" SLA", "") + " SLA", label: copy.statUptime },
+    { value: String(SITE_ALGORITHM_COUNT), label: copy.statAlgorithms, iconSrc: pixelIcons.brain },
+    { value: String(SITE_LAYER_COUNT), label: copy.statLayers, iconSrc: pixelIcons.layers },
+    { value: String(SITE_HEXACORE_COUNT), label: copy.statGenomes, iconSrc: pixelIcons.genome },
+    { value: SITE_UPTIME.replace(" SLA", ""), sublabel: "SLA", label: copy.statUptime, iconSrc: pixelIcons.cpu },
   ]
 
   return (
-    <section id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(42rem,100svh)] items-center overflow-hidden">
-      <div className="absolute inset-0">
-        <Image
-          src={HERO_BG}
-          alt="RCT Ecosystem Hero Background"
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          className="object-cover scale-[1.02] opacity-[0.22] dark:opacity-[0.12]"
-        />
+    <section id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(44rem,100svh)] items-center overflow-hidden">
+      <div className="hero-orb-field absolute inset-0" aria-hidden="true">
+        <div className="hero-orb-field__mesh" />
+        <div className="hero-orb-field__grid" />
+        <div className="hero-orb-field__beam hero-orb-field__beam--top" />
+        <div className="hero-orb-field__beam hero-orb-field__beam--bottom" />
+        <div className="hero-orb-field__ring hero-orb-field__ring--one" />
+        <div className="hero-orb-field__ring hero-orb-field__ring--two" />
+        <div className="hero-orb-field__orb hero-orb-field__orb--amber" />
+        <div className="hero-orb-field__orb hero-orb-field__orb--sage" />
+        <div className="hero-orb-field__orb hero-orb-field__orb--blue" />
+        <div className="hero-orb-field__wash" />
       </div>
 
-      <div className="absolute inset-0 bg-linear-to-r from-[#f7f1eb]/90 via-[#f7f1eb]/78 to-[#f7f1eb]/44 dark:from-[#0D0D0D]/95 dark:via-[#0D0D0D]/86 dark:to-[#0D0D0D]/58" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-3 h-48 bg-[linear-gradient(180deg,transparent_0%,rgba(247,241,235,0.6)_68%,#f7f1eb_100%)] dark:bg-[linear-gradient(180deg,transparent_0%,rgba(13,13,13,0.46)_68%,#0D0D0D_100%)]" />
+      <div className="absolute inset-0 bg-linear-to-r from-[#f7f1eb]/86 via-[#f7f1eb]/72 to-[#f7f1eb]/42 dark:from-[#0D0D0D]/92 dark:via-[#0D0D0D]/80 dark:to-[#0D0D0D]/54" />
+      <div className="homepage-ambient-layer absolute inset-0" aria-hidden="true">
+        <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute -left-24 top-[16%] h-72 w-72 rounded-full" />
+        <div className="homepage-ambient-orb homepage-ambient-orb--sage homepage-ambient-orb--slow absolute -right-16 top-[34%] h-80 w-80 rounded-full" />
+        <div className="homepage-ambient-orb homepage-ambient-orb--blue absolute left-[42%] top-[12%] h-40 w-40 rounded-full" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-b from-transparent via-[#f7f1eb]/26 to-[#f7f1eb]/84 dark:via-[#121212]/16 dark:to-[#121212]/72" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,241,235,0.12),transparent_24%,rgba(212,168,83,0.04)_100%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_30%,rgba(212,168,83,0.02)_100%)]" />
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-3 h-56 bg-[linear-gradient(180deg,transparent_0%,rgba(247,241,235,0.18)_34%,rgba(247,241,235,0.78)_72%,#f7f1eb_100%)] dark:bg-[linear-gradient(180deg,transparent_0%,rgba(13,13,13,0.08)_30%,rgba(13,13,13,0.72)_72%,#0D0D0D_100%)]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-300 px-4 pt-20 pb-14 sm:px-6 lg:px-8 lg:pt-24 lg:pb-18">
-        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(340px,420px)] lg:gap-10">
-          <div className="space-y-7">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#e6ddd0] bg-white/95 px-3 py-1.5 shadow-sm dark:border-border dark:bg-card/78">
+      <div className="relative z-10 mx-auto w-full max-w-300 px-4 pt-20 pb-14 sm:px-6 sm:pb-16 lg:px-8 lg:pt-24 lg:pb-20">
+        <div className="grid items-center gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(374px,484px)] lg:gap-8 xl:grid-cols-[minmax(0,1.01fr)_minmax(394px,484px)]">
+          <div className="space-y-7 lg:space-y-8">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#e6ddd0] bg-white/96 px-3 py-1.5 shadow-[0_10px_24px_rgba(84,61,31,0.05)] dark:border-border dark:bg-card/80">
               <Image src="/RCTicon-lightVer.svg" alt="RCT Ecosystem Logo" width={20} height={20} className="h-5 w-5 object-contain dark:hidden" />
               <Image src="/RCTicon.svg" alt="RCT Ecosystem Logo" width={20} height={20} className="hidden h-5 w-5 object-contain dark:block" />
               <span className="text-xs font-medium text-warm-gray dark:text-warm-muted">{copy.badge}</span>
@@ -115,30 +123,32 @@ export function HeroServer({ locale }: HeroServerProps) {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 pt-5 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 pt-7 md:grid-cols-4">
               {stats.map((stat) => (
-                <div key={stat.label} className="rounded-2xl border border-[#e6ddd0] bg-white px-3 py-3 dark:border-border dark:bg-card/72">
-                  <div className="text-lg font-bold leading-none text-warm-charcoal dark:text-warm-light-gray">{stat.value}</div>
-                  <div className="mt-1 text-[11px] font-medium text-warm-secondary dark:text-warm-dim">{stat.label}</div>
+                <div key={stat.label} className="rounded-2xl border border-[#e6ddd0] bg-white px-3 py-3 transition-all duration-300 hover:border-warm-amber/25 dark:border-border dark:bg-card/72">
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#e6ddd0] bg-white shadow-sm dark:border-border dark:bg-card/80">
+                      <Image src={stat.iconSrc} alt="" width={18} height={18} className="object-contain" style={{ imageRendering: "pixelated" }} />
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold leading-none text-warm-charcoal dark:text-warm-light-gray">{stat.value}</div>
+                      {"sublabel" in stat && stat.sublabel ? (
+                        <div className="mt-0.5 text-[9px] font-medium text-warm-gray dark:text-warm-subtle">{stat.sublabel}</div>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="text-[11px] font-medium leading-snug text-warm-secondary dark:text-warm-dim sm:text-xs">{stat.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-105 rounded-4xl border border-[#e6ddd0] bg-white/76 p-5 shadow-[0_20px_48px_rgba(84,61,31,0.08)] dark:border-border dark:bg-card/45">
-            <div className="rounded-3xl border border-warm-amber/20 bg-[linear-gradient(165deg,#fff9f0_0%,#f5ece1_52%,#fff_100%)] p-5 dark:border-warm-amber/25 dark:bg-[linear-gradient(165deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_60%,rgba(255,255,255,0.01)_100%)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-warm-amber">Constitutional AI Stack</p>
-              <div className="mt-4 space-y-3 text-sm text-warm-charcoal/80 dark:text-warm-pale/78">
-                <div className="rounded-xl border border-[#e8dcc7] bg-white/88 px-3 py-2 dark:border-border dark:bg-card/65">FDIA Equation and JITNA Protocol</div>
-                <div className="rounded-xl border border-[#e8dcc7] bg-white/88 px-3 py-2 dark:border-border dark:bg-card/65">HexaCore multi-model verification</div>
-                <div className="rounded-xl border border-[#e8dcc7] bg-white/88 px-3 py-2 dark:border-border dark:bg-card/65">10-layer architecture with RCTDB memory</div>
-                <div className="rounded-xl border border-[#e8dcc7] bg-white/88 px-3 py-2 dark:border-border dark:bg-card/65">Benchmark-governed enterprise reliability</div>
-              </div>
-            </div>
+          <div className="group relative mx-auto w-full max-w-105 lg:-mr-2 lg:ml-0 lg:max-w-none">
+            <HeroArchitectureIsland />
           </div>
         </div>
 
-        <div className="mt-9 flex justify-center lg:mt-10">
+        <div className="mt-10 flex justify-center lg:mt-12">
           <a
             href="#overview"
             className="group flex flex-col items-center gap-2 rounded-full px-4 py-3 text-warm-gray transition-colors hover:text-warm-charcoal dark:text-warm-subtle dark:hover:text-warm-pale"
