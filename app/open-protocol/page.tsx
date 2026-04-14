@@ -128,7 +128,7 @@ export default function ProtocolPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-8">
               <Button size="lg" asChild>
-                <Link href="https://github.com" target="_blank" className="gap-2">
+                <Link href="https://github.com/rctlabs/rct-platform" target="_blank" rel="noopener noreferrer" className="gap-2">
                   {isTh ? "ดูบน GitHub" : "View on GitHub"} <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
@@ -336,7 +336,7 @@ export default function ProtocolPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button size="lg" variant="secondary" asChild>
-              <Link href="https://github.com" target="_blank">
+              <Link href="https://github.com/rctlabs/rct-platform" target="_blank" rel="noopener noreferrer">
                 {isTh ? "GitHub Repository" : "GitHub Repository"}
               </Link>
             </Button>

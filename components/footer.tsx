@@ -60,6 +60,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
       { label: isTh ? "RCT-7 Thinking" : "RCT-7 Thinking", href: "/technology/rct-7-thinking" },
       { label: isTh ? "Constitutional AI" : "Constitutional AI", href: "/technology/constitutional-ai" },
       { label: "Protocols", href: "/protocols" },
+      { label: isTh ? "Open SDK (Apache 2.0)" : "Open SDK (Apache 2.0)", href: SOCIAL_LINKS.platformGithub, external: true },
     ],
     [isTh ? "ทรัพยากร" : "Resources"]: [
       { label: "Whitepaper", href: "/whitepaper" },

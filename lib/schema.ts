@@ -167,6 +167,8 @@ export function getSoftwareApplicationSchema(locale: Locale) {
     softwareVersion: SITE_VERSION,
     releaseNotes: `${SITE_URL}/en/changelog`,
     url: SITE_URL,
+    codeRepository: "https://github.com/rctlabs/rct-platform",
+    license: "https://opensource.org/licenses/Apache-2.0",
     author: {
       '@type': 'Organization',
       name: SITE_NAME,
