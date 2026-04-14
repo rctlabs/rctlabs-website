@@ -7,7 +7,12 @@ import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react"
 import type { Locale } from "@/lib/i18n"
 import { localizeCopy, type NavGroup, type ResourceTrack } from "@/lib/navigation"
 import { UtilityActions } from "@/components/navigation/utility-actions"
-import { UserProfileMenu } from "@/components/user-profile-menu"
+import dynamic from "next/dynamic"
+
+const UserProfileMenu = dynamic(
+  () => import("@/components/user-profile-menu").then(m => ({ default: m.UserProfileMenu })),
+  { ssr: false }
+)
 
 type MobileView =
   | { level: "root" }

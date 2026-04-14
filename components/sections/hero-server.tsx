@@ -5,6 +5,7 @@ import { getLocalePrefix } from "@/lib/i18n"
 import { pixelIcons } from "@/lib/pixel-icons"
 import { SITE_ALGORITHM_COUNT, SITE_LAYER_COUNT, SITE_HEXACORE_COUNT, SITE_UPTIME } from "@/lib/site-config"
 import { HeroArchitectureIsland } from "@/components/sections/hero-architecture-island"
+import { HeroOrbActivator } from "@/components/sections/hero-orb-activator"
 
 type HeroServerProps = {
   locale: "en" | "th"
@@ -54,7 +55,7 @@ export function HeroServer({ locale }: HeroServerProps) {
 
   return (
     <section id="hero" data-main-section="hero" aria-label="Hero" className="relative flex min-h-[max(44rem,100svh)] items-center overflow-hidden">
-      <div className="hero-orb-field absolute inset-0" aria-hidden="true">
+      <HeroOrbActivator>
         <div className="hero-orb-field__mesh" />
         <div className="hero-orb-field__grid" />
         <div className="hero-orb-field__beam hero-orb-field__beam--top" />
@@ -65,17 +66,9 @@ export function HeroServer({ locale }: HeroServerProps) {
         <div className="hero-orb-field__orb hero-orb-field__orb--sage" />
         <div className="hero-orb-field__orb hero-orb-field__orb--blue" />
         <div className="hero-orb-field__wash" />
-      </div>
+      </HeroOrbActivator>
 
-      <div className="absolute inset-0 bg-linear-to-r from-[#f7f1eb]/86 via-[#f7f1eb]/72 to-[#f7f1eb]/42 dark:from-[#0D0D0D]/92 dark:via-[#0D0D0D]/80 dark:to-[#0D0D0D]/54" />
-      <div className="homepage-ambient-layer absolute inset-0" aria-hidden="true">
-        <div className="homepage-ambient-orb homepage-ambient-orb--amber absolute -left-24 top-[16%] h-72 w-72 rounded-full" />
-        <div className="homepage-ambient-orb homepage-ambient-orb--sage homepage-ambient-orb--slow absolute -right-16 top-[34%] h-80 w-80 rounded-full" />
-        <div className="homepage-ambient-orb homepage-ambient-orb--blue absolute left-[42%] top-[12%] h-40 w-40 rounded-full" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-b from-transparent via-[#f7f1eb]/26 to-[#f7f1eb]/84 dark:via-[#121212]/16 dark:to-[#121212]/72" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,241,235,0.12),transparent_24%,rgba(212,168,83,0.04)_100%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_30%,rgba(212,168,83,0.02)_100%)]" />
-      </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-3 h-56 bg-[linear-gradient(180deg,transparent_0%,rgba(247,241,235,0.18)_34%,rgba(247,241,235,0.78)_72%,#f7f1eb_100%)] dark:bg-[linear-gradient(180deg,transparent_0%,rgba(13,13,13,0.08)_30%,rgba(13,13,13,0.72)_72%,#0D0D0D_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(247,241,235,0.86),rgba(247,241,235,0.72)_50%,rgba(247,241,235,0.42)),linear-gradient(to_bottom,transparent_60%,rgba(247,241,235,0.78)_85%,#f7f1eb_100%)] dark:bg-[linear-gradient(to_right,rgba(13,13,13,0.92),rgba(13,13,13,0.80)_50%,rgba(13,13,13,0.54)),linear-gradient(to_bottom,transparent_60%,rgba(13,13,13,0.72)_85%,#0D0D0D_100%)]" />
 
       <div className="relative z-10 mx-auto w-full max-w-300 px-4 pt-20 pb-14 sm:px-6 sm:pb-16 lg:px-8 lg:pt-24 lg:pb-20">
         <div className="grid items-center gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(374px,484px)] lg:gap-8 xl:grid-cols-[minmax(0,1.01fr)_minmax(394px,484px)]">

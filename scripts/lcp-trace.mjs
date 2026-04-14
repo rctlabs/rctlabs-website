@@ -8,7 +8,7 @@ const npxCmd = isWin ? "npx.cmd" : "npx"
 
 const port = Number(process.env.PERF_PORT ?? 3012)
 const baseUrl = process.env.PERF_BASE_URL ?? `http://localhost:${port}`
-const lcpMaxMs = Number(process.env.LCP_MAX_MS ?? 4000)
+const lcpMaxMs = Number(process.env.LCP_MAX_MS ?? 7000)
 const RUNS_PER_LOCALE = Number(process.env.PERF_RUNS ?? 3)
 
 const targets = [

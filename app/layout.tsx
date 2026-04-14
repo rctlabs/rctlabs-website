@@ -48,7 +48,9 @@ const verification = googleSiteVerification || bingSiteVerification
     }
   : undefined
 
-/* Display: Space Grotesk (headings) — preload=true: above-the-fold LCP font */
+/* Display: Space Grotesk (headings) — preload=true, swap: must render correctly
+   on first cold load. "optional" caused system-font fallback when cache was empty
+   because font couldn't download within the 100ms block period. */
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
@@ -73,15 +75,16 @@ const spaceMono = Space_Mono({
   preload: false,
 })
 
-/* Thai: Kanit (matches Space Grotesk geometric style) — preload=true: LCP font for /th pages
-   display: "optional" — eliminates font-swap LCP re-measurement; font loads within block period
-   when preloaded from same-origin CDN (Vercel edge). Fallback: Leelawadee UI / system Thai.
+/* Thai: Kanit (matches Space Grotesk geometric style) — preload=true, swap:
+   Must render correctly on first cold load. "optional" caused Thai text to render in
+   system font (Leelawadee UI / Tahoma) on first visit because Kanit (83KB) couldn't
+   download within 100ms block period. After cache, it always loads in time.
    Weights: 300 (subtitle-th uses font-weight:300 + font-synthesis:none), 400, 500, 600, 700 */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--rct-font-thai",
-  display: "optional",
+  display: "swap",
   preload: true,
 })
 
