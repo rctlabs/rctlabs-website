@@ -5,7 +5,12 @@ import { Globe, Moon, Search, Sun } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { useMounted } from "@/hooks/use-mounted"
 import { useTheme } from "@/components/theme-provider"
-import { UserProfileMenu } from "@/components/user-profile-menu"
+import dynamic from "next/dynamic"
+
+const UserProfileMenu = dynamic(
+  () => import("@/components/user-profile-menu").then(m => ({ default: m.UserProfileMenu })),
+  { ssr: false }
+)
 
 interface UtilityActionsProps {
   mode: "desktop" | "mobile"
