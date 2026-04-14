@@ -5,6 +5,10 @@ export type SupabaseConfig = {
   key: string
 }
 
+function getSupabaseUrl(): string {
+  return process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ""
+}
+
 function getRequiredEnv(name: string): string {
   const value = process.env[name]
   if (!value) {
@@ -14,7 +18,10 @@ function getRequiredEnv(name: string): string {
 }
 
 export function getSupabaseConfig(runtime: SupabaseRuntime): SupabaseConfig {
-  const url = getRequiredEnv("SUPABASE_URL")
+  const url = getSupabaseUrl()
+  if (!url) {
+    throw new Error("Missing required environment variable: SUPABASE_URL or NEXT_PUBLIC_SUPABASE_URL")
+  }
 
   if (runtime === "admin") {
     return {
@@ -30,5 +37,5 @@ export function getSupabaseConfig(runtime: SupabaseRuntime): SupabaseConfig {
 }
 
 export function hasPublicSupabaseEnv() {
-  return Boolean(process.env.SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  return Boolean(getSupabaseUrl() && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 }

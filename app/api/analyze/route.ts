@@ -1,15 +1,22 @@
 import { NextRequest, NextResponse } from "next/server"
+import { getServerApiBaseUrl } from "@/lib/api-config"
+import { resolveAssistantAuth } from "@/lib/auth/assistant-guard"
 
-const API_BASE_URL = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8003"
+const API_BASE_URL = getServerApiBaseUrl()
 
 export const dynamic = "force-dynamic"
 
 export async function POST(request: NextRequest) {
+  const { token, applyCookies, deniedResponse } = await resolveAssistantAuth(request)
+  if (deniedResponse) {
+    return deniedResponse
+  }
+
   let body: unknown
   try {
     body = await request.json()
   } catch {
-    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 })
+    return applyCookies(NextResponse.json({ error: "Invalid JSON body" }, { status: 400 }))
   }
 
   try {
@@ -19,6 +26,7 @@ export async function POST(request: NextRequest) {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: JSON.stringify(body),
     })
@@ -28,15 +36,15 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await upstream.json()
-    return NextResponse.json(data)
+    return applyCookies(NextResponse.json(data))
   } catch {
-    return NextResponse.json(
+    return applyCookies(NextResponse.json(
       {
         status: "fallback",
         analysis: {},
         source: "fallback",
       },
       { status: 200 },
-    )
+    ))
   }
 }

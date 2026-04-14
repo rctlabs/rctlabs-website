@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { API_URL } from "@/lib/constants"
+import { getServerApiBaseUrl } from "@/lib/api-config"
 import {
   SITE_TEST_COUNT,
   SITE_MICROSERVICE_COUNT,
@@ -12,6 +12,7 @@ import {
 } from "@/lib/site-config"
 
 export const revalidate = 3600 // ISR: cache for 1 hour
+const API_URL = getServerApiBaseUrl()
 
 const FALLBACK = {
   testCount: SITE_TEST_COUNT,

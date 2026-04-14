@@ -291,6 +291,38 @@
     letter-spacing: 0.01em;
   }
 
+  .locale-shell {
+    min-height: 100%;
+  }
+
+  .locale-shell--th {
+    font-family: var(--rct-font-thai), var(--font-thai-fallback);
+    font-synthesis: none;
+  }
+
+  .locale-shell--th h1,
+  .locale-shell--th h2,
+  .locale-shell--th h3,
+  .locale-shell--th h4,
+  .locale-shell--th h5,
+  .locale-shell--th h6,
+  .locale-shell--th .font-display,
+  .locale-shell--th .font-sans {
+    font-family: var(--rct-font-thai), var(--font-thai-fallback);
+    letter-spacing: -0.02em;
+    font-synthesis: none;
+  }
+
+  .locale-shell--th h1 {
+    line-height: 1.32;
+    font-weight: 600;
+  }
+
+  .locale-shell--th .font-thai,
+  .locale-shell--th .subtitle-th {
+    font-family: var(--rct-font-thai), var(--font-thai-fallback);
+  }
+
   html[lang="th"] body,
   html[lang="th"] p,
   html[lang="th"] li,
@@ -1150,6 +1182,147 @@
   overflow: hidden;
 }
 
+.hero-orb-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-orb-field__mesh {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(247,241,235,0.72), rgba(247,241,235,0.2) 22%, rgba(247,241,235,0.66) 100%),
+    radial-gradient(circle at 14% 18%, rgba(212,168,83,0.12), transparent 28%),
+    radial-gradient(circle at 84% 24%, rgba(123,158,135,0.1), transparent 26%),
+    radial-gradient(circle at 58% 72%, rgba(137,180,200,0.08), transparent 24%),
+    linear-gradient(90deg, rgba(255,255,255,0.32), rgba(255,255,255,0.06) 46%, rgba(247,241,235,0.16) 100%);
+  animation: backdrop-mesh-enter 600ms ease both, hero-field-breathe 24s 700ms ease-in-out infinite;
+}
+
+.dark .hero-orb-field__mesh {
+  background:
+    linear-gradient(180deg, rgba(13,13,13,0.9), rgba(13,13,13,0.46) 22%, rgba(13,13,13,0.82) 100%),
+    radial-gradient(circle at 14% 18%, rgba(212,168,83,0.11), transparent 30%),
+    radial-gradient(circle at 84% 24%, rgba(123,158,135,0.09), transparent 28%),
+    radial-gradient(circle at 58% 72%, rgba(137,180,200,0.07), transparent 26%),
+    linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01) 42%, rgba(212,168,83,0.03) 100%);
+}
+
+.hero-orb-field__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212, 168, 83, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 168, 83, 0.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.08) 26%, rgba(0, 0, 0, 0.26) 100%);
+  opacity: 0.28;
+  animation: hero-grid-drift 26s linear infinite;
+}
+
+.hero-orb-field__beam {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 168, 83, 0.22), transparent);
+  opacity: 0.7;
+}
+
+.hero-orb-field__beam--top {
+  left: 12%;
+  top: 22%;
+  width: 24rem;
+  animation: hero-beam-sweep 14s ease-in-out infinite;
+}
+
+.hero-orb-field__beam--bottom {
+  right: 10%;
+  bottom: 24%;
+  width: 20rem;
+  animation: hero-beam-sweep 17s -4s ease-in-out infinite reverse;
+}
+
+.hero-orb-field__ring {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 168, 83, 0.14);
+  opacity: 0.56;
+}
+
+.hero-orb-field__ring--one {
+  left: -8rem;
+  top: 7rem;
+  width: 22rem;
+  height: 22rem;
+  animation: hero-ring-pulse 15s ease-in-out infinite;
+}
+
+.hero-orb-field__ring--two {
+  right: -6rem;
+  top: 15rem;
+  width: 18rem;
+  height: 18rem;
+  animation: hero-ring-pulse 18s -5s ease-in-out infinite;
+}
+
+.hero-orb-field__orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(54px);
+}
+
+.hero-orb-field__orb--amber {
+  left: -8rem;
+  top: 5rem;
+  width: 24rem;
+  height: 24rem;
+  background: radial-gradient(circle, rgba(212, 168, 83, 0.18), rgba(212, 168, 83, 0.05) 56%, transparent 76%);
+  animation: backdrop-orb-enter 680ms ease-out both, hero-orb-float 20s 680ms ease-in-out infinite;
+}
+
+.hero-orb-field__orb--sage {
+  right: -7rem;
+  top: 18rem;
+  width: 25rem;
+  height: 25rem;
+  background: radial-gradient(circle, rgba(123, 158, 135, 0.16), rgba(123, 158, 135, 0.04) 56%, transparent 78%);
+  animation: backdrop-orb-enter 760ms 80ms ease-out both, hero-orb-float-slow 24s 840ms ease-in-out infinite;
+}
+
+.hero-orb-field__orb--blue {
+  left: 38%;
+  bottom: 6rem;
+  width: 16rem;
+  height: 16rem;
+  background: radial-gradient(circle, rgba(137, 180, 200, 0.12), rgba(137, 180, 200, 0.03) 58%, transparent 78%);
+  animation: backdrop-orb-enter 820ms 140ms ease-out both, hero-orb-float 22s 960ms ease-in-out infinite reverse;
+}
+
+.dark .hero-orb-field__orb--amber {
+  background: radial-gradient(circle, rgba(212, 168, 83, 0.16), rgba(212, 168, 83, 0.03) 58%, transparent 78%);
+}
+
+.dark .hero-orb-field__orb--sage {
+  background: radial-gradient(circle, rgba(123, 158, 135, 0.13), rgba(123, 158, 135, 0.025) 58%, transparent 78%);
+}
+
+.dark .hero-orb-field__orb--blue {
+  background: radial-gradient(circle, rgba(137, 180, 200, 0.12), rgba(137, 180, 200, 0.025) 58%, transparent 80%);
+}
+
+.hero-orb-field__wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.18), transparent 58%);
+  opacity: 0.64;
+}
+
+.dark .hero-orb-field__wash {
+  background: radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 58%);
+  opacity: 0.72;
+}
+
 .homepage-ambient-orb {
   border-radius: 9999px;
   filter: blur(36px);
@@ -1232,6 +1405,37 @@
 @keyframes hero-arch-fade-up {
   from { opacity: 0; transform: translateY(7px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-field-breathe {
+  0%, 100% { transform: scale(1) translate3d(0, 0, 0); }
+  50% { transform: scale(1.015) translate3d(0, -0.5rem, 0); }
+}
+
+@keyframes hero-grid-drift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-1.1rem, 0.9rem, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes hero-orb-float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(1rem, -1.2rem, 0) scale(1.04); }
+}
+
+@keyframes hero-orb-float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-1.25rem, 1rem, 0) scale(1.05); }
+}
+
+@keyframes hero-ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.34; }
+  50% { transform: scale(1.06); opacity: 0.58; }
+}
+
+@keyframes hero-beam-sweep {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.22; }
+  50% { transform: translate3d(1.4rem, 0, 0); opacity: 0.6; }
 }
 
 @keyframes hero-architecture-float-cluster {

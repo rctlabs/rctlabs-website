@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
-import { API_URL } from "@/lib/constants"
+import { getServerApiBaseUrl } from "@/lib/api-config"
 
 export const revalidate = 86400 // ISR: cache for 24 hours
+const API_URL = getServerApiBaseUrl()
 
 const STATIC_BENCHMARK = {
   radarData: [

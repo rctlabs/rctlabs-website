@@ -1,4 +1,5 @@
 export * from "./browser-client"
 export * from "./config"
 export * from "./policy"
+export * from "./request-client"
 export * from "./server-client"

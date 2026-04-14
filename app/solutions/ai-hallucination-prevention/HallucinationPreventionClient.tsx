@@ -10,6 +10,8 @@ import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
 import { Shield, AlertTriangle, Eye, Lock, Layers, BarChart3, ArrowRight } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
+import AuthorBlock from "@/components/author-block"
+import RelatedContent from "@/components/related-content"
 
 const verificationSteps = [
   {
@@ -112,8 +114,19 @@ export default function HallucinationPreventionPage() {
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 
+        {/* Answer-first — visible summary for crawlers and Featured Snippet eligibility */}
+        <section className="pt-10 pb-4 px-4 text-center" style={{ background: bg2 }}>
+          <div className="max-w-2xl mx-auto">
+            <p className="text-sm leading-relaxed" style={{ color: textSecondary }}>
+              {isEn
+                ? "AI hallucination prevention applies multi-model consensus verification to reduce fabricated outputs from a 15% baseline to below 0.3% — essential for enterprise deployments in financial services, healthcare, and legal domains where accuracy and auditability are non-negotiable."
+                : "การป้องกัน AI Hallucination ใช้การตรวจสอบความถูกต้องด้วยหลายโมเดลพร้อมกัน เพื่อลดผลลัพธ์ที่ผิดพลาดจากค่าเฝ้า 15% ลงเหลือต่ำกว่า 0.3% จำเป็นอย่างยิ่งสำหรับการใช้งานระดับองค์กรในแวดการเงิน สาธารณสุข และกฎหมาย ซึ่งความแม่นยำและการตรวจสอบได้เป็นสิ่งที่ต่อรองไม่ได้"}
+            </p>
+          </div>
+        </section>
+
         {/* Hero */}
-        <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
+        <section className="py-14 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
             <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
@@ -344,6 +357,43 @@ export default function HallucinationPreventionPage() {
         </section>
 
       </main>
+
+      {/* E-E-A-T + Internal Links */}
+      <section className="py-14 px-4" style={{ background: bg2 }}>
+        <div className="max-w-3xl mx-auto space-y-10">
+          <RelatedContent
+            title={isEn ? "Related Resources" : "แหล่งข้อมูลที่เกี่ยวข้อง"}
+            items={[
+              {
+                title: isEn ? "JITNA RFC-001 Protocol" : "JITNA RFC-001 Protocol",
+                description: isEn
+                  ? "The universal AI intent communication protocol — the HTTP of agentic AI."
+                  : "โปรโตคอลสื่อสาร AI Intent สากล — HTTP ของ Agentic AI",
+                href: "/protocols/jitna-rfc-001",
+                category: isEn ? "Protocol" : "โปรโตคอล",
+              },
+              {
+                title: isEn ? "Enterprise AI Memory" : "Enterprise AI Memory",
+                description: isEn
+                  ? "RCTDB persistent memory layer for long-running enterprise AI workloads."
+                  : "ชั้น Memory ถาวร RCTDB สำหรับงาน AI ระดับองค์กรระยะยาว",
+                href: "/solutions/enterprise-ai-memory",
+                category: isEn ? "Solution" : "โซลูชัน",
+              },
+              {
+                title: isEn ? "SignedAI Product" : "SignedAI Product",
+                description: isEn
+                  ? "Cryptographically verified multi-LLM consensus — enterprise-grade AI verification."
+                  : "การยืนยัน AI ด้วย Cryptography ผ่าน Multi-LLM Consensus ระดับองค์กร",
+                href: "/products/signed-ai",
+                category: isEn ? "Product" : "ผลิตภัณฑ์",
+              },
+            ]}
+          />
+          <AuthorBlock authorSlug="ittirit-saengow" locale={locale} />
+        </div>
+      </section>
+
       <Footer />
     </>
   )

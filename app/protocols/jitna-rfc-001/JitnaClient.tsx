@@ -13,6 +13,8 @@ import JITNAFlowchart from "@/components/diagrams/jitna-flowchart"
 import SectionHeading from "@/components/section-heading"
 import OptimizedImage from "@/components/ui/optimized-image"
 import { pixelIcons } from "@/lib/pixel-icons"
+import AuthorBlock from "@/components/author-block"
+import RelatedContent from "@/components/related-content"
 
 const PIXEL_JITNA = pixelIcons.jitna
 
@@ -400,6 +402,43 @@ export default function JitnaClient() {
         </section>
 
       </main>
+
+      {/* E-E-A-T + Internal Links */}
+      <section className="py-14 px-4" style={{ background: bg2 }}>
+        <div className="max-w-3xl mx-auto space-y-10">
+          <RelatedContent
+            title={isEn ? "Related Resources" : "แหล่งข้อมูลที่เกี่ยวข้อง"}
+            items={[
+              {
+                title: isEn ? "FDIA Equation" : "สมการ FDIA",
+                description: isEn
+                  ? "The mathematical foundation behind intent-gating in RCT's architecture."
+                  : "รากฐานทางคณิตศาสตร์เบื้องหลัง Intent-Gating ในสถาปัตยกรรม RCT",
+                href: "/protocols/fdia-equation",
+                category: isEn ? "Protocol" : "โปรโตคอล",
+              },
+              {
+                title: isEn ? "AI Hallucination Prevention" : "การป้องกัน AI Hallucination",
+                description: isEn
+                  ? "How SignedAI consensus reduces hallucination to under 0.3%."
+                  : "SignedAI Consensus ลด Hallucination ต่ำกว่า 0.3% ได้อย่างไร",
+                href: "/solutions/ai-hallucination-prevention",
+                category: isEn ? "Solution" : "โซลูชัน",
+              },
+              {
+                title: isEn ? "RCT-7 Mental Model" : "RCT-7 Mental Model",
+                description: isEn
+                  ? "The 7-genome subsystem model and HexaCore decision architecture."
+                  : "โมเดล 7-Genome Subsystem และ HexaCore Decision Architecture",
+                href: "/protocols/rct-7-mental-model",
+                category: isEn ? "Protocol" : "โปรโตคอล",
+              },
+            ]}
+          />
+          <AuthorBlock authorSlug="ittirit-saengow" locale={locale} />
+        </div>
+      </section>
+
       <Footer />
     </>
   )
