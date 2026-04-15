@@ -10,6 +10,8 @@ import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
 import { GitBranch, Zap, Target, Cpu, Network, ArrowRight, Globe, Scale } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
+import RelatedContent from "@/components/related-content"
+import AuthorBlock from "@/components/author-block"
 
 const models = [
   { id: "G1", role: "Supreme Architect", origin: "US", provider: "Claude Opus 4.6", color: "#D4A853", badge: "US" },
@@ -94,13 +96,22 @@ export default function DynamicAIRoutingPage() {
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 
+        {/* Answer-first — screen-reader + crawler accessible; not shown visually */}
+        <section className="sr-only">
+          <p>
+            {isEn
+              ? "Dynamic AI routing applies intelligent multi-LLM orchestration across 41 algorithms organized in 9 tiers — automatically selecting the optimal model and voting method for each task in under 50ms, reducing cost by up to 60% compared to fixed single-model deployments."
+              : "Dynamic AI Routing ใช้การประสาน Multi-LLM อัจฉริยะผ่าน 41 Algorithms ที่จัดเป็น 9 Tiers — เลือก Model และวิธี Voting ที่เหมาะสมที่สุดโดยอัตโนมัติในแต่ละ Task ภายใน 50ms ลดต้นทุนได้สูงสุด 60% เมื่อเทียบกับการใช้ Model เดียวแบบคงที่"}
+          </p>
+        </section>
+
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
             <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#D4A853", borderColor: "rgba(212,168,83,0.3)", background: "rgba(212,168,83,0.07)" }}>
-              <GitBranch size={14} /> {isEn ? "Solutions" : "โซลูชัน"}
+              <GitBranch size={14} /> {isEn ? "AI Routing" : "Multi-LLM Routing"}
             </m.div>
             <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: textPrimary }}>
@@ -300,6 +311,43 @@ export default function DynamicAIRoutingPage() {
         </section>
 
       </main>
+
+      {/* E-E-A-T + Internal Links */}
+      <section className="py-14 px-4" style={{ background: bg2 }}>
+        <div className="max-w-3xl mx-auto space-y-10">
+          <RelatedContent
+            title={isEn ? "Related Resources" : "แหล่งข้อมูลที่เกี่ยวข้อง"}
+            items={[
+              {
+                title: isEn ? "JITNA RFC-001 Protocol" : "JITNA RFC-001 Protocol",
+                description: isEn
+                  ? "The universal AI intent communication protocol — the HTTP of agentic AI that powers every routing decision."
+                  : "โปรโตคอลสื่อสาร AI Intent สากล — HTTP ของ Agentic AI ที่ขับเคลื่อนทุกการตัดสินใจ Routing",
+                href: "/protocols/jitna-rfc-001",
+                category: isEn ? "Protocol" : "โปรโตคอล",
+              },
+              {
+                title: isEn ? "Enterprise AI Memory" : "Enterprise AI Memory",
+                description: isEn
+                  ? "RCTDB persistent memory layer that gives routed models context-awareness across long-running sessions."
+                  : "RCTDB Memory Layer ที่ให้โมเดลที่ Route มามีความสามารถจำ Context ได้นาน",
+                href: "/solutions/enterprise-ai-memory",
+                category: isEn ? "Solution" : "โซลูชัน",
+              },
+              {
+                title: isEn ? "Regional AI" : "Regional AI",
+                description: isEn
+                  ? "Routing orchestration for sovereign LLMs — Typhoon G38 and regional models selected by proficiency score."
+                  : "เลือก LLM ภูมิภาคอย่าง Typhoon G38 ผ่าน Routing ด้วย Proficiency Score",
+                href: "/solutions/regional-ai",
+                category: isEn ? "Solution" : "โซลูชัน",
+              },
+            ]}
+          />
+          <AuthorBlock authorSlug="ittirit-saengow" locale={locale} />
+        </div>
+      </section>
+
       <Footer />
     </>
   )

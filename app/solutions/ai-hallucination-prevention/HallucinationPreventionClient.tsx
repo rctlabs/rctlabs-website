@@ -114,15 +114,13 @@ export default function HallucinationPreventionPage() {
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 
-        {/* Answer-first — visible summary for crawlers and Featured Snippet eligibility */}
-        <section className="pt-10 pb-4 px-4 text-center" style={{ background: bg2 }}>
-          <div className="max-w-2xl mx-auto">
-            <p className="text-sm leading-relaxed" style={{ color: textSecondary }}>
-              {isEn
-                ? "AI hallucination prevention applies multi-model consensus verification to reduce fabricated outputs from a 15% baseline to below 0.3% — essential for enterprise deployments in financial services, healthcare, and legal domains where accuracy and auditability are non-negotiable."
-                : "การป้องกัน AI Hallucination ใช้การตรวจสอบความถูกต้องด้วยหลายโมเดลพร้อมกัน เพื่อลดผลลัพธ์ที่ผิดพลาดจากค่าเฝ้า 15% ลงเหลือต่ำกว่า 0.3% จำเป็นอย่างยิ่งสำหรับการใช้งานระดับองค์กรในแวดการเงิน สาธารณสุข และกฎหมาย ซึ่งความแม่นยำและการตรวจสอบได้เป็นสิ่งที่ต่อรองไม่ได้"}
-            </p>
-          </div>
+        {/* Answer-first — screen-reader + crawler accessible; not shown visually */}
+        <section className="sr-only">
+          <p>
+            {isEn
+              ? "AI hallucination prevention applies multi-model consensus verification to reduce fabricated outputs from a 15% baseline to below 0.3% — essential for enterprise deployments in financial services, healthcare, and legal domains where accuracy and auditability are non-negotiable."
+              : "การป้องกัน AI Hallucination ใช้การตรวจสอบความถูกต้องด้วยหลายโมเดลพร้อมกัน เพื่อลดผลลัพธ์ที่ผิดพลาดจากค่าเฝ้า 15% ลงเหลือต่ำกว่า 0.3% จำเป็นอย่างยิ่งสำหรับการใช้งานระดับองค์กรในแวดการเงิน สาธารณสุข และกฎหมาย ซึ่งความแม่นยำและการตรวจสอบได้เป็นสิ่งที่ต่อรองไม่ได้"}
+          </p>
         </section>
 
         {/* Hero */}
@@ -131,7 +129,7 @@ export default function HallucinationPreventionPage() {
             <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#C4745B", borderColor: "rgba(196,116,91,0.3)", background: "rgba(196,116,91,0.07)" }}>
-              <Shield size={14} /> {isEn ? "Solutions" : "โซลูชัน"}
+              <Shield size={14} /> {isEn ? "AI Accuracy" : "ความแม่นยำ AI"}
             </m.div>
             <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: textPrimary }}>

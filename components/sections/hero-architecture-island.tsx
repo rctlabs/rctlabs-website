@@ -33,7 +33,7 @@ const HeroArchitectureVisual = dynamic(
 )
 
 export function HeroArchitectureIsland() {
-  const ready = useIdleActivation({ timeoutMs: 450 })
+  const ready = useIdleActivation({ timeoutMs: 100 })
 
   if (!ready) return <ArchitectureSkeleton />
 
