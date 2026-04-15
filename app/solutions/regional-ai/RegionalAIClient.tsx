@@ -7,6 +7,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { getLocaleFromPathname } from "@/lib/i18n"
 import { Globe, ArrowRight } from "lucide-react"
+import RelatedContent from "@/components/related-content"
+import AuthorBlock from "@/components/author-block"
 
 const regionalModels = [
   { region: "Thailand", flag: "🇹🇭", model: "Typhoon v2 70B", provider: "SCB10X", id: "G38", proficiency: "0.99", status: "Active", color: "#D4A853" },
@@ -34,6 +36,15 @@ export default function RegionalAIClient() {
   return (
     <main className="min-h-screen bg-background" id="main-content">
       <Navbar />
+
+      {/* Answer-first — screen-reader + crawler accessible; not shown visually */}
+      <section className="sr-only">
+        <p>
+          {isTh
+            ? "Regional AI รวม LLM ภูมิภาคอย่าง Typhoon G38 (SCB10X) เข้ากับโครงสร้างประสาน JITNA + SignedAI + RCTDB ของ RCT Ecosystem เพื่อมอบ Sovereign AI ที่เข้าใจภาษาและบริบทท้องถิ่น รองรับ PDPA และข้อกำหนดด้านความเป็นอธิปไตย์ของข้อมูลในเอเชียตะวันออกเฉียงใต้"
+            : "Regional AI integrates LLMs like Typhoon G38 (SCB10X) into the JITNA + SignedAI + RCTDB orchestration layer — delivering sovereign AI that understands local language, regulatory context, and cultural nuance while meeting PDPA and Southeast Asia data residency requirements."}
+        </p>
+      </section>
 
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
@@ -203,6 +214,42 @@ AdapterRegistry.register(
               {isTh ? "JITNA Dynamic Routing" : "JITNA Dynamic Routing"}
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* E-E-A-T + Internal Links */}
+      <section className="py-14 px-4 bg-muted/30">
+        <div className="max-w-3xl mx-auto space-y-10">
+          <RelatedContent
+            title={isTh ? "แหล่งข้อมูลที่เกี่ยวข้อง" : "Related Resources"}
+            items={[
+              {
+                title: isTh ? "JITNA RFC-001 Protocol" : "JITNA RFC-001 Protocol",
+                description: isTh
+                  ? "โปรโตคอลสื่อสาร Intent ที่กำหนดว่า JITNA Route ไปยัง Typhoon G38 หรือ LLM ภูมิภาคอื่นๆ อย่างไร"
+                  : "The intent communication protocol that defines how JITNA routes to Typhoon G38 and other regional LLMs.",
+                href: "/protocols/jitna-rfc-001",
+                category: isTh ? "โปรโตคอล" : "Protocol",
+              },
+              {
+                title: isTh ? "Dynamic AI Routing" : "Dynamic AI Routing",
+                description: isTh
+                  ? "ระบบ 9-Tier Routing ที่เลือก Typhoon G38 โดยอัตโนมัติสำหรับ Query ภาษาไทย"
+                  : "9-tier routing that automatically selects Typhoon G38 for Thai-language queries using proficiency scores.",
+                href: "/solutions/dynamic-ai-routing",
+                category: isTh ? "โซลูชัน" : "Solution",
+              },
+              {
+                title: isTh ? "สถาปัตยกรรม RCT" : "RCT Architecture",
+                description: isTh
+                  ? "ภาพรวมสถาปัตยกรรม 10 ชั้นที่รวม Regional Models เข้ากับ HexaCore G1–G38"
+                  : "10-layer architecture overview showing how Regional Models integrate into HexaCore G1–G38.",
+                href: "/architecture",
+                category: isTh ? "เทคนิค" : "Technical",
+              },
+            ]}
+          />
+          <AuthorBlock authorSlug="ittirit-saengow" locale={(isTh ? "th" : "en") as "en" | "th"} />
         </div>
       </section>
 

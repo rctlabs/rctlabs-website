@@ -25,7 +25,8 @@ export async function generateMetadata(): Promise<Metadata> {
 const facts = [
   { label: "Founded", labelTh: "ก่อตั้ง", value: "June 25, 2025" },
   { label: "First Public Release", labelTh: "เวอร์ชันสาธารณะแรก", value: "August 11, 2025 (30 days)" },
-  { label: "Current Version", labelTh: "เวอร์ชันปัจจุบัน", value: "v5.4.5" },
+  { label: "Enterprise Version", labelTh: "เวอร์ชัน Enterprise", value: "v5.4.5" },
+  { label: "Public SDK", labelTh: "Public SDK (GitHub)", value: "v1.0.0-alpha (Apache 2.0)" },
   { label: "Microservices", labelTh: "Microservices", value: "62" },
   { label: "Algorithms", labelTh: "Algorithms", value: "41 (Tier 1–9)" },
   { label: "AI Models (HexaCore)", labelTh: "โมเดล AI (HexaCore)", value: "7 (3 Western + 3 Eastern + 1 Thai)" },

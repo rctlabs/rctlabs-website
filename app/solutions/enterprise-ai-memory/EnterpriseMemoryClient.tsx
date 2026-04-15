@@ -10,6 +10,8 @@ import { getLocaleFromPathname } from "@/lib/i18n"
 import Link from "next/link"
 import { Brain, Database, HardDrive, Network, ArrowRight } from "lucide-react"
 import { getBreadcrumbSchema } from "@/lib/schema"
+import RelatedContent from "@/components/related-content"
+import AuthorBlock from "@/components/author-block"
 
 const dbLayers = [
   {
@@ -77,13 +79,22 @@ export default function EnterpriseAIMemoryPage() {
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 
+        {/* Answer-first — screen-reader + crawler accessible; not shown visually */}
+        <section className="sr-only">
+          <p>
+            {isEn
+              ? "Enterprise AI memory extends AI systems beyond context window limits using a persistent 3-layer storage stack — vector, graph, and SQL — with an 8-dimensional RCTDB schema, 74% lossless delta compression, and constitutional PDPA compliance controls for enterprise deployment."
+              : "การจดจำ AI องค์กรช่วยขยาย AI ให้เกินขีดจำกัดของ context window ด้วยชั้นจัดเก็บถาวร 3 ชั้น — vector, graph และ SQL — พร้อม 8 มิติของ RCTDB Schema, Delta Compression 74% แบบไม่สูญเสียข้อมูล และการควบคุม PDPA สำหรับองค์กร"}
+          </p>
+        </section>
+
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">
             <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
               style={{ color: "#7B9E87", borderColor: "rgba(123,158,135,0.3)", background: "rgba(123,158,135,0.07)" }}>
-              <Brain size={14} /> {isEn ? "Solutions" : "โซลูชัน"}
+              <Brain size={14} /> {isEn ? "AI Memory" : "หน่วยความจำ AI"}
             </m.div>
             <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl font-bold mb-6" style={{ color: textPrimary }}>
@@ -223,6 +234,43 @@ export default function EnterpriseAIMemoryPage() {
         </section>
 
       </main>
+
+      {/* E-E-A-T + Internal Links */}
+      <section className="py-14 px-4" style={{ background: bg2 }}>
+        <div className="max-w-3xl mx-auto space-y-10">
+          <RelatedContent
+            title={isEn ? "Related Resources" : "แหล่งข้อมูลที่เกี่ยวข้อง"}
+            items={[
+              {
+                title: isEn ? "JITNA RFC-001 Protocol" : "JITNA RFC-001 Protocol",
+                description: isEn
+                  ? "The intent communication protocol that structures all memory queries and drives RCTDB retrieval pipelines."
+                  : "โปรโตคอล Intent ที่กำหนดรูปแบบการค้นหา Memory และขับเคลื่อน RCTDB Retrieval",
+                href: "/protocols/jitna-rfc-001",
+                category: isEn ? "Protocol" : "โปรโตคอล",
+              },
+              {
+                title: isEn ? "Regional AI" : "Regional AI",
+                description: isEn
+                  ? "RCTDB powers the memory layer for Typhoon G38 and sovereign LLMs, enabling cross-session context in Thai."
+                  : "RCTDB เป็น Memory Layer สำหรับ Typhoon G38 และ LLM ภูมิภาค รองรับ Context ข้าม Session",
+                href: "/solutions/regional-ai",
+                category: isEn ? "Solution" : "โซลูชัน",
+              },
+              {
+                title: isEn ? "41 Algorithms Reference" : "41 Algorithms Reference",
+                description: isEn
+                  ? "Complete routing algorithm catalog — each tier selects the memory recall strategy for RCTDB queries."
+                  : "สารานุ Algorithm ครบครัน — แต่ละ Tier เลือกวิธี Recall จาก RCTDB",
+                href: "/algorithms",
+                category: isEn ? "Reference" : "เอกสาร",
+              },
+            ]}
+          />
+          <AuthorBlock authorSlug="ittirit-saengow" locale={locale} />
+        </div>
+      </section>
+
       <Footer />
     </>
   )

@@ -12,7 +12,7 @@ interface VersionPoint {
   date: string
   scope: number
   verification: number
-  status: "stable" | "production" | "latest" | "planned"
+  status: "stable" | "production" | "latest" | "public-alpha" | "planned"
 }
 
 const versions: VersionPoint[] = [
@@ -23,6 +23,7 @@ const versions: VersionPoint[] = [
   { ver: "5.4.2", name: "Deterministic", date: "Mar 20 2026", scope: 38, verification: 4869, status: "production" },
   { ver: "5.4.4", name: "Flaky Fix", date: "Mar 20 2026", scope: 39, verification: 3429, status: "production" },
   { ver: "5.4.5", name: "Full Suite Green", date: "Mar 21 2026", scope: 41, verification: 4849, status: "latest" },
+  { ver: "SDK 1.0α", name: "Public SDK Alpha", date: "Apr 2026", scope: 5, verification: 142, status: "public-alpha" },
   { ver: "6.0.0", name: "Full API Layer", date: "Q1 2027", scope: 48, verification: 5200, status: "planned" },
   { ver: "7.0.0", name: "Multi-Cloud", date: "Q2 2027", scope: 56, verification: 6100, status: "planned" },
   { ver: "8.0.0", name: "Marketplace", date: "H2 2027", scope: 68, verification: 7000, status: "planned" },
@@ -31,7 +32,7 @@ const versions: VersionPoint[] = [
 const maxScope = 70
 const maxVerification = 7000
 // Index of last "real" version (0-based) — the "NOW" divider sits after this index
-const NOW_INDEX = 6
+const NOW_INDEX = 7
 
 export default function VersionTimelineGraph() {
   const { resolvedTheme } = useTheme()
@@ -177,7 +178,7 @@ export default function VersionTimelineGraph() {
               <circle
                 cx={x} cy={padT + chartH + 40}
                 r={isPlanned ? 2.5 : 3}
-                fill={isPlanned ? "none" : version.status === "latest" ? "#22C55E" : version.status === "production" ? "#D4A853" : (isDark ? "#555" : "#CCC")}
+                fill={isPlanned ? "none" : version.status === "latest" ? "#22C55E" : version.status === "public-alpha" ? "#60A5FA" : version.status === "production" ? "#D4A853" : (isDark ? "#555" : "#CCC")}
                 stroke={isPlanned ? (isDark ? "#555" : "#CCC") : "none"}
                 strokeWidth={isPlanned ? 1 : 0}
                 strokeDasharray={isPlanned ? "2 2" : "0"}
