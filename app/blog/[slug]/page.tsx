@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getBlogPostBySlug, getAllBlogPosts, getBlogCategoryLabel, getBlogHeroMetrics, getBlogPublicationType, getPostJourney, getPostReviewDate, getResolvedAuthorProfile, getResolvedReviewerProfile, slugifyHeading } from "@/lib/blog"
+import { getBlogPostBySlug, getAllBlogPosts, getBlogCategoryLabel, getBlogHeroMetrics, getBlogPublicationType, getPostJourney, getPostReviewDate, getResolvedAuthorProfile, getResolvedReviewerProfile, slugifyHeading, getRelatedPosts } from "@/lib/blog"
 import { createBilingualMetadata } from "@/lib/seo-bilingual"
 import { getRequestLocale } from "@/lib/request-locale"
 import { Navbar } from "@/components/navbar"
@@ -96,6 +96,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const reviewer = getResolvedReviewerProfile(post)
   const reviewedDate = getPostReviewDate(post)
   const postJourney = getPostJourney(post)
+  const relatedPosts = getRelatedPosts(slug, locale)
   const currentIndex = allPosts.findIndex((p) => p.slug === slug)
   const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
   const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
@@ -108,8 +109,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const resourcesId = findHeadingId(headings, ["related resources", "additional links", "sources"])
   const citation = `${author?.name ?? post.author} (${new Date(post.date).getFullYear()}). ${post.title}. RCT Labs. ${articleUrl}`
 
+  // --- FAQ schema: extract question-formatted H2 headings for AEO/AI search ---
+  // Headings that read as questions (start with What, How, Why, When, Which, Can, Is, Are, Does, Should)
+  // or end with "?" are surfaced as FAQPage JSON-LD for AI/voice search retrieval.
+  const faqItems = headings
+    .filter((h) => h.level === 2 && /^(what|how|why|when|which|can|is|are|does|should|\w+.*\?)/i.test(h.text))
+    .slice(0, 5)
+    .map((h) => ({
+      "@type": "Question",
+      "name": h.text,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": post.excerpt,
+        "url": `${articleUrl}#${h.id}`,
+      },
+    }))
+  const faqSchema = faqItems.length >= 2 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems,
+  } : null
+
   // --- BlogPosting Schema for SEO ---
-  // Enhanced with image, about, isPartOf, citation for maximum E-E-A-T and AIO signals
+  // Enhanced with image, about, isPartOf, citation, speakable for maximum E-E-A-T and AIO signals
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -122,6 +144,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     "dateModified": reviewedDate,
     "wordCount": post.content.split(/\\s+/).length,
     "keywords": post.tags?.join(", "),
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": [".article-hero-headline", ".article-hero-excerpt", "h2", "h3"],
+    },
     "image": {
       "@type": "ImageObject",
       "url": `${SITE_URL}/blog/${slug}/opengraph-image`,
@@ -178,6 +204,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <main className="min-h-screen bg-background">
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema ? (
+        <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      ) : null}
       <Navbar variant="article" />
       <ReadingProgress />
 
@@ -212,14 +241,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           />
         </div>
       </section>
-
-      {heroMetrics.length > 0 ? (
-        <section className="border-b border-border/70 bg-muted/20">
-          <div className="mx-auto max-w-6xl px-4 py-8">
-            <StatGrid items={heroMetrics} />
-          </div>
-        </section>
-      ) : null}
 
       {/* Article — 2 column layout on desktop */}
       <div className="mx-auto max-w-6xl px-4 py-12 md:py-16">
@@ -347,30 +368,42 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </div>
 
-      {/* Related Posts */}
-      <section className="mx-auto max-w-7xl px-4 py-24 border-t border-border">
-        <h2 className="text-3xl font-bold text-foreground mb-12">{locale === "th" ? "บทความที่เกี่ยวข้อง" : "Related Articles"}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {allPosts
-            .filter((p) => p.category === post.category && p.slug !== slug)
-            .slice(0, 3)
-            .map((relatedPost) => (
-              <Link key={relatedPost.slug} href={`${localePrefix}/blog/${relatedPost.slug}`}>
-                <article className="group h-full p-8 rounded-lg border border-border hover:border-warm-amber/50 hover:shadow-lg transition bg-card">
-                  <div className="space-y-3">
-                    <span className="inline-block px-3 py-1 bg-warm-amber/10 text-warm-amber text-xs font-semibold rounded capitalize">
-                      {getBlogCategoryLabel(relatedPost.category, locale)}
-                    </span>
-                    <h3 className="text-lg font-bold text-foreground group-hover:text-warm-amber transition line-clamp-2">
-                      {relatedPost.title}
+      {/* Related Articles — semantic cluster-based (SET A Day 2) */}
+      {relatedPosts.length > 0 ? (
+        <section className="border-t border-border/70 bg-muted/20">
+          <div className="mx-auto max-w-6xl px-4 py-14 md:py-18">
+            <div className="mb-8 flex items-baseline gap-4">
+              <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+                {locale === "th" ? "บทความที่เกี่ยวข้อง" : "Related Articles"}
+              </h2>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {locale === "th" ? "จากกลุ่มเนื้อหาเดียวกัน" : "from the same knowledge cluster"}
+              </span>
+            </div>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {relatedPosts.map((relPost) => (
+                <Link key={relPost.slug} href={`${localePrefix}/blog/${relPost.slug}`} className="group">
+                  <article className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/80 p-6 transition duration-200 group-hover:border-warm-amber/40 group-hover:shadow-[0_12px_36px_rgba(0,0,0,0.06)]">
+                    <div className="mb-3">
+                      <span className="inline-block rounded-full border border-border/60 bg-background/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {getBlogCategoryLabel(relPost.category, locale)}
+                      </span>
+                    </div>
+                    <h3 className="flex-1 text-base font-bold leading-7 text-foreground transition group-hover:text-warm-amber line-clamp-3">
+                      {relPost.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{relatedPost.excerpt}</p>
-                  </div>
-                </article>
-              </Link>
-            ))}
-        </div>
-      </section>
+                    <p className="mt-3 text-sm leading-6 text-muted-foreground line-clamp-2">{relPost.excerpt}</p>
+                    <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-warm-amber opacity-0 transition-opacity group-hover:opacity-100">
+                      <span>{locale === "th" ? "อ่านบทความ" : "Read article"}</span>
+                      <span aria-hidden>→</span>
+                    </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <Footer />
     </main>

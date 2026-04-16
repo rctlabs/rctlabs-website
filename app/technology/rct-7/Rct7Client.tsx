@@ -27,7 +27,7 @@ export default function Rct7Client({ locale: propLocale }: { locale?: string }) 
       <Navbar />
 
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
+      <section className="mx-auto max-w-7xl px-4 pt-12 pb-8 md:py-24 text-center">
         <div className="max-w-3xl mx-auto space-y-5">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-medium"
             style={{ backgroundColor: "#D4A85315", borderColor: "#D4A85330", color: "#D4A853" }}>
@@ -67,7 +67,7 @@ export default function Rct7Client({ locale: propLocale }: { locale?: string }) 
       </section>
 
       {/* 7-State IntentLoop */}
-      <section className="mx-auto max-w-4xl px-4 py-20">
+      <section className="mx-auto max-w-4xl px-4 py-10 md:py-16">
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
             {isTh ? "IntentLoop — 7 สถานะ" : "The 7-State IntentLoop"}
@@ -81,10 +81,10 @@ export default function Rct7Client({ locale: propLocale }: { locale?: string }) 
         <div className="space-y-3">
           {intentLoopStates.map((s, i) => (
             <m.div key={s.state} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-              className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card">
-              <div className="shrink-0 flex items-center gap-3">
-                <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: `${s.color}18`, color: s.color }}>{s.num}</span>
-                <span className="text-xs font-bold font-mono w-16" style={{ color: s.color }}>{s.state}</span>
+              className="flex items-start gap-3 p-4 sm:p-5 rounded-xl border border-border bg-card">
+              <div className="shrink-0 flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 pt-0.5">
+                <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: `${s.color}18`, color: s.color }}>{s.num}</span>
+                <span className="text-[10px] sm:text-xs font-bold font-mono w-10 sm:w-16 text-center sm:text-left" style={{ color: s.color }}>{s.state}</span>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? s.descTh : s.descEn}</p>
             </m.div>
@@ -125,7 +125,7 @@ export default function Rct7Client({ locale: propLocale }: { locale?: string }) 
       </section>
 
       {/* Related */}
-      <section className="mx-auto max-w-5xl px-4 py-16">
+      <section className="mx-auto max-w-5xl px-4 py-10 md:py-16">
         <h2 className="text-2xl font-bold text-foreground text-center mb-8">{isTh ? "หัวข้อที่เกี่ยวข้อง" : "Related"}</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           {[

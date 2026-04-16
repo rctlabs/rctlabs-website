@@ -149,6 +149,15 @@ export function ArticleHero({
                 <div className="text-xl font-bold text-foreground">{metric.value}</div>
                 <div className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{metric.label}</div>
                 {metric.detail ? <div className="mt-1 text-xs text-muted-foreground">{metric.detail}</div> : null}
+                {metric.evidenceType ? (
+                  <div className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${
+                    metric.evidenceType === "source"
+                      ? "bg-warm-sage/15 text-warm-sage"
+                      : "bg-warm-amber/15 text-warm-amber"
+                  }`}>
+                    {metric.evidenceType === "source" ? "Source-backed" : "Benchmark assumption"}
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>
