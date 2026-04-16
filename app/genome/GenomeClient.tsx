@@ -41,7 +41,7 @@ export default function GenomePage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
+      <section className="mx-auto max-w-7xl px-4 pt-12 pb-8 md:py-24 text-center">
         <div className="max-w-3xl mx-auto space-y-5">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-terracotta/10 border border-warm-terracotta/30 text-warm-terracotta text-sm font-medium">
             <Dna className="w-4 h-4" /> {isTh ? "ระบบ 7 Genome" : "7 Genome System"}
@@ -71,7 +71,7 @@ export default function GenomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 py-16 md:py-20">
+      <section className="mx-auto max-w-5xl px-4 py-10 md:py-20">
         <div className="max-w-4xl mx-auto mb-8 text-center">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-warm-terracotta/10 border border-warm-terracotta/30 text-warm-terracotta text-sm font-medium">
             <Dna className="w-4 h-4" /> {isTh ? "Interactive Explorer" : "Interactive Explorer"}
@@ -89,7 +89,7 @@ export default function GenomePage() {
       </section>
 
       {/* Genome Cards */}
-      <section className="mx-auto max-w-4xl px-4 py-20">
+      <section className="mx-auto max-w-4xl px-4 py-10 md:py-20">
         <h2 className="text-2xl font-bold text-foreground text-center mb-10">{isTh ? "รายละเอียด 7 Genomes" : "The Seven Genomes in Detail"}</h2>
         <div className="space-y-5">
           {localGenomes.map((g, i) => (
@@ -113,7 +113,7 @@ export default function GenomePage() {
       </section>
 
       {/* Circular Diagram */}
-      <section className="bg-muted/30 py-20">
+      <section className="bg-muted/30 py-12 md:py-16">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-8">{isTh ? "วงจร Genome" : "The Genome Cycle"}</h2>
           <div className="flex flex-wrap justify-center gap-3">
@@ -133,7 +133,7 @@ export default function GenomePage() {
       </section>
 
       {/* Related */}
-      <section className="mx-auto max-w-5xl px-4 py-20">
+      <section className="mx-auto max-w-5xl px-4 py-10 md:py-16">
         <h2 className="text-2xl font-bold text-foreground text-center mb-8">{isTh ? "หัวข้อที่เกี่ยวข้อง" : "Related Topics"}</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
@@ -151,7 +151,7 @@ export default function GenomePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-muted/30 py-20">
+      <section className="bg-muted/30 py-14 md:py-20">
         <div className="mx-auto max-w-3xl px-4 text-center space-y-6">
           <h2 className="text-3xl font-bold text-foreground">{isTh ? "สนใจระบบ 7 Genome?" : "Interested in the 7 Genome System?"}</h2>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -111,7 +111,7 @@ const nextConfig = {
               // www.google.com needed for GA4 attribution pixel (1×1 tracking image)
               "img-src 'self' data: blob: https://d2xsxph8kpxj0f.cloudfront.net https://rctlabs.co https://www.googletagmanager.com https://www.google.com",
               // stats.g.doubleclick.net needed for GA4 attribution and conversion tracking
-              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://api.rctlabs.co https://vitals.vercel-insights.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://region1.google-analytics.com https://region1.analytics.google.com https://stats.g.doubleclick.net",
+              "connect-src 'self' https://*.supabase.co https://vercel.live wss://*.supabase.co https://api.rctlabs.co https://vitals.vercel-insights.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://region1.google-analytics.com https://region1.analytics.google.com https://stats.g.doubleclick.net https://www.google.com",
               "frame-ancestors 'none'",
             ].join("; "),
           },

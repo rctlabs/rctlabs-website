@@ -125,7 +125,7 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
       <Navbar />
 
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
+      <section className="mx-auto max-w-7xl px-4 pt-12 pb-8 md:py-24 text-center">
         <div className="max-w-3xl mx-auto space-y-5">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-medium"
             style={{ backgroundColor: "#D4A85315", borderColor: "#D4A85330", color: "#D4A853" }}>
@@ -181,7 +181,7 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
       </section>
 
       {/* 7 Thinking Steps */}
-      <section className="mx-auto max-w-4xl px-4 py-20">
+      <section className="mx-auto max-w-4xl px-4 py-10 md:py-16">
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
             {isTh ? "7 ขั้นตอนของ RCT-7 Thinking" : "The 7 Steps of RCT-7 Thinking"}
@@ -195,16 +195,16 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
         <div className="space-y-3">
           {thinkingSteps.map((s, i) => (
             <m.div key={s.step} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-              className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card">
-              <div className="shrink-0 flex items-center gap-3">
-                <span className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+              className="flex items-start gap-3 p-4 sm:p-5 rounded-xl border border-border bg-card">
+              <div className="shrink-0 flex flex-col items-center gap-1.5 pt-0.5">
+                <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold"
                   style={{ backgroundColor: `${s.color}18`, color: s.color }}>{s.num}</span>
-                <div className="w-28">
-                  <div className="text-xs font-bold font-mono" style={{ color: s.color }}>{s.step}</div>
-                  {isTh && <div className="text-xs text-muted-foreground mt-0.5">{s.stepTh}</div>}
+                <div className="text-center">
+                  <div className="text-[10px] sm:text-xs font-bold font-mono leading-tight" style={{ color: s.color }}>{s.step}</div>
+                  {isTh && <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">{s.stepTh}</div>}
                 </div>
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p className="text-sm leading-relaxed text-muted-foreground">{isTh ? s.descTh : s.descEn}</p>
                 <span className="text-xs font-mono mt-2 inline-block" style={{ color: s.color }}>Kernel: {s.kernelTiers}</span>
               </div>
@@ -241,7 +241,7 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
       </section>
 
       {/* Kernel 9 Tiers Mapping */}
-      <section className="mx-auto max-w-4xl px-4 py-20">
+      <section className="mx-auto max-w-4xl px-4 py-10 md:py-16">
         <div className="text-center mb-10">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-medium mb-4"
             style={{ backgroundColor: "#D4A85315", borderColor: "#D4A85330", color: "#D4A853" }}>
@@ -259,12 +259,12 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
         <div className="space-y-2">
           {kernelMapping.map((_item, i) => (
             <m.div key={_item.tier} initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
-              className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card">
-              <span className="text-xs font-bold font-mono w-14 shrink-0" style={{ color: _item.color }}>{_item.tier}</span>
-              <span className="text-xs text-muted-foreground w-44 shrink-0">{isTh ? _item.tierNameTh : _item.tierNameEn}</span>
-              <div className="flex items-center gap-1.5 text-xs text-foreground font-medium">
-                <ChevronRight size={12} style={{ color: _item.color }} />
-                {_item.step}
+              className="flex items-center gap-3 p-4 rounded-lg border border-border bg-card">
+              <span className="text-xs font-bold font-mono w-12 sm:w-14 shrink-0" style={{ color: _item.color }}>{_item.tier}</span>
+              <span className="text-xs text-muted-foreground w-28 sm:w-44 shrink-0 leading-snug">{isTh ? _item.tierNameTh : _item.tierNameEn}</span>
+              <div className="flex items-center gap-1 text-xs text-foreground font-medium min-w-0">
+                <ChevronRight size={12} className="shrink-0" style={{ color: _item.color }} />
+                <span className="truncate sm:whitespace-normal">{_item.step}</span>
               </div>
             </m.div>
           ))}
@@ -312,7 +312,7 @@ export default function Rct7ThinkingClient({ locale: propLocale }: { locale?: st
       </section>
 
       {/* Related */}
-      <section className="mx-auto max-w-5xl px-4 pb-16">
+      <section className="mx-auto max-w-5xl px-4 pb-10 md:pb-16">
         <h2 className="text-2xl font-bold text-foreground text-center mb-8">{isTh ? "หัวข้อที่เกี่ยวข้อง" : "Related"}</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           {[
