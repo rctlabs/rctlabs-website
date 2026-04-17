@@ -1000,6 +1000,18 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
+  // Thai-AI / Vision 2030 cluster — must appear before the generic "thailand" rule
+  if (post.slug.startsWith("thai-ai") || post.slug.includes("vision-2030")) {
+    return {
+      solutionHref: "/thailand-enterprise-trust",
+      solutionLabel: "Explore Thailand Enterprise Trust",
+      authorityHref: "/solutions/regional-ai",
+      authorityLabel: "Open Regional AI Solutions",
+      conversionContext: "whitepaper:evaluation-pack:request",
+      conversionLabel: "Request the Thailand evaluation path",
+    }
+  }
+
   if (post.slug.includes("thailand")) {
     return {
       solutionHref: "/solutions/ai-hallucination-prevention",

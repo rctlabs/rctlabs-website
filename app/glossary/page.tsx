@@ -50,6 +50,20 @@ const glossaryTerms = [
     definitionTh: "โครงสร้าง AI 7 โมเดลของ RCT Ecosystem: โมเดลตะวันตก 3 ตัว + ตะวันออก 3 ตัว + ไทย 1 ตัว (Typhoon v2) ลดต้นทุน 3.74 เท่าด้วย intelligent routing",
     entityHref: "/en/entity/governance-layer",
   },
+  {
+    term: "HexaCore Consensus",
+    termTh: "HexaCore Consensus (กลไกฉันทามติ HexaCore)",
+    definition: "The agreement mechanism within the HexaCore 7-model system where multiple AI models evaluate the same query simultaneously and a constitutional threshold (Tier 4: 50%, Tier 6: 67%, Tier 8: 75%, Tier S: 100%) must be met before any output is released. Prevents model-specific bias from reaching enterprise systems.",
+    definitionTh: "กลไก agreement ภายในระบบ 7 โมเดล HexaCore ที่โมเดลหลายตัวประเมิน query พร้อมกัน และต้องผ่าน threshold รัฐธรรมนูญ (Tier 4: 50%, Tier 6: 67%, Tier 8: 75%, Tier S: 100%) ก่อนปล่อยผลลัพธ์ ป้องกัน model-specific bias เข้าสู่ระบบองค์กร",
+    entityHref: "/en/entity/governance-layer",
+  },
+  {
+    term: "MEE (Multi-Expert Evaluator)",
+    termTh: "MEE (Multi-Expert Evaluator — ผู้ประเมินหลายผู้เชี่ยวชาญ)",
+    definition: "A constitutional AI evaluation framework where multiple domain-specific expert models assess a single output from independent perspectives. Unlike SignedAI's consensus-by-agreement, MEE uses weighted scoring across specialized evaluators (accuracy, safety, compliance, domain-knowledge) before a final verdict is issued. Designed for high-stakes enterprise decisions where a single evaluator's blind spots are unacceptable.",
+    definitionTh: "Framework การประเมิน AI แบบรัฐธรรมนูญที่โมเดล expert หลายตัวประเมิน output เดียวจากมุมมองอิสระ ต่างจาก SignedAI ที่ใช้ consensus-by-agreement — MEE ใช้ weighted scoring จาก evaluators เฉพาะทาง (accuracy, safety, compliance, domain-knowledge) ก่อนออก verdict สุดท้าย ออกแบบสำหรับการตัดสินใจระดับองค์กรที่ blind spots ของ evaluator เดียวยอมรับไม่ได้",
+    entityHref: "/en/entity/governance-layer",
+  },
   // ─── Constitutional AI Concepts ────────────────────────────────
   {
     term: "Constitutional AI",

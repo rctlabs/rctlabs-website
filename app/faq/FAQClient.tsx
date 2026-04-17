@@ -72,6 +72,24 @@ const faqCategories = [
         aEn: "RCT is LLM-agnostic and supports OpenAI, Anthropic Claude, Google Gemini, local Ollama models, and any OpenAI-compatible API. The Intent Loop Engine automatically selects the optimal model based on task complexity and cost constraints.",
         aTh: "RCT เป็น LLM-agnostic รองรับ OpenAI, Anthropic Claude, Google Gemini, Ollama models ในเครื่อง และ API ที่เข้ากันได้กับ OpenAI ทุกตัว Intent Loop Engine จะเลือก Model ที่เหมาะสมที่สุดอัตโนมัติ",
       },
+      {
+        qEn: "What is the RCT HexaCore 7-model architecture?",
+        qTh: "สถาปัตยกรรม HexaCore 7 โมเดลของ RCT คืออะไร?",
+        aEn: "HexaCore is the 7-model AI infrastructure: 3 Western LLMs + 3 Eastern LLMs + 1 Thai regional model (Typhoon v2). For critical queries, all 7 models process in parallel through the HexaCore Consensus mechanism, which enforces constitutional agreement thresholds (50–100% by tier) before any output is released. This achieves 3.74x cost reduction vs single-model deployments while reducing hallucination to 0.3%.",
+        aTh: "HexaCore คือโครงสร้าง AI 7 โมเดล: LLM ตะวันตก 3 ตัว + ตะวันออก 3 ตัว + โมเดลไทย 1 ตัว (Typhoon v2) สำหรับ query สำคัญ ทั้ง 7 โมเดลประมวลผลพร้อมกันผ่านกลไก HexaCore Consensus ที่บังคับ threshold รัฐธรรมนูญ (50–100% ตาม Tier) ก่อนปล่อยผลลัพธ์ ทำให้ลดต้นทุน 3.74 เท่าและ hallucination เหลือ 0.3%",
+      },
+      {
+        qEn: "How does SignedAI reduce hallucination to 0.3%?",
+        qTh: "SignedAI ลด hallucination เหลือ 0.3% ได้อย่างไร?",
+        aEn: "SignedAI routes critical queries through 4–8 models simultaneously and requires constitutional consensus: Tier 4 = 50% agreement, Tier 6 = 67%, Tier 8 = 75%, Tier S = 100%. If consensus is not reached, the system escalates rather than releasing an unverified output. The industry average hallucination rate is 12–15%; RCT achieves 0.3% through this multi-model verification layer combined with Ed25519 cryptographic signatures on all consensus decisions.",
+        aTh: "SignedAI ส่ง query สำคัญผ่าน 4–8 โมเดลพร้อมกันและต้องการ consensus รัฐธรรมนูญ: Tier 4 = 50%, Tier 6 = 67%, Tier 8 = 75%, Tier S = 100% ถ้าไม่ถึง threshold ระบบจะ escalate ไม่ใช่ปล่อยผลลัพธ์ที่ยังไม่ verified อุตสาหกรรม hallucinate ที่ 12–15% แต่ RCT ทำได้ 0.3% ผ่าน multi-model verification layer พร้อมลายเซ็น Ed25519",
+      },
+      {
+        qEn: "What is the Delta Engine's 74% compression capability?",
+        qTh: "Delta Engine บีบอัด 74% ทำงานอย่างไร?",
+        aEn: "The Delta Engine stores only incremental state changes (deltas) rather than full state snapshots. This achieves 74% average lossless compression with sub-1ms reconstruction, enabling warm recall under 50ms compared to a full cold-start LLM call of 3–5 seconds. It is what allows RCT to maintain deep context across long sessions without proportional memory cost or latency increase.",
+        aTh: "Delta Engine เก็บเฉพาะการเปลี่ยนแปลง (deltas) แทนสถานะเต็ม บีบอัดได้ 74% แบบ lossless พร้อม reconstruction ต่ำกว่า 1ms ทำให้ warm recall ต่ำกว่า 50ms เทียบกับ cold-start LLM call 3–5 วินาที นี่คือสิ่งที่ทำให้ RCT รักษา context ยาวได้โดยไม่เพิ่มต้นทุนหน่วยความจำหรือ latency ตามสัดส่วน",
+      },
     ],
   },
   {
