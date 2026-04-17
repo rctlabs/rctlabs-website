@@ -1,10 +1,46 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { BookOpen, FileSearch, ShieldCheck, Workflow } from "lucide-react"
+import { ArrowRight, BookOpen, FileSearch, ShieldCheck, Workflow } from "lucide-react"
+import Link from "next/link"
 import { useLanguage } from "@/components/language-provider"
 import { ResourceCardGrid, ResourcePageShell, ResourceSection } from "@/components/resource/resource-shell"
 import { getLocalePrefix, resolveLocale } from "@/lib/i18n"
+
+const researchLinks = [
+  {
+    hrefEn: "/en/blog/rct-ecosystem-4849-tests-methodology",
+    hrefTh: "/th/blog/rct-ecosystem-4849-tests-methodology",
+    labelEn: "4,849 Tests, 0 Failures: How RCT Verifies Everything",
+    labelTh: "4,849 Tests, 0 Failures: วิธีที่ RCT ตรวจสอบทุกอย่าง",
+    pillarEn: "Testing baseline pillar",
+    pillarTh: "Testing baseline",
+  },
+  {
+    hrefEn: "/en/blog/evaluation-harnesses-enterprise-llm",
+    hrefTh: "/en/blog/evaluation-harnesses-enterprise-llm",
+    labelEn: "Evaluation Harnesses for Enterprise LLMs",
+    labelTh: "Evaluation Harnesses สำหรับ Enterprise LLM",
+    pillarEn: "Review loop pillar",
+    pillarTh: "Review loop",
+  },
+  {
+    hrefEn: "/en/blog/fdia-equation-explained",
+    hrefTh: "/th/blog/fdia-equation-explained",
+    labelEn: "FDIA Equation Explained: The Mathematical Governance Foundation",
+    labelTh: "สมการ FDIA: รากฐานการกำกับดูแลทางคณิตศาสตร์",
+    pillarEn: "External frameworks pillar",
+    pillarTh: "External frameworks",
+  },
+  {
+    hrefEn: "/en/blog/constitutional-ai-vs-rag-comparison",
+    hrefTh: "/en/blog/constitutional-ai-vs-rag-comparison",
+    labelEn: "Constitutional AI vs RAG: A Disclosure Boundary Comparison",
+    labelTh: "Constitutional AI vs RAG: เปรียบเทียบขอบเขตการเปิดเผยข้อมูล",
+    pillarEn: "Disclosure boundary pillar",
+    pillarTh: "Disclosure boundaries",
+  },
+] as const
 
 export default function MethodologyClient() {
   const pathname = usePathname()
@@ -114,6 +150,32 @@ export default function MethodologyClient() {
       >
         <ResourceCardGrid cards={routes} />
       </ResourceSection>
+
+      {/* Related Research — specific blog articles that validate each methodology pillar */}
+      <section className="mx-auto max-w-4xl px-4 pb-16">
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
+          {language === "th" ? "งานวิจัยที่ตรวจสอบ methodology นี้" : "Research articles that validate this methodology"}
+        </p>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {researchLinks.map((item) => (
+            <Link
+              key={item.hrefEn}
+              href={language === "th" ? item.hrefTh : item.hrefEn}
+              className="group flex items-start gap-3 rounded-xl border border-border bg-card/50 p-4 transition-all hover:-translate-y-0.5 hover:border-warm-amber/40 hover:bg-card"
+            >
+              <ArrowRight size={14} className="mt-0.5 shrink-0 text-warm-amber transition-transform group-hover:translate-x-0.5" />
+              <div className="space-y-1">
+                <span className="text-sm font-medium leading-snug text-foreground">
+                  {language === "th" ? item.labelTh : item.labelEn}
+                </span>
+                <span className="block text-xs text-muted-foreground">
+                  {language === "th" ? item.pillarTh : item.pillarEn}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </ResourcePageShell>
   )
 }

@@ -574,6 +574,28 @@ export default function BenchmarkPage() {
           </div>
         </section>
 
+        {/* Related Research */}
+        <section className={`py-14 lg:py-18 transition-colors duration-300 ${isDark ? "bg-[#111]" : "bg-warm-cream/60"}`} aria-label="Related research articles">
+          <div className="max-w-4xl mx-auto px-4">
+            <h3 className={`text-lg font-semibold mb-6 ${isDark ? "text-warm-light-gray" : "text-warm-charcoal"}`}>
+              {isEn ? "Related Research" : "งานวิจัยที่เกี่ยวข้อง"}
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                { href: "/en/blog/signedai-multi-llm-consensus-explained", labelEn: "SignedAI: Multi-LLM Consensus to Prevent Hallucination at Scale", labelTh: "SignedAI: Multi-LLM Consensus ป้องกัน Hallucination" },
+                { href: "/en/blog/hexacore-7-model-ai-infrastructure", labelEn: "HexaCore 7-Model AI Infrastructure: Cost Reduction at Scale", labelTh: "HexaCore 7 โมเดล AI Infrastructure: ลดต้นทุนในระดับ Scale" },
+                { href: "/en/blog/delta-engine-74-percent-compression", labelEn: "Delta Engine: 74% Lossless Memory Compression", labelTh: "Delta Engine: บีบอัดหน่วยความจำ 74% แบบ Lossless" },
+                { href: "/en/blog/rct-ecosystem-4849-tests-methodology", labelEn: "4,849 Tests, 0 Failures: How RCT Verifies Everything", labelTh: "4,849 Tests, 0 Failures: วิธีที่ RCT ตรวจสอบทุกอย่าง" },
+              ].map((item) => (
+                <Link key={item.href} href={item.href} className={`flex items-start gap-3 rounded-xl border p-4 transition-colors hover:-translate-y-0.5 ${isDark ? "border-[#2a2a2a] hover:border-[#444] hover:bg-[#1a1a1a]" : "border-warm-light-gray/50 hover:border-warm-amber/40 hover:bg-white"}`}>
+                  <ArrowRight size={14} className="mt-1 shrink-0 text-warm-amber" />
+                  <span className={`text-sm leading-relaxed ${isDark ? "text-[#bbb]" : "text-warm-charcoal/80"}`}>{isEn ? item.labelEn : item.labelTh}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className={`py-16 lg:py-20 transition-colors duration-300 ${isDark ? "bg-[#0D0D0D]" : "bg-white"}`} aria-label="CTA">
           <div className="max-w-2xl mx-auto px-4 text-center">

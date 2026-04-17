@@ -183,7 +183,7 @@ function HeroArchitectureVisual() {
                       className="hero-architecture-badge__body block outline-none"
                     >
                       <div
-                        className="rounded-full border px-2 py-1 font-mono text-[9px] font-semibold shadow-[0_8px_18px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-0.5 sm:px-2.5 sm:text-[10px]"
+                        className="rounded-full border px-2 py-1 min-h-6 flex items-center font-mono text-[9px] font-semibold shadow-[0_8px_18px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-0.5 sm:px-2.5 sm:text-[10px]"
                         style={{
                           color: isDark ? badge.accent : badge.lightAccent,
                           borderColor: `${badge.accent}2F`,

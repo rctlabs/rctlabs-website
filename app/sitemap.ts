@@ -9,7 +9,11 @@ function localizeUrl(locale: (typeof locales)[number], route: string) {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date()
+  // Use a fixed deploy date instead of new Date() to avoid signal dilution:
+  // Google loses trust in lastModified if all 153 pages change simultaneously every build.
+  // Update SITE_LAST_DEPLOY on each production deploy that touches public routes.
+  const SITE_LAST_DEPLOY = "2026-04-17"
+  const lastModified = new Date(SITE_LAST_DEPLOY)
   const publicEntries = PUBLIC_ROUTES.flatMap((route) =>
     locales.map((locale) => ({
       url: localizeUrl(locale, route),

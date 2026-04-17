@@ -23,6 +23,24 @@ export default function ChangelogClient() {
 
   const releases: ReleaseEntry[] = [
     {
+      version: "Website v3.3.0",
+      date: "2026-04-16",
+      title: language === "th" ? "Mobile optimization + FAQ/Speakable schema + BLOG_RELATED_MAP 72 edges" : "Mobile optimization + FAQ/Speakable schema + BLOG_RELATED_MAP 72 edges",
+      description: language === "th" ? "แก้ไข mobile layout บน 3 หน้า (genome, rct-7, rct-7-thinking) เพิ่ม FAQPage JSON-LD schema อัตโนมัติจาก H2 และ Speakable schema ใน BlogPosting JSON-LD เพิ่ม BLOG_RELATED_MAP 72 edges พร้อม Semantic Related Articles UI และแก้ไข GA4 CSP" : "Fixed mobile hero padding on 3 article pages, added FAQPage JSON-LD auto-extracted from H2 headings, Speakable schema in BlogPosting, BLOG_RELATED_MAP with 72 cluster edges, Semantic Related Articles UI, and GA4 CSP fix. Lighthouse mobile: 87–92 / 96 / 100 / 100.",
+      icon: Rocket,
+      highlights: language === "th" ? ["Mobile hero padding แก้ไขแล้ว 3 หน้า", "FAQPage JSON-LD จาก H2 headings", "Speakable schema ใน BlogPosting", "BLOG_RELATED_MAP 72 edges + Related Articles UI", "GA4 CSP fix (www.google.com)", "Lighthouse mobile 87–92/96/100/100"] : ["Mobile hero padding fixed on 3 pages", "FAQPage JSON-LD auto-extracted from H2", "Speakable schema in BlogPosting", "BLOG_RELATED_MAP 72 edges + Related Articles UI", "GA4 CSP fix (www.google.com added)", "Lighthouse mobile 87–92/96/100/100"],
+      tone: "border-indigo-500/25 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+    },
+    {
+      version: "Website v3.2.0",
+      date: "2026-04-15",
+      title: language === "th" ? "BLOG_HERO_METRICS 24/24 + getPostJourney() 11 rules + E-E-A-T evidence badges" : "BLOG_HERO_METRICS 24/24 + getPostJourney() 11 rules + E-E-A-T evidence badges",
+      description: language === "th" ? "ขยาย BlogHeroMetric interface เป็น 8 fields พร้อม evidenceType, evidenceRef, evidenceNote และ verifiedAt เพิ่ม validateMetricSet() enforcement เพิ่ม evidence badges ใน article-hero.tsx และ StatGrid เพิ่ม 72 metric cards ครบทั้ง 24 slugs และ getPostJourney() 11 rules ครอบคลุม 23/24 blog cluster" : "Expanded BlogHeroMetric interface to 8 fields with evidence taxonomy (evidenceType, evidenceRef, evidenceNote, verifiedAt). Added validateMetricSet() enforcement, evidence badges in article-hero.tsx and StatGrid. All 24/24 BLOG_HERO_METRICS complete. getPostJourney() now has 11 specific rules covering 23/24 blog clusters. Lighthouse 77/100/100/100.",
+      icon: BarChart3,
+      highlights: language === "th" ? ["BlogHeroMetric interface 8 fields", "validateMetricSet() enforcement", "Evidence badges ใน article-hero + StatGrid", "BLOG_HERO_METRICS 24/24 slugs ✅", "getPostJourney() 11 rules", "Lighthouse 77/100/100/100"] : ["BlogHeroMetric interface 8 fields", "validateMetricSet() enforcement", "Evidence badges in article-hero + StatGrid", "BLOG_HERO_METRICS 24/24 slugs complete ✅", "getPostJourney() 11 rules", "Lighthouse 77/100/100/100"],
+      tone: "border-blue-500/25 bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    },
+    {
       version: "Ecosystem v5.4.5",
       date: "2026-03-21",
       title: language === "th" ? "Backend Ecosystem v5.4.5 — 4,849 tests ผ่าน, Tier 8-9 algorithms สมบูรณ์" : "Backend Ecosystem v5.4.5 — 4,849 passing tests, Tier 8-9 algorithms complete",
