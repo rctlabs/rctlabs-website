@@ -530,10 +530,10 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       evidenceRef: "https://rctlabs.com/architecture", verifiedAt: "2026-04-15",
     },
     {
-      value: "30 days", label: "Foundation build time",
-      detail: "Zero external capital, one person — proves low-barrier enterprise AI entry",
+      value: "<4 months", label: "Foundation build time",
+      detail: "Zero external capital, one person — from first prototype to v5.4.5 in under 4 months",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/products/rctlabs", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.com/products/rctlabs", verifiedAt: "2026-04-20",
     },
   ],
 
@@ -953,7 +953,7 @@ export function getPostJourney(post: BlogPost) {
   }
 
   // FDIA cluster: equation-first before hallucination rule
-  if (post.slug.includes("fdia") || post.slug.includes("equation")) {
+  if (post.slug.includes("fdia") || post.slug.includes("equation") || post.slug.includes("kernel")) {
     return {
       solutionHref: "/protocols/fdia-equation",
       solutionLabel: "Explore the FDIA Equation",
@@ -965,7 +965,7 @@ export function getPostJourney(post: BlogPost) {
   }
 
   // JITNA / Protocol cluster
-  if (post.slug.includes("jitna") || post.slug.includes("intent-operat")) {
+  if (post.slug.includes("jitna") || post.slug.includes("intent-operat") || post.slug.includes("protocol") || post.slug.includes("rfc")) {
     return {
       solutionHref: "/protocols/jitna-rfc-001",
       solutionLabel: "Explore JITNA RFC-001",
@@ -976,8 +976,8 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
-  // SignedAI / HexaCore / Verification cluster
-  if (post.slug.includes("signedai") || post.slug.includes("hexacore") || post.slug.startsWith("verification-vs")) {
+  // SignedAI / HexaCore / Consensus / Verification cluster
+  if (post.slug.includes("signedai") || post.slug.includes("hexacore") || post.slug.includes("consensus") || post.slug.startsWith("verification-vs")) {
     return {
       solutionHref: "/products/signed-ai",
       solutionLabel: "Explore SignedAI",
@@ -988,8 +988,8 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
-  // Multi-Agent cluster
-  if (post.slug.includes("multi-agent")) {
+  // Multi-Agent / Agentic cluster
+  if (post.slug.includes("multi-agent") || post.slug.includes("agentic")) {
     return {
       solutionHref: "/solutions/dynamic-ai-routing",
       solutionLabel: "Explore Dynamic AI Routing",
@@ -1009,6 +1009,18 @@ export function getPostJourney(post: BlogPost) {
       authorityLabel: "Open Regional AI Solutions",
       conversionContext: "whitepaper:evaluation-pack:request",
       conversionLabel: "Request the Thailand evaluation path",
+    }
+  }
+
+  // PDPA / Compliance / Regional / ASEAN cluster — must appear before generic "thailand" rule
+  if (post.slug.includes("pdpa") || post.slug.includes("compliance") || post.slug.includes("regional") || post.slug.includes("asean")) {
+    return {
+      solutionHref: "/solutions/regional-ai",
+      solutionLabel: "Explore Regional AI Solutions",
+      authorityHref: "/solutions/ai-hallucination-prevention",
+      authorityLabel: "Explore AI Hallucination Prevention",
+      conversionContext: "whitepaper:evaluation-pack:request",
+      conversionLabel: "Request the compliance evaluation path",
     }
   }
 
@@ -1054,6 +1066,30 @@ export function getPostJourney(post: BlogPost) {
       authorityLabel: "Open Evaluation Hub",
       conversionContext: "pricing:rctlabs:sales",
       conversionLabel: "Talk to the platform team",
+    }
+  }
+
+  // Algorithm cluster — Phase 4 deep-dive articles (Analysearch, MCTR, Reflexion, ABV, ALBAS, Halting)
+  if (post.slug.includes("algorithm") || post.slug.includes("analysearch") || post.slug.includes("mctr") || post.slug.includes("reflexion") || post.slug.includes("abv") || post.slug.includes("albas") || post.slug.includes("halting")) {
+    return {
+      solutionHref: "/algorithms",
+      solutionLabel: "Explore All 41 Algorithms",
+      authorityHref: "/benchmark",
+      authorityLabel: "Review Benchmark Results",
+      conversionContext: "pricing:rctlabs:evaluation",
+      conversionLabel: "Request algorithm evaluation",
+    }
+  }
+
+  // Genome / Vault / Codex cluster — Phase 2 deep-dive articles
+  if (post.slug.includes("genome") || post.slug.includes("vault") || post.slug.includes("codex")) {
+    return {
+      solutionHref: "/genome",
+      solutionLabel: "Explore the 7 Genome System",
+      authorityHref: "/architecture",
+      authorityLabel: "Open RCT Architecture",
+      conversionContext: "launch:request-access",
+      conversionLabel: "Request genome architecture briefing",
     }
   }
 
