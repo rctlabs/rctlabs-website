@@ -283,10 +283,11 @@
     padding-top: var(--article-nav-offset);
   }
 
-  /* Thai subtitle — Kanit ExtraLight for visual contrast vs bold headlines */
+  /* Thai subtitle — Kanit Regular (was ExtraLight/300, now 400 after weight reduction
+     from 5 → 3 files; browser fallback from 300 would pick 400 anyway when 300 absent) */
   .subtitle-th {
     font-family: var(--rct-font-thai), var(--font-thai-fallback);
-    font-weight: 300;
+    font-weight: 400;
     font-synthesis: none;
     letter-spacing: 0.01em;
   }
@@ -554,11 +555,13 @@
 }
 
 /* Animation classes */
-.animate-equation-reveal  { animation: equation-reveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-equation-breathe { animation: equation-breathe 4s ease-in-out infinite; animation-delay: 1.5s; }
-.animate-grid-drift       { animation: grid-drift 20s linear infinite; }
-.animate-glow-pulse       { animation: glow-pulse 3s ease-in-out infinite; }
-.animate-fade-in-up       { animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@layer utilities {
+  .animate-equation-reveal  { animation: equation-reveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .animate-equation-breathe { animation: equation-breathe 4s ease-in-out infinite; animation-delay: 1.5s; }
+  .animate-grid-drift       { animation: grid-drift 20s linear infinite; }
+  .animate-glow-pulse       { animation: glow-pulse 3s ease-in-out infinite; }
+  .animate-fade-in-up       { animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+}
 
 /* Equation formula */
 .equation-formula {
@@ -1809,26 +1812,29 @@
 }
 
 /* Glassmorphism */
-.glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-.dark .glass { background: rgba(20, 15, 10, 0.8); }
+@layer utilities {
+  .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .dark .glass { background: rgba(20, 15, 10, 0.8); }
 
-/* Border utility */
-.border-thin { border-width: 1px; border-color: var(--border); }
+  /* Border utility */
+  .border-thin { border-width: 1px; border-color: var(--border); }
 
-/* Amber glow (primary) */
-.glow-amber      { filter: drop-shadow(0 0 20px rgba(212, 168, 83, 0.3)); }
-.dark .glow-amber { filter: drop-shadow(0 0 25px rgba(212, 168, 83, 0.5)); }
+  /* Amber glow (primary) */
+  .glow-amber      { filter: drop-shadow(0 0 20px rgba(212, 168, 83, 0.3)); }
+  .dark .glow-amber { filter: drop-shadow(0 0 25px rgba(212, 168, 83, 0.5)); }
 
-/* Backward-compat: Electric blue glow (used on existing pages) */
-.glow-blue      { filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3)); }
-.dark .glow-blue { filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.4)); }
+  /* Backward-compat: Electric blue glow (used on existing pages) */
+  .glow-blue      { filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3)); }
+  .dark .glow-blue { filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.4)); }
 
-/* Success glow */
-.glow-green { filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.3)); }
+  /* Success glow */
+  .glow-green { filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.3)); }
+}
 
 /* ==========================================================================
    COMPONENT UTILITIES (from manus-frontend-design)
    ========================================================================== */
+@layer components {
 
 /* Section spacing */
 .section-spacing        { padding-top: 3rem; padding-bottom: 3rem; }
@@ -1861,6 +1867,9 @@
 .fade-in-up { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .fade-in-up.visible { opacity: 1; transform: translateY(0); }
 
+} /* end @layer components */
+
+@layer components {
 /* Tags / Badges */
 .tag-amber {
   background-color: #FEF3C7; color: #92400E;
@@ -1900,6 +1909,8 @@
   background: linear-gradient(90deg, #1A1A1A 25%, #222 50%, #1A1A1A 75%);
   background-size: 200% 100%;
 }
+
+} /* end tags @layer components */
 
 /* ==========================================================================
    PIXEL ART IDENTITY SYSTEM
@@ -2111,16 +2122,18 @@ svg text { text-rendering: optimizeLegibility; }
   --rct-duration-slow: 500ms;
 }
 
-/* Motion utility classes */
-.motion-precise { transition-timing-function: var(--rct-ease-precise); }
-.motion-entrance { transition-timing-function: var(--rct-ease-entrance); }
-.motion-spring { transition-timing-function: var(--rct-ease-spring-light); }
-
 @keyframes fade-in-right {
   from { opacity: 0; transform: translateX(12px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-.animate-fade-in-right { animation: fade-in-right 0.3s var(--rct-ease-entrance) forwards; }
+
+/* Motion utility classes */
+@layer utilities {
+  .motion-precise { transition-timing-function: var(--rct-ease-precise); }
+  .motion-entrance { transition-timing-function: var(--rct-ease-entrance); }
+  .motion-spring { transition-timing-function: var(--rct-ease-spring-light); }
+  .animate-fade-in-right { animation: fade-in-right 0.3s var(--rct-ease-entrance) forwards; }
+}
 
 /* Reading progress bar — warm amber thin line */
 .reading-progress-bar {

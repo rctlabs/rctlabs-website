@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { m } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import type { ReactNode } from "react"
 import { getLocalePrefix } from "@/lib/i18n"
@@ -78,10 +77,8 @@ export default function HomePage({ locale, navSlot, heroSlot }: HomePageClientPr
             </div>
 
             <div className="relative mx-auto max-w-6xl px-4">
-            <m.div
-              whileHover={{ y: -4, scale: 1.004 }}
-              transition={{ type: "spring", stiffness: 220, damping: 24, mass: 0.9 }}
-              className="main-page-reactive-card main-page-reactive-surface relative overflow-hidden rounded-2xl border border-border bg-white/90 p-10 md:p-16 dark:bg-card/90"
+            <div
+              className="main-page-reactive-card main-page-reactive-surface relative overflow-hidden rounded-2xl border border-border bg-white/90 p-10 md:p-16 dark:bg-card/90 transition-transform duration-200 hover:-translate-y-1 hover:scale-[1.004]"
             >
               <div className="absolute inset-0 grid-background opacity-30" />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(247,241,235,0.2),transparent_32%,rgba(212,168,83,0.04)_100%)] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.035),transparent_32%,rgba(212,168,83,0.03)_100%)]" />
@@ -117,7 +114,7 @@ export default function HomePage({ locale, navSlot, heroSlot }: HomePageClientPr
                   </Link>
                 </div>
               </div>
-            </m.div>
+            </div>
             </div>
           </section>
         </MainPageSection>

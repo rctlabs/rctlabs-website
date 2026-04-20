@@ -35,9 +35,13 @@ next-env.d.ts
 .lh-tmp/
 .tmp-lh-*.json
 lh-*.json
+lh-*/
 .last-run.json
 .audit/
 lighthouse-report*.json
+lighthouse-report*.html
+lighthouse-phase*.json
+lighthouse-phase*.html
 artifacts/lighthouse-*.json
 artifacts/lighthouse-v2-*.json
 

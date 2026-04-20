@@ -9,7 +9,6 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import { m, useMotionValueEvent, useScroll } from "framer-motion"
 import { useIdleActivation } from "@/hooks/use-idle-activation"
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
 
@@ -84,40 +83,42 @@ function MainPageFieldOverlay() {
   const terraY = !reducedMotion ? 52 + pageProgress * 16 : 56
 
   return (
-    <m.div
+    <div
       aria-hidden="true"
       className="main-page-orchestrated-field"
-      initial={{ opacity: 0 }}
-      animate={{
+      style={{
         opacity: 1,
-        x: pointerShiftX * motionSettling,
-        y: pointerShiftY * motionSettling,
-        scale: 1 + (1 - motionSettling) * 0.012,
-      }}
-      transition={{
-        opacity: { duration: 1.4, ease: "easeOut" },
-        default: { type: "spring", stiffness: 42, damping: 24, mass: 1.05 },
+        transform: `translate3d(${(pointerShiftX * motionSettling).toFixed(2)}px, ${(pointerShiftY * motionSettling).toFixed(2)}px, 0) scale(${(1 + (1 - motionSettling) * 0.012).toFixed(4)})`,
+        transition: "transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
       }}
     >
-      <m.div
+      <div
         className="main-page-orchestrated-field__veil"
-        animate={{ opacity: clamp(0.2 + pageProgress * 0.08 + settleBoost * 0.2, 0.18, 0.34) }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        style={{
+          opacity: clamp(0.2 + pageProgress * 0.08 + settleBoost * 0.2, 0.18, 0.34),
+          transition: "opacity 0.6s ease-out",
+        }}
       />
-      <m.div
+      <div
         className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--amber"
-        animate={{ x: `${amberX}%`, y: `${amberY}%`, scale: 1 + heroBoost * 0.16 + (1 - motionSettling) * 0.03 }}
-        transition={{ type: "spring", stiffness: 28, damping: 22, mass: 1.2 }}
+        style={{
+          transform: `translate3d(${amberX}%, ${amberY}%, 0) scale(${(1 + heroBoost * 0.16 + (1 - motionSettling) * 0.03).toFixed(4)})`,
+          transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
       />
-      <m.div
+      <div
         className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--sage"
-        animate={{ x: `${sageX}%`, y: `${sageY}%`, scale: 1 + fdiaBoost * 0.18 + (1 - motionSettling) * 0.02 }}
-        transition={{ type: "spring", stiffness: 26, damping: 24, mass: 1.25 }}
+        style={{
+          transform: `translate3d(${sageX}%, ${sageY}%, 0) scale(${(1 + fdiaBoost * 0.18 + (1 - motionSettling) * 0.02).toFixed(4)})`,
+          transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
       />
-      <m.div
+      <div
         className="main-page-orchestrated-field__spotlight main-page-orchestrated-field__spotlight--terra"
-        animate={{ x: `${terraX}%`, y: `${terraY}%`, scale: 1 + settleBoost * 0.22 + pageProgress * 0.03 }}
-        transition={{ type: "spring", stiffness: 24, damping: 24, mass: 1.3 }}
+        style={{
+          transform: `translate3d(${terraX}%, ${terraY}%, 0) scale(${(1 + settleBoost * 0.22 + pageProgress * 0.03).toFixed(4)})`,
+          transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
       />
       <div
         className="main-page-orchestrated-field__wash"
@@ -167,7 +168,7 @@ function MainPageFieldOverlay() {
         className="main-page-orchestrated-field__settle"
         style={{ opacity: clamp(Math.max(0, pageProgress - 0.52) * 1.25, 0, 0.3) }}
       />
-    </m.div>
+    </div>
   )
 }
 
@@ -209,7 +210,6 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
   const activeSectionRef = useRef<MainPageSectionId>("hero")
   const lastScrollSampleRef = useRef({ value: 0, time: 0 })
   const reducedMotion = usePrefersReducedMotion()
-  const { scrollY, scrollYProgress } = useScroll()
 
   const [pageProgress, setPageProgress] = useState(0)
   const [scrollVelocity, setScrollVelocity] = useState(0)
@@ -246,25 +246,35 @@ export function MainPageOrchestrator({ children }: { children: ReactNode }) {
     return () => coarsePointer.removeEventListener("change", updatePointerMode)
   }, [])
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const nextProgress = quantize(clamp(latest, 0, 1), 0.01)
-    setPageProgress((current) => (current === nextProgress ? current : nextProgress))
-  })
+  // Native scroll listener replaces framer-motion useScroll + useMotionValueEvent
+  useEffect(() => {
+    if (typeof window === "undefined") return
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const now = typeof performance !== "undefined" ? performance.now() : Date.now()
-    const previous = lastScrollSampleRef.current
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0
+      const nextProgress = quantize(clamp(progress, 0, 1), 0.01)
+      setPageProgress((current) => (current === nextProgress ? current : nextProgress))
 
-    if (previous.time > 0) {
-      const deltaValue = Math.abs(latest - previous.value)
-      const deltaTime = Math.max(now - previous.time, 16)
-      const nextVelocity = quantize(clamp(deltaValue / deltaTime / 1.5, 0, 1), 0.02)
-      setScrollVelocity((current) => (current === nextVelocity ? current : nextVelocity))
+      const now = typeof performance !== "undefined" ? performance.now() : Date.now()
+      const previous = lastScrollSampleRef.current
+
+      if (previous.time > 0) {
+        const deltaValue = Math.abs(scrollTop - previous.value)
+        const deltaTime = Math.max(now - previous.time, 16)
+        const nextVelocity = quantize(clamp(deltaValue / deltaTime / 1.5, 0, 1), 0.02)
+        setScrollVelocity((current) => (current === nextVelocity ? current : nextVelocity))
+      }
+
+      lastScrollSampleRef.current = { value: scrollTop, time: now }
     }
 
-    lastScrollSampleRef.current = { value: latest, time: now }
-  })
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
 
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
   useEffect(() => {
     if (typeof window === "undefined" || reducedMotion || isTouchInput) {
       const resetFrame = window.requestAnimationFrame(() => {

@@ -425,7 +425,7 @@ export function FloatingAI() {
                 <div>
                   <p className="text-sm font-semibold text-foreground">RCT Assistant</p>
                   <div className="flex items-center gap-1">
-                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-warm-amber border-warm-amber/30">
+                    <Badge variant="outline" className="text-xs px-1.5 py-0 text-warm-amber border-warm-amber/30">
                       SignedAI
                     </Badge>
                   </div>
@@ -494,7 +494,7 @@ export function FloatingAI() {
                 <span>Mirror</span>
               </button>
               {analysisMode !== "chat" && (
-                <span className="ml-auto text-[10px] text-muted-foreground">
+                <span className="ml-auto text-xs text-muted-foreground">
                   {analysisMode === "mirror" ? "Iterative refinement" : "Deep intent analysis"}
                 </span>
               )}
@@ -540,7 +540,7 @@ export function FloatingAI() {
                     >
                       {msg.content}
                       {msg.role === "assistant" && (
-                        <span className="ml-1 text-[10px]">
+                        <span className="ml-1 text-xs">
                           {sourceIndicator(msg)}
                         </span>
                       )}
@@ -549,7 +549,7 @@ export function FloatingAI() {
                       {msg.role === "assistant" && msg.verified && (
                         <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border/50">
                           <CheckCircle className="w-3 h-3 text-green-400" />
-                          <span className="text-[10px] font-mono text-green-400">SignedAI Verified</span>
+                          <span className="text-xs font-mono text-green-400">SignedAI Verified</span>
                         </div>
                       )}
                     </div>
@@ -579,10 +579,10 @@ export function FloatingAI() {
                         <ThumbsDown className="w-3 h-3" />
                       </button>
                       {msg.intent && (
-                        <span className="text-[10px] text-muted-foreground/60 ml-1">{msg.intent}</span>
+                        <span className="text-xs text-muted-foreground/60 ml-1">{msg.intent}</span>
                       )}
                       {msg.source === "llm" && msg.model_used && (
-                        <span className="text-[10px] text-muted-foreground/60 ml-1">({msg.model_used})</span>
+                        <span className="text-xs text-muted-foreground/60 ml-1">({msg.model_used})</span>
                       )}
                     </div>
                   )}
@@ -606,7 +606,7 @@ export function FloatingAI() {
                   <button
                     key={s}
                     onClick={() => handleSuggestion(s)}
-                    className="text-[11px] px-2 py-1 rounded-full border border-warm-light-gray dark:border-[#2A2A2A] text-[#6B6B5B] dark:text-[#888] hover:text-warm-charcoal dark:hover:text-warm-light-gray hover:border-warm-amber/50 transition-colors truncate max-w-45"
+                    className="text-xs px-2 py-1 rounded-full border border-warm-light-gray dark:border-[#2A2A2A] text-[#6B6B5B] dark:text-[#888] hover:text-warm-charcoal dark:hover:text-warm-light-gray hover:border-warm-amber/50 transition-colors truncate max-w-45"
                   >
                     {s}
                   </button>

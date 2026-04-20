@@ -411,7 +411,7 @@ export default function BenchmarkPage() {
                   { value: sysStats.microserviceCount ?? "—", label: isEn ? "Microservices" : "Microservices" },
                   { value: sysStats.algorithmCount ?? "—", label: isEn ? "Algorithms" : "Algorithms" },
                 ].map((item) => (
-                  <div key={item.label} className={`rounded-xl border p-4 ${isDark ? "border-[#2A2A2A] bg-[#1A1A1A]" : "border-warm-light-gray bg-white"}`}>
+                  <div key={item.label} className={`rounded-xl border p-4 ${isDark ? "border-[#2A2A2A] bg-warm-charcoal" : "border-warm-light-gray bg-white"}`}>
                     <div className="text-2xl font-bold text-warm-sage">{item.value}</div>
                     <div className={`text-xs ${isDark ? "text-[#888]" : "text-warm-gray"}`}>{item.label}</div>
                   </div>

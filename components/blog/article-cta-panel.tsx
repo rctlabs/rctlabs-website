@@ -28,7 +28,7 @@ export function ArticleCtaPanel({
   return (
     <section className="my-12 rounded-2xl border border-border bg-card p-6 md:p-8">
       <div className="max-w-2xl">
-        <div className="text-sm font-semibold text-warm-amber">
+        <div className="text-sm font-semibold text-[#7A5910] dark:text-warm-amber">
           {isTh ? "เส้นทางถัดไปหลังอ่านบทความนี้" : "Where to go next from this article"}
         </div>
         <h2 className="mt-2 text-2xl font-bold text-foreground">
@@ -43,24 +43,24 @@ export function ArticleCtaPanel({
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         <Link href={`${localePrefix}${solutionHref}`} className="group rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50">
-          <Compass className="h-5 w-5 text-warm-amber" />
+          <Compass className="h-5 w-5 text-[#7A5910] dark:text-warm-amber" />
           <div className="mt-3 font-semibold text-foreground">{solutionLabel}</div>
           <div className="mt-1 text-sm text-muted-foreground">{isTh ? "ดู solution ที่เกี่ยวข้องกับบทความนี้" : "Go deeper into the related solution path."}</div>
-          <div className="mt-3 inline-flex items-center gap-2 text-sm text-warm-amber">{isTh ? "เปิดหน้า solution" : "Open solution"}<ArrowRight className="h-4 w-4" /></div>
+          <div className="mt-3 inline-flex items-center gap-2 text-sm text-[#7A5910] dark:text-warm-amber">{isTh ? "เปิดหน้า solution" : "Open solution"}<ArrowRight className="h-4 w-4" /></div>
         </Link>
 
         <Link href={`${localePrefix}${authorityHref}`} className="group rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50">
-          <FileText className="h-5 w-5 text-warm-amber" />
+          <FileText className="h-5 w-5 text-[#7A5910] dark:text-warm-amber" />
           <div className="mt-3 font-semibold text-foreground">{authorityLabel}</div>
           <div className="mt-1 text-sm text-muted-foreground">{isTh ? "ต่อยอดจากบทความไปยังหน้าที่อธิบายระบบในระดับลึกขึ้น" : "Continue into the authority layer for deeper system context."}</div>
-          <div className="mt-3 inline-flex items-center gap-2 text-sm text-warm-amber">{isTh ? "เปิดหน้าอ้างอิง" : "Open authority page"}<ArrowRight className="h-4 w-4" /></div>
+          <div className="mt-3 inline-flex items-center gap-2 text-sm text-[#7A5910] dark:text-warm-amber">{isTh ? "เปิดหน้าอ้างอิง" : "Open authority page"}<ArrowRight className="h-4 w-4" /></div>
         </Link>
 
         <Link href={buildContactHref(locale, conversionContext)} className="group rounded-xl border border-border/70 bg-background/60 p-5 transition hover:border-accent/50">
-          <Mail className="h-5 w-5 text-warm-amber" />
+          <Mail className="h-5 w-5 text-[#7A5910] dark:text-warm-amber" />
           <div className="mt-3 font-semibold text-foreground">{conversionLabel}</div>
           <div className="mt-1 text-sm text-muted-foreground">{isTh ? "ไปยัง contact funnel ที่ตรงกับ intent ของบทความนี้" : "Open the contact funnel aligned with this article's intent."}</div>
-          <div className="mt-3 inline-flex items-center gap-2 text-sm text-warm-amber">{isTh ? "เริ่มคุยกับทีม" : "Start the conversation"}<ArrowRight className="h-4 w-4" /></div>
+          <div className="mt-3 inline-flex items-center gap-2 text-sm text-[#7A5910] dark:text-warm-amber">{isTh ? "เริ่มคุยกับทีม" : "Start the conversation"}<ArrowRight className="h-4 w-4" /></div>
         </Link>
       </div>
     </section>

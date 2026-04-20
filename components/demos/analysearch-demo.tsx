@@ -294,7 +294,7 @@ export default function AnalysearchDemo({ language = "en" }: { language?: "en" |
               transition={{ duration: 0.15 }}
               className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-xl border border-warm-light-gray bg-white shadow-lg dark:border-white/10 dark:bg-warm-charcoal"
             >
-              <div className="border-b border-warm-light-gray/60 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-warm-muted dark:border-white/10 dark:text-white/40">
+              <div className="border-b border-warm-light-gray/60 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-warm-muted dark:border-white/10 dark:text-white/40">
                 {language === "en" ? "Try these examples" : "ลองตัวอย่างเหล่านี้"}
               </div>
               {exampleQueries[language].map((suggestion) => (
@@ -343,7 +343,7 @@ export default function AnalysearchDemo({ language = "en" }: { language?: "en" |
                   {mode.name}
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-[10px] text-warm-gray dark:text-white/50">
+              <div className="flex items-center gap-3 text-xs text-warm-gray dark:text-white/50">
                 <span className="flex items-center gap-1"><Clock size={10} /> {mode.speed}</span>
                 <span>{mode.depth}</span>
               </div>
@@ -374,7 +374,7 @@ export default function AnalysearchDemo({ language = "en" }: { language?: "en" |
             return (
               <div key={step} className="relative rounded-xl border border-warm-light-gray/70 bg-warm-cream/60 p-4 dark:border-white/10 dark:bg-white/5">
                 <div className="mb-3 flex items-center justify-between">
-                  <span className="rounded-lg px-2 py-1 text-[10px] font-bold" style={{ backgroundColor: `${activeMode.color}15`, color: activeMode.color }}>
+                  <span className="rounded-lg px-2 py-1 text-xs font-bold" style={{ backgroundColor: `${activeMode.color}15`, color: activeMode.color }}>
                     {index + 1}
                   </span>
                   {stepActive ? <CheckCircle2 size={14} style={{ color: activeMode.color }} /> : <div className="h-3.5 w-3.5 rounded-full border border-warm-light-gray dark:border-white/20" />}

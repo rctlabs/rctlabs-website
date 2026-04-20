@@ -41,14 +41,14 @@ export function ArticleHero({
   const hasEnglishFallback = locale === "th" && !post.isLocalized
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-card/85 px-5 py-8 shadow-[0_24px_80px_rgba(0,0,0,0.06)] backdrop-blur-sm sm:px-7 md:px-10 md:py-10">
+    <section className="relative overflow-hidden rounded-4xl border border-border/70 bg-card/85 px-5 py-8 shadow-[0_24px_80px_rgba(0,0,0,0.06)] backdrop-blur-sm sm:px-7 md:px-10 md:py-10">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,168,83,0.11),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(123,158,135,0.08),transparent_30%)]" />
 
       <div className="relative z-10 space-y-8">
         <div className="flex flex-wrap items-center gap-3">
           <Link
             href={`${localePrefix}/blog`}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:border-warm-amber/40 hover:text-foreground"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:border-warm-amber/40 hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
             {isTh ? "กลับไปหน้าบทความ" : "Back to research library"}
@@ -83,7 +83,7 @@ export function ArticleHero({
 
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           <div className="rounded-2xl border border-border/70 bg-background/70 p-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <UserRound className="h-3.5 w-3.5" />
               {isTh ? "Author" : "Author"}
             </div>
@@ -91,7 +91,7 @@ export function ArticleHero({
           </div>
 
           <div className="rounded-2xl border border-border/70 bg-background/70 p-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5" />
               {isTh ? "Reviewer" : "Reviewer"}
             </div>
@@ -99,7 +99,7 @@ export function ArticleHero({
           </div>
 
           <div className="rounded-2xl border border-border/70 bg-background/70 p-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <Calendar className="h-3.5 w-3.5" />
               {isTh ? "Last reviewed" : "Last reviewed"}
             </div>
@@ -107,7 +107,7 @@ export function ArticleHero({
           </div>
 
           <div className="rounded-2xl border border-border/70 bg-background/70 p-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <Clock3 className="h-3.5 w-3.5" />
               {isTh ? "Reading time" : "Reading time"}
             </div>

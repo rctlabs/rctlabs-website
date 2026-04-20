@@ -90,11 +90,11 @@ export function AboutFDIAShowcase({ locale }: AboutFDIAShowcaseProps) {
                 </div>
               </div>
 
-              <div className="relative overflow-hidden rounded-[32px] border border-[#2b2620] bg-[#1b1a18] p-6 text-warm-sand shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_16px_44px_rgba(0,0,0,0.22)] dark:border-[#39332b] dark:bg-[#151412] md:p-8">
+              <div className="relative overflow-hidden rounded-4xl border border-[#2b2620] bg-[#1b1a18] p-6 text-warm-sand shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_16px_44px_rgba(0,0,0,0.22)] dark:border-[#39332b] dark:bg-[#151412] md:p-8">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,168,83,0.14),transparent_38%),radial-gradient(circle_at_82%_22%,rgba(137,180,200,0.10),transparent_22%),radial-gradient(circle_at_25%_85%,rgba(123,158,135,0.10),transparent_20%)]" />
                 <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm-amber/40 to-transparent opacity-80" />
                 <m.div className="relative" {...equationMotion}>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-warm-amber/90">{isTh ? "Operating equation" : "Operating equation"}</div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.2em] text-warm-amber/90">{isTh ? "Operating equation" : "Operating equation"}</div>
                   <div className="mt-6 flex flex-wrap items-end justify-center gap-3 text-center font-mono text-[3rem] font-bold tracking-[-0.06em] sm:text-[4.5rem] md:text-[5.5rem]">
                     <span style={{ color: "#D4A853" }}>F</span>
                     <span className="pb-1 text-warm-sand/78">=</span>

@@ -126,11 +126,11 @@ export function HeroServer({ locale }: HeroServerProps) {
                     <div className="text-right">
                       <div className="text-lg font-bold leading-none text-warm-charcoal dark:text-warm-light-gray">{stat.value}</div>
                       {"sublabel" in stat && stat.sublabel ? (
-                        <div className="mt-0.5 text-[9px] font-medium text-warm-gray dark:text-warm-subtle">{stat.sublabel}</div>
+                        <div className="mt-0.5 text-[10px] font-medium text-warm-gray dark:text-warm-subtle">{stat.sublabel}</div>
                       ) : null}
                     </div>
                   </div>
-                  <div className="text-[11px] font-medium leading-snug text-warm-secondary dark:text-warm-dim sm:text-xs">{stat.label}</div>
+                  <div className="text-xs font-medium leading-snug text-warm-secondary dark:text-warm-dim">{stat.label}</div>
                 </div>
               ))}
             </div>

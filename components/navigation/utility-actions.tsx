@@ -1,6 +1,5 @@
 "use client"
 
-import { AnimatePresence, m } from "framer-motion"
 import { Globe, Moon, Search, Sun } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { useMounted } from "@/hooks/use-mounted"
@@ -91,17 +90,9 @@ export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHe
             }`}
             aria-label="Toggle theme"
           >
-            <AnimatePresence mode="wait">
-              {isDark ? (
-                <m.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
-                  <Sun size={16} />
-                </m.div>
-              ) : (
-                <m.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
-                  <Moon size={16} />
-                </m.div>
-              )}
-            </AnimatePresence>
+            <span className="inline-block transition-transform duration-150">
+              {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            </span>
           </button>
         </div>
       </div>
@@ -119,17 +110,9 @@ export function UtilityActions({ mode, onOpenSearch, onTrackedAction, isOnDarkHe
         className={`hidden md:flex min-h-12 min-w-12 items-center justify-center rounded-lg p-2 transition-colors ${baseText}`}
         aria-label="Toggle theme"
       >
-        <AnimatePresence mode="wait">
-          {isDark ? (
-            <m.div key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
-              <Sun size={17} />
-            </m.div>
-          ) : (
-            <m.div key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
-              <Moon size={17} />
-            </m.div>
-          )}
-        </AnimatePresence>
+        <span className="inline-block transition-transform duration-150">
+          {isDark ? <Sun size={17} /> : <Moon size={17} />}
+        </span>
       </button>
 
       <div className="hidden md:flex">
