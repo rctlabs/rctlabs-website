@@ -90,7 +90,7 @@ export function StatGrid({ items }: { items: StatGridItem[] }) {
             <div className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{item.label}</div>
             {item.detail ? <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.detail}</p> : null}
             {item.evidenceType ? (
-              <div className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${
+              <div className={`mt-2 inline-block rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] ${
                 item.evidenceType === "source"
                   ? "bg-warm-sage/15 text-warm-sage"
                   : "bg-warm-amber/15 text-warm-amber"

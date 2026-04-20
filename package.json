@@ -102,5 +102,11 @@
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
     "typescript": "^5"
-  }
+  },
+  "browserslist": [
+    "chrome >= 92",
+    "edge >= 92",
+    "firefox >= 90",
+    "safari >= 15.4"
+  ]
 }

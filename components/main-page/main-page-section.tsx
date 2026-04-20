@@ -1,7 +1,6 @@
 "use client"
 
-import { useState, useRef, type ReactNode } from "react"
-import { useMotionValueEvent, useScroll } from "framer-motion"
+import { useState, useRef, useEffect, type ReactNode } from "react"
 import { useMainPageActiveSection } from "@/components/main-page/main-page-orchestrator"
 import { cn } from "@/lib/utils"
 
@@ -31,15 +30,24 @@ export function MainPageSection({
   const activeSection = useMainPageActiveSection()
   const sectionRef = useRef<HTMLDivElement>(null)
   const [localProgress, setLocalProgress] = useState(0)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  })
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const nextProgress = quantize(clamp(latest, 0, 1), 0.02)
-    setLocalProgress((current) => (current === nextProgress ? current : nextProgress))
-  })
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+
+    const update = () => {
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      // progress: 0 when bottom of el enters viewport, 1 when top of el leaves viewport
+      const raw = 1 - (rect.bottom / (vh + rect.height))
+      const next = quantize(clamp(raw, 0, 1), 0.02)
+      setLocalProgress((cur) => (cur === next ? cur : next))
+    }
+
+    window.addEventListener("scroll", update, { passive: true })
+    update()
+    return () => window.removeEventListener("scroll", update)
+  }, [])
 
   const focus = clamp(1 - Math.abs(localProgress - 0.5) * 2, 0, 1)
   const isActive = activeSection === sectionId

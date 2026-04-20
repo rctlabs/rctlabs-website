@@ -10,12 +10,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = (headersList.get("x-locale") || "en") as Locale
   return createBilingualMetadata(
     locale,
-    "JITNA — Just-in-Time Neural Architecture Protocol",
-    "JITNA — Just-in-Time Neural Architecture Protocol",
-    "JITNA RFC-001 v2.0 — the open routing protocol that selects the optimal LLM, algorithm tier, and voting method for every task in real-time.",
-    "JITNA RFC-001 v2.0 — โปรโตคอล Routing แบบเปิดที่เลือก LLM, Algorithm Tier และ Voting Method ที่เหมาะสมที่สุดสำหรับทุก Task",
+    "JITNA — Just In Time Nodal Assembly",
+    "JITNA — Just In Time Nodal Assembly",
+    "JITNA RFC-001 v2.0 — The HTTP of Agentic AI. Open communication protocol for AI agents to discover, negotiate, and execute tasks without permanent hierarchy. Ed25519 secured, Apache 2.0.",
+    "JITNA RFC-001 v2.0 — HTTP ของ Agentic AI โปรโตคอลการสื่อสารแบบเปิดสำหรับ AI Agent ในการค้นหา, เจรจา และดำเนินงานร่วมกันโดยไม่มีลำดับชั้นถาวร",
     "/technology/jitna",
-    ["JITNA", "Just-in-Time Neural Architecture", "AI routing protocol", "multi-LLM routing", "open protocol"]
+    ["JITNA", "Just In Time Nodal Assembly", "AI agent protocol", "agentic AI", "open protocol", "RFC-001", "multi-agent system"]
   )
 }
 
@@ -34,16 +34,16 @@ export default async function Page() {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     headline: locale === "th"
-      ? "JITNA — Just-in-Time Neural Architecture Protocol"
-      : "JITNA — Just-in-Time Neural Architecture Protocol",
+      ? "JITNA — Just In Time Nodal Assembly"
+      : "JITNA — Just In Time Nodal Assembly",
     description: locale === "th"
-      ? "JITNA RFC-001 v2.0 — โปรโตคอล Routing แบบเปิดที่เลือก LLM, Algorithm Tier และ Voting Method ที่เหมาะสมที่สุดสำหรับทุก Task"
-      : "JITNA RFC-001 v2.0 — the open routing protocol that selects the optimal LLM, algorithm tier, and voting method for every task in real-time.",
+      ? "JITNA RFC-001 v2.0 — HTTP ของ Agentic AI โปรโตคอลการสื่อสารแบบเปิดสำหรับ AI Agent"
+      : "JITNA RFC-001 v2.0 — The HTTP of Agentic AI. Open communication protocol for AI agents.",
     author: { "@type": "Organization", name: "RCT Labs" },
     publisher: { "@type": "Organization", name: "RCT Labs", logo: { "@type": "ImageObject", url: "https://rctlabs.co/RCTLogo-horizontal.svg" } },
     url: `https://rctlabs.co${localePrefix}/technology/jitna`,
     inLanguage: locale,
-    keywords: "JITNA, Just-in-Time Neural Architecture, AI routing, multi-LLM routing, open protocol",
+    keywords: "JITNA, Just In Time Nodal Assembly, AI agent protocol, agentic AI, RFC-001, open protocol",
   }
 
   return (

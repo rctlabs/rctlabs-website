@@ -4,8 +4,8 @@ export const SITE_DESCRIPTION = "Enterprise AI architecture and verification pla
 export const SITE_OG_IMAGE = `${SITE_URL}/opengraph-image`
 export const SITE_VERSION = "2026.04 Snapshot"
 export const SITE_TEST_COUNT = 4849 // Enterprise full suite (private)
-export const SITE_PUBLIC_SDK_VERSION = "1.0.0-alpha"
-export const SITE_PUBLIC_SDK_TESTS = 142 // Public SDK reference suite (rctlabs/rct-platform)
+export const SITE_PUBLIC_SDK_VERSION = "1.0.1a0"
+export const SITE_PUBLIC_SDK_TESTS = 591 // Public SDK full suite: 591 passed · 0 failed · 89% coverage (rctlabs/rct-platform)
 export const SITE_MICROSERVICE_COUNT = 62
 export const SITE_ALGORITHM_COUNT = 41
 export const SITE_LAYER_COUNT = 10 // Product layers L1-L10; L11 = CI/CD pipeline layer (internal only)

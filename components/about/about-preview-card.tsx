@@ -38,13 +38,13 @@ export function AboutPreviewCard({ eyebrow, title, description, footer, iconSrc,
             <div className="mb-4 flex items-start gap-4">
               {iconBadge}
               <div className="min-w-0 flex-1">
-                <span className="mb-3 block text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">{eyebrow}</span>
+                <span className="mb-3 block text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">{eyebrow}</span>
                 <h3 className="text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-lg">{title}</h3>
               </div>
             </div>
           ) : (
             <>
-              <span className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">{eyebrow}</span>
+              <span className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">{eyebrow}</span>
               <h3 className="mb-3 text-base font-bold leading-snug text-foreground transition-colors duration-200 group-hover:text-warm-amber sm:text-lg">{title}</h3>
             </>
           )}

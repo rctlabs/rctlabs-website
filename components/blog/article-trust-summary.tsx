@@ -34,7 +34,7 @@ export function ArticleTrustSummary({
   return (
     <section className="rounded-[1.75rem] border border-border/70 bg-card/85 p-5 shadow-[0_16px_40px_rgba(0,0,0,0.04)] md:p-6">
       <div className="flex flex-wrap items-center gap-3">
-        <span className="inline-flex items-center gap-2 rounded-full border border-warm-amber/30 bg-warm-amber/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-warm-amber">
+        <span className="inline-flex items-center gap-2 rounded-full border border-warm-amber/30 bg-warm-amber/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#7A5910] dark:text-warm-amber">
           <ShieldCheck className="h-3.5 w-3.5" />
           {isTh ? "Trust review active" : "Trust review active"}
         </span>

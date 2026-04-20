@@ -16,7 +16,7 @@ function ArchitectureSkeleton() {
                 className="flex items-center gap-1.5 rounded-lg border border-[#e6ddd0] bg-warm-sand/50 px-2.5 py-1.5 dark:border-border/60 dark:bg-card/60"
               >
                 <div className="h-1.5 w-1.5 rounded-full bg-warm-amber/60" />
-                <span className="text-[10px] font-medium text-warm-gray dark:text-warm-muted">{label}</span>
+                <span className="text-xs font-medium text-warm-gray dark:text-warm-muted">{label}</span>
               </div>
             ))}
           </div>

@@ -48,14 +48,17 @@ const verification = googleSiteVerification || bingSiteVerification
     }
   : undefined
 
-/* Display: Space Grotesk (headings) — preload=true, swap: must render correctly
-   on first cold load. "optional" caused system-font fallback when cache was empty
-   because font couldn't download within the 100ms block period. */
+/* Display: Space Grotesk (headings) — preload=true, fallback: gives font 100ms to
+   load before committing to fallback. adjustFontFallback generates size-adjust CSS
+   to minimise CLS if the fallback is used. Previously used "swap" which caused a
+   5s Render Delay (92% of LCP) due to repaint after font loaded on slow connections.
+   "optional" caused system-font fallback when cache was empty. */
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
-  display: "swap",
+  display: "fallback",
   preload: true,
+  adjustFontFallback: true,
 })
 
 /* Body: Inter — preload=false: body text loads after LCP */
@@ -82,7 +85,10 @@ const spaceMono = Space_Mono({
    Weights: 300 (subtitle-th uses font-weight:300 + font-synthesis:none), 400, 500, 600, 700 */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  /* Weights reduced from 5 → 3: dropped 300 (subtitle-th now uses 400) and 500
+     (medium weight — browser font-matching picks 400 for w<550 when 500 is absent,
+     acceptable with font-synthesis:none). Saves ~2 font files (~166 KB) on cold load. */
+  weight: ["400", "600", "700"],
   variable: "--rct-font-thai",
   display: "swap",
   preload: true,

@@ -10,7 +10,6 @@ import { User, LogOut, Settings, ChevronDown, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
-import { getSupabaseBrowserClient } from "@/lib/auth/browser-client"
 import { buildContactHref } from "@/lib/funnel"
 import { resolveLocale, getLocalePrefix } from "@/lib/i18n"
 
@@ -29,6 +28,7 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
 
   useEffect(() => {
     let active = true
+    let unsubscribe: (() => void) | null = null
 
     if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       return () => {
@@ -36,59 +36,72 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
       }
     }
 
-    const supabase = getSupabaseBrowserClient()
-
-    void supabase.auth.getSession().then(({ data }) => {
+    void (async () => {
+      // Lazy-import: defers the @supabase/auth-js bundle (~50 KB) until after mount
+      // so it does not block the initial page parse/eval on the homepage.
+      const { getSupabaseBrowserClient } = await import("@/lib/auth/browser-client")
       if (!active) return
 
-      if (!data.session?.user) {
-        setResolvedAuth(isAuthenticated)
-        setResolvedUser(user)
+      const supabase = getSupabaseBrowserClient()
+
+      void supabase.auth.getSession().then(({ data }) => {
+        if (!active) return
+
+        if (!data.session?.user) {
+          setResolvedAuth(isAuthenticated)
+          setResolvedUser(user)
+          return
+        }
+
+        setResolvedAuth(true)
+        setResolvedUser({
+          name:
+            (typeof data.session.user.user_metadata?.full_name === "string" && data.session.user.user_metadata.full_name) ||
+            (typeof data.session.user.user_metadata?.name === "string" && data.session.user.user_metadata.name) ||
+            undefined,
+          email: data.session.user.email,
+          avatarUrl:
+            typeof data.session.user.user_metadata?.avatar_url === "string"
+              ? data.session.user.user_metadata.avatar_url
+              : undefined,
+        })
+      })
+
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (!active) return
+
+        if (!session?.user) {
+          setResolvedAuth(false)
+          setResolvedUser(null)
+          return
+        }
+
+        setResolvedAuth(true)
+        setResolvedUser({
+          name:
+            (typeof session.user.user_metadata?.full_name === "string" && session.user.user_metadata.full_name) ||
+            (typeof session.user.user_metadata?.name === "string" && session.user.user_metadata.name) ||
+            undefined,
+          email: session.user.email,
+          avatarUrl:
+            typeof session.user.user_metadata?.avatar_url === "string"
+              ? session.user.user_metadata.avatar_url
+              : undefined,
+        })
+      })
+
+      if (!active) {
+        subscription.unsubscribe()
         return
       }
-
-      setResolvedAuth(true)
-      setResolvedUser({
-        name:
-          (typeof data.session.user.user_metadata?.full_name === "string" && data.session.user.user_metadata.full_name) ||
-          (typeof data.session.user.user_metadata?.name === "string" && data.session.user.user_metadata.name) ||
-          undefined,
-        email: data.session.user.email,
-        avatarUrl:
-          typeof data.session.user.user_metadata?.avatar_url === "string"
-            ? data.session.user.user_metadata.avatar_url
-            : undefined,
-      })
-    })
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!active) return
-
-      if (!session?.user) {
-        setResolvedAuth(false)
-        setResolvedUser(null)
-        return
-      }
-
-      setResolvedAuth(true)
-      setResolvedUser({
-        name:
-          (typeof session.user.user_metadata?.full_name === "string" && session.user.user_metadata.full_name) ||
-          (typeof session.user.user_metadata?.name === "string" && session.user.user_metadata.name) ||
-          undefined,
-        email: session.user.email,
-        avatarUrl:
-          typeof session.user.user_metadata?.avatar_url === "string"
-            ? session.user.user_metadata.avatar_url
-            : undefined,
-      })
-    })
+      unsubscribe = () => subscription.unsubscribe()
+    })()
 
     return () => {
       active = false
-      subscription.unsubscribe()
+      unsubscribe?.()
     }
   }, [isAuthenticated, user])
 
