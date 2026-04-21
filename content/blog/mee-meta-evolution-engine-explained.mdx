@@ -1,0 +1,148 @@
+---
+title: "MEE: How the Meta Evolution Engine Creates Self-Improving AI Algorithms"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-04-22"
+lastReviewed: "2026-04-22"
+category: "research"
+excerpt: "MEE (Meta Evolution Engine) is the self-learning core of the RCT Ecosystem. It automatically spawns, adapts, and improves algorithms through a constitutional evolution loop — without manual retraining cycles."
+tags: ["MEE Algorithm", "Meta Evolution Engine", "Self-Improving AI", "RCT Algorithms", "Adaptive Learning", "Algorithm Spawning", "Enterprise AI"]
+readTime: 12
+references:
+  - "https://arxiv.org/abs/1703.03400"
+  - "https://arxiv.org/abs/2107.08168"
+  - "https://arxiv.org/abs/2212.08073"
+  - "https://arxiv.org/abs/1611.01578"
+  - "https://www.rfc-editor.org/rfc/rfc8032"
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://rctlabs.co/algorithms"
+  - "https://rctlabs.co/protocols/fdia-equation"
+  - "https://rctlabs.co/benchmark"
+---
+
+# MEE: How the Meta Evolution Engine Creates Self-Improving AI Algorithms
+
+Most enterprise AI systems are static. A model is trained, deployed, and then manually retrained when performance drifts. This approach works when the environment is predictable — but real enterprise workloads are not. Requirements shift, edge cases accumulate, and baseline quality gradually erodes without visible warning.
+
+MEE (Meta Evolution Engine) addresses this directly. It is the self-learning core of the RCT Ecosystem (v5.4.5+): a constitutional evolution loop that automatically assesses algorithm performance, adapts learning parameters, and spawns new algorithms when existing ones cannot meet the quality bar.
+
+## The core problem MEE solves
+
+Static AI systems have a fundamental brittleness. Once deployed, they hold fixed assumptions about input patterns, failure modes, and quality thresholds. When those assumptions diverge from reality — even slowly — the cost of correction is high: manual diagnosis, retraining pipelines, deployment gates, and regression testing.
+
+MEE reframes the problem. Instead of building a model that is good, then trying to keep it good, MEE builds a system that actively measures how good it is and adjusts the learning rate and composition of its own algorithms in response.
+
+The result is an AI system with a measurable intelligence level — called the G-level — that is designed to grow, not drift.
+
+## The MEE evolution formula
+
+MEE's core dynamics are captured in one equation:
+
+$$dG/dt = \alpha \cdot \Delta(M, \Pi, R(t))$$
+
+Where:
+
+- **dG/dt** — the rate of intelligence evolution (how fast G-level grows per step)
+- **α** — the adaptive learning rate (adjusts between 0.01 and 0.1 based on feedback quality)
+- **Δ** — the meta-algorithm composition function (combines memory, metacognition, and feedback)
+- **M** — memory from RCTDB (successful patterns from previous inference cycles)
+- **Π** — metacognition (the system's self-model: what it knows it knows, and what it does not)
+- **R(t)** — feedback signal at time t (quality scores, failure signals, constitutional violations)
+
+The adaptive learning rate α is key. If feedback quality is high and evolution is on track, α pushes higher. If feedback is noisy or evolution stalls, α compresses to prevent divergence. This prevents the runaway learning that degrades many self-learning systems.
+
+> **Disclosure scope:** This article describes MEE at the method level — the observable inputs, outputs, and governing equation. It does not disclose threshold values, policy override paths, failure-mode internals, or the constitutional enforcement layer that governs production deployments. The equation is published to establish a verifiable conceptual framework; the implementation architecture remains proprietary to RCT Labs.
+
+## G-level: a measurable intelligence trajectory
+
+MEE introduces G-level as the measurable representation of system intelligence across a deployment lifecycle. It is not a single accuracy number — it is a composite score that tracks:
+
+- How well the system handles novel inputs it has not seen before
+- How efficiently it uses memory from past successful patterns
+- How close its self-model (Π) matches actual observed failure modes
+- How consistently it meets constitutional quality gates
+
+In the RCT Ecosystem, MEE targets G-level growth from a baseline of **50** to a target of **90**. This corresponds to a shift from a system that handles known inputs reliably to one that handles novel enterprise workloads with the same constitutional guarantees.
+
+The target evolution rate is **dG/dt > 0.5 per step**, with observed rates ranging from 0.05 (cold start, sparse memory) to 0.8 (warm memory, high-quality feedback cycles).
+
+## How MEE integrates with the RCT stack
+
+MEE does not operate in isolation. It draws on three integration points that are already part of the RCT Ecosystem:
+
+### 1. RCTDB (Memory)
+
+MEE reads the 8-dimensional memory schema in RCTDB to identify which patterns led to successful outcomes. Rather than reprocessing raw training data, it uses the compressed delta store — meaning it reads only what changed, not the full history. This keeps the evolution cycle fast even as memory grows.
+
+### 2. Delta Engine (Compression)
+
+Before each evolution step, the Delta Engine compresses memory inputs using its lossless 74% compression protocol. MEE receives a compact, semantically dense signal — not raw volume. This prevents the evolution function from overfitting to large but low-signal memory.
+
+### 3. Self-Evolving Orchestrator
+
+The Self-Evolving orchestrator triggers MEE evolution cycles based on runtime signals: quality drops, constitutional violations, latency spikes, or scheduled review windows. MEE does not run continuously — it runs in governed, auditable bursts with traceable outputs.
+
+## Algorithm spawning: MEE's most powerful capability
+
+Beyond adapting existing algorithms, MEE can spawn entirely new algorithms when a task class exceeds the coverage of the current algorithm set. The spawn process is:
+
+1. **Task classification** — the orchestrator identifies a task type with no high-confidence algorithm match
+2. **Composition request** — MEE's Δ function assembles a candidate algorithm from existing primitives
+3. **Constitutional gate** — the candidate is evaluated against the FDIA equation before activation
+4. **Signing** — if it passes, the new algorithm receives an Ed25519 signature and enters the active roster
+5. **Memory update** — the spawn event is written to RCTDB as a new episodic entry
+
+This spawning loop means MEE is not just adaptive — it is generative. The algorithm surface grows without manual intervention, while every new addition remains within constitutional bounds.
+
+## Performance evidence
+
+MEE v2 (ALGO-07) completed full integration in RCT Ecosystem v5.4.5 (released March 21, 2026), verified across the 4,849-test suite with 0 failures. It achieved **96% accuracy** on the ALGO-07 evaluation set, corresponding to a score of **9.5/10**. All four test categories passed without failures:
+
+- `test_evolution_step` ✅
+- `test_alpha_adaptation` ✅
+- `test_gamma_composition` ✅
+- `test_algorithm_spawning` ✅
+
+The practical implication: a system running MEE reaches G-level 90 in fewer intervention cycles than a static system, and maintains that level through adaptive α adjustment rather than scheduled retraining.
+
+**Reproducibility scope:** The 96% figure is measured on the ALGO-07 internal evaluation set (RCT Ecosystem v5.4.5, March 2026). The evaluation covers the four test categories listed above, run against a held-out benchmark workload. The G-level trajectory figures (50→90, dG/dt > 0.5) are internal benchmark targets measured under controlled memory-warmup conditions; actual rates vary with deployment context, feedback quality, and memory depth. An independent summary of RCT benchmark methodology — including caveats and known limitations — is available at [Benchmark Summary →](/benchmark-summary).
+
+## What MEE means for enterprise AI reliability
+
+Enterprise AI reliability is usually measured at a point in time: does the model perform well on the current test set? MEE shifts the frame to a trajectory question: does the system's performance improve, stay flat, or degrade over deployment lifetime?
+
+With MEE active, the answer is governed. Performance evolves on a constitutional track — α ensures the evolution is neither too aggressive nor too passive, RCTDB ensures the evolution builds on real outcomes, and the FDIA equation ensures no new algorithm is activated without passing quality gates.
+
+The result is an AI system where reliability is not a property to be defended, but a trajectory to be steered.
+
+## Frequently asked questions
+
+**Is publishing the MEE equation a security risk?**
+No. The equation describes the observable shape of the evolution loop — inputs, outputs, and the rate relationship. It does not expose constitutional thresholds, trigger conditions, policy override paths, or the signing infrastructure that governs algorithm activation. The conceptual model is safe to publish; the implementation layer remains proprietary.
+
+**What is not disclosed in this article?**
+Specifically: the numeric values of constitutional acceptance thresholds, the internal schema of the Π metacognition model, the failure-mode detection ruleset, and the production governance policy that determines when MEE runs are permitted. These are implementation concerns that would need additional context to be safely interpreted by external parties.
+
+**Can the 96% accuracy claim be independently verified?**
+Partially. The [Benchmark Summary](/benchmark-summary) page publishes the full methodology, test conditions, and caveats behind RCT Ecosystem v5.4.5 benchmark results. The 4,849-test suite runs are documented in the RCT platform repository. The ALGO-07 evaluation set itself is an internal holdout — it is not publicly released to prevent leakage into future training pipelines.
+
+## Related reading
+
+- Explore the [FDIA Equation](/protocols/fdia-equation) — the constitutional layer that governs every MEE evolution gate.
+- Review [SignedAI HexaCore](/products/signed-ai) to understand how Ed25519 signing makes MEE-spawned algorithms traceable and tamper-evident.
+- See [Evaluation Harnesses](/blog/evaluation-harnesses-enterprise-llm) for the 4,849-test framework that MEE outputs are validated against — use this as the independent verification path for the claims in this article.
+- Browse [All 41 Algorithms](/algorithms) to see the full algorithm surface MEE extends.
+- Review [Benchmark Summary](/benchmark-summary) for the production evidence and honest limitations behind RCT quality targets.
+
+## References
+
+- Finn et al. (2017), MAML — Model-Agnostic Meta-Learning for Fast Adaptation: https://arxiv.org/abs/1703.03400
+- He et al. (2021), AutoML Survey — Neural Architecture Search and algorithm composition: https://arxiv.org/abs/2107.08168
+- Bai et al. (2022), Constitutional AI — Anthropic: https://arxiv.org/abs/2212.08073
+- Zoph & Le (2017), Neural Architecture Search with RL: https://arxiv.org/abs/1611.01578
+- RFC 8032 — Edwards-Curve Digital Signature Algorithm (Ed25519): https://www.rfc-editor.org/rfc/rfc8032
+- NIST Artificial Intelligence: https://www.nist.gov/artificial-intelligence
+- RCT Labs Algorithms: https://rctlabs.co/algorithms
+- FDIA Equation Protocol: https://rctlabs.co/protocols/fdia-equation
+- RCT Benchmark Summary: https://rctlabs.co/benchmark
