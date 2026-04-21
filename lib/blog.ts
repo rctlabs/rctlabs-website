@@ -90,13 +90,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "0.3%", label: "Hallucination rate",
       detail: "RCT dual-layer: RAG + constitutional controls in production",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
     {
       value: "Dual-layer", label: "Recommended architecture",
       detail: "Retrieval-Augmented Generation plus constitutional verification layer",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/methodology", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/methodology", verifiedAt: "2026-04-15",
     },
     {
       value: "<50ms", label: "Warm recall path",
@@ -116,13 +116,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "5 layers", label: "Governance depth",
       detail: "Policy → Orchestration → Verification → Audit → Runtime enforcement",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/architecture", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/architecture", verifiedAt: "2026-04-15",
     },
     {
       value: "0.3%", label: "Hallucination ceiling",
       detail: "Constitutional runtime controls — RCT production workload",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "how-to-reduce-ai-hallucination": [
@@ -136,13 +136,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "7 stages", label: "Verification pipeline",
       detail: "FDIA-governed: Input → Classify → Retrieve → Verify → Constrain → Sign → Output",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/protocols/fdia-equation", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/protocols/fdia-equation", verifiedAt: "2026-04-15",
     },
     {
       value: "0.3%", label: "Production hallucination rate",
       detail: "Sustained on RCT Ecosystem live workload — monitored per-request",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "verification-vs-prompt-engineering": [
@@ -156,13 +156,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "100%", label: "Policy enforcement rate",
       detail: "Constitutional constraints applied to every output, no bypass path",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/methodology", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/methodology", verifiedAt: "2026-04-15",
     },
     {
       value: "0.3%", label: "Live hallucination rate",
       detail: "With verification layer active — RCT production monitoring",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "designing-low-hallucination-ai-systems": [
@@ -170,13 +170,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "0.3%", label: "Target hallucination rate",
       detail: "Systems-design approach: Retrieve + Verify + Sign architecture",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
     {
       value: "3 defense layers", label: "Architecture pattern",
       detail: "Retrieval accuracy → Constitutional verification → Ed25519 signing",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/architecture", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/architecture", verifiedAt: "2026-04-15",
     },
     {
       value: "<50ms", label: "Overhead budget",
@@ -198,13 +198,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "F=(D^I)×A", label: "Constitutional equation",
       detail: "Intent acts as exponent on Data — amplifies quality, not just scale",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/protocols/fdia-equation", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/protocols/fdia-equation", verifiedAt: "2026-04-15",
     },
     {
       value: "7 states", label: "Intent loop pipeline",
       detail: "Governed flow: Validate → Parse → Classify → Route → Execute → Verify → Audit",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/protocols/fdia-equation", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/protocols/fdia-equation", verifiedAt: "2026-04-15",
     },
   ],
 
@@ -214,13 +214,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "0.3%", label: "Consensus hallucination rate",
       detail: "7-model HexaCore consensus; each model independently verifies before signing",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
     {
       value: "7 models", label: "HexaCore consensus roster",
       detail: "3 Western + 3 Eastern + 1 Thai — geopolitical balance in verification",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/products/signed-ai", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/products/signed-ai", verifiedAt: "2026-04-15",
     },
     {
       value: "Ed25519", label: "Signing algorithm",
@@ -240,7 +240,7 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "7 models", label: "Parallel consensus layer",
       detail: "Geopolitically balanced: 3W + 3E + 1TH — independent inference before merge",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/products/signed-ai", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/products/signed-ai", verifiedAt: "2026-04-15",
     },
     {
       value: "99.7%", label: "Consensus accuracy",
@@ -255,13 +255,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "74%", label: "Lossless compression rate",
       detail: "Delta-only state storage — only changed tokens stored, full recall guaranteed",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
     },
     {
       value: "Δ-only writes", label: "Delta Engine mechanism",
       detail: "Content-addressed diff storage: baseline + delta chain, not full snapshots",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
     },
     {
       value: "<50ms", label: "Warm recall latency",
@@ -275,19 +275,19 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "8 dimensions", label: "Universal schema depth",
       detail: "D1–D8: Episodic, Semantic, Procedural, Temporal, Social, Emotional, Spatial, Predictive",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
     },
     {
       value: "3 storage layers", label: "Hybrid stack",
       detail: "Qdrant (vector) + Neo4j (graph) + PostgreSQL (relational) — query-routed by dimension",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/architecture", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/architecture", verifiedAt: "2026-04-15",
     },
     {
       value: "74%", label: "Delta compression active",
       detail: "Delta Engine lossless compression — write amplification <1.3×",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
     },
   ],
   "enterprise-ai-memory-systems-explained": [
@@ -295,13 +295,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "3 memory zones", label: "Tiered architecture",
       detail: "Hot (Redis/Qdrant) → Warm (Neo4j) → Cold (PostgreSQL) — automated tiering",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
     },
     {
       value: "74%", label: "Delta compression rate",
       detail: "Delta Engine: only diffs written; 0% data loss on arbitrary rollback",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/solutions/enterprise-ai-memory", verifiedAt: "2026-04-15",
     },
     {
       value: "<50ms", label: "Warm recall latency",
@@ -317,13 +317,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "Open standard", label: "Agent-to-agent protocol",
       detail: "RFC-001: first versioned, openly published agent communication specification",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/protocols/jitna-rfc-001", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/protocols/jitna-rfc-001", verifiedAt: "2026-04-15",
     },
     {
       value: "6-field packet", label: "JITNA structure",
       detail: "Intent (I), Data (D), Delta (Δ), Authority (A), Response (R), Metadata (M)",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/protocols/jitna-rfc-001", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/protocols/jitna-rfc-001", verifiedAt: "2026-04-15",
     },
     {
       value: "50ms", label: "Target negotiation latency",
@@ -337,19 +337,19 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "7-model consensus", label: "HexaCore multi-agent result",
       detail: "Each model assigned specific role via JITNA RFC-001 task dispatch",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/products/signed-ai", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/products/signed-ai", verifiedAt: "2026-04-15",
     },
     {
       value: "JITNA RFC-001", label: "Agent communication protocol",
       detail: "Structured 6-field packet governs all inter-agent data and authority delegation",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/protocols/jitna-rfc-001", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/protocols/jitna-rfc-001", verifiedAt: "2026-04-15",
     },
     {
       value: "0.3%", label: "Consensus hallucination target",
       detail: "Multi-agent verification layer — all agents must agree before signing",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "intent-operating-system-explained": [
@@ -357,19 +357,19 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "Intent OS", label: "Enterprise AI governance layer",
       detail: "Manages resources, enforces policy, routes tasks and maintains state across LLMs",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/architecture", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/architecture", verifiedAt: "2026-04-15",
     },
     {
       value: "9-tier kernel", label: "Constitutional OS architecture",
       detail: "Input → Classify → Route → Execute → Verify → Constrain → Sign → Audit → Output",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/architecture", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/architecture", verifiedAt: "2026-04-15",
     },
     {
       value: "62 services", label: "Production microservice count",
       detail: "All services governed by Intent OS policy layer — no raw LLM calls exposed",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "understanding-intent-operations": [
@@ -377,19 +377,19 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "F=(D^I)×A", label: "Intent operations formula",
       detail: "Function = (Data^Intent) × Action — intent amplifies data quality exponentially",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/protocols/fdia-equation", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/protocols/fdia-equation", verifiedAt: "2026-04-15",
     },
     {
       value: "7 states", label: "Intent processing loop",
       detail: "Observe → Parse → Classify → Route → Execute → Verify → Audit",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/protocols/fdia-equation", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/protocols/fdia-equation", verifiedAt: "2026-04-15",
     },
     {
       value: "62 services", label: "RCT infrastructure scope",
       detail: "Intent OS governs all 62 microservices — no unmanaged AI execution path",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
 
@@ -399,19 +399,19 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "7 evaluation questions", label: "Procurement framework",
       detail: "Buyer-side checklist: coverage, fallback, audit trail, latency, compliance, cost, sovereignty",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/methodology", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/methodology", verifiedAt: "2026-04-15",
     },
     {
       value: "4,849 tests", label: "Platform evidence requirement",
       detail: "RCT Ecosystem proof: 4,849 automated tests, 0 failures, 62 microservices",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
     {
       value: "0.3%", label: "Hallucination benchmark",
       detail: "RCT production target rate — stated in evaluation criteria",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "evaluation-harnesses-enterprise-llm": [
@@ -419,13 +419,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "4,849 tests", label: "Automated test suite",
       detail: "8-level pyramid: Unit → Integration → Contract → E2E → Constitutional → Load → Security → Drift",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
     {
       value: "9 algorithm tiers", label: "Evaluation coverage",
       detail: "Tier 1–9: from input validation through output signing — all governed by FDIA",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/methodology", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/methodology", verifiedAt: "2026-04-15",
     },
     {
       value: "0.92", label: "FDIA benchmark score",
@@ -439,19 +439,19 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "4,849", label: "Tests passing",
       detail: "0 failures, 0 errors across all levels in v5.4.5 production suite",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
     {
       value: "62 microservices", label: "Test matrix scope",
       detail: "All 62 services covered; multi-layer pyramid including constitutional checks",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
     {
       value: "v5.4.5", label: "Verified platform version",
       detail: "Enterprise baseline — full test suite passes on every commit",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "rct-7-process-explained": [
@@ -459,19 +459,19 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "41 algorithms", label: "Algorithm coverage",
       detail: "9 tiers fully mapped — complete RCT-7 improvement loop",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/algorithms", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/algorithms", verifiedAt: "2026-04-15",
     },
     {
       value: "7 stages", label: "RCT-7 pipeline",
       detail: "Observe → Analyze → Design → Implement → Test → Deploy → Monitor",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/methodology", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/methodology", verifiedAt: "2026-04-15",
     },
     {
       value: "4,849", label: "Test gates per cycle",
       detail: "0 failures allowed to proceed to next stage — hard quality gate",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
 
@@ -493,7 +493,7 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "0.3%", label: "Hallucination ceiling",
       detail: "Constitutional runtime controls — required to satisfy PDPA accuracy obligations",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "constitutional-ai-thailand-enterprise-guide": [
@@ -527,13 +527,13 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "Constitutional OS", label: "Platform architecture approach",
       detail: "Intent OS layer governs all national enterprise AI — not model-by-model deployment",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/architecture", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/architecture", verifiedAt: "2026-04-15",
     },
     {
       value: "<4 months", label: "Foundation build time",
       detail: "Zero external capital, one person — from first prototype to v5.4.5 in under 4 months",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/products/rctlabs", verifiedAt: "2026-04-20",
+      evidenceRef: "https://rctlabs.co/products/rctlabs", verifiedAt: "2026-04-20",
     },
   ],
 
@@ -543,19 +543,19 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "30-day build", label: "Full constitutional AI OS",
       detail: "RCT Ecosystem v5.4.5 — zero capital bootstrap from concept to production",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/products/rctlabs", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/products/rctlabs", verifiedAt: "2026-04-15",
     },
     {
       value: "Reverse-component", label: "Architecture methodology",
       detail: "Define governance contract first, then build components to satisfy it",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/methodology", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/methodology", verifiedAt: "2026-04-15",
     },
     {
       value: "4,849 / 0 fail", label: "Quality gate result",
       detail: "4,849 tests passing, 0 failures, 0 errors — reverse-component methodology verified",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
   ],
   "v2-7-enterprise-integration-suite": [
@@ -563,19 +563,41 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       value: "153 static pages", label: "Website delivery scale",
       detail: "Full Next.js static generation — 0 SSR roundtrips on standard pages",
       type: "outcome", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co", verifiedAt: "2026-04-15",
     },
     {
       value: "TypeScript strict", label: "Integration quality standard",
       detail: "0 errors, 0 lint violations — enterprise integration suite v2.7",
       type: "mechanism", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
     },
     {
       value: "2026.03", label: "Platform snapshot version",
       detail: "Baseline for all integration contracts — versioned for enterprise SLA reference",
       type: "operational", evidenceType: "source",
-      evidenceRef: "https://rctlabs.com/benchmark", verifiedAt: "2026-04-15",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-15",
+    },
+  ],
+
+  // ── ALGORITHM / EVOLUTION CLUSTER (SET A Day 3 — 21 Apr 2026) ────────────────
+  "mee-meta-evolution-engine-explained": [
+    {
+      value: "96%", label: "MEE accuracy score",
+      detail: "Meta Evolution Engine — measured accuracy on ALGO-07 evaluation set (Score: 9.5/10)",
+      type: "outcome", evidenceType: "source",
+      evidenceRef: "https://rctlabs.co/algorithms", verifiedAt: "2026-04-21",
+    },
+    {
+      value: "G: 50→90", label: "Intelligence evolution range",
+      detail: "dG/dt = α · Δ(M, Π, R(t)) — adaptive evolution from baseline to target G-level",
+      type: "mechanism", evidenceType: "source",
+      evidenceRef: "https://rctlabs.co/algorithms", verifiedAt: "2026-04-21",
+    },
+    {
+      value: ">0.5 dG/dt", label: "Evolution rate target",
+      detail: "Target per-step evolution rate; range 0.05–0.8 depending on feedback quality",
+      type: "operational", evidenceType: "benchmark-assumption",
+      evidenceNote: "Internal benchmark target; rate varies with memory quality and feedback richness", verifiedAt: "2026-04-21",
     },
   ],
 }
@@ -592,6 +614,12 @@ export interface BlogPostMetadata {
   tags: string[]
   readTime: number
   references?: string[]
+  /**
+   * draft: true = hidden from all public listings and direct URLs.
+   * Use for articles being written or awaiting editorial approval.
+   * Set GATE_FUTURE_POSTS=true in env to also hide future-dated posts until their publish date.
+   */
+  draft?: boolean
 }
 
 export interface BlogPost extends BlogPostMetadata {
@@ -872,6 +900,13 @@ const BLOG_RELATED_MAP: Record<string, [string, string, string]> = {
     "rct-ecosystem-4849-tests-methodology",
     "rct-7-process-explained",
   ],
+
+  // ── Algorithm / Evolution ─────────────────────────────────────────────
+  "mee-meta-evolution-engine-explained": [
+    "fdia-equation-explained",
+    "signedai-multi-llm-consensus-explained",
+    "evaluation-harnesses-enterprise-llm",
+  ],
 }
 
 /**
@@ -894,19 +929,48 @@ export function getRelatedPosts(slug: string, locale: BlogLocale = "en"): BlogPo
     .slice(0, 3)
 }
 
+/**
+ * Returns false if the post is a draft, or (when GATE_FUTURE_POSTS=true) if its
+ * publish date is still in the future. Safe to call in both SSG and server contexts.
+ *
+ * GATE_FUTURE_POSTS env var:
+ *   - Not set / false (default): future-dated posts are visible immediately after push.
+ *   - true: future-dated posts are hidden until the date arrives (requires a new build/deploy on that date).
+ *
+ * Recommended Vercel workflow for scheduled publishing:
+ *   1. Set GATE_FUTURE_POSTS=true in Vercel environment variables.
+ *   2. Set up a daily Vercel Deploy Hook triggered by a cron service (e.g. cron-job.org).
+ *   3. Write article with future date and push — it won't appear until that date's build runs.
+ */
+function isPublishable(post: BlogPost): boolean {
+  if (post.draft === true) return false
+  if (process.env.GATE_FUTURE_POSTS === "true") {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const postDate = new Date(post.date)
+    postDate.setHours(0, 0, 0, 0)
+    if (postDate > today) return false
+  }
+  return true
+}
+
 export function getAllBlogPosts(locale: BlogLocale = "en"): BlogPost[] {
   const posts = getCanonicalBlogFileNames().map((fileName) => {
     const slug = fileName.replace(/\.mdx$/, "")
     return buildBlogPost(slug, locale)
   })
 
-  // Sort by date descending
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  // Filter drafts and (optionally) future-dated posts, then sort by date descending
+  return posts
+    .filter(isPublishable)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
 export function getBlogPostBySlug(slug: string, locale: BlogLocale = "en"): BlogPost | null {
   try {
-    return buildBlogPost(slug, locale)
+    const post = buildBlogPost(slug, locale)
+    if (!isPublishable(post)) return null
+    return post
   } catch {
     return null
   }
@@ -964,6 +1028,25 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
+  // ── Intent OS / Operating System cluster ────────────────────────────────────
+  // Must appear BEFORE the JITNA rule — both slugs contain "intent-operat" as
+  // a substring, which would otherwise incorrectly route them to JITNA RFC-001.
+  if (
+    post.slug === "intent-operating-system-explained" ||
+    post.slug === "understanding-intent-operations" ||
+    post.slug.includes("intent-os") ||
+    post.slug.includes("intent-operation")
+  ) {
+    return {
+      solutionHref: "/architecture",
+      solutionLabel: "Explore RCT Architecture",
+      authorityHref: "/protocols/fdia-equation",
+      authorityLabel: "Open FDIA Equation",
+      conversionContext: "pricing:rctlabs:evaluation",
+      conversionLabel: "Request architecture evaluation",
+    }
+  }
+
   // JITNA / Protocol cluster
   if (post.slug.includes("jitna") || post.slug.includes("intent-operat") || post.slug.includes("protocol") || post.slug.includes("rfc")) {
     return {
@@ -988,11 +1071,11 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
-  // Multi-Agent / Agentic cluster
+  // Multi-Agent / Agentic cluster — updated to SignedAI (HexaCore consensus context)
   if (post.slug.includes("multi-agent") || post.slug.includes("agentic")) {
     return {
-      solutionHref: "/solutions/dynamic-ai-routing",
-      solutionLabel: "Explore Dynamic AI Routing",
+      solutionHref: "/products/signed-ai",
+      solutionLabel: "Explore SignedAI",
       authorityHref: "/protocols/jitna-rfc-001",
       authorityLabel: "Open JITNA Protocol Spec",
       conversionContext: "whitepaper:multiagent:request",
@@ -1024,6 +1107,23 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
+  // Constitutional + Thailand enterprise — specific before generic thailand rule
+  // "constitutional-ai-thailand-enterprise-guide" must route to Thailand trust
+  // cluster, not to generic Hallucination Prevention.
+  if (
+    (post.slug.includes("thailand") && post.slug.includes("constitutional")) ||
+    (post.slug.includes("thailand") && post.slug.includes("enterprise-guide"))
+  ) {
+    return {
+      solutionHref: "/thailand-enterprise-trust",
+      solutionLabel: "Explore Thailand Enterprise Trust",
+      authorityHref: "/solutions/regional-ai",
+      authorityLabel: "Open Regional AI Solutions",
+      conversionContext: "whitepaper:evaluation-pack:request",
+      conversionLabel: "Request Thailand enterprise evaluation",
+    }
+  }
+
   if (post.slug.includes("thailand")) {
     return {
       solutionHref: "/solutions/ai-hallucination-prevention",
@@ -1032,6 +1132,19 @@ export function getPostJourney(post: BlogPost) {
       authorityLabel: "Open Thailand Enterprise Trust Layer",
       conversionContext: "whitepaper:evaluation-pack:request",
       conversionLabel: "Request the Thailand evaluation path",
+    }
+  }
+
+  // Governance Playbook — specific before generic hallucination|governance rule
+  // Playbook articles are methodology/compliance guides, not hallucination tutorials.
+  if (post.slug.includes("governance-playbook")) {
+    return {
+      solutionHref: "/methodology",
+      solutionLabel: "Review Methodology",
+      authorityHref: "/evaluation",
+      authorityLabel: "Open Evaluation Hub",
+      conversionContext: "whitepaper:evaluation-pack:request",
+      conversionLabel: "Request the governance evaluation pack",
     }
   }
 
@@ -1058,6 +1171,24 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
+  // Evaluation guide articles — specific before generic evaluate|routing rule
+  // "how-to-evaluate-enterprise-ai-platforms" is a procurement checklist;
+  // it should route to Benchmark, not Dynamic AI Routing.
+  if (
+    post.slug.startsWith("how-to-evaluate") ||
+    post.slug.includes("evaluation-platform") ||
+    post.slug.includes("evaluate-enterprise")
+  ) {
+    return {
+      solutionHref: "/benchmark",
+      solutionLabel: "Open Benchmark Summary",
+      authorityHref: "/evaluation",
+      authorityLabel: "Open Evaluation Hub",
+      conversionContext: "pricing:rctlabs:evaluation",
+      conversionLabel: "Request a platform evaluation",
+    }
+  }
+
   if (post.slug.includes("evaluate") || post.slug.includes("routing")) {
     return {
       solutionHref: "/solutions/dynamic-ai-routing",
@@ -1069,8 +1200,8 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
-  // Algorithm cluster — Phase 4 deep-dive articles (Analysearch, MCTR, Reflexion, ABV, ALBAS, Halting)
-  if (post.slug.includes("algorithm") || post.slug.includes("analysearch") || post.slug.includes("mctr") || post.slug.includes("reflexion") || post.slug.includes("abv") || post.slug.includes("albas") || post.slug.includes("halting")) {
+  // Algorithm cluster — Phase 4 deep-dive articles (MEE, Analysearch, MCTR, Reflexion, ABV, ALBAS, Halting)
+  if (post.slug.startsWith("mee-") || post.slug.includes("algorithm") || post.slug.includes("analysearch") || post.slug.includes("mctr") || post.slug.includes("reflexion") || post.slug.includes("abv") || post.slug.includes("albas") || post.slug.includes("halting")) {
     return {
       solutionHref: "/algorithms",
       solutionLabel: "Explore All 41 Algorithms",
