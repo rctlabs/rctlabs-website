@@ -1053,7 +1053,7 @@ export function getPostJourney(post: BlogPost) {
       solutionHref: "/protocols/jitna-rfc-001",
       solutionLabel: "Explore JITNA RFC-001",
       authorityHref: "/technology/jitna",
-      authorityLabel: "Open JITNA Technology Page",
+      authorityLabel: "Read JITNA RFC-001 Specification",
       conversionContext: "whitepaper:jitna:request",
       conversionLabel: "Request the JITNA specification",
     }
@@ -1135,6 +1135,19 @@ export function getPostJourney(post: BlogPost) {
     }
   }
 
+  // Tutorial / How-to hallucination guides — implementation-focused CTA, not sales evaluation
+  // Must appear BEFORE the generic hallucination rule.
+  if (post.slug.includes("how-to-reduce") || post.slug.includes("designing-low")) {
+    return {
+      solutionHref: "/solutions/ai-hallucination-prevention",
+      solutionLabel: "Explore AI Hallucination Prevention",
+      authorityHref: "/methodology",
+      authorityLabel: "Review Methodology",
+      conversionContext: "whitepaper:implementation:download",
+      conversionLabel: "Get the implementation guide",
+    }
+  }
+
   // Governance Playbook — specific before generic hallucination|governance rule
   // Playbook articles are methodology/compliance guides, not hallucination tutorials.
   if (post.slug.includes("governance-playbook")) {
@@ -1156,6 +1169,19 @@ export function getPostJourney(post: BlogPost) {
       authorityLabel: "Review Methodology",
       conversionContext: "whitepaper:evaluation-pack:request",
       conversionLabel: "Request the evaluation pack",
+    }
+  }
+
+  // RCT-7 process model — specific before generic evaluation-harness rule
+  // rct-7-process-explained describes the methodology (solution), benchmark is the evidence.
+  if (post.slug === "rct-7-process-explained") {
+    return {
+      solutionHref: "/methodology",
+      solutionLabel: "Review RCT Methodology",
+      authorityHref: "/benchmark",
+      authorityLabel: "Review Benchmark Data",
+      conversionContext: "pricing:rctlabs:evaluation",
+      conversionLabel: "Request a platform evaluation",
     }
   }
 
@@ -1229,8 +1255,8 @@ export function getPostJourney(post: BlogPost) {
     return {
       solutionHref: "/architecture",
       solutionLabel: "Explore RCT Architecture",
-      authorityHref: "/roadmap",
-      authorityLabel: "Open Roadmap",
+      authorityHref: "/methodology",
+      authorityLabel: "Review Methodology",
       conversionContext: "launch:request-access",
       conversionLabel: "View the full platform roadmap",
     }

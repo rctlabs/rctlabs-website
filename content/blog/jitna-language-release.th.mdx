@@ -1,0 +1,260 @@
+---
+title: "JITNA — Just In Time Nodal Assembly: โปรโตคอลสื่อสารสำหรับ Agentic AI"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2025-02-01"
+lastReviewed: "2026-04-22"
+category: "research"
+excerpt: "JITNA (Just In Time Nodal Assembly) คือโปรโตคอลสื่อสาร agent-to-agent แบบเปิดของ RCT Ecosystem — เปรียบได้กับ HTTP ของ Agentic AI บทความนี้อธิบาย RFC-001 specification, กระบวนการ negotiation และความแตกต่างระหว่าง JITNA กับ tool-calling API ทั่วไป"
+tags: ["JITNA", "Protocol", "RFC-001", "Agentic AI", "Constitutional AI", "RCT Labs"]
+readTime: 11
+references:
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://www.anthropic.com/research"
+  - "https://ietf.org/rfc/rfc2616.txt"
+  - "https://arxiv.org/abs/2308.08155"
+  - "https://arxiv.org/abs/2303.17760"
+  - "https://arxiv.org/abs/2210.03629"
+---
+
+# JITNA — Just In Time Nodal Assembly: โปรโตคอลสื่อสารสำหรับ Agentic AI
+
+ในยุคแรกของอินเทอร์เน็ต ทุกแอปพลิเคชันสื่อสารกันด้วยวิธีที่แตกต่างกัน จนกระทั่ง HTTP ถือกำเนิดขึ้นและสร้างมาตรฐานสากลที่ทำให้ client ทุกตัวสามารถคุยกับ server ทุกตัวได้ ผลลัพธ์คืออินเทอร์เน็ตอย่างที่เราเห็นทุกวันนี้
+
+Agentic AI กำลังอยู่ในจุดเดียวกันนั้นในปัจจุบัน ทุก AI framework มีรูปแบบ tool-calling เป็นของตัวเอง มีวิธีสื่อสาร agent เป็นของตัวเอง และมี orchestration logic เป็นของตัวเอง ไม่มีมาตรฐานกลาง ทุก integration เป็น custom ทุก multi-agent system เป็น one-off
+
+**JITNA เปลี่ยนสิ่งนั้น**
+
+JITNA — **Just In Time Nodal Assembly** — คือโปรโตคอลสื่อสารแบบเปิดที่ผมออกแบบสำหรับ RCT Ecosystem กำหนดวิธีที่ AI agent ค้นพบกัน เจรจาต่อรองงาน ดำเนินการ และตรวจสอบผลลัพธ์ ถ้า FDIA คือรัฐธรรมนูญ (กฎระเบียบ) JITNA ก็คือภาษา (วิธีที่ agent สื่อสารกันภายใต้กฎเหล่านั้น)
+
+ผมเรียกมันว่า **"HTTP ของ Agentic AI"** — และหลังจากอ่านบทความนี้ คุณจะเข้าใจว่าทำไม
+
+---
+
+## JITNA ย่อมาจากอะไร?
+
+**J** — Just (พอดี)
+**I** — In
+**T** — Time (เวลา)
+**N** — Nodal (แบบ node)
+**A** — Assembly (การประกอบรวม)
+
+ชื่อนี้สะท้อนหลักการออกแบบหลัก: agent ถูกประกอบรวมเป็นกลุ่มทำงาน **พอดีเวลา** ตาม intent ของงานปัจจุบัน แล้วสลายตัวเมื่องานเสร็จสิ้น ไม่มีลำดับชั้น agent ถาวร ไม่มี workflow ที่กำหนดล่วงหน้า ระบบประกอบ agent ที่ใช่ ในเวลาที่ใช่ สำหรับงานที่ใช่
+
+นี่แตกต่างจาก static orchestration framework ที่คุณต้องกำหนด agent graph ล่วงหน้าและหวังว่ามันจะครอบคลุมทุกงานที่เป็นไปได้
+
+---
+
+## ปัญหาที่ JITNA แก้ไข
+
+### โดยไม่มี JITNA (อุตสาหกรรมปัจจุบัน)
+```
+User Query → Single LLM → Output
+                    หรือ
+User Query → Hardcoded Agent Chain → Output
+```
+
+ปัญหา:
+- **ไม่มีการเจรจา:** Agent A ไม่สามารถบอก Agent B ว่า "ผมไม่เห็นด้วยกับแนวทางของคุณ"
+- **ไม่มีการตรวจสอบ:** ไม่มีวิธีมาตรฐานในการตรวจสอบว่า agent ทำสิ่งที่ถูกร้องขอ
+- **ไม่สามารถ replay ได้:** คุณไม่สามารถ audit ว่าเกิดอะไรขึ้นหรือทำซ้ำผลลัพธ์ได้
+- **ไม่สามารถยกเลิกได้:** เมื่อเริ่มแล้ว multi-agent workflow ไม่สามารถหยุดได้อย่างปลอดภัย
+
+### ด้วย JITNA (RCT Ecosystem)
+```
+User Query → FDIA Validation → Agent Assembly (JITNA) → Negotiation → Execution → SignedAI Verification → RCTDB Commit → Output
+```
+
+ทุกขั้นตอนมีโครงสร้าง ลงนาม และสามารถ replay ได้
+
+---
+
+## JITNA RFC-001 v2.0: ข้อกำหนด
+
+โปรโตคอล JITNA กำหนดไว้ใน **RFC-001 v2.0** — เอกสารข้อกำหนด 52 หน้าที่ครอบคลุม:
+
+1. **Packet Format** — โครงสร้าง JITNAPacket
+2. **Validator** — กฎการตรวจสอบ input
+3. **Normalizer** — pipeline การทำ data normalization
+4. **Registry** — การค้นพบ agent และการจับคู่ความสามารถ
+5. **Negotiation** — กระบวนการ PROPOSE → COUNTER → ACCEPT/REJECT
+6. **Execution** — execution packet ที่ลงนามด้วย Ed25519
+7. **Replay** — ห่วงโซ่การตรวจสอบ SHA-256 checkpoint
+
+### JITNAPacket
+
+การสื่อสารทุกอย่างในโปรโตคอล JITNA ใช้รูปแบบ packet มาตรฐาน:
+
+```typescript
+interface JITNAPacket {
+  id: string                    // identifier packet เฉพาะตัว
+  version: "2.0"                // เวอร์ชั่นโปรโตคอล
+  timestamp: ISO8601            // เวลาที่สร้าง packet
+  sender: AgentIdentifier       // ผู้ส่ง
+  receiver: AgentIdentifier     // ผู้รับ
+  intent: IntentDescriptor      // สิ่งที่ผู้ส่งต้องการ
+  payload: any                  // ข้อมูลจริง
+  signature: Ed25519Signature   // ลายเซ็นเข้ารหัส (RFC 8032)
+  metadata: {
+    ttl: number                 // Time-to-live เป็นวินาที
+    priority: Priority          // CRITICAL | HIGH | NORMAL | LOW
+    replayable: boolean         // สามารถ replay packet นี้ได้หรือไม่?
+    parent_id?: string          // สำหรับการสนทนาแบบ thread
+  }
+}
+```
+
+ทุก packet ถูก **ลงนาม** ด้วย Ed25519 (RFC 8032) ซึ่งหมายความว่า:
+- คุณสามารถตรวจสอบว่า packet ไม่ถูกแก้ไข
+- คุณสามารถพิสูจน์ว่า agent ใดส่งมัน
+- คุณสามารถตรวจจับ replay attack
+
+### กระบวนการ Negotiation
+
+JITNA agent ไม่ดำเนินการคำสั่งแบบตาบอด แต่ทำการ **เจรจา**
+
+```
+Agent A: PROPOSE  → "ต้องการให้คุณวิเคราะห์ dataset นี้"
+Agent B: COUNTER  → "ผมวิเคราะห์ได้ แต่ต้องการ schema ก่อน"
+Agent A: ACCEPT   → "นี่คือ schema" [แนบ schema]
+Agent B: ACCEPT   → "กำลังดำเนินการวิเคราะห์"
+Agent B: COMPLETE → "การวิเคราะห์เสร็จสิ้น" [แนบผลลัพธ์ + ลายเซ็น]
+```
+
+หรือถ้าการเจรจาล้มเหลว:
+
+```
+Agent A: PROPOSE  → "แปลเอกสารทางการแพทย์นี้เป็นภาษาไทย"
+Agent B: REJECT   → "ผมไม่มีคุณสมบัติสำหรับการแปลทางการแพทย์ (FDIA: I=2.0 เกิน threshold ของผม)"
+Agent A: PROPOSE  → [redirect ไปยัง Agent C ผู้เชี่ยวชาญทางการแพทย์]
+```
+
+รูปแบบ negotiation นี้ — **PROPOSE → COUNTER → ACCEPT/REJECT** — ได้แรงบันดาลใจจากการเจรจาสัญญาในกฎหมายธุรกิจ ทำให้มั่นใจว่า:
+
+1. **ไม่มี agent ถูกบังคับให้ดำเนินการเกินความสามารถ**
+2. **ความขัดแย้งถูกนำมาพิจารณา ไม่ถูกซ่อน**
+3. **ทุกการตัดสินใจมี audit trail ครบถ้วน**
+
+---
+
+## JITNA vs Tool-Calling API
+
+| มิติ | Tool-Calling API | JITNA Protocol |
+|---|---|---|
+| **รูปแบบการสื่อสาร** | Request → Response | PROPOSE → COUNTER → ACCEPT/REJECT |
+| **ความเป็นอิสระของ agent** | ไม่มี (tools เป็น passive) | เต็มที่ (agent เจรจาและปฏิเสธได้) |
+| **การตรวจสอบ** | ไม่มีในตัว | packet ลงนาม Ed25519 |
+| **Replay** | ไม่รองรับ | ห่วงโซ่ checkpoint SHA-256 |
+| **Multi-agent consensus** | ไม่รองรับ | SignedAI integration (Tier S/4/6/8) |
+| **การยกเลิก** | Client-side abort | CANCEL ระดับโปรโตคอลพร้อม cleanup |
+| **Discovery** | รายการ function ที่กำหนดไว้ล่วงหน้า | Dynamic Registry พร้อม capability matching |
+| **มาตรฐาน** | เฉพาะ vendor (OpenAI, Anthropic ฯลฯ) | Open RFC (ไม่ผูกกับ vendor) |
+
+Tool-calling มอง AI เป็น function executor JITNA มอง AI เป็น **ผู้ร่วมงาน** ที่มี agency ความสามารถ และสิทธิ์ที่จะบอกว่า "ไม่"
+
+---
+
+## การผสานรวมกับ RCT Ecosystem
+
+### JITNA + FDIA
+ทุก field `intent` ของ JITNA packet ถูกประเมินโดย FDIA gatekeeper หาก F score ที่คำนวณได้ต่ำกว่า threshold ธุรกรรมทั้งหมดถูกบล็อกก่อนที่ agent จะเริ่มทำงาน
+
+### JITNA + SignedAI
+สำหรับงานที่มีความสำคัญสูง JITNA จะ route การดำเนินการผ่านระบบ consensus ของ SignedAI โมเดลหลายตัวประมวลผลงานอย่างเป็นอิสระและต้องบรรลุข้อตกลง (Tier 4: 75% (3/4), Tier 6: 67%, Tier 8: 75%) ก่อนที่ผลลัพธ์จะถูก commit
+
+### JITNA + RCTDB
+ทุก JITNA transaction ที่เสร็จสมบูรณ์ถูก commit ไปยัง RCTDB — 8-dimensional universal memory schema ซึ่งหมายความว่า:
+- ทุก agent interaction ถูกบันทึกอย่างถาวร
+- transaction ใดก็ตามสามารถ replay ได้จากจุดใดก็ได้
+- Delta Engine บีบอัด stored state ได้ 74%
+
+### JITNA + HexaCore
+JITNA Registry เชื่อมต่อกับระบบ HexaCore เพื่อเลือกโมเดลที่เหมาะสมที่สุดสำหรับแต่ละงาน 7 โมเดล (3 ตะวันตก + 3 ตะวันออก + 1 ภูมิภาคไทย) สมดุลด้านภูมิรัฐศาสตร์ และ capability matching ของ JITNA ทำให้โมเดลที่ใช่ได้รับงานที่ใช่
+
+---
+
+## ความเชื่อมโยงกับระบบ 7 Genome
+
+JITNA คือหนึ่งใน **7 Genome** ที่เป็น DNA ของ RCT Ecosystem:
+
+1. **Architect Genome** — DNA ของผู้สร้าง (intent ของ builder)
+2. **ARTENT Genome** — ปัญญาแห่งการสร้างสรรค์
+3. **JITNA Genome** — ชั้น protocol ← *บทความนี้*
+4. **Codex Genome** — คลังความรู้
+5. **SignedAI Genome** — ชั้นการตรวจสอบ
+6. **RCT-KnowledgeVault Genome** — สถาปัตยกรรมความจำ
+7. **RCT-7 Genome** — การปรับปรุงอย่างต่อเนื่อง
+
+JITNA Genome รับผิดชอบการสื่อสารระหว่าง agent ทั้งหมด การประสานงาน และความสอดคล้องกับโปรโตคอลทั่วทั้ง ecosystem
+
+---
+
+## การนำไปใช้ในองค์กร
+
+### โหมดการ Deploy
+
+| โหมด | คำอธิบาย | Use Case |
+|---|---|---|
+| **Embedded** | JITNA protocol ภายใน application เดียว | AI assistant ภายในองค์กร |
+| **Gateway** | JITNA เป็น service mesh สำหรับ multi-agent system | Enterprise orchestration |
+| **Federated** | JITNA ข้ามองค์กรพร้อม mutual authentication | AI ใน supply chain, การผสานกับพาร์ทเนอร์ |
+
+### คุณสมบัติด้านการปฏิบัติตามกฎระเบียบ
+
+- **PDPA (ไทย):** ทุก JITNA packet มีการติดตาม data provenance และความยินยอม
+- **GDPR (EU):** รองรับ right-to-erasure ผ่านการจัดการ packet lifecycle
+- **HIPAA (US):** การแยกข้อมูลทางการแพทย์ผ่าน JITNA zone separation
+- **PIPL (จีน):** การควบคุมการโอนข้อมูลข้ามพรมแดน
+
+---
+
+## คำถามที่พบบ่อย
+
+### JITNA ย่อมาจากอะไร?
+JITNA ย่อมาจาก **Just In Time Nodal Assembly** — โปรโตคอลสำหรับการประกอบ AI agent แบบ dynamic ตาม task intent
+
+### JITNA เป็น open source หรือไม่?
+JITNA specification (RFC-001 v2.0) เผยแพร่เป็นมาตรฐานเปิด reference implementation เป็นส่วนหนึ่งของ RCT Ecosystem ภายใต้ Apache 2.0 license
+
+### JITNA ทำงานกับระบบที่ไม่ใช่ RCT ได้หรือไม่?
+ได้ JITNA ออกแบบมาเป็น transport-agnostic protocol ระบบใดก็ตามที่ส่งและรับ JITNAPacket ได้ก็สามารถเข้าร่วม JITNA network ได้
+
+### JITNA จัดการกับความล้มเหลวอย่างไร?
+JITNA รวมถึง:
+- **TTL (Time-to-Live):** Packet หมดอายุถ้าไม่ถูกประมวลผล
+- **Circuit Breaker:** Agent ที่ไม่ healthy ถูกลบออกจาก registry
+- **Fallback Chains:** ถ้า Agent A ล้มเหลว JITNA route ไปยัง agent ที่สามารถทำได้ตัวถัดไป
+- **Transaction Rollback:** การดำเนินการหลายขั้นตอนที่ไม่สมบูรณ์สามารถย้อนกลับได้
+
+### ทำไมไม่ใช้ agent framework ที่มีอยู่แล้วอย่าง LangChain หรือ AutoGen?
+Framework เหล่านั้นเป็น orchestration tool — กำหนดวิธีที่ agent ทำงานร่วมกันในโค้ด JITNA เป็น **communication protocol** — กำหนดวิธีที่ agent คุยกันโดยไม่ขึ้นกับ framework คุณสามารถนำ JITNA ไปใช้บน LangChain, AutoGen หรือ framework อื่นๆ ได้
+
+### ใครสร้าง JITNA?
+JITNA คิดค้นและพัฒนาโดย **อิทธิฤทธิ์ แซ่โง้ว (Ittirit Saengow)** ในฐานะส่วนหนึ่งของโครงการ RCT (Reverse Component Thinking) Ecosystem
+
+---
+
+## สรุป
+
+JITNA ไม่ใช่ agent framework อีกตัวหนึ่ง มันคือ **มาตรฐานการสื่อสาร** — ชั้น protocol ที่ทำให้ multi-agent AI system สามารถทำงานร่วมกัน ตรวจสอบได้ และ audit ได้
+
+สิ่งสำคัญที่ต้องจำ:
+- **ชื่อเต็ม:** Just In Time Nodal Assembly
+- **Specification:** RFC-001 v2.0 (52 หน้า)
+- **รูปแบบหลัก:** PROPOSE → COUNTER → ACCEPT/REJECT
+- **ความปลอดภัย:** packet ลงนาม Ed25519, ห่วงโซ่ SHA-256 replay
+- **การผสานรวม:** FDIA gating, SignedAI consensus, RCTDB memory, HexaCore routing
+- **ปรัชญา:** Agent คือผู้ร่วมงานที่มี agency ไม่ใช่เครื่องมือ passive
+
+ถ้า FDIA รับประกันคุณภาพ และ SignedAI รับประกัน consensus JITNA รับประกันว่า agent ทุกตัวในระบบสามารถสื่อสาร — อย่างชัดเจน ปลอดภัย และรับผิดชอบได้
+
+### แหล่งข้อมูลที่เกี่ยวข้อง
+
+- 🔗 [JITNA Entity Page — คำจำกัดความพร้อม JSON-LD schema](/th/entity/jitna-protocol)
+- 🔬 [FDIA Equation — ชั้น constitutional ที่ JITNA สร้างบนพื้นฐาน](/th/blog/fdia-equation-explained)
+- 🧠 [Intent Operating System — สถาปัตยกรรม 4 ชั้นที่ JITNA เป็นส่วนหนึ่ง](/th/blog/intent-operating-system-explained)
+
+---
+
+*บทความนี้เขียนโดย อิทธิฤทธิ์ แซ่โง้ว ผู้ก่อตั้งและผู้พัฒนาเพียงคนเดียวของ RCT Labs JITNA เป็นส่วนหนึ่งของ RCT (Reverse Component Thinking) Ecosystem — ระบบปฏิบัติการ AI แบบ constitutional ที่สร้างขึ้นอย่างอิสระในกรุงเทพมหานคร ประเทศไทย*

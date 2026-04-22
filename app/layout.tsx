@@ -78,11 +78,16 @@ const spaceMono = Space_Mono({
   preload: false,
 })
 
-/* Thai: Kanit (matches Space Grotesk geometric style) — preload=true, swap:
-   Must render correctly on first cold load. "optional" caused Thai text to render in
-   system font (Leelawadee UI / Tahoma) on first visit because Kanit (83KB) couldn't
-   download within 100ms block period. After cache, it always loads in time.
-   Weights: 300 (subtitle-th uses font-weight:300 + font-synthesis:none), 400, 500, 600, 700 */
+/* Thai: Kanit (matches Space Grotesk geometric style) — preload=true, fallback:
+   Changed from "swap" → "fallback" to fix 5.5s LCP Render Delay on mobile (22 Apr 2026).
+   "swap" caused LCP to be measured at font-swap time (~6s on throttled 4G) because
+   Lighthouse records LCP at the LAST paint of the LCP element, which is the font-swap repaint.
+   "fallback" gives a 100ms block period then 3s swap window: on slow connections where
+   Kanit (3×~83KB≈250KB) can't download within 3.1s, browser commits to system Thai font
+   (Leelawadee UI/Tahoma) and LCP is measured at ~1.6s instead of ~6s. adjustFontFallback
+   generates size-adjusted fallback metrics to keep CLS=0 even when fallback is used.
+   On cached/fast connections, Kanit loads within 3s and swaps correctly.
+   Previously: "optional" caused Thai text to always use system font on cold load. */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
   /* Weights reduced from 5 → 3: dropped 300 (subtitle-th now uses 400) and 500
@@ -90,8 +95,9 @@ const kanit = Kanit({
      acceptable with font-synthesis:none). Saves ~2 font files (~166 KB) on cold load. */
   weight: ["400", "600", "700"],
   variable: "--rct-font-thai",
-  display: "swap",
+  display: "fallback",
   preload: true,
+  adjustFontFallback: true,
 })
 
 
