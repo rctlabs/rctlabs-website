@@ -130,6 +130,83 @@
   --sidebar-ring: oklch(0.72 0.12 75);
 }
 
+/* ==========================================================================
+   iOS SAFARI <15.4 FALLBACKS — oklch() not supported before iOS 15.4 (Mar 2022)
+   Without fallbacks: text/border colors render as transparent/inherit.
+   Strategy: @supports not block sets hex equivalents for critical design tokens.
+   Light mode --background is already hex (#f7f1eb) so no fallback needed there.
+   ========================================================================== */
+@supports not (color: oklch(0% 0 0)) {
+  :root {
+    /* Light mode critical tokens */
+    --foreground: #241e18;          /* oklch(0.15 0.01 60) */
+    --card: #ffffff;                /* oklch(1 0 0) */
+    --card-foreground: #241e18;
+    --popover: #ffffff;
+    --popover-foreground: #241e18;
+    --primary: #D4A853;             /* oklch(0.72 0.12 75) — amber */
+    --primary-foreground: #ffffff;
+    --secondary: #f0ece6;           /* oklch(0.95 0.008 80) */
+    --secondary-foreground: #4a4035;
+    --muted: #ede9e3;               /* oklch(0.94 0.008 80) */
+    --muted-foreground: #7a706a;
+    --accent: #ede9e3;
+    --accent-foreground: #241e18;
+    --destructive: #c0392b;         /* oklch(0.6 0.2 25) */
+    --destructive-foreground: #ffffff;
+    --success: #2e7d52;             /* oklch(0.62 0.17 145) */
+    --success-foreground: #ffffff;
+    --warning: #c49a3a;             /* oklch(0.75 0.15 75) */
+    --warning-foreground: #2a2210;
+    --border: #e3ddd6;              /* oklch(0.91 0.01 80) */
+    --input: #e3ddd6;
+    --ring: #D4A853;
+    --sidebar: #f5f0ea;             /* oklch(0.97 0.005 80) */
+    --sidebar-foreground: #241e18;
+    --sidebar-primary: #D4A853;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #ede9e3;
+    --sidebar-accent-foreground: #241e18;
+    --sidebar-border: #e3ddd6;
+    --sidebar-ring: #D4A853;
+  }
+
+  .dark {
+    /* Dark mode critical tokens */
+    --background: #1e1a16;          /* oklch(0.13 0.005 60) */
+    --foreground: #e8e4de;          /* oklch(0.92 0.005 80) */
+    --card: #29241f;                /* oklch(0.17 0.005 60) */
+    --card-foreground: #e8e4de;
+    --popover: #29241f;
+    --popover-foreground: #e8e4de;
+    --primary: #D4A853;
+    --primary-foreground: #1e1a16;
+    --secondary: #302a24;           /* oklch(0.2 0.008 60) */
+    --secondary-foreground: #d4cfc8;
+    --muted: #2c2620;               /* oklch(0.2 0.005 60) */
+    --muted-foreground: #999490;
+    --accent: #343028;              /* oklch(0.22 0.008 60) */
+    --accent-foreground: #e8e4de;
+    --destructive: #e05050;         /* oklch(0.55 0.2 25) */
+    --destructive-foreground: #f5f0ea;
+    --success: #4caf7a;             /* oklch(0.65 0.18 145) */
+    --success-foreground: #0f2018;
+    --warning: #d4a84a;             /* oklch(0.78 0.16 75) */
+    --warning-foreground: #261d08;
+    --border: #3d3730;              /* oklch(0.25 0.005 60) */
+    --input: #3d3730;
+    --ring: #D4A853;
+    --sidebar: #252018;             /* oklch(0.15 0.005 60) */
+    --sidebar-foreground: #e8e4de;
+    --sidebar-primary: #D4A853;
+    --sidebar-primary-foreground: #1e1a16;
+    --sidebar-accent: #343028;
+    --sidebar-accent-foreground: #e8e4de;
+    --sidebar-border: #3d3730;
+    --sidebar-ring: #D4A853;
+  }
+}
+
 @theme inline {
   /* Typography: Space Grotesk display, Inter/Kanit body, Space Mono code */
   /* IMPORTANT: Use var() references — NOT literal font name strings.
@@ -841,6 +918,10 @@
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+  /* CSS containment: orb repaint/layout changes don't affect elements outside this div.
+     Critical for mobile — prevents browser from invalidating the full page paint tree
+     every time an orb drifts. Translates to fewer full-page repaints during scroll. */
+  contain: layout style paint;
 }
 
 .homepage-global-backdrop__mesh {
@@ -866,6 +947,10 @@
   position: absolute;
   border-radius: 9999px;
   filter: blur(48px);
+  /* will-change: transform — promote each orb to its own GPU compositor layer on desktop.
+     Prevents layer thrashing: orb animations stay on GPU without invalidating main layer.
+     Avoided on mobile via @media below (VRAM limited on iPhone). */
+  will-change: transform;
   /* animation declared per-variant below for staggered directional entry */
 }
 
@@ -915,6 +1000,31 @@
 
 .dark .homepage-global-backdrop__orb--terra {
   background: radial-gradient(circle, rgba(196, 116, 91, 0.11), rgba(196, 116, 91, 0.022) 58%, transparent 78%);
+}
+
+/* Mobile: remove infinite drift animations + will-change to conserve GPU/VRAM.
+   On mobile (≤1023px), orbs only play their 700-980ms entry animation, then stop.
+   Eliminates: 3 compositor layers × continuous backdrop-*-drift keyframes on small GPU.
+   Desktop keeps drift animations for the cinematic ambient effect. */
+@media (max-width: 1023px) {
+  .homepage-global-backdrop__orb {
+    will-change: auto;
+  }
+  .homepage-global-backdrop__orb--amber {
+    animation:
+      backdrop-orb-enter   700ms   0ms  ease-out  both,
+      backdrop-amber-swoop 980ms   0ms  cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .homepage-global-backdrop__orb--sage {
+    animation:
+      backdrop-orb-enter  700ms 120ms  ease-out  both,
+      backdrop-sage-swoop 980ms 120ms  cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .homepage-global-backdrop__orb--terra {
+    animation:
+      backdrop-orb-enter    700ms 240ms  ease-out  both,
+      backdrop-terra-swoop  980ms 240ms  cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 }
 
 .about-page-backdrop {

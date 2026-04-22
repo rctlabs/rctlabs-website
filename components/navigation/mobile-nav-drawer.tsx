@@ -70,7 +70,7 @@ export function MobileNavDrawer({
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.24, ease: [0.2, 0.8, 0.2, 1] }}
-          className={`lg:hidden overflow-hidden border-t ${isDark ? "border-white/10 bg-[#121212]/98" : "border-warm-light-gray bg-[#fcfaf7]/96"}`}
+          className={`lg:hidden overflow-hidden border-t ${isDark ? "border-white/10 bg-[#121212]" : "border-warm-light-gray bg-[#fcfaf7]"}`}
         >
           <div className="max-h-[calc(100vh-4rem)] overflow-y-auto px-4 py-4">
             <UtilityActions

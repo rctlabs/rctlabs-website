@@ -63,17 +63,24 @@ export function DeferredAnalytics({ ga4Id, gtmId }: DeferredAnalyticsProps) {
 
   return (
     <>
-      {ga4Id ? (
+      {/* Load GA4 directly ONLY when no GTM is configured.
+          When GTM is present, the GTM container already injects its own GA4 tag
+          (visible as gtag/js?id=...&gtm=<containerHash> in network requests).
+          Loading GA4 directly on top of GTM causes two separate gtag/js downloads
+          (~145 KB total, ~61 KB unused) and duplicate pageview events.
+          strategy="lazyOnload" defers execution until after the page load event
+          and the browser is idle, layering on top of our own idle-gate above. */}
+      {ga4Id && !gtmId ? (
         <>
-          <Script src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`} strategy="afterInteractive" />
-          <Script id="ga4-init-deferred" strategy="afterInteractive">
+          <Script src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`} strategy="lazyOnload" />
+          <Script id="ga4-init-deferred" strategy="lazyOnload">
             {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}',{page_path:window.location.pathname,send_page_view:true});`}
           </Script>
         </>
       ) : null}
 
       {gtmId ? (
-        <Script id="gtm-head-deferred" strategy="afterInteractive">
+        <Script id="gtm-head-deferred" strategy="lazyOnload">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f)})(window,document,'script','dataLayer','${gtmId}');`}
         </Script>
       ) : null}

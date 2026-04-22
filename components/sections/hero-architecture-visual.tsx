@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { memo, useMemo, useState, type CSSProperties } from "react"
+import { memo, useMemo, useState, useRef, useEffect, type CSSProperties } from "react"
 import { useTheme } from "@/components/theme-provider"
 import { useLanguage } from "@/components/language-provider"
 import { useMounted } from "@/hooks/use-mounted"
@@ -40,6 +40,17 @@ function HeroArchitectureVisual() {
   const localePrefix = getLocalePrefix(locale)
   const defaultPointer = { x: 72, y: 24, rx: 0, ry: 0, sx: 0, sy: 0 }
   const [pointer, setPointer] = useState(defaultPointer)
+  // rAF throttle refs: cap setPointer (re-render + useMemo + CSS custom props) to
+  // one update per animation frame regardless of pointermove fire rate (60-120/s).
+  // Eliminates the Style & Layout thrash measured at 2,287ms in main-thread breakdown.
+  const rafRef = useRef<number | null>(null)
+  const pendingPointer = useRef<typeof defaultPointer | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+    }
+  }, [])
 
   const panelStyle = useMemo(
     () =>
@@ -55,13 +66,7 @@ function HeroArchitectureVisual() {
   )
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!enhancedVisualReady) {
-      return
-    }
-
-    if (event.pointerType === "touch") {
-      return
-    }
+    if (!enhancedVisualReady || event.pointerType === "touch") return
 
     const bounds = event.currentTarget.getBoundingClientRect()
     const ratioX = (event.clientX - bounds.left) / bounds.width
@@ -69,17 +74,33 @@ function HeroArchitectureVisual() {
     const offsetX = ratioX - 0.5
     const offsetY = ratioY - 0.5
 
-    setPointer({
+    // Store latest computed values; rAF will flush to React state at most once per frame
+    pendingPointer.current = {
       x: ratioX * 100,
       y: ratioY * 100,
       rx: Number((-offsetY * 4.5).toFixed(2)),
       ry: Number((offsetX * 5.5).toFixed(2)),
       sx: Number((offsetX * 8).toFixed(2)),
       sy: Number((offsetY * 6).toFixed(2)),
+    }
+
+    if (rafRef.current !== null) return // already have a frame queued
+
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null
+      if (pendingPointer.current !== null) {
+        setPointer(pendingPointer.current)
+        pendingPointer.current = null
+      }
     })
   }
 
   const handlePointerLeave = () => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+    }
+    pendingPointer.current = null
     setPointer(defaultPointer)
   }
 
