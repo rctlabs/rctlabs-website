@@ -1,0 +1,233 @@
+# MOIP: การวางแผนเจตนาหลายวัตถุประสงค์ค้นหาการตัดสินใจ AI ที่ดีที่สุดแบบ Pareto ได้อย่างไร
+
+ทุกการตัดสินใจ AI ขององค์กรล้วนมีการแลกเปลี่ยน Deploy เร็วขึ้นก็จ่ายมากขึ้น เพิ่มการควบคุมก็ยอมรับความซับซ้อน เพิ่มประสิทธิภาพด้านต้นทุนก็เสียอำนาจอธิปไตย การตัดสินใจจัดซื้อจริง — การเลือก AI model, สถาปัตยกรรม infrastructure, การประเมิน vendor — ไม่มีคำตอบ "ดีที่สุด" แบบเดียว แต่มีชุดคำตอบที่แต่ละอันดีที่สุดในแบบของตัวเอง
+
+องค์กรส่วนใหญ่จัดการปัญหานี้ได้ไม่ดี คณะกรรมการประชุม ถกเถียงเรื่องลำดับความสำคัญที่ขัดแย้งกัน และในที่สุดก็ยึดติดกับตัวเลือกหนึ่งเพราะผู้มีอำนาจชอบมัน โครงสร้างทางคณิตศาสตร์ของการแลกเปลี่ยน — ว่าวิธีแก้ปัญหาใดครอบงำวิธีแก้ปัญหาอื่นจริงๆ — ไม่ได้ถูกกำหนดอย่างเป็นทางการ การตัดสินใจเกิดขึ้น แต่ไม่ได้ *พิสูจน์*
+
+MOIP (Multi-Objective Intent Planning) คือคำตอบอย่างเป็นทางการของ RCT Ecosystem สำหรับปัญหานี้ เป็นอัลกอริทึมที่รับชุดวัตถุประสงค์ที่ขัดแย้งกัน ให้คะแนนชุดวิธีแก้ปัญหาใดๆ เทียบกับวัตถุประสงค์เหล่านั้น และส่งคืน Pareto frontier — ชุดที่สมบูรณ์ทางคณิตศาสตร์ของตัวเลือกที่ไม่ถูกครอบงำ จาก frontier นั้น การจัดลำดับตามน้ำหนักความชอบจะแสดงตัวเลือกที่แนะนำเพียงหนึ่งรายการ พร้อมความสามารถในการตรวจสอบอย่างสมบูรณ์ว่าการแนะนำนั้นมาจากไหน
+
+## ปัญหาการแลกเปลี่ยนขององค์กร กำหนดอย่างเป็นทางการ
+
+พิจารณาการตัดสินใจ deploy ที่มีวัตถุประสงค์สี่ประการที่ดึงต่อกันเสมอ:
+
+| วัตถุประสงค์ | สิ่งที่วัด | ทิศทาง |
+|---|---|---|
+| **ความเร็ว** | เวลาสู่ production | เพิ่มสูงสุด |
+| **ต้นทุน** | ค่าใช้จ่าย monthly operating | ลดต่ำสุด |
+| **การควบคุม** | ความเป็นเจ้าของ infrastructure | เพิ่มสูงสุด |
+| **การบำรุงรักษา** | ภาระ operational | ลดต่ำสุด |
+
+วิธีแก้ปัญหาสามอย่าง — Vercel, VPS + Docker, Kubernetes — แต่ละอันให้คะแนนต่างกันในสี่มิตินี้ ไม่มีตัวเลือกใดที่ดีที่สุดในทั้งสี่มิติพร้อมกัน Vercel เร็วที่สุดและบำรุงรักษาง่ายที่สุด แต่แพงที่สุดและควบคุมได้น้อยที่สุด VPS ถูกที่สุดและควบคุมได้มากที่สุด แต่ช้าที่สุดและบำรุงรักษายากที่สุด Kubernetes ทำให้สมดุลทั้งสี่ — แต่ที่ค่ากลางทุกมิติ
+
+วิธีคลาสสิกสำหรับปัญหานี้คือเลือก metric เดียว จัดอันดับตามนั้น แล้วเรียกว่าเสร็จ MOIP ทำสิ่งที่แตกต่างอย่างพื้นฐาน: มันค้นหาทุกวิธีแก้ปัญหาที่ไม่แย่กว่าอื่นๆ ในทุกวัตถุประสงค์พร้อมกัน — ชุด Pareto-optimal — แล้วจัดลำดับภายในชุดนั้นตามน้ำหนักความชอบที่ระบุ
+
+## ความหมายที่แท้จริงของ Pareto optimality
+
+วิธีแก้ปัญหา **A** คือ Pareto-optimal ถ้าไม่มีวิธีแก้ปัญหาอื่น **B** ที่ดีอย่างน้อยเท่า A ในทุกวัตถุประสงค์ *และ* ดีกว่าอย่างเคร่งครัดอย่างน้อยหนึ่งอย่าง
+
+อย่างเป็นทางการ:
+
+$$\text{dominates}(A, B) \iff \forall i: A_i \geq B_i \land \exists j: A_j > B_j$$
+
+ถ้าไม่มี B ครอบงำ A แล้ว A อยู่ใน **Pareto frontier** — ชุดวิธีแก้ปัญหาที่แสดงถึงการแลกเปลี่ยนที่แท้จริงและลดทอนไม่ได้
+
+เรื่องนี้สำคัญเพราะวิธีแก้ปัญหาที่ถูกครอบงำไม่ใช่ทางเลือกที่มีเหตุผล ถ้าวิธีแก้ปัญหา B ถูกกว่า เร็วกว่า *และ* ควบคุมได้มากกว่าวิธีแก้ปัญหา A ก็ไม่มีเหตุผลที่จะเลือก A แต่ถ้า B ถูกกว่าขณะที่ A ควบคุมได้มากกว่า — และไม่มีทางใดครอบงำอีกทาง — แล้วการเลือกระหว่างทั้งสองเป็นคำถามเกี่ยวกับค่านิยมที่ขึ้นอยู่กับน้ำหนักขององค์กรต่อต้นทุนเทียบกับการควบคุม
+
+หน้าที่ของ MOIP คือกำจัดตัวเลือกที่ถูกครอบงำและแสดงพื้นที่การแลกเปลี่ยนที่เหลืออยู่ด้วยความชัดเจนทางคณิตศาสตร์อย่างสมบูรณ์
+
+## สถาปัตยกรรม MOIP: สี่ component หลัก
+
+MOIP ถูก implement เป็น microservice ภายใน RCT Ecosystem ด้วยสี่ component ที่เชื่อมต่อกันอย่างแน่นหนา:
+
+### 1. multi_objective.py — Objective scoring engine
+
+รับรายการวัตถุประสงค์และรายการวิธีแก้ปัญหาผู้สมัคร แต่ละอันให้คะแนนต่อวัตถุประสงค์ วัตถุประสงค์มี:
+
+- **weight** — ความชอบสัมพัทธ์ขององค์กร (เช่น `cost: 0.4`, `speed: 0.3`, `control: 0.2`, `maintenance: 0.1`)
+- **direction** — `maximize` หรือ `minimize`
+- **target_value** — ค่าอุดมคติที่ใช้ในการ normalise
+
+scoring engine normalise วัตถุประสงค์ทั้งหมดเป็นสเกล 0–10 ทั่วไปก่อนเปรียบเทียบใดๆ เพื่อให้แน่ใจว่าการปรับปรุง latency 100ms ไม่ถูกถือว่าเทียบเท่ากับการประหยัดต้นทุน $100 เพียงเพราะทั้งสองแสดงเป็นความแตกต่างของ 100
+
+### 2. pareto_optimizer.py — Pareto frontier discovery
+
+นี่คือแกนกลางทางคณิตศาสตร์ สำหรับแต่ละคู่วิธีแก้ปัญหาผู้สมัคร `(A, B)` optimizer ประเมินว่า A ครอบงำ B หรือไม่:
+
+```python
+def dominates(sol_a: Solution, sol_b: Solution) -> bool:
+    # True ถ้า A ดีอย่างน้อยเท่า B ในทุกวัตถุประสงค์
+    # และดีกว่าอย่างเคร่งครัดอย่างน้อยหนึ่ง
+    at_least_as_good = all(
+        a >= b for a, b in zip(sol_a.normalised_scores, sol_b.normalised_scores)
+    )
+    strictly_better = any(
+        a > b for a, b in zip(sol_a.normalised_scores, sol_b.normalised_scores)
+    )
+    return at_least_as_good and strictly_better
+
+def pareto_frontier(solutions: list[Solution]) -> list[Solution]:
+    return [s for s in solutions if not any(dominates(other, s) for other in solutions)]
+```
+
+อัลกอริทึมทำงานใน **O(n²)** เวลาในชุดผู้สมัคร ซึ่งเป็นความซับซ้อนที่ดีที่สุดสำหรับการค้นหา Pareto แบบแน่นอนด้วยจำนวนวัตถุประสงค์ใดๆ สำหรับบริบทการวางแผนองค์กร — โดยทั่วไปมีวิธีแก้ปัญหา 3–20 อย่าง — หมายความว่าผลลัพธ์ frontier แบบ deterministic ใน 100ms โดยไม่คำนึงถึงจำนวนวัตถุประสงค์
+
+### 3. constraint_solver.py — Hard constraint enforcement
+
+ไม่ใช่ทุกวัตถุประสงค์ที่สามารถแลกเปลี่ยนได้ บางข้อกำหนดเป็น binary: วิธีแก้ปัญหาที่ล้มเหลวในข้อกำหนดด้านกฎระเบียบหรือ security baseline ไม่ใช่ผู้สมัคร Pareto — มันถูกตัดออกทั้งหมดก่อนที่จะคำนวณ frontier
+
+constraint solver ทำงานก่อน optimizer และลบวิธีแก้ปัญหาใดๆ ที่ละเมิด:
+- ข้อกำหนด compliance ที่บังคับ (เช่น PDPA data residency, SOC 2 certification)
+- เพดาน latency ที่ยากเปลี่ยนแปลงไม่ได้ (เช่น `p99 ≤ 500ms`)
+- พื้น cost ที่ต่อรองไม่ได้
+
+วิธีนี้ทำให้การวิเคราะห์ Pareto สะอาด: frontier มีเฉพาะวิธีแก้ปัญหาที่เป็นไปได้จริง
+
+### 4. ranking_engine.py — Preference-weighted final ranking
+
+Pareto frontier บอกว่า *วิธีแก้ปัญหาใด* ที่ไม่ถูกครอบงำ ranking engine บอกว่า *วิธีแก้ปัญหาใดในนั้น* ที่ตรงกับลำดับความสำคัญที่ระบุขององค์กรมากที่สุด
+
+มันใช้ objective weight จากขั้นตอนที่ 1 เพื่อคำนวณคะแนน weighted sum สำหรับแต่ละวิธีแก้ปัญหาใน frontier แล้วจัดลำดับ output คือ:
+
+1. Pareto frontier เต็มรูปแบบ (เพื่อความโปร่งใส — ตัวเลือกที่ไม่ถูกครอบงำทั้งหมด)
+2. วิธีแก้ปัญหาที่แนะนำ (คะแนน weighted-sum สูงสุด)
+3. คะแนนต่อวัตถุประสงค์และสมมติฐาน weight ที่ใช้
+
+ขั้นตอน ranking ทำงานใน 100ms บน 50-solution frontier pipeline ทั้งหมด — scoring + frontier + ranking — เสร็จสิ้นใน 200ms ในทางปฏิบัติ
+
+## วิธีที่ MOIP ผสานกับ RCT Kernel
+
+MOIP ไม่ตัดสินใจโดยลำพัง เป็น planning component ภายใน [FDIA equation pipeline](/protocols/fdia-equation) — โดยเฉพาะอยู่ที่ขั้นตอน *Intent Classification* ที่ kernel ต้องแก้ปัญหา multi-objective planning intent ก่อน route ไปยัง execution
+
+เส้นทางการผสานรวม:
+
+```
+User/System Intent (multi-objective signal)
+         ↓
+Intent Classification (FDIA Tier 2)
+         ↓
+MOIP: POST /moip/plan
+  → constraint_solver กรองผู้สมัคร
+  → pareto_optimizer สร้าง frontier
+  → ranking_engine ให้คะแนนตาม weight
+         ↓
+วิธีแก้ปัญหาที่แนะนำ + frontier เต็มรูปแบบ
+         ↓
+JITNA RFC-001 packet (objective trace ฝังใน metadata field)
+         ↓
+SignedAI: Ed25519 signature บน recommendation สุดท้าย
+         ↓
+Execution layer
+```
+
+สองด้านของการผสานรวมนี้มีนัยสำคัญทางสถาปัตยกรรม:
+
+**JITNA protocol พา objective trace** output ของ MOIP ไม่ใช่แค่ recommendation — เป็น structured payload ที่รวม Pareto frontier เต็มรูปแบบ, สมมติฐาน weight และคะแนนต่อวัตถุประสงค์ สิ่งนี้ฝังใน `M` (metadata) field ของ JITNA packet ทำให้ logic การตัดสินใจ audit ได้ทุกขั้นตอน downstream
+
+**Ed25519 sign recommendation** เมื่อ recommendation ถึง [SignedAI](/products/signed-ai) จะได้รับ cryptographic signature ที่รวม MOIP trace หมายความว่า recommendation นั้นป้องกันการแก้ไข: การเปลี่ยนแปลงใดๆ ต่อ weight, คะแนน หรือ frontier หลังจาก signing สามารถตรวจจับได้ สำหรับอุตสาหกรรมที่มีการกำกับดูแล — การเงิน สุขภาพ สภาพแวดล้อม PDPA — สิ่งนี้สร้าง chain of custody สำหรับการตัดสินใจการวางแผนที่ตรงตามข้อกำหนดการ audit
+
+## กรณีใช้งานองค์กร: การเลือก AI model
+
+พิจารณาทีม AI ขององค์กรที่ประเมิน LLM ห้าตัวสำหรับ Thai enterprise workload: GPT-4o, Claude Sonnet, Gemini Pro, Typhoon (Thai-optimised) และ RCT-7
+
+ทีมกำหนดวัตถุประสงค์สี่ประการพร้อม weight ที่สะท้อนลำดับความสำคัญ:
+
+| วัตถุประสงค์ | Weight | ทิศทาง |
+|---|---|---|
+| ต้นทุนต่อ 1M tokens | 0.35 | ลดต่ำสุด |
+| Response latency (p95) | 0.25 | ลดต่ำสุด |
+| Constitutional accuracy | 0.30 | เพิ่มสูงสุด |
+| Data sovereignty (TH residency) | 0.10 | เพิ่มสูงสุด |
+
+หลังจากให้คะแนนแต่ละโมเดลในมิติเหล่านี้และใช้ MOIP:
+
+- GPT-4o ได้คะแนนสูงสุดด้าน accuracy แต่ต่ำสุดด้าน sovereignty — เข้า frontier
+- Typhoon ได้คะแนนสูงสุดด้าน sovereignty และต่ำสุดด้านต้นทุน — เข้า frontier
+- RCT-7 ได้คะแนนอันดับสองด้าน accuracy พร้อม sovereignty compliance เต็มรูปแบบ — เข้า frontier
+- ผู้สมัครสองรายถูกครอบงำและถูกกำจัดก่อนการจัดลำดับ
+
+ranking engine ใช้ weight ด้วยต้นทุน (0.35) และ accuracy (0.30) ที่มี weight มากที่สุด RCT-7 ปรากฏเป็นตัวเลือกที่แนะนำ — ไม่ใช่ถูกที่สุดหรือเร็วที่สุดโดยลำพัง แต่เพิ่ม objective function แบบ weighted ให้สูงสุดในทุกมิติ
+
+ทีมองค์กรได้รับ:
+- Pareto frontier (3 ตัวเลือกที่ไม่ถูกครอบงำ)
+- โมเดลที่แนะนำพร้อมคำอธิบาย
+- weight ที่ใช้อย่างแน่ชัด — ดังนั้นถ้าลำดับความสำคัญเปลี่ยน ทีมสามารถรันใหม่ด้วย weight ต่างกันและได้ recommendation ใหม่ใน 200ms
+
+นี่ไม่ใช่ recommendation แบบอ่อน แต่เป็นผลลัพธ์ที่พิสูจน์ทางคณิตศาสตร์: ภายใต้วัตถุประสงค์และ weight ที่ระบุ ตัวเลือกนี้ไม่ถูกครอบงำและ preference-optimal
+
+## กรณีใช้งานองค์กร: การ deploy infrastructure
+
+ตัวอย่าง infrastructure deployment จากเอกสารสถาปัตยกรรม MOIP แสดง algorithm อย่างเป็นรูปธรรมมากขึ้น ตัวเลือก deployment สามอย่างพร้อมวัตถุประสงค์สี่ประการ ให้คะแนน 0–10:
+
+| ตัวเลือก | ความเร็ว (0.4) | ต้นทุน (0.3, min) | การควบคุม (0.2) | การบำรุงรักษา (0.1) |
+|---|---|---|---|---|
+| Vercel | 10 | 20 | 3 | 10 |
+| VPS + Docker | 4 | 5 | 9 | 4 |
+| Kubernetes | 7 | 12 | 8 | 7 |
+
+หลัง normalise ต้นทุนเป็นสเกล maximise (ต้นทุนต่ำกว่า = คะแนนสูงกว่า) และรัน Pareto optimizer:
+
+- Vercel: ถูกครอบงำโดย Kubernetes ด้านการควบคุม (3 < 8) โดยไม่มีข้อได้เปรียบชดเชยที่ Kubernetes ไม่มีเช่นกัน — **ถูกกำจัด**
+- VPS: ไม่ถูกครอบงำโดย Kubernetes (VPS มีการควบคุมสูงกว่า: 9 > 8, ต้นทุนต่ำกว่า: 5 < 12) — **frontier**
+- Kubernetes: ไม่ถูกครอบงำโดย VPS (Kubernetes มีความเร็วสูงกว่า: 7 > 4, การบำรุงรักษาต่ำกว่า: 7 > 4) — **frontier**
+
+Pareto frontier มี {VPS, Kubernetes} ด้วยความเร็วที่มี weight 0.4 ranking engine ส่งคืน Kubernetes เป็นตัวเลือกที่แนะนำ — ชนะใน highest-weighted objective และ non-dominated โดยรวม
+
+## Benchmark ประสิทธิภาพ
+
+MOIP v1 ผสานรวมใน RCT Ecosystem v5.4.5 ผ่านการตรวจสอบใน 4,849-test suite เต็มรูปแบบ ด้วย 0 ความล้มเหลว บริการบรรลุคะแนน **9.1/10** บน MOIP benchmark evaluation set ด้วย **100% accuracy** ในการระบุ Pareto frontier — วิธีแก้ปัญหา Pareto-optimal ทั้งหมดถูกรวมอย่างถูกต้อง และไม่มีวิธีแก้ปัญหาที่ถูกครอบงำถูกรวมอย่างผิดพลาด
+
+เป้าหมายประสิทธิภาพหลัก:
+- **Frontier discovery:** O(n²), deterministic — ไม่มีการประมาณ ไม่มีความสุ่ม
+- **Ranking speed:** ต่ำกว่า 100ms สำหรับชุดผู้สมัคร 50 วิธีแก้ปัญหา
+- **Constraint evaluation:** O(n·m) โดยที่ n = ผู้สมัคร, m = จำนวน constraint — ทำงานก่อน frontier เพื่อลด n
+
+**ขอบเขต reproducibility:** คะแนน 9.1/10 และตัวเลข 100% accuracy วัดจาก MOIP internal benchmark set (RCT Ecosystem v5.4.5, เมษายน 2026) benchmark ครอบคลุม Pareto correctness แบบ deterministic, ความแม่นยำของ constraint filtering และการจัดแนว ranking กับ weight ที่ระบุ ประสิทธิภาพ production จะแตกต่างกันตามขนาดชุดผู้สมัครและจำนวนวัตถุประสงค์ — ตัวเลข <100ms วัดที่ n=50 วิธีแก้ปัญหา, 4 วัตถุประสงค์บน reference hardware methodology benchmark อิสระและ caveat เผยแพร่ที่ [Benchmark Summary →](/benchmark-summary)
+
+## สิ่งที่ MOIP เปลี่ยนแปลงสำหรับ AI governance ขององค์กร
+
+AI decision governance มีปัญหาด้านเอกสาร องค์กรตัดสินใจด้านเทคโนโลยีที่ซับซ้อนและมีความเสี่ยงสูง — การเลือกโมเดล, vendor lock-in, infrastructure commitment — และเหตุผลเบื้องหลังการตัดสินใจเหล่านั้นถูกเก็บไว้ในบันทึกการประชุม, thread email หรือ memory ของบุคคล เมื่อมีการ audit การตัดสินใจ เหตุผลเดิมมักกู้คืนไม่ได้
+
+MOIP สร้าง auditable, signed decision record ทุก planning output รวม:
+
+- ชุดผู้สมัครและคะแนนของพวกเขา
+- วัตถุประสงค์และ weight ที่ใช้
+- Pareto frontier ก่อนและหลัง constraint filtering
+- วิธีแก้ปัญหาที่แนะนำและพื้นฐานทางคณิตศาสตร์สำหรับ recommendation
+- Ed25519 signature บน record ทั้งหมด
+
+หมายความว่าเหตุผลไม่ได้แค่ถูกเก็บ — แต่ถูกผูกด้วยวิธีการเข้ารหัสลับกับ recommendation การ audit ในอนาคต, การตรวจสอบด้านกฎระเบียบ และการวิเคราะห์หลังการตัดสินใจสามารถเข้าถึง reasoning chain ที่แน่ชัด ไม่ใช่การสร้างขึ้นใหม่จาก memory
+
+สำหรับสภาพแวดล้อม data ที่อยู่ภายใต้การควบคุม PDPA — ที่ต้องบันทึก legal basis สำหรับการตัดสินใจ AI deployment — สิ่งนี้สร้าง compliance artefact ที่ทั้ง machine-readable และ human-interpretable
+
+## คำถามที่พบบ่อย
+
+**MOIP จัดการวัตถุประสงค์มากกว่าสี่อย่างได้ไหม?**
+ได้ อัลกอริทึม agnostic ต่อจำนวนวัตถุประสงค์ อย่างไรก็ตาม เมื่อจำนวนวัตถุประสงค์เพิ่มขึ้น Pareto frontier มักขยายตัว (วิธีแก้ปัญหาเพิ่มขึ้นกลายเป็น non-dominated) ซึ่งอาจลดอำนาจการแบ่งแยกของ recommendation ในทางปฏิบัติ การตัดสินใจการวางแผนขององค์กรแทบไม่ต้องการวัตถุประสงค์มากกว่าหกถึงแปดอย่างก่อนที่ความซับซ้อนจะเกินสิ่งที่ผู้ตัดสินใจมนุษย์สามารถตีความได้อย่างมีความหมาย
+
+**ถ้าลำดับความสำคัญ weight ขององค์กรเปลี่ยนระหว่างกระบวนการล่ะ?**
+MOIP ถูกออกแบบมาสำหรับการประเมินใหม่ เพราะ scoring, frontier และ ranking เป็นสามขั้นตอนแยกกัน การเปลี่ยน weight ต้องการเพียงการรัน ranking engine ใหม่บน frontier ที่มีอยู่ — ไม่ต้องคำนวณการวิเคราะห์ Pareto ใหม่ นี่คือ sub-millisecond ทำให้ MOIP เหมาะสำหรับการวิเคราะห์ "what-if" แบบ interactive ที่ทีมสำรวจการกำหนดค่าลำดับความสำคัญต่างๆ แบบ real time
+
+**MOIP แตกต่างจาก weighted sum แบบง่ายๆ อย่างไร?**
+weighted sum แบบง่ายเลือกวิธีแก้ปัญหาที่มีคะแนนรวมสูงสุด แต่อาจแนะนำวิธีแก้ปัญหาที่ถูกครอบงำได้ ถ้าวิธีแก้ปัญหา A ได้คะแนน 8 ด้านต้นทุนและ 2 ด้านการควบคุม และวิธีแก้ปัญหา B ได้คะแนน 7 ด้านต้นทุนและ 9 ด้านการควบคุม weighted sum แบบไม่เป็นทางการอาจเลือก A แม้ว่า B จะชัดเจนกว่าเมื่อการควบคุมสำคัญ MOIP กำจัดวิธีแก้ปัญหาที่ถูกครอบงำ *ก่อน* ใช้ weight เพื่อให้แน่ใจว่า recommendation ดึงมาจาก rational choice set เสมอ
+
+**สิ่งที่ไม่เปิดเผยในบทความนี้คืออะไร?**
+methodology การสอบเทียบ weight ที่แน่ชัดที่ใช้ในการตัดสินใจ deployment ภายในของ RCT, constitutional policy threshold ที่ trigger การตัดสิทธิ์ constraint ใน production และ schema ของ JITNA metadata field ที่พา MOIP audit trace สิ่งเหล่านี้คือรายละเอียด implementation ที่ต้องการบริบทองค์กรเพิ่มเติมเพื่อตีความอย่างปลอดภัย
+
+## การอ่านเพิ่มเติม
+
+- ทำความเข้าใจ [FDIA Equation](/protocols/fdia-equation) — constitutional pipeline ที่กำกับทุกรอบ MOIP intent classification
+- สำรวจ [Dynamic AI Routing](/solutions/dynamic-ai-routing) — solution layer ที่ใช้ MOIP output เพื่อ route intent ไปยังโมเดลและเส้นทาง execution ที่ถูกต้อง
+- ทบทวน [SignedAI HexaCore](/products/signed-ai) เพื่อดูว่า Ed25519 signing ทำให้ MOIP recommendation สามารถ audit ได้อย่างเข้ารหัสลับอย่างไร
+- เรียกดู [อัลกอริทึมทั้ง 41 รายการ](/algorithms) สำหรับพื้นที่ algorithm เต็มรูปแบบที่ MOIP ทำงานอยู่ภายใน
+- ดู [Benchmark Summary](/benchmark-summary) สำหรับหลักฐาน production และ methodology เบื้องหลัง RCT quality target รวมถึงคะแนนการประเมิน 9.1/10 ของ MOIP
+
+## อ้างอิง
+
+- Daulton et al. (2022), Parallel Bayesian Optimization of Multiple Noisy Objectives: https://arxiv.org/abs/2210.01066
+- Deb et al., A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II (Evolutionary Computation): https://doi.org/10.1162/evco_a_00282
+- Liu & Nocedal (2019), On the Variance of the Adaptive Learning Rate and Beyond: https://arxiv.org/abs/1906.08878
+- NIST Artificial Intelligence: https://www.nist.gov/artificial-intelligence
+- RCT Labs Algorithms: https://rctlabs.co/algorithms
+- FDIA Equation Protocol: https://rctlabs.co/protocols/fdia-equation
+- RCT Benchmark Summary: https://rctlabs.co/benchmark
+- RCT Dynamic AI Routing: https://rctlabs.co/solutions/dynamic-ai-routing

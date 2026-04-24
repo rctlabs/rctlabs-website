@@ -133,6 +133,12 @@ export default function ProtocolPage() {
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
+                <Link href="https://github.com/rctlabs/rct-platform" target="_blank" rel="noopener noreferrer" className="gap-2">
+                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+                  {isTh ? "เพิ่ม Star บน GitHub" : "Star on GitHub"}
+                </Link>
+              </Button>
+              <Button size="lg" variant="ghost" asChild className="sm:hidden lg:inline-flex">
                 <Link href="#documentation">{isTh ? "อ่านเอกสาร" : "Read Documentation"}</Link>
               </Button>
             </div>

@@ -600,6 +600,48 @@ const BLOG_HERO_METRICS: Partial<Record<string, BlogHeroMetric[]>> = {
       evidenceNote: "Internal benchmark target; rate varies with memory quality and feedback richness", verifiedAt: "2026-04-21",
     },
   ],
+
+  // ── MOIP / PARETO CLUSTER (SET A — 23 Apr 2026) ──────────────────────────────
+  "moip-multi-objective-intent-planning": [
+    {
+      value: "100%", label: "Pareto accuracy",
+      detail: "All Pareto-optimal solutions correctly identified — MOIP benchmark set (Score: 9.1/10)",
+      type: "outcome", evidenceType: "source",
+      evidenceRef: "https://rctlabs.co/algorithms", verifiedAt: "2026-04-23",
+    },
+    {
+      value: "O(n²)", label: "Pareto detection complexity",
+      detail: "Deterministic frontier discovery — scales to 50+ solution candidates per planning cycle",
+      type: "mechanism", evidenceType: "source",
+      evidenceRef: "https://rctlabs.co/algorithms", verifiedAt: "2026-04-23",
+    },
+    {
+      value: "<100ms", label: "Ranking speed",
+      detail: "50-solution Pareto ranking with weighted preference scoring — embedded in FDIA intent pipeline",
+      type: "operational", evidenceType: "source",
+      evidenceRef: "https://rctlabs.co/benchmark", verifiedAt: "2026-04-23",
+    },
+  ],
+  "rct-platform-open-source-launch": [
+    {
+      value: "723", label: "Passing tests",
+      detail: "723 tests pass across Python 3.10, 3.11, 3.12 — zero failures, zero errors",
+      type: "outcome", evidenceType: "source",
+      evidenceRef: "https://github.com/rctlabs/rct-platform", verifiedAt: "2026-04-22",
+    },
+    {
+      value: "89%", label: "Code coverage",
+      detail: "89% line coverage across FDIA, JITNA, SignedAI, Delta Engine, and 5 microservices",
+      type: "mechanism", evidenceType: "source",
+      evidenceRef: "https://github.com/rctlabs/rct-platform", verifiedAt: "2026-04-22",
+    },
+    {
+      value: "Apache 2.0", label: "License",
+      detail: "Permissive open source — commercial use, patent grant, no copyleft",
+      type: "operational", evidenceType: "source",
+      evidenceRef: "https://choosealicense.com/licenses/apache-2.0/", verifiedAt: "2026-04-22",
+    },
+  ],
 }
 
 export interface BlogPostMetadata {
@@ -906,6 +948,20 @@ const BLOG_RELATED_MAP: Record<string, [string, string, string]> = {
     "fdia-equation-explained",
     "signedai-multi-llm-consensus-explained",
     "evaluation-harnesses-enterprise-llm",
+  ],
+
+  // ── MOIP / Pareto cluster ─────────────────────────────────────────────
+  "moip-multi-objective-intent-planning": [
+    "fdia-equation-explained",
+    "intent-operating-system-explained",
+    "evaluation-harnesses-enterprise-llm",
+  ],
+
+  // ── Open Source SDK launch ────────────────────────────────────────────
+  "rct-platform-open-source-launch": [
+    "rct-ecosystem-4849-tests-methodology",
+    "evaluation-harnesses-enterprise-llm",
+    "rct-7-process-explained",
   ],
 }
 
@@ -1223,6 +1279,32 @@ export function getPostJourney(post: BlogPost) {
       authorityLabel: "Open Evaluation Hub",
       conversionContext: "pricing:rctlabs:sales",
       conversionLabel: "Talk to the platform team",
+    }
+  }
+
+  // Open Source SDK launch — route to GitHub/products
+  // Must appear BEFORE the algorithm cluster rule.
+  if (post.slug.includes("open-source-launch") || post.slug.includes("rct-platform") || (post.slug.includes("sdk") && post.slug.includes("open"))) {
+    return {
+      solutionHref: "/products/rctlabs",
+      solutionLabel: "Explore RCT Platform SDK",
+      authorityHref: "https://github.com/rctlabs/rct-platform",
+      authorityLabel: "View on GitHub",
+      conversionContext: "pricing:rctlabs:evaluation",
+      conversionLabel: "Request enterprise evaluation",
+    }
+  }
+
+  // MOIP / Pareto / Multi-Objective cluster — SET A Apr 23 2026
+  // Must appear BEFORE the Algorithm cluster to capture moip-specific context.
+  if (post.slug.includes("moip") || post.slug.includes("pareto") || post.slug.includes("multi-objective")) {
+    return {
+      solutionHref: "/solutions/dynamic-ai-routing",
+      solutionLabel: "Explore Dynamic AI Routing",
+      authorityHref: "/protocols/fdia-equation",
+      authorityLabel: "Open FDIA Equation",
+      conversionContext: "pricing:rctlabs:evaluation",
+      conversionLabel: "Request MOIP evaluation",
     }
   }
 

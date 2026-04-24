@@ -73,7 +73,7 @@ MEE does not operate in isolation. It draws on three integration points that are
 
 ### 1. RCTDB (Memory)
 
-MEE reads the 8-dimensional memory schema in RCTDB to identify which patterns led to successful outcomes. Rather than reprocessing raw training data, it uses the compressed delta store — meaning it reads only what changed, not the full history. This keeps the evolution cycle fast even as memory grows.
+MEE reads the [8-dimensional memory schema in RCTDB](/solutions/enterprise-ai-memory) to identify which patterns led to successful outcomes. Rather than reprocessing raw training data, it uses the compressed delta store — meaning it reads only what changed, not the full history. This keeps the evolution cycle fast even as memory grows.
 
 ### 2. Delta Engine (Compression)
 
@@ -89,11 +89,11 @@ Beyond adapting existing algorithms, MEE can spawn entirely new algorithms when 
 
 1. **Task classification** — the orchestrator identifies a task type with no high-confidence algorithm match
 2. **Composition request** — MEE's Δ function assembles a candidate algorithm from existing primitives
-3. **Constitutional gate** — the candidate is evaluated against the FDIA equation before activation
+3. **Constitutional gate** — the candidate is evaluated against the [FDIA equation](/protocols/fdia-equation) before activation
 4. **Signing** — if it passes, the new algorithm receives an Ed25519 signature and enters the active roster
 5. **Memory update** — the spawn event is written to RCTDB as a new episodic entry
 
-This spawning loop means MEE is not just adaptive — it is generative. The algorithm surface grows without manual intervention, while every new addition remains within constitutional bounds.
+This spawning loop means MEE is not just adaptive — it is generative. The [algorithm surface grows](/algorithms) without manual intervention, while every new addition remains within constitutional bounds.
 
 ## Performance evidence
 

@@ -1,0 +1,179 @@
+---
+title: "rct-platform v1.0.2a0: Apache 2.0 Public Alpha Now Available on GitHub"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-04-22"
+lastReviewed: "2026-04-23"
+category: "engineering"
+excerpt: "rct-platform v1.0.2a0 is now publicly available on GitHub under Apache 2.0. The SDK ships 723 passing tests, 89% coverage, five reference microservices, and the full FDIA + JITNA reference implementation — no API keys required to get started."
+tags: ["Open Source", "SDK", "Apache 2.0", "rct-platform", "GitHub", "FDIA", "JITNA", "Constitutional AI", "Public Alpha"]
+readTime: 8
+references:
+  - "https://github.com/rctlabs/rct-platform"
+  - "https://rctlabs.co/products/rctlabs"
+  - "https://rctlabs.co/protocols/fdia-equation"
+  - "https://rctlabs.co/open-protocol"
+  - "https://choosealicense.com/licenses/apache-2.0/"
+  - "https://rctlabs.co/benchmark-summary"
+---
+
+# rct-platform v1.0.2a0: Apache 2.0 Public Alpha Now Available on GitHub
+
+The RCT Platform SDK is now open source.
+
+[rct-platform v1.0.2a0](https://github.com/rctlabs/rct-platform) is a Public Alpha release of the RCT Ecosystem's core SDK — the layer that implements the [FDIA equation](/protocols/fdia-equation), JITNA Protocol RFC-001, SignedAI multi-LLM consensus, the Delta Engine, and five reference microservices. It ships under the Apache 2.0 license with 723 passing tests, 89% coverage, and a full offline demo that requires no API keys.
+
+This is not a demo. It is the actual algorithm implementation that powers the RCT Ecosystem's production constitutional AI layer.
+
+## What ships in v1.0.2a0
+
+The public release contains everything needed to understand, run, and extend the core RCT algorithms:
+
+| Component | Description |
+|---|---|
+| **FDIA Scorer** | Full equation engine — `core/fdia/fdia.py` |
+| **JITNA RFC-001** | Intent protocol implementation — `rct_control_plane/` (15 modules) |
+| **SignedAI** | Multi-LLM consensus layer — `signedai/core/` |
+| **Delta Engine** | 74% memory compression via state diffing — `core/delta_engine/` |
+| **Regional Adapter** | 8 language-pair support — `core/regional_adapter/` |
+| **5 Microservices** | Reference implementations with 142 dedicated tests |
+| **CLI** | `rct compile`, `rct governance`, `rct timeline` |
+| **Benchmarks** | FDIA accuracy (0.92 vs 0.65 baseline), hallucination (0.3%) |
+
+All 723 tests pass across Python 3.10, 3.11, and 3.12. No Docker required to run the test suite or the offline demo.
+
+## Getting started (5 minutes, no API keys)
+
+```bash
+# Clone and install
+git clone https://github.com/rctlabs/rct-platform.git
+cd rct-platform
+pip install -e .
+
+# Run the offline demo
+python examples/quickdemo.py
+
+# Run the FDIA benchmark
+python benchmark/fdia_benchmark.py --verbose
+
+# Try the CLI
+rct compile 'Protect resources from hostile agents'
+rct governance
+```
+
+Expected output from `quickdemo.py`:
+
+```
+✅  Best action: act_001 (cooperate) — highest FDIA score
+Consensus: PASSED ✅ (threshold: 4/6)
+Final decision: EXECUTE — all 7 gates cleared, FDIA ≥ threshold, intent signed
+Memory compression ratio: 5.0× (baseline + 4 deltas vs 5 full-state copies)
+```
+
+Expected output from `fdia_benchmark.py`:
+
+```
+RCT FDIA Score       : 0.9167
+Industry Baseline    : 0.6500
+Delta vs Baseline    : +0.2667 (+41.0%)
+✅  Benchmark PASSED
+```
+
+> **PyPI note:** v1.0.2a0 is a Public Alpha. The package is not yet published to PyPI. Use `pip install -e .` from the cloned repository. PyPI publication is planned for v1.0.0 stable (Q3 2026).
+
+## Why open source, and why now
+
+The [RCT Open Protocol](/open-protocol) has always been designed to be verifiable. Constitutional AI that cannot be inspected is not constitutional — it is marketing. Publishing the reference implementation is the minimum required to make the governance claims credible.
+
+Three specific reasons drove the timing of v1.0.2a0:
+
+**1. The JITNA RFC-001 is stable enough to reference.** The protocol definition has not changed structurally since August 2025. The implementation in `rct_control_plane/` is the canonical reference for the spec. Publishing it closes the gap between the documentation and the running code.
+
+**2. The FDIA benchmark is reproducible.** The 0.92 accuracy figure cited on the [benchmark summary](/benchmark-summary) is now verifiable by anyone who clones the repository and runs `python benchmark/fdia_benchmark.py`. The methodology for the 0.3% hallucination rate target is documented in `docs/benchmark/hallucination-methodology.md`.
+
+**3. The test suite coverage is sufficient.** 723 tests at 89% coverage is not perfect, but it is sufficient for a meaningful public alpha. The 11% coverage gap is concentrated in optional enterprise integrations (Home Assistant, Terraform, n8n) that depend on external services.
+
+## What the Apache 2.0 license means for you
+
+Apache 2.0 is a permissive license with patent protection. In practice:
+
+- **Commercial use is allowed.** You can use, modify, and distribute `rct-platform` in proprietary products without publishing your modifications.
+- **Attribution is required.** Include the `NOTICE` file and the copyright header in any distribution.
+- **Patent grant included.** Contributors grant you a royalty-free, worldwide patent license covering their contributions.
+- **No copyleft.** Unlike GPL, Apache 2.0 does not require derivative works to be open source.
+
+The enterprise layer — 62 microservices, the HexaCore inference cluster, RCTDB, the MEE production pipeline — remains proprietary. The SDK is the public interface that connects to that layer.
+
+## Test coverage details
+
+The 723-test suite breaks down across three dimensions:
+
+| Dimension | Count | Notes |
+|---|---|---|
+| Unit tests | 581 | Per-function, algorithm-level isolation |
+| Integration tests | 142 | 5 microservices end-to-end, no external dependencies |
+| Benchmark suite | — | Separate scripts in `benchmark/`, not in pytest |
+
+Coverage by subsystem:
+
+| Subsystem | Coverage |
+|---|---|
+| FDIA engine | 97% |
+| JITNA protocol | 94% |
+| SignedAI consensus | 91% |
+| Delta Engine | 88% |
+| Regional Adapter | 85% |
+| Reference microservices | 82% |
+| Optional integrations | 41% |
+
+The 41% on optional integrations reflects the structural gap — those modules require live service connections (Home Assistant, Terraform API, etc.) that are not present in CI. They are not excluded from coverage; they are simply harder to test offline.
+
+## What v1.0.3a0 adds (May 2026)
+
+The next milestone is planned for May 2026. Key additions:
+
+- **GitHub Discussions** — async community Q&A, design discussions, and RFC feedback. Not enabled yet; opens with v1.0.3a0.
+- **MOIP reference implementation** — the [Multi-Objective Intent Planning algorithm](/blog/moip-multi-objective-intent-planning) as a standalone module with documented complexity bounds and test coverage.
+- **PyPI alpha publish** — `pip install rct-platform==1.0.3a0` as a first-step PyPI presence, separate from the stable v1.0.0 target.
+- **MEE v2 integration** — [Meta-Evolution Engine](/blog/mee-meta-evolution-engine-explained) growth formula wired into the public SDK for observable algorithm evolution.
+
+## Relationship to the enterprise layer
+
+The SDK and the enterprise layer have a deliberate interface boundary:
+
+```
+rct-platform (Apache 2.0, public)
+    └── core/          ← FDIA, Delta Engine, Regional Adapter
+    └── signedai/      ← Multi-LLM consensus
+    └── rct_control_plane/  ← JITNA RFC-001
+    └── microservices/ ← 5 reference implementations
+
+RCT Enterprise (proprietary, rctlabs.co)
+    └── 62 microservices
+    └── RCTDB (8-dimensional memory schema)
+    └── HexaCore 7-model inference cluster
+    └── MEE production pipeline
+    └── 4,849 enterprise test suite
+```
+
+The SDK is not a stripped-down version of the enterprise layer. It is the canonical reference implementation of the protocols and algorithms that the enterprise layer uses. They share a common interface contract — the JITNA RFC-001 spec — but they are built and maintained independently.
+
+## Contributing
+
+Contributions to the SDK are welcome under the Apache 2.0 contributor agreement. The CONTRIBUTING guide in the repository covers:
+
+- Bug reports and feature proposals via GitHub Issues
+- Pull request conventions (one logical change per PR, tests required)
+- RFC process for protocol-level changes (breaking changes to JITNA or FDIA interfaces)
+
+GitHub Discussions for design-level conversations opens with v1.0.3a0.
+
+---
+
+## Related reading
+
+- [FDIA Equation Explained](/blog/fdia-equation-explained) — the mathematical foundation
+- [MOIP: Multi-Objective Intent Planning](/blog/moip-multi-objective-intent-planning) — Pareto-optimal decision framework
+- [MEE: Meta-Evolution Engine Explained](/blog/mee-meta-evolution-engine-explained) — algorithm self-improvement
+- [rct-platform on GitHub](https://github.com/rctlabs/rct-platform) — source, docs, issues
