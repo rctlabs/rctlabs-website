@@ -159,6 +159,7 @@ export default function BenchmarkPage() {
     testCount?: number
     microserviceCount?: number
     algorithmCount?: number
+    hallucinationRate?: string
     source?: "live" | "static"
     updatedAt?: string
   }
@@ -405,11 +406,12 @@ export default function BenchmarkPage() {
                   {sysStats.source === "live" ? (isEn ? "Live" : "Live") : (isEn ? "Static" : "Static")}
                 </span>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[
                   { value: sysStats.testCount?.toLocaleString() ?? "—", label: isEn ? "Test Cases" : "Test Cases" },
                   { value: sysStats.microserviceCount ?? "—", label: isEn ? "Microservices" : "Microservices" },
                   { value: sysStats.algorithmCount ?? "—", label: isEn ? "Algorithms" : "Algorithms" },
+                  { value: sysStats.hallucinationRate ?? "—", label: isEn ? "Hallucination Rate" : "อัตรา Hallucination" },
                 ].map((item) => (
                   <div key={item.label} className={`rounded-xl border p-4 ${isDark ? "border-[#2A2A2A] bg-warm-charcoal" : "border-warm-light-gray bg-white"}`}>
                     <div className="text-2xl font-bold text-warm-sage">{item.value}</div>

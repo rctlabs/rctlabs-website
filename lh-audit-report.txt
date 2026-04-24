@@ -1,0 +1,121 @@
+﻿============================================================
+PAGE: lh-results-home
+============================================================
+
+--- ALL AUDITS score >0 and <0.9 ---
+  [89%] first-contentful-paint --- 1.8ย s --- First Contentful Paint marks the time at which the first text or image is painte
+  [41%] largest-contentful-paint --- 4.3ย s --- Largest Contentful Paint marks the time at which the largest text or image is pa
+  [62%] interactive --- 6.2ย s --- Time to Interactive is the amount of time it takes for the page to become fully 
+  [50%] render-blocking-resources --- Est savings of 0ย ms --- Resources are blocking the first paint of your page. Consider delivering critica
+  [50%] dom-size --- 1,087 elements --- A large DOM will increase memory usage, cause longer [style calculations](https:
+  [50%] font-display-insight --- (no display value) --- Consider setting [font-display](https://developer.chrome.com/blog/font-display) 
+
+--- SPECIFIC AUDITS ---
+  largest-contentful-paint : WARN (41%) | 4.3ย s
+  total-blocking-time : PASS (98%) | 90ย ms
+  cumulative-layout-shift : PASS (98%) | 0.06
+  render-blocking-resources : WARN (50%) | Est savings of 0ย ms
+  unused-javascript : FAIL (0%) | Est savings of 81ย KiB
+  unused-css-rules : PASS (100%) | (no display value)
+  uses-optimized-images : PASS (100%) | (no display value)
+  uses-webp-images : NOT FOUND
+  uses-responsive-images : PASS (100%) | (no display value)
+  first-contentful-paint : WARN (89%) | 1.8ย s
+  image-alt : PASS (100%) | (no display value)
+  button-name : PASS (100%) | (no display value)
+  color-contrast : PASS (100%) | (no display value)
+  meta-description : PASS (100%) | (no display value)
+  link-text : PASS (100%) | (no display value)
+  document-title : PASS (100%) | (no display value)
+
+============================================================
+PAGE: lh-results-blog
+============================================================
+
+--- ALL AUDITS score >0 and <0.9 ---
+  [76%] first-contentful-paint --- 2.3ย s --- First Contentful Paint marks the time at which the first text or image is painte
+  [38%] largest-contentful-paint --- 4.4ย s --- Largest Contentful Paint marks the time at which the largest text or image is pa
+  [78%] total-blocking-time --- 300ย ms --- Sum of all time periods between FCP and Time to Interactive, when task length ex
+  [61%] max-potential-fid --- 210ย ms --- The maximum potential First Input Delay that your users could experience is the 
+  [62%] interactive --- 6.2ย s --- Time to Interactive is the amount of time it takes for the page to become fully 
+  [50%] render-blocking-resources --- Est savings of 0ย ms --- Resources are blocking the first paint of your page. Consider delivering critica
+  [50%] unused-javascript --- Est savings of 80ย KiB --- Reduce unused JavaScript and defer loading scripts until they are required to de
+  [50%] legacy-javascript --- Est savings of 12ย KiB --- Polyfills and transforms enable legacy browsers to use new JavaScript features. 
+  [50%] legacy-javascript-insight --- Est savings of 12ย KiB --- Polyfills and transforms enable older browsers to use new JavaScript features. H
+
+--- SPECIFIC AUDITS ---
+  largest-contentful-paint : WARN (38%) | 4.4ย s
+  total-blocking-time : WARN (78%) | 300ย ms
+  cumulative-layout-shift : PASS (100%) | 0
+  render-blocking-resources : WARN (50%) | Est savings of 0ย ms
+  unused-javascript : WARN (50%) | Est savings of 80ย KiB
+  unused-css-rules : PASS (100%) | (no display value)
+  uses-optimized-images : PASS (100%) | (no display value)
+  uses-webp-images : NOT FOUND
+  uses-responsive-images : PASS (100%) | (no display value)
+  first-contentful-paint : WARN (76%) | 2.3ย s
+  image-alt : PASS (100%) | (no display value)
+  button-name : PASS (100%) | (no display value)
+  color-contrast : FAIL (0%) | (no display value)
+  meta-description : PASS (100%) | (no display value)
+  link-text : PASS (100%) | (no display value)
+  document-title : PASS (100%) | (no display value)
+
+============================================================
+PAGE: lh-results-mee
+============================================================
+
+--- ALL AUDITS score >0 and <0.9 ---
+  [81%] first-contentful-paint --- 2.1ย s --- First Contentful Paint marks the time at which the first text or image is painte
+  [32%] largest-contentful-paint --- 4.7ย s --- Largest Contentful Paint marks the time at which the largest text or image is pa
+  [87%] max-potential-fid --- 140ย ms --- The maximum potential First Input Delay that your users could experience is the 
+  [62%] interactive --- 6.2ย s --- Time to Interactive is the amount of time it takes for the page to become fully 
+  [50%] render-blocking-resources --- Est savings of 0ย ms --- Resources are blocking the first paint of your page. Consider delivering critica
+  [50%] dom-size --- 835 elements --- A large DOM will increase memory usage, cause longer [style calculations](https:
+
+--- SPECIFIC AUDITS ---
+  largest-contentful-paint : WARN (32%) | 4.7ย s
+  total-blocking-time : PASS (94%) | 160ย ms
+  cumulative-layout-shift : PASS (100%) | 0.028
+  render-blocking-resources : WARN (50%) | Est savings of 0ย ms
+  unused-javascript : FAIL (0%) | Est savings of 100ย KiB
+  unused-css-rules : PASS (100%) | (no display value)
+  uses-optimized-images : PASS (100%) | (no display value)
+  uses-webp-images : NOT FOUND
+  uses-responsive-images : PASS (100%) | (no display value)
+  first-contentful-paint : WARN (81%) | 2.1ย s
+  image-alt : PASS (100%) | (no display value)
+  button-name : PASS (100%) | (no display value)
+  color-contrast : PASS (100%) | (no display value)
+  meta-description : PASS (100%) | (no display value)
+  link-text : PASS (100%) | (no display value)
+  document-title : PASS (100%) | (no display value)
+
+============================================================
+PAGE: lh-results-article
+============================================================
+
+--- ALL AUDITS score >0 and <0.9 ---
+  [85%] first-contentful-paint --- 2.0ย s --- First Contentful Paint marks the time at which the first text or image is painte
+  [43%] largest-contentful-paint --- 4.3ย s --- Largest Contentful Paint marks the time at which the largest text or image is pa
+  [65%] interactive --- 5.9ย s --- Time to Interactive is the amount of time it takes for the page to become fully 
+  [50%] render-blocking-resources --- Est savings of 0ย ms --- Resources are blocking the first paint of your page. Consider delivering critica
+  [50%] dom-size --- 860 elements --- A large DOM will increase memory usage, cause longer [style calculations](https:
+
+--- SPECIFIC AUDITS ---
+  largest-contentful-paint : WARN (43%) | 4.3ย s
+  total-blocking-time : PASS (94%) | 150ย ms
+  cumulative-layout-shift : PASS (100%) | 0
+  render-blocking-resources : WARN (50%) | Est savings of 0ย ms
+  unused-javascript : FAIL (0%) | Est savings of 81ย KiB
+  unused-css-rules : PASS (100%) | (no display value)
+  uses-optimized-images : PASS (100%) | (no display value)
+  uses-webp-images : NOT FOUND
+  uses-responsive-images : PASS (100%) | (no display value)
+  first-contentful-paint : WARN (85%) | 2.0ย s
+  image-alt : PASS (100%) | (no display value)
+  button-name : PASS (100%) | (no display value)
+  color-contrast : FAIL (0%) | (no display value)
+  meta-description : PASS (100%) | (no display value)
+  link-text : PASS (100%) | (no display value)
+  document-title : PASS (100%) | (no display value)

@@ -222,6 +222,23 @@ export default async function RootLayout({
         {/* Preconnect to image CDN for faster LCP */}
         <link rel="preconnect" href="https://d2xsxph8kpxj0f.cloudfront.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://d2xsxph8kpxj0f.cloudfront.net" />
+        {/* Preconnect to analytics domains so DNS+TCP+TLS is warm when GTM/GA loads
+            after the deferred idle gate fires. Keeps analytics latency low without
+            blocking first-paint (preconnect only establishes connections; scripts
+            are still loaded by DeferredAnalytics in the body after user interaction
+            or requestIdleCallback). */}
+        {gtmId && (
+          <>
+            <link rel="preconnect" href="https://www.googletagmanager.com" />
+            <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+          </>
+        )}
+        {(gtmId ?? ga4Id) && (
+          <>
+            <link rel="preconnect" href="https://www.google-analytics.com" />
+            <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+          </>
+        )}
         {/* Third-party analytics scripts are intentionally deferred in body
             to avoid competing with above-the-fold rendering and LCP. */}
         {/* Schema.org structured data */}
