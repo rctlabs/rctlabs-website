@@ -61,6 +61,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
       { label: isTh ? "Constitutional AI" : "Constitutional AI", href: "/technology/constitutional-ai" },
       { label: "Protocols", href: "/protocols" },
       { label: isTh ? "Open SDK (Apache 2.0)" : "Open SDK (Apache 2.0)", href: SOCIAL_LINKS.platformGithub, external: true },
+      { label: isTh ? "Colab Playground" : "Colab Playground", href: "https://colab.research.google.com/github/rctlabs/rct-platform/blob/main/notebooks/rct_playground.ipynb", external: true },
     ],
     [isTh ? "ทรัพยากร" : "Resources"]: [
       { label: "Whitepaper", href: "/whitepaper" },
@@ -81,6 +82,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
       { label: isTh ? "นโยบายความเป็นส่วนตัว" : "Privacy Policy", href: "/privacy" },
       { label: isTh ? "ข้อกำหนด" : "Terms", href: "/terms" },
       { label: "GitHub", href: SOCIAL_LINKS.github, external: true },
+      { label: isTh ? "สนับสนุนนักพัฒนา" : "Sponsor the Architect", href: "https://github.com/sponsors/ittirit720", external: true },
     ],
   }
 
