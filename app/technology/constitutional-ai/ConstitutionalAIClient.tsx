@@ -265,6 +265,16 @@ export default function ConstitutionalAIClient({ locale: propLocale }: { locale?
   return (
     <main className="min-h-screen bg-background" id="main-content">
       <Navbar />
+
+      {/* Answer-first — screen-reader + crawler accessible; not shown visually */}
+      <section className="sr-only">
+        <p>
+          {isTH
+            ? "Constitutional AI ของ RCT Labs บังคับใช้ข้อจำกัดทางจริยธรรมในระดับสมการ F = (D^I) × A — เมื่อ A = 0 ไม่มี Output ใดถูกส่งออก ทำให้ human oversight กลายเป็นข้อกำหนดทางคณิตศาสตร์ ไม่ใช่เพียงนโยบายที่ปรับได้"
+            : "RCT Labs Constitutional AI enforces ethical constraints at the equation level: F = (D^I) × A — when A = 0 no output is dispatched, making human oversight a mathematical requirement rather than a configurable policy."}
+        </p>
+      </section>
+
       {/* ── Hero ── */}
       <section className="py-24 px-6">
         <div className="max-w-5xl mx-auto text-center">

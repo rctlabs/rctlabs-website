@@ -1,0 +1,96 @@
+---
+title: "Enterprise AI Governance Playbook 2026: จาก Policy Principles สู่ Operating Controls"
+author: "RCT Labs Research Desk"
+authorId: "rct-research-desk"
+reviewerId: "ittirit-saengow"
+date: "2026-03-26"
+lastReviewed: "2026-04-21"
+category: "research"
+excerpt: "Playbook การกำกับดูแล AI สำหรับองค์กรที่แปล NIST AI RMF, OECD AI Principles และ EU AI Act เป็น operating controls, review loop และ deployment gate ที่ใช้งานได้จริง"
+tags: ["Enterprise AI Governance", "NIST AI RMF", "OECD AI Principles", "EU AI Act", "AI Risk Management"]
+readTime: 10
+references:
+  - "https://www.nist.gov/itl/ai-risk-management-framework"
+  - "https://oecd.ai/en/ai-principles"
+  - "https://artificialintelligenceact.eu/"
+  - "https://hai.stanford.edu/ai-index"
+---
+
+# Enterprise AI Governance Playbook 2026
+
+การกำกับดูแล AI องค์กรล้มเหลวเมื่อหยุดอยู่ที่ระดับ principles และไม่กลายเป็น operating system ทีมส่วนใหญ่รู้ภาษาของความไว้วางใจ, ความโปร่งใส และความรับผิดชอบอยู่แล้ว ปัญหาที่แท้จริงคือการแปลแนวคิดเหล่านั้นเป็น release gate, review workflow, evidence trail และ escalation path ที่รอดพ้นจากแรงกดดันใน production
+
+นี่คือจุดที่ framework ภายนอกที่แข็งแกร่งที่สุดมาบรรจบกัน NIST AI Risk Management Framework ปฏิบัติต่อความน่าเชื่อถือของ AI ในฐานะ operational discipline OECD AI Principles กำหนด governance expectations ที่ยั่งยืนรอบความโปร่งใส, ความแข็งแกร่ง, ความเป็นธรรม และความรับผิดชอบ EU AI Act แปลประเภทความเสี่ยงเป็นแรงกดดัน compliance ที่เป็นรูปธรรมสำหรับองค์กรที่สร้างหรือ deploy ระบบ AI สรุปรวมกันแล้ว: governance ไม่ใช่ PDF แต่เป็น control plane
+
+## Framework ภายนอกเห็นด้วยกันในสิ่งที่แท้จริงอะไรบ้าง
+
+NIST AI RMF 1.0 และ Generative AI Profile ผลักดันองค์กรไปสู่ 4 การกระทำที่เกิดซ้ำ: govern, map, measure และ manage OECD เพิ่ม values-based layer รอบสิทธิมนุษยชน, ความโปร่งใส, ความแข็งแกร่ง และความรับผิดชอบ EU AI Act เพิ่ม regulatory signal ว่าการจัดประเภทความเสี่ยงและ lifecycle obligations ไม่สามารถปฏิบัติเป็นตัวเลือกได้อีกต่อไปหากระบบของคุณส่งผลต่อการตัดสินใจจริง, ความปลอดภัย หรือความไว้วางใจ
+
+การทับซ้อนระหว่าง framework เหล่านี้มีประโยชน์มากกว่าความแตกต่าง:
+
+- คุณต้องการความเป็นเจ้าของที่ชัดเจนสำหรับ AI risk ไม่ใช่แค่ technical ownership สำหรับโมเดล
+- คุณต้องการหลักฐานว่าระบบถูกประเมินอย่างไรก่อนและหลัง deployment
+- คุณต้องการเอกสารและ escalation path สำหรับความล้มเหลว, การใช้ในทางที่ผิด, drift และ human override
+- คุณต้องการการมองเห็นว่า data, prompt, memory, policy และ output โต้ตอบกันอย่างไร
+
+สำหรับทีมองค์กร หมายความว่า governance ต้องนั่งอยู่ข้าม architecture, security, legal, product และ operations แทนที่จะอยู่ภายใน model team เดียว
+
+## ห้า operating layer ของระบบ governance ที่ทำงาน
+
+### 1. Policy Layer
+
+กำหนดสิ่งที่องค์กรอนุญาต, ห้าม และ escalate ซึ่งรวมถึง acceptable use, การจัดการ data sensitivity, กฎการเลือกโมเดล, threshold การอนุมัติโดยมนุษย์, retention policy และ incident class
+
+### 2. System Layer
+
+Map ว่า governance แนบกับ stack จริงที่ไหน: routing, memory, retrieval, verification, model fallback, logging และ access control นี่คือที่ที่ architecture เปิดใช้งานหรือขัดขวาง governance
+
+### 3. Evaluation Layer
+
+สร้าง release discipline รอบ benchmark suite, hallucination testing, refusal behavior, harmful output check, latency budget และ regression threshold ถ้า evaluation ไม่ถูก versioned governance ส่วนใหญ่เป็นพิธีการ
+
+### 4. Runtime Layer
+
+Monitor production behavior อย่างต่อเนื่อง หมายความว่ามี alert สำหรับ output ที่ผิดปกติ, quality drop, safety incident, cost spike และความถี่ policy override นี่คือ layer ที่ emphasis ของ NIST ในเรื่องการวัดกลายเป็น operational
+
+### 5. Audit Layer
+
+รักษา traceability ข้าม prompt, routing decision, memory state, approval, model version และประวัติการ review output ความรับผิดชอบโดยไม่มีหลักฐานอ่อนแอเกินไปสำหรับ AI องค์กร
+
+## Governance Scorecard สำหรับ Deployment Reviews
+
+ก่อน ship ระบบ ผู้บริหารควรสามารถตอบคำถามต่อไปนี้:
+
+1. วัตถุประสงค์ของระบบ, scope และ risk classification ถูกบันทึกไว้หรือไม่?
+2. data boundaries และกฎ memory retention ถูกกำหนดหรือไม่?
+3. model-routing และ fallback policy ชัดเจนหรือไม่?
+4. มี quality bar ที่วัดได้สำหรับ hallucination, safety และ latency หรือไม่?
+5. มีการกำหนด review, escalation และ rollback path ให้กับเจ้าของที่มีชื่อหรือไม่?
+6. ทีมสามารถอธิบายว่าหลักฐานอะไรรองรับความพร้อมในการเปิดตัวได้ไหม?
+
+ถ้าคำตอบหลายข้อคลุมเครือ องค์กรยังไม่มี AI governance แต่มีแค่ความหวังใน AI
+
+## ความหมายสำหรับ RCT Labs และ Platform ที่คล้ายกัน
+
+สำหรับ ecosystem หรือ AI operating system site เนื้อหา governance ไม่ควรซ่อนอยู่แค่ใน legal page หรือ research article เดียว แต่ควรปรากฏข้าม:
+
+- solutions pages ที่ claim ต้องการ control logic ที่วัดได้
+- architecture pages ที่ governance ต้องการ system anchor
+- roadmap และ changelog pages ที่ governance maturity กลายเป็นมองเห็นได้เมื่อเวลาผ่านไป
+- blog และ docs ที่ operator เรียนรู้วิธีประยุกต์ใช้ framework ในทางปฏิบัติ
+
+นั่นเป็นเหตุผลที่ enterprise buyer มักคาดหวังเห็น architecture, verification, memory, routing และ release transparency เชื่อมต่อในเรื่องราวเดียว แทนที่จะกระจายอยู่ใน page ที่ไม่เชื่อมกัน
+
+## แนะนำอ่านต่อ
+
+- ดำดิ่งเข้าไปใน [FDIA Equation](/protocols/fdia-equation) — constitutional layer ที่บังคับ governance ในระดับ inference
+- ทบทวน [Benchmark Summary](/benchmark-summary) สำหรับหลักฐานที่วัดได้ของผลลัพธ์ governance: hallucination rate 0.3%, test 4,849 รายการผ่าน
+- สำรวจ [Solutions](/solutions) เพื่อดูว่า governance control สร้างคุณค่าสำหรับผู้ใช้อย่างไร
+- สำหรับบริบทองค์กรไทย: [PDPA AI Compliance](/blog/pdpa-ai-compliance-thailand) และ [Thailand Enterprise Trust](/thailand-enterprise-trust)
+
+## References
+
+- NIST AI Risk Management Framework 1.0: https://www.nist.gov/itl/ai-risk-management-framework
+- OECD AI Principles: https://oecd.ai/en/ai-principles
+- EU AI Act overview: https://artificialintelligenceact.eu/
+- Stanford HAI AI Index 2025: https://hai.stanford.edu/ai-index

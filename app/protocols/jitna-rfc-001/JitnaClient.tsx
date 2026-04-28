@@ -142,6 +142,15 @@ export default function JitnaClient() {
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 
+        {/* Answer-first — screen-reader + crawler accessible; not shown visually */}
+        <section className="sr-only">
+          <p>
+            {isEn
+              ? "JITNA (Just-In-Time Nodal Assembly) RFC-001 is the routing and cognitive assembly protocol at the core of the RCT Ecosystem — 6 primitives (Intent, Data, Delta, Approach, Reflection, Memory) enabling sub-50ms multi-agent task routing across 41 algorithms and 9 algorithm tiers."
+              : "JITNA (Just-In-Time Nodal Assembly) RFC-001 คือโปรโตคอล routing และ cognitive assembly ที่เป็นแกนกลางของ RCT Ecosystem — 6 primitives (Intent, Data, Delta, Approach, Reflection, Memory) เปิดใช้ multi-agent task routing ใต้ 50ms ข้าม 41 algorithms และ 9 algorithm tier"}
+          </p>
+        </section>
+
         {/* Hero */}
         <section className="py-20 px-4 text-center" style={{ background: bg2 }}>
           <div className="max-w-3xl mx-auto">

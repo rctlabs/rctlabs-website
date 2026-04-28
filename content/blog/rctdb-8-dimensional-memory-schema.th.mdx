@@ -1,0 +1,194 @@
+---
+title: "RCTDB v2.0: Universal Memory Schema 8 มิติสำหรับระบบ AI"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-03-28"
+lastReviewed: "2026-04-17"
+category: "research"
+excerpt: "RCTDB คือสถาปัตยกรรมหน่วยความจำสากลของ RCT Ecosystem — schema 8 มิติที่ออกแบบสำหรับ AI memory ที่มีโครงสร้าง, การติดตาม provenance เต็มรูปแบบ และสิทธิการลบข้อมูลตาม PDPA บทความนี้อธิบาย schema, สาม storage zone และเหตุใด traditional vector database จึงไม่เพียงพอสำหรับ AI องค์กร"
+tags: ["RCTDB", "Memory Architecture", "AI Infrastructure", "Vector Database", "PDPA", "RCT Labs"]
+readTime: 9
+references:
+  - "https://www.pinecone.io/"
+  - "https://weaviate.io/"
+  - "https://redis.io/docs/latest/"
+  - "https://www.postgresql.org/docs/"
+  - "https://arxiv.org/abs/2305.02301"
+  - "https://arxiv.org/abs/2004.07213"
+  - "https://neo4j.com/developer/graph-database/"
+  - "https://arxiv.org/abs/2301.07608"
+---
+
+# RCTDB v2.0: Universal Memory Schema 8 มิติสำหรับระบบ AI
+
+Memory คือปัญหาที่ยังไม่ได้รับการแก้ไขของ AI องค์กร
+
+AI deployment ส่วนใหญ่ปฏิบัติต่อ memory เป็นเรื่องรอง — vector database ที่เก็บ embedding สำหรับ RAG retrieval หรือ session store ที่ reset ในทุก conversation ทั้งสองแนวทางไม่เพียงพอสำหรับ AI องค์กรที่ต้องการ:
+
+1. **สร้าง reasoning ขึ้นใหม่** ที่อยู่เบื้องหลังการตัดสินใจใดก็ตาม (compliance, audit)
+2. **ลบข้อมูลของบุคคลเฉพาะ** ตามคำขอ (สิทธิการลบข้อมูลตาม PDPA)
+3. **Cache response ที่ผ่านการตรวจสอบ** สำหรับ recall เร็วโดยไม่ต้อง re-generate
+4. **ติดตาม provenance** ของข้อมูลทุกชิ้นที่ใช้ใน output ใดก็ตาม
+
+**RCTDB v2.0** คือคำตอบของ RCT Ecosystem สำหรับปัญหานี้ — universal memory schema ที่ออกแบบเฉพาะสำหรับระบบ constitutional AI
+
+---
+
+## ปัญหากับ Vector Database
+
+Vector database (Pinecone, Weaviate, Qdrant) ยอดเยี่ยมสำหรับ semantic search จัดเก็บ embedding และเปิดใช้ "ค้นหาเอกสารที่คล้ายกันทาง semantic กับ query นี้" แต่ไม่ได้ออกแบบสำหรับ:
+
+| ความต้องการ | Vector Database | RCTDB |
+|---|---|---|
+| **Full provenance tracking** | ไม่ — เก็บ embedding ไม่ใช่ reasoning chain | ใช่ — 8 มิติจับ context ครบถ้วน |
+| **สิทธิการลบตาม PDPA** | ยาก — แยก data ของคนหนึ่งได้ยาก | ใช่ — record ที่ linked UUID พร้อม tombstone |
+| **Audit trail ที่มีโครงสร้าง** | ไม่ — similarity search เท่านั้น | ใช่ — ทุก field query ได้สำหรับ compliance |
+| **Decision replay** | ไม่ | ใช่ — delta chain เปิดใช้ reconstruction เต็มรูปแบบ |
+| **Constitutional constraints** | ไม่ | ใช่ — FDIA scores เก็บกับทุก record |
+| **Multi-jurisdictional control** | ไม่ | ใช่ — provenance dimension ติดตาม jurisdiction |
+
+RCTDB ไม่ใช่การแทนที่ vector database — แต่เป็น layer *เหนือ* พวกมัน RCTDB จัดการ record keeping ที่มีโครงสร้าง, provenance และ compliance native embedding search ทำหน้าที่เป็น dimension หนึ่งภายใน schema 8 มิติที่กว้างกว่า
+
+---
+
+## 8 มิติ
+
+### มิติ 1: query_hash
+
+**ประเภท:** SHA-256 hash ของ semantic embedding vector  
+**วัตถุประสงค์:** เปิดใช้ exact lookup O(1) และการตรวจจับ near-duplicate
+
+สำหรับ warm recall, hot zone index ค่า `query_hash` ใน memory Query ที่เข้ามาถูก embed, hash และตรวจสอบกับ index ใน <1ms ถ้าพบ cached response จะถูกส่งคืนโดยไม่มีการเรียก LLM
+
+hash ไม่ใช่ของ raw text — แต่เป็นของ semantic embedding vector ซึ่งหมายความว่า query ที่มีคำต่างกันแต่ความหมายเดียวกัน (semantic similarity > 0.95) อาจใช้ hash bucket เดียวกัน เปิดใช้ cache hit ข้าม paraphrased query
+
+### มิติ 2: fdia_scores
+
+**ประเภท:** JSON object ที่มีค่า D, I, A, F (0.0–1.0 แต่ละตัว)  
+**วัตถุประสงค์:** บันทึกสถานะ quality gate ณ เวลาที่เก็บ
+
+ทุก RCTDB record เก็บ FDIA scores ณ เวลาที่ record ถูกสร้าง ซึ่งเปิดใช้:
+- กรอง record ตาม quality threshold ขั้นต่ำก่อนใช้ใน RAG
+- Audit ว่าทำไมระบบถึงผลิต output เฉพาะ (D, I, A เป็นอย่างไรในขณะนั้น)
+- ตรวจจับเมื่อ data quality เสื่อมลงเมื่อเวลาผ่านไป (D score ของ record ที่เก็บสามารถเปรียบเทียบกับ D score ปัจจุบันสำหรับแหล่งข้อมูลเดียวกัน)
+
+### มิติ 3: subject_uuid
+
+**ประเภท:** UUID ที่ linked กับ data subject เฉพาะ  
+**วัตถุประสงค์:** เปิดใช้สิทธิการลบตาม PDPA
+
+ข้อมูลส่วนบุคคลทั้งหมดที่ไหลผ่าน RCT Ecosystem linked กับ `subject_uuid` — identifier ภายในสำหรับ data subject เมื่อ data subject ใช้สิทธิการลบตาม PDPA มาตรา 33:
+
+1. RCTDB records ทั้งหมดที่มี `subject_uuid` ที่สอดคล้องถูก retrieve
+2. `tombstone_timestamp` ถูก set บนแต่ละ record
+3. การ read operation ในอนาคตเคารพ tombstone — ข้อมูลถูก erase สำหรับวัตถุประสงค์การเข้าถึงทั้งหมด
+4. tombstone record เองถูกเก็บไว้สำหรับระยะเวลา audit trail ที่กฎหมายกำหนด
+
+รูปแบบ tombstone นี้ตอบสนองข้อกำหนดการลบตาม PDPA โดยไม่ต้องลบ audit chain (ซึ่งอาจถูกกำหนดโดยกฎระเบียบอื่น)
+
+### มิติ 4: model_chain
+
+**ประเภท:** Array — AI model ใดประมวลผล record นี้  
+**วัตถุประสงค์:** เปิดใช้ model performance attribution และการวิเคราะห์ bias
+
+สำหรับทุก record, `model_chain` เก็บรายการโมเดลที่เรียงตามลำดับที่มีส่วนร่วมใน output ตัวอย่าง:
+```json
+["kimi-k2-5", "signedai-tier4", "claude-opus-4-6"]
+```
+
+ซึ่งหมายความว่า Kimi K2.5 สร้าง response เริ่มต้น, SignedAI Tier 4 consensus ยืนยัน และ Claude Opus 4.6 เป็น arbiter สุดท้าย
+
+### มิติ 5: consensus_result
+
+**ประเภท:** JSON object — SignedAI tier, voting method, เปอร์เซ็นต์การเห็นด้วย, output ของแต่ละโมเดล  
+**วัตถุประสงค์:** บันทึกกระบวนการ consensus สำหรับ audit และ quality tracking
+
+สำหรับ query Tier 4+, consensus result เต็มรูปแบบถูกเก็บ รวมถึง tier ที่ใช้, voting method, เปอร์เซ็นต์การเห็นด้วย และ output ของแต่ละโมเดลที่ signed ด้วย Ed25519
+
+### มิติ 6: delta_chain
+
+**ประเภท:** Reference pointer ไปยัง parent checkpoint หรือ delta  
+**วัตถุประสงค์:** เปิดใช้ full state reconstruction จาก incremental storage
+
+delta_chain dimension implement การบีบอัด Delta Engine (74% vs full-state storage) แต่ละ non-checkpoint record มี pointer ไปยัง parent delta ของมัน สร้าง linked chain กลับไปยัง checkpoint ล่าสุด
+
+Full state reconstruction: traverse delta chain จากเก่าสุดไปใหม่สุด โดยใช้แต่ละ delta ตามลำดับ สถานะสุดท้ายเท่ากับสถานะเต็มดั้งเดิม ด้วยความแม่นยำ 100%
+
+### มิติ 7: timestamp
+
+**ประเภท:** ISO 8601 พร้อม timezone และความแม่นยำระดับมิลลิวินาที  
+**วัตถุประสงค์:** Temporal ordering, TTL enforcement, การจัดการ retention policy
+
+### มิติ 8: provenance
+
+**ประเภท:** JSON object — แหล่งข้อมูล, lawful basis, jurisdiction zones  
+**วัตถุประสงค์:** บันทึก legal และ factual basis สำหรับข้อมูลที่ใช้ใน output
+
+```json
+{
+  "sources": ["internal_knowledge_base", "pdpa_consent_log"],
+  "lawful_basis": "consent",
+  "consent_id": "uuid-of-consent-record",
+  "jurisdiction": "TH",
+  "cross_border_authorized": false,
+  "data_classification": "personal"
+}
+```
+
+---
+
+## Three Storage Zones
+
+### Hot Zone — In-Memory
+- **เทคโนโลยี:** Redis-compatible in-memory store
+- **Latency:** <1ms
+- **เนื้อหา:** Query 10,000 รายการล่าสุดตามความถี่
+- **Eviction:** LRU (Least Recently Used) พร้อม size limits
+
+### Warm Zone — Fast SSD
+- **เทคโนโลยี:** NVMe SSD พร้อม columnar index
+- **Latency:** 1–5ms
+- **เนื้อหา:** Query 30 วันที่ผ่านมา
+- **Eviction:** Time-based (>30 วัน → cold migration)
+
+### Cold Zone — Compressed Archive
+- **เทคโนโลยี:** LZ4-compressed blob พร้อม SHA-256 index
+- **Latency:** 10ms–100ms
+- **เนื้อหา:** Record ทั้งหมดที่เก่ากว่า 30 วัน
+- **วัตถุประสงค์:** Audit trail ระยะยาว, compliance archive
+
+Record ย้ายระหว่าง zone โดยอัตโนมัติตามความถี่การเข้าถึงและอายุ Delta Engine จัดการการย้ายทั้งหมดอย่างโปร่งใส
+
+---
+
+## RCTDB เทียบกับ Traditional Vector Database
+
+| Feature | Pinecone | Weaviate | RCTDB v2.0 |
+|---|---|---|---|
+| Semantic search | ✅ | ✅ | ✅ (ผ่าน embedding ใน query_hash) |
+| Full provenance | ❌ | ❌ | ✅ |
+| PDPA erasure | ⚠️ ซับซ้อน | ⚠️ ซับซ้อน | ✅ UUID tombstone |
+| Audit trail | ❌ | ⚠️ บางส่วน | ✅ สมบูรณ์ |
+| FDIA integration | ❌ | ❌ | ✅ Native |
+| Delta compression | ❌ | ❌ | ✅ 74% |
+| Multi-jurisdiction | ❌ | ❌ | ✅ |
+| Constitutional constraints | ❌ | ❌ | ✅ |
+
+---
+
+## สรุป
+
+RCTDB v2.0 ปิดช่องว่างระหว่างสิ่งที่ระบบ AI ต้องการและสิ่งที่ traditional database ให้:
+
+- **8 มิติ:** query_hash, fdia_scores, subject_uuid, model_chain, consensus_result, delta_chain, timestamp, provenance
+- **3 storage zone:** Hot (<1ms), Warm (1–5ms), Cold (10ms+)
+- **บีบอัด 74%** ผ่าน Delta Engine delta-chain storage
+- **PDPA compliance:** UUID-linked tombstone pattern สำหรับสิทธิการลบ
+- **Audit trail สมบูรณ์:** การตัดสินใจ AI ทุกอย่างสร้างขึ้นใหม่ได้พร้อม context ครบถ้วน
+
+RCTDB คือ memory layer ที่ทำให้ constitutional AI ใช้งานได้จริงในระดับองค์กร
+
+---
+
+*บทความนี้เขียนโดย Ittirit Saengow ผู้ก่อตั้งและนักพัฒนาเพียงคนเดียวของ RCT Labs*

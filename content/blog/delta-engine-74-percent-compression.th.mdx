@@ -1,0 +1,189 @@
+---
+title: "Delta Engine: RCT Labs บรรลุการบีบอัด Memory 74% และ Recall ใต้ 50ms ได้อย่างไร"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-03-28"
+lastReviewed: "2026-04-17"
+category: "research"
+excerpt: "Delta Engine คือระบบบีบอัดและ recall หน่วยความจำที่เป็นแกนกลางของ RCT Ecosystem โดยการจัดเก็บเฉพาะการเปลี่ยนแปลงของสถานะ (delta) แทนที่จะเป็น snapshot สถานะเต็ม ระบบบรรลุการบีบอัดแบบ lossless 74% และ warm recall ใต้ 50 มิลลิวินาที ลดต้นทุนต่อ request เหลือเกือบศูนย์สำหรับรูปแบบที่ซ้ำ"
+tags: ["Delta Engine", "Memory Compression", "AI Infrastructure", "RCTDB", "Performance", "RCT Labs"]
+readTime: 8
+references:
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://redis.io/docs/latest/"
+  - "https://arxiv.org/abs/2305.02301"
+  - "https://arxiv.org/abs/2004.07213"
+  - "https://arxiv.org/abs/2210.11610"
+  - "https://dl.acm.org/doi/10.14778/3461535.3461539"
+---
+
+# Delta Engine: RCT Labs บรรลุการบีบอัด Memory 74% และ Recall ใต้ 50ms ได้อย่างไร
+
+ระบบ AI ทุกระบบที่เรียนรู้จากการโต้ตอบต้องเผชิญความตึงเครียดพื้นฐานเดียวกัน: **การเก็บทุกอย่างมีราคาแพง แต่การลืมมากเกินไปทำลายคุณค่า**
+
+ระบบส่วนใหญ่แก้ปัญหานี้ด้วยการตัดสินใจว่าจะเก็บอะไรและทิ้งอะไร — และสูญเสียข้อมูลในกระบวนการ **Delta Engine** ใช้แนวทางที่แตกต่าง: เก็บทุกอย่าง แต่ในรูปแบบที่มีประสิทธิภาพสูงกว่ามาก
+
+แทนที่จะเก็บสถานะเต็มของทุก interaction, Delta Engine เก็บเฉพาะ **ความแตกต่างระหว่างสถานะ** — delta สถานะเต็มสามารถสร้างขึ้นใหม่ได้เสมอจาก checkpoint ใดก็ได้โดยการใช้ delta ทั้งหมดที่ตามมา แต่การ read ปกติเข้าถึงเฉพาะ delta stream ไม่ใช่สถานะเต็ม ทำให้ recall เร็วและถูกกว่าอย่างมีนัยสำคัญ
+
+---
+
+## Delta Storage ทำงานอย่างไร
+
+หน่วยความจำ AI แบบดั้งเดิมเก็บ conversation snapshot เต็มรูปแบบ:
+
+```
+State 1: { query: "What is FDIA?", context: [], response: "..." }
+State 2: { query: "Explain D variable", context: [State1], response: "..." }
+State 3: { query: "How does A gate work?", context: [State1, State2], response: "..." }
+```
+
+Storage เติบโตแบบ O(n²) — แต่ละ state มี context ก่อนหน้าทั้งหมด
+
+Delta Engine เก็บเฉพาะการเปลี่ยนแปลง:
+
+```
+Checkpoint: { query: "What is FDIA?", response: "..." }
+Delta 1: { added_context: [Checkpoint], query: "Explain D variable", response: "..." }
+Delta 2: { added_context: [Δ1], query: "How does A gate work?", response: "..." }
+```
+
+Storage เติบโตแบบ O(n) — แต่ละ delta มีเฉพาะการเปลี่ยนแปลงส่วนเพิ่ม
+
+**ผลลัพธ์: บีบอัด 74% เทียบกับ full-state storage** วัดจาก production workload ของ RCT Ecosystem (v5.4.5)
+
+---
+
+## 7-State Recall Pipeline
+
+Delta Engine ผสานอย่างแน่นหนากับ 7-state pipeline ของ Intent Loop Engine:
+
+### Cold Start Path (3–5 วินาที)
+```
+RECEIVED → VALIDATED (FDIA) → MEMORY_CHECK → [MISS] → COMPUTING → VERIFYING → COMMITTING → COMPLETED
+```
+
+1. Query เข้ามา
+2. FDIA ตรวจสอบคุณภาพและ intent
+3. Delta Engine ตรวจสอบ RCTDB หา warm cache hit (semantic similarity > 0.95)
+4. **Cache miss:** เปิดใช้งาน full computation path (3–5 วินาที)
+5. HexaCore เลือกโมเดลที่เหมาะสม
+6. SignedAI ตรวจสอบ output
+7. ผลลัพธ์ถูก commit เข้า Delta Engine store พร้อม provenance ครบถ้วน
+
+### Warm Recall Path (<50ms)
+```
+RECEIVED → VALIDATED (FDIA) → MEMORY_CHECK → [HIT] → COMPLETED
+```
+
+1. Query เข้ามา
+2. FDIA ตรวจสอบคุณภาพและ intent
+3. Delta Engine ตรวจสอบ RCTDB — พบ semantic similarity > 0.95
+4. **Cache hit:** ส่งคืน response จาก cache ใน <50ms
+5. ต้นทุน: เกือบศูนย์ (ไม่มีการเรียก LLM)
+
+เมื่อระบบถูกใช้งานมากขึ้น query มากขึ้นจะโดน warm path ในระยะยาว ต้นทุนต่อ query มุ่งสู่ศูนย์สำหรับรูปแบบที่เสถียรและซ้ำ
+
+---
+
+## Semantic Similarity: Cache หาการจับคู่อย่างไร
+
+Delta Engine ไม่ cache string ที่ตรงกัน แต่ cache **semantic embeddings** — การแทนค่าทางคณิตศาสตร์ของความหมาย
+
+Query สองอันอาจมีความหมายเทียบเท่ากันทาง semantic แม้ใช้คำต่างกันอย่างสิ้นเชิง:
+
+| Query 1 | Query 2 | Similarity |
+|---|---|---|
+| "What is FDIA?" | "Explain the FDIA equation" | 0.97 (intent เดียวกัน) |
+| "How does constitutional AI work?" | "What is constitutional AI?" | 0.95 (intent คล้าย) |
+| "FDIA vs RLHF" | "JITNA protocol explained" | 0.21 (หัวข้อต่างกัน) |
+
+threshold similarity ที่ 0.95 ปรับได้ตาม use case threshold ที่สูงขึ้น (matching เข้มงวดกว่า) ลด false positive แต่ลดอัตรา cache hit threshold ที่ต่ำกว่า (matching หลวมกว่า) เพิ่มอัตรา hit แต่เสี่ยง return response ที่เบี่ยงเล็กน้อย
+
+---
+
+## 8-Dimensional RCTDB Schema
+
+Delta Engine storage ใช้ RCTDB — schema หน่วยความจำสากล 8 มิติ แต่ละ record ใน RCTDB มี 8 field ที่เปิดใช้งาน recall, audit และ deletion:
+
+| มิติ | คำอธิบาย |
+|---|---|
+| **query_hash** | SHA-256 hash ของ semantic embedding — เปิดใช้ lookup O(1) |
+| **fdia_scores** | ค่า D, I, A ณ เวลาที่เก็บ |
+| **subject_uuid** | เชื่อมโยง record กับ data subject สำหรับการลบตาม PDPA |
+| **model_chain** | โมเดลใดผลิต output |
+| **consensus_result** | tier และผลการ vote ของ SignedAI |
+| **delta_chain** | อ้างอิงไปยัง parent checkpoint/delta |
+| **timestamp** | เวลาสร้างแบบ ISO 8601 |
+| **provenance** | แหล่งข้อมูล, lawful basis, jurisdiction zones |
+
+schema 8 มิติเปิดใช้ query ที่ข้ามทุก 8 มิติพร้อมกัน — เร็วกว่า naive join ข้าม table แยกกัน
+
+---
+
+## Three Storage Zones
+
+RCTDB ทำงานใน 3 zone ที่มีลักษณะประสิทธิภาพต่างกัน:
+
+| Zone | เทคโนโลยี | Latency | Use Case |
+|---|---|---|---|
+| **Hot** | In-memory (Redis-compatible) | <1ms | Query ล่าสุด, session ที่ active |
+| **Warm** | Fast SSD | 1–5ms | Query 30 วันที่ผ่านมา |
+| **Cold** | Compressed blob | >10ms | Archive, audit, compliance ระยะยาว |
+
+Query ย้ายระหว่าง zone โดยอัตโนมัติตามความถี่ในการเข้าถึง Query ที่เข้าถึงบ่อยย้ายจาก Cold ไป Warm ไป Hot Query ที่เข้าถึงไม่บ่อยย้ายจาก Hot ผ่าน Warm ไป Cold
+
+---
+
+## การผสานรวมกับ FDIA
+
+Delta Engine เชื่อมต่อกับสมการ FDIA ที่ 2 จุด:
+
+**ที่ MEMORY_CHECK (State 3 ของ 7-State Pipeline):**
+คะแนน Data quality (D) ใน FDIA สะท้อน cache freshness ของข้อมูลที่เกี่ยวข้องบางส่วน warm cache hit ที่มี semantic similarity สูงช่วยเพิ่ม D — ระบบมีข้อมูลล่าสุดและมีคุณภาพสูงเกี่ยวกับหัวข้อนี้
+
+**ที่ COMMITTING (State 6 ของ 7-State Pipeline):**
+ก่อนเก็บ delta ใหม่ ระบบตรวจสอบ F score ของ response ที่จะเก็บ เฉพาะ response ที่ผ่าน F threshold ขั้นต่ำเท่านั้นที่เก็บใน warm/hot zones Response ที่ต่ำกว่า threshold เก็บใน cold storage เท่านั้น — ป้องกันไม่ให้ข้อมูลคุณภาพต่ำปนเปื้อน warm cache
+
+---
+
+## สรุปประสิทธิภาพ
+
+| Metric | ค่า |
+|---|---|
+| การบีบอัด memory | **74% lossless** |
+| Latency cold start | **3–5 วินาที** |
+| Latency warm recall | **<50 มิลลิวินาที** |
+| Semantic similarity threshold | **0.95** (ปรับได้) |
+| Storage zones | **3** (Hot/Warm/Cold) |
+| มิติ RCTDB | **8** |
+| Recall accuracy | **96.1%** (matches vs expected) |
+
+---
+
+## คำถามที่พบบ่อย
+
+### การบีบอัด Delta Engine มีการสูญเสียข้อมูลหรือไม่?
+ไม่ Delta storage เป็น lossless — สถานะเต็มสามารถสร้างขึ้นใหม่ได้เสมอจาก checkpoint ใดก็ได้โดยการใช้ delta ทั้งหมดตามลำดับ ไม่มีข้อมูลสูญหาย เพียงแต่เก็บอย่างมีประสิทธิภาพมากขึ้น
+
+### Delta Engine แตกต่างจาก RAG (Retrieval-Augmented Generation) อย่างไร?
+RAG ดึงข้อมูลจาก document store และ inject เข้า LLM context Delta Engine cache response ที่ผ่านการตรวจสอบแล้วและส่งคืนโดยตรง สำหรับ query ที่ซ้ำ Delta Engine เร็วและถูกกว่า RAG (ไม่ต้อง re-retrieve, ไม่ต้อง re-generate) สำหรับ query ใหม่ ทั้งสองระบบคำนวณจากศูนย์
+
+### Delta Engine รองรับภาษาไทยได้ไหม?
+ได้ semantic similarity engine ใช้ multilingual embeddings ที่ครอบคลุมภาษาไทย, อังกฤษ และทุก 8 คู่ภาษาที่ RCT Ecosystem รองรับ Query ภาษาไทยและ cached response ภาษาไทยรองรับอย่างสมบูรณ์
+
+---
+
+## สรุป
+
+Delta Engine ทำให้เศรษฐศาสตร์ประสิทธิภาพของ RCT Ecosystem ยั่งยืน:
+
+- **บีบอัด 74%** ผ่าน delta-only storage (O(n) vs O(n²))
+- **Warm recall <50ms** ผ่าน semantic similarity matching (threshold: 0.95)
+- **ต้นทุนเกือบศูนย์** สำหรับรูปแบบ query ที่เสถียรและซ้ำในระยะยาว
+- **RCTDB 8-dimensional schema** สำหรับ storage, audit และการลบตาม PDPA
+- **สถาปัตยกรรม 3 zone** สำหรับการจัดวาง hot/warm/cold ที่ชาญฉลาด
+
+---
+
+*บทความนี้เขียนโดย Ittirit Saengow ผู้ก่อตั้งและนักพัฒนาเพียงคนเดียวของ RCT Labs*
