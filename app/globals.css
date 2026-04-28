@@ -2257,3 +2257,29 @@ svg text { text-rendering: optimizeLegibility; }
   transition: none;
 }
 
+/* ==========================================================================
+   HIGHLIGHT.JS — Code syntax token colors (dark theme, works on bg-[#111111])
+   Compatible with rehype-highlight output classes.
+   ========================================================================== */
+.hljs { color: #d4d0cb; }
+.hljs-comment, .hljs-quote { color: #8b949e; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-addition { color: #ff7b72; }
+.hljs-number, .hljs-string, .hljs-meta .hljs-meta-string,
+.hljs-literal, .hljs-doctag, .hljs-regexp { color: #a5d6ff; }
+.hljs-title, .hljs-section, .hljs-name,
+.hljs-selector-id, .hljs-selector-class { color: #d2a8ff; }
+.hljs-attribute, .hljs-attr, .hljs-variable,
+.hljs-template-variable, .hljs-class .hljs-title,
+.hljs-type { color: #ffa657; }
+.hljs-symbol, .hljs-bullet, .hljs-subst,
+.hljs-meta, .hljs-meta .hljs-keyword, .hljs-selector-attr,
+.hljs-selector-pseudo, .hljs-link { color: #79c0ff; }
+.hljs-built_in, .hljs-deletion { color: #ffa657; }
+.hljs-formula { background: #1f2428; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: bold; }
+.hljs-string { color: #a5d6ff; }
+.hljs-function .hljs-title, .hljs-function { color: #d2a8ff; }
+.hljs-params { color: #d4d0cb; }
+.hljs-punctuation { color: #c9d1d9; }
+

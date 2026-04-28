@@ -374,7 +374,7 @@ export function getMdxArticleComponents(locale: BlogLocale) {
       </blockquote>
     ),
     pre: ({ children }: { children: ReactNode }) => (
-      <pre className="my-8 overflow-x-auto rounded-3xl border border-border/70 bg-[#111111] p-5 text-sm leading-7 text-warm-light-gray shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <pre className="my-8 overflow-x-auto rounded-3xl border border-border/70 bg-[#111111] p-5 text-sm leading-7 text-[#d4d0cb] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
         {children}
       </pre>
     ),

@@ -672,21 +672,12 @@ export interface BlogPost extends BlogPostMetadata {
 }
 
 export function slugifyHeading(text: string) {
-  return (
-    text
-      // Remove HTML entities like &amp; &lt; etc.
-      .replace(/&[^;]+;/g, "")
-      // Lowercase ASCII letters only (Thai has no case)
-      .replace(/[A-Z]/g, (c) => c.toLowerCase())
-      // Replace characters that are NOT Unicode letters, digits, spaces, or hyphens with empty string
-      // \p{L} = any Unicode letter (includes Thai), \p{N} = any Unicode number
-      .replace(/[^\p{L}\p{N}\s-]/gu, "")
-      .trim()
-      // Collapse whitespace to single hyphen
-      .replace(/\s+/g, "-")
-      // Collapse repeated hyphens
-      .replace(/-{2,}/g, "-")
-  )
+  return text
+    .toLowerCase()
+    .replace(/&[^;]+;/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
 }
 
 function mapMarkdownLinesOutsideFences(
@@ -952,22 +943,18 @@ const BLOG_RELATED_MAP: Record<string, [string, string, string]> = {
     "rct-7-process-explained",
   ],
 
-  // ── Algorithm / Evolution cluster ────────────────────────────────────
-  // MEE: cross-links to MOIP (sister algorithm), FDIA (governs evolution loop),
-  // and SignedAI (signs every G-level checkpoint output)
+  // ── Algorithm / Evolution ─────────────────────────────────────────────
   "mee-meta-evolution-engine-explained": [
-    "moip-multi-objective-intent-planning",
     "fdia-equation-explained",
     "signedai-multi-llm-consensus-explained",
+    "evaluation-harnesses-enterprise-llm",
   ],
 
-  // ── MOIP / Pareto optimization cluster ───────────────────────────────
-  // MOIP: cross-links to MEE (sister algorithm in same RCT kernel pass),
-  // FDIA (constitutional pipeline that invokes MOIP), and Intent OS (intent layer)
+  // ── MOIP / Pareto cluster ─────────────────────────────────────────────
   "moip-multi-objective-intent-planning": [
-    "mee-meta-evolution-engine-explained",
     "fdia-equation-explained",
     "intent-operating-system-explained",
+    "evaluation-harnesses-enterprise-llm",
   ],
 
   // ── Open Source SDK launch ────────────────────────────────────────────

@@ -55,6 +55,15 @@ export default function SignedAIPage() {
       ])) }} />
       <Navbar />
 
+      {/* Answer-first — screen-reader + crawler accessible; not shown visually */}
+      <section className="sr-only">
+        <p>
+          {isTh
+            ? "SignedAI คือ Multi-LLM Verification Consensus API ที่ใช้ HexaCore 7 โมเดล (3 ตะวันตก + 3 ตะวันออก + 1 ไทย) เพื่อ benchmark hallucination ต่ำกว่า 0.3% ผ่าน cryptographic signing ด้วย ED25519 RFC 8032 — รองรับ Tier S, 4, 6 และ 8 สำหรับทุกระดับความเสี่ยงขององค์กร"
+            : "SignedAI is a multi-LLM verification consensus API that uses HexaCore 7 models (3 Western + 3 Eastern + 1 Thai) to benchmark hallucination below 0.3% through ED25519 RFC 8032 cryptographic signing — with Tier S, 4, 6, and 8 consensus levels for every enterprise risk tier."}
+        </p>
+      </section>
+
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
         <div className="max-w-3xl mx-auto space-y-5">

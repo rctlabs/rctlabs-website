@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 import { useTheme } from "@/components/theme-provider"
 import { useMounted } from "@/hooks/use-mounted"
 import { getLocaleFromPathname } from "@/lib/i18n"
-import { getBreadcrumbSchema } from "@/lib/schema"
+import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { Compass, Database, Target, User, ArrowRight, FlaskConical } from "lucide-react"
 
@@ -133,10 +133,26 @@ export default function FDIAEquationPage() {
     author: { "@type": "Organization", name: "RCT Ecosystem" },
   }
 
+  const faqSchema = getFAQSchema([
+    {
+      question: "What does FDIA stand for?",
+      answer: "FDIA stands for Future, Data, Intent, Architect — the four variables in the equation F = (D^I) × A that governs intent-centric AI decision making at RCT Labs.",
+    },
+    {
+      question: "Why is the Architect variable non-negotiable in FDIA?",
+      answer: "When A = 0 the entire equation collapses to 0. Human oversight is not optional — it is the final gate that gives AI outputs their meaning and accountability. FDIA enforces human-in-the-loop governance at the mathematical level.",
+    },
+    {
+      question: "How does FDIA prevent AI hallucination?",
+      answer: "FDIA evaluates eight quality dimensions — Data quality (D), Intent clarity (I) and Architect approval (A) — before any output is accepted. Outputs that fall below the threshold are rejected and re-routed, reducing hallucination to 0.3% in production.",
+    },
+  ])
+
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Navbar />
       <main id="main-content" className="min-h-screen bg-background">
 

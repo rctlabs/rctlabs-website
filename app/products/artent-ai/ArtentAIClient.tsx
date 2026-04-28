@@ -32,6 +32,15 @@ export default function ArtentAIPage() {
       ])) }} />
       <Navbar />
 
+      {/* Answer-first — screen-reader + crawler accessible; not shown visually */}
+      <section className="sr-only">
+        <p>
+          {isTh
+            ? "ArtentAI คือ Personal Agent OS ที่จำแนก Intent ทุกประเภท จดจำผ่าน RCTDB 8-Dimensional Schema และรันทุก Task ผ่าน WF00-META 7-Phase Protocol — รองรับระดับปัญญา L1 ถึง L5 พร้อม FDIA Constitutional Scoring และ Sovereignty Vault ที่รับประกันความเป็นเจ้าของข้อมูล"
+            : "ArtentAI is a Personal Agent OS that classifies any intent, persists memory through the RCTDB 8-Dimensional Schema, and routes every task through the 7-phase WF00-META protocol — supporting L1 through L5 intelligence levels with FDIA Constitutional Scoring and a Sovereignty Vault that guarantees data ownership."}
+        </p>
+      </section>
+
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-4 py-20 md:py-28 text-center">
         <div className="max-w-3xl mx-auto space-y-5">
