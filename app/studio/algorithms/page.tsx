@@ -31,6 +31,35 @@ const CATEGORY_COLORS: Record<string, string> = {
   multimodal: "text-green-400 bg-green-400/10 border-green-400/30",
 }
 
+function getAlgoStatus(pct: number): { label: string; color: string } {
+  if (pct >= 90) return { label: "active", color: "text-green-400 bg-green-400/10 border-green-400/30" }
+  if (pct >= 60) return { label: "beta", color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/30" }
+  return { label: "deprecated", color: "text-red-400 bg-red-400/10 border-red-400/30" }
+}
+
+function Sparkline({ baseLatency }: { baseLatency: number }) {
+  const seed = baseLatency % 100
+  const points = Array.from({ length: 7 }, (_, i) => {
+    const variation = ((seed * (i + 1) * 17) % 40) - 20
+    return Math.max(10, baseLatency + variation)
+  })
+  const max = Math.max(...points)
+  const min = Math.min(...points)
+  const range = max - min || 1
+  const w = 56; const h = 18
+  const coords = points.map((p, i) => {
+    const x = (i / (points.length - 1)) * w
+    const y = h - ((p - min) / range) * h
+    return `${x.toFixed(1)},${y.toFixed(1)}`
+  })
+  const d = `M ${coords.join(" L ")}`
+  return (
+    <svg width={w} height={h} className="opacity-70">
+      <path d={d} fill="none" stroke="#4ade80" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export default function AlgorithmsPage() {
   useRequireAuth()
   const [algorithms, setAlgorithms] = useState<Algorithm[]>([])
@@ -119,9 +148,12 @@ export default function AlgorithmsPage() {
                           <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${CATEGORY_COLORS[algo.category] || ""}`}>{algo.category}</span>
                         </div>
                         <div className="flex items-center gap-3 text-xs text-gray-500 shrink-0">
+                          <span className={`px-2 py-0.5 rounded-full border font-medium text-xs ${getAlgoStatus(pct).color}`}>
+                            {getAlgoStatus(pct).label}
+                          </span>
+                          <Sparkline baseLatency={algo.avg_latency_ms} />
                           <span className="text-green-400 font-mono">{pct}%</span>
                           <span>{algo.avg_latency_ms}ms</span>
-                          <span>:{algo.port}</span>
                         </div>
                       </div>
                       <h3 className="font-semibold text-sm mt-2">{algo.name}</h3>

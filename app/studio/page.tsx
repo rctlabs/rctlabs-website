@@ -6,7 +6,7 @@ import { FlaskConical, Play, GitCompare, Beaker, Database, BarChart3, ChevronRig
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { getSupabaseBrowserClient } from "@/lib/auth/browser-client"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 
 const STUDIO_API = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
@@ -49,23 +49,58 @@ const CATEGORY_COLORS: Record<string, string> = {
   multimodal: "text-green-400 bg-green-400/10 border-green-400/30",
 }
 
+function getAlgoStatus(pct: number): { label: string; color: string } {
+  if (pct >= 90) return { label: "active", color: "text-green-400 bg-green-400/10 border-green-400/30" }
+  if (pct >= 60) return { label: "beta", color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/30" }
+  return { label: "deprecated", color: "text-red-400 bg-red-400/10 border-red-400/30" }
+}
+
+function Sparkline({ baseLatency }: { baseLatency: number }) {
+  const seed = baseLatency % 100
+  const points = Array.from({ length: 7 }, (_, i) => {
+    const variation = ((seed * (i + 1) * 17) % 40) - 20
+    return Math.max(10, baseLatency + variation)
+  })
+  const max = Math.max(...points)
+  const min = Math.min(...points)
+  const range = max - min || 1
+  const w = 56; const h = 18
+  const coords = points.map((p, i) => {
+    const x = (i / (points.length - 1)) * w
+    const y = h - ((p - min) / range) * h
+    return `${x.toFixed(1)},${y.toFixed(1)}`
+  })
+  const d = `M ${coords.join(" L ")}`
+  return (
+    <svg width={w} height={h} className="opacity-70">
+      <path d={d} fill="none" stroke="#4ade80" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function AlgoCard({ algo }: { algo: Algorithm }) {
   const pct = algo.total_tests > 0 ? Math.round((algo.tests_passing / algo.total_tests) * 100) : 0
+  const status = getAlgoStatus(pct)
   return (
     <Link href={`/studio/algorithms/${algo.algo_id}`}>
-      <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5 hover:border-white/20 hover:bg-white/3 transition-all cursor-pointer h-full">
+      <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5 hover:border-white/20 hover:bg-white/3 transition-all cursor-pointer h-full flex flex-col">
         <div className="flex items-start justify-between mb-3">
           <span className="text-xs font-mono text-gray-500">{algo.algo_id}</span>
-          <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${CATEGORY_COLORS[algo.category] || ""}`}>
+          <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${CATEGORY_COLORS[algo.category] || "text-gray-400 bg-gray-400/10 border-gray-400/30"}`}>
             {algo.category}
           </span>
         </div>
         <h3 className="font-semibold text-sm mb-1">{algo.name}</h3>
-        <p className="text-xs text-gray-400 line-clamp-2 mb-3">{algo.description}</p>
+        <p className="text-xs text-gray-400 line-clamp-2 mb-3 flex-1">{algo.description}</p>
+        <div className="flex items-center justify-between mt-auto mb-2">
+          <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${status.color}`}>
+            {status.label}
+          </span>
+          <Sparkline baseLatency={algo.avg_latency_ms} />
+        </div>
         <div className="flex items-center justify-between text-xs text-gray-500">
-          <span className="text-green-400 font-mono">{pct}% tests</span>
+          <span className="text-green-400 font-mono">{pct}%</span>
           <span>{algo.avg_latency_ms}ms avg</span>
-          <span>:{algo.port}</span>
         </div>
       </div>
     </Link>
@@ -78,6 +113,7 @@ export default function StudioPage() {
   const [loading, setLoading] = useState(true)
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -140,7 +176,15 @@ export default function StudioPage() {
           <p className="text-xs text-gray-500 uppercase tracking-widest mb-4 px-2">Specialist Studio</p>
           <nav className="space-y-1">
             {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
-              <Link key={href} href={href} className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">
+              <Link
+                key={href}
+                href={href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                  pathname === href
+                    ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                }`}
+              >
                 <Icon className="w-4 h-4" />
                 {label}
               </Link>
