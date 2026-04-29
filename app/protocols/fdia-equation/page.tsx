@@ -10,6 +10,9 @@ import { getLocaleFromPathname } from "@/lib/i18n"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { Compass, Database, Target, User, ArrowRight, FlaskConical } from "lucide-react"
+import AuthorBlock from "@/components/author-block"
+import RelatedContent from "@/components/related-content"
+import { PROTOCOL_LINKS } from "@/lib/internal-links"
 
 const components = [
   {
@@ -401,6 +404,9 @@ export default function FDIAEquationPage() {
           </div>
         </section>
 
+        <div className="max-w-3xl mx-auto px-4 pb-12">
+          <AuthorBlock authorSlug="ittirit-saengow" locale={locale as "en" | "th"} />
+        </div>
       </main>
       <Footer />
     </>

@@ -10,6 +10,9 @@ import { getLocaleFromPathname } from "@/lib/i18n"
 import { getBreadcrumbSchema } from "@/lib/schema"
 import Link from "next/link"
 import { Brain, Eye, Heart, Lightbulb, Shield, Sparkles, Cpu, RefreshCw, ArrowRight } from "lucide-react"
+import AuthorBlock from "@/components/author-block"
+import RelatedContent from "@/components/related-content"
+import { PROTOCOL_LINKS } from "@/lib/internal-links"
 
 const genomes = [
   {
@@ -215,6 +218,9 @@ export default function RCT7MentalModelPage() {
           </div>
         </section>
 
+        <div className="max-w-3xl mx-auto px-4 pb-12">
+          <AuthorBlock authorSlug="ittirit-saengow" locale={locale as "en" | "th"} />
+        </div>
       </main>
       <Footer />
     </>

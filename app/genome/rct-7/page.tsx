@@ -6,6 +6,8 @@ import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowLeft, RefreshCw, Dna } from "lucide-react"
+import AuthorBlock from "@/components/author-block"
+import RelatedContent from "@/components/related-content"
 import { Button } from "@/components/ui/button"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -267,6 +269,8 @@ export default async function GenomeRCT7Page() {
                 </Link>
               </div>
             </div>
+
+            <AuthorBlock authorSlug="ittirit-saengow" locale={locale} />
           </article>
         </section>
 
