@@ -219,6 +219,15 @@ export default function RCT7MentalModelPage() {
         </section>
 
         <div className="max-w-3xl mx-auto px-4 pb-12">
+          <RelatedContent
+            title={locale === "en" ? "Related Content" : "เนื้อหาที่เกี่ยวข้อง"}
+            items={PROTOCOL_LINKS.map(link => ({
+              href: `/${locale}${link.href}`,
+              title: locale === "en" ? link.label : (link.labelTh ?? link.label),
+              description: locale === "en" ? link.description : (link.descriptionTh ?? link.description),
+              category: "Protocol",
+            }))}
+          />
           <AuthorBlock authorSlug="ittirit-saengow" locale={locale as "en" | "th"} />
         </div>
       </main>
