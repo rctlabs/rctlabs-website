@@ -5,6 +5,8 @@ import Link from "next/link"
 import { FlaskConical, Play, GitCompare, Beaker, Database, BarChart3, ChevronRight, Cpu, BookOpen, Brain, Settings } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { getSupabaseBrowserClient } from "@/lib/auth/browser-client"
+import { useRouter } from "next/navigation"
 
 const STUDIO_API = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
@@ -74,6 +76,29 @@ export default function StudioPage() {
   const [algorithms, setAlgorithms] = useState<Algorithm[]>([])
   const [summary, setSummary] = useState<ResultSummary | null>(null)
   const [loading, setLoading] = useState(true)
+  const [userEmail, setUserEmail] = useState<string | null>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const supabase = getSupabaseBrowserClient()
+        const { data: { session }, error } = await supabase.auth.getSession()
+        
+        if (error || !session) {
+          router.push("/auth")
+          return
+        }
+        
+        setUserEmail(session.user.email || "Unknown User")
+      } catch (err) {
+        console.error("Auth check failed:", err)
+        router.push("/auth")
+      }
+    }
+    
+    checkAuth()
+  }, [router])
 
   async function fetchData() {
     setLoading(true)
@@ -130,12 +155,25 @@ export default function StudioPage() {
 
         {/* Main */}
         <main className="flex-1 p-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <FlaskConical className="w-8 h-8 text-purple-400" />
-              Specialist Studio
-            </h1>
-            <p className="text-gray-400 mt-1">Algorithm playground · A/B comparison · Experiment tracking · Dataset catalog</p>
+          <div className="mb-8 flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold flex items-center gap-3">
+                <FlaskConical className="w-8 h-8 text-purple-400" />
+                Specialist Studio
+              </h1>
+              <p className="text-gray-400 mt-1">Algorithm playground · A/B comparison · Experiment tracking · Dataset catalog</p>
+            </div>
+            {userEmail && (
+              <div className="flex items-center gap-3 bg-[#161b22] border border-white/10 rounded-full px-4 py-2">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm">
+                  {userEmail.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs text-gray-400 leading-tight">Logged in as</span>
+                  <span className="text-sm font-medium text-white leading-tight">{userEmail}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Stats row */}
