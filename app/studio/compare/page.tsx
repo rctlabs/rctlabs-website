@@ -72,26 +72,26 @@ export default function ComparePage() {
   const fastest = results.length > 0 ? results.reduce((a, b) => a.latency_ms < b.latency_ms ? a : b) : null
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-200">
       <Navbar />
       <main className="max-w-7xl mx-auto px-6 pt-28 pb-20">
-        <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-          <Link href="/studio" className="hover:text-white flex items-center gap-1"><ChevronLeft className="w-3 h-3" />Studio</Link>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+          <Link href="/studio" className="hover:text-foreground flex items-center gap-1"><ChevronLeft className="w-3 h-3" />Studio</Link>
           <span>/</span>
-          <span className="text-white">Compare</span>
+          <span className="text-foreground">Compare</span>
         </div>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold flex items-center gap-3"><GitCompare className="w-8 h-8 text-blue-400" />Model Comparison</h1>
-          <p className="text-gray-400 mt-1 text-sm">Run the same input through multiple model variants and compare outputs side-by-side</p>
+          <h1 className="text-3xl font-bold flex items-center gap-3 text-foreground"><GitCompare className="w-8 h-8 text-primary" />Model Comparison</h1>
+          <p className="text-muted-foreground mt-1 text-sm">Run the same input through multiple model variants and compare outputs side-by-side</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Config panel */}
           <div className="space-y-4">
             {/* Algorithm */}
-            <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5">
-              <label className="text-xs text-gray-400 uppercase tracking-wider mb-3 block">Algorithm</label>
+            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+              <label className="text-xs text-muted-foreground uppercase tracking-wider mb-3 block">Algorithm</label>
               <select
                 value={selectedAlgo}
                 onChange={(e) => {
@@ -100,7 +100,7 @@ export default function ComparePage() {
                   if (a) setInputText(JSON.stringify(a.example_input, null, 2))
                   setResults([])
                 }}
-                className="w-full bg-[#080c14] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-muted border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary"
               >
                 {algorithms.map((a) => (
                   <option key={a.algo_id} value={a.algo_id}>{a.algo_id} — {a.name.split("(")[0].trim()}</option>
@@ -109,9 +109,9 @@ export default function ComparePage() {
             </div>
 
             {/* Models */}
-            <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5">
-              <label className="text-xs text-gray-400 uppercase tracking-wider mb-3 block">Models to Compare</label>
-              <p className="text-xs text-gray-600 mb-3">Leave empty to use default models defined per-algorithm</p>
+            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+              <label className="text-xs text-muted-foreground uppercase tracking-wider mb-3 block">Models to Compare</label>
+              <p className="text-xs text-muted-foreground mb-3">Leave empty to use default models defined per-algorithm</p>
               <div className="space-y-2">
                 {models.map((m, i) => (
                   <div key={i} className="flex gap-2">
@@ -123,60 +123,60 @@ export default function ComparePage() {
                         setModels(next)
                       }}
                       placeholder={`Model variant ${i + 1}`}
-                      className="flex-1 bg-[#080c14] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                      className="flex-1 bg-muted border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary"
                     />
                     {models.length > 1 && (
-                      <button onClick={() => setModels(models.filter((_, j) => j !== i))} className="text-gray-500 hover:text-red-400 p-1">
+                      <button onClick={() => setModels(models.filter((_, j) => j !== i))} className="text-muted-foreground hover:text-destructive p-1 transition-colors">
                         <X className="w-4 h-4" />
                       </button>
                     )}
                   </div>
                 ))}
                 {models.length < 5 && (
-                  <button onClick={() => setModels([...models, ""])} className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 mt-1">
+                  <button onClick={() => setModels([...models, ""])} className="text-xs text-primary hover:text-primary/80 flex items-center gap-1 mt-1 transition-colors">
                     <Plus className="w-3 h-3" />Add model
                   </button>
                 )}
               </div>
             </div>
 
-            <Button onClick={runComparison} disabled={running} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+            <Button onClick={runComparison} disabled={running} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
               <Zap className={`w-4 h-4 mr-2 ${running ? "animate-pulse" : ""}`} />
               {running ? "Comparing…" : "Run Comparison"}
             </Button>
-            {error && <p className="text-red-400 text-xs">{error}</p>}
+            {error && <p className="text-destructive text-xs">{error}</p>}
           </div>
 
           {/* Input + Results */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5">
-              <label className="text-xs text-gray-400 uppercase tracking-wider mb-3 block">Input (JSON)</label>
+            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+              <label className="text-xs text-muted-foreground uppercase tracking-wider mb-3 block">Input (JSON)</label>
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 rows={8}
-                className="w-full bg-[#080c14] border border-white/10 rounded-lg px-4 py-3 text-sm font-mono text-blue-300 placeholder-gray-600 focus:outline-none focus:border-blue-500 resize-y"
+                className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm font-mono text-primary placeholder-muted-foreground focus:outline-none focus:border-primary resize-y"
               />
             </div>
 
             {results.length > 0 && (
               <div>
                 {fastest && (
-                  <p className="text-xs text-green-400 mb-3">
-                    Fastest: <strong>{fastest.model}</strong> at {fastest.latency_ms}ms
+                  <p className="text-xs text-emerald-500 mb-3">
+                    Fastest: <strong className="text-foreground">{fastest.model}</strong> at {fastest.latency_ms}ms
                   </p>
                 )}
                 <div className={`grid gap-4 ${results.length === 2 ? "grid-cols-2" : results.length >= 3 ? "grid-cols-3" : "grid-cols-1"}`}>
                   {results.map((r) => (
-                    <div key={`${r.algo_id}-${r.model}`} className={`bg-[#080c14] border rounded-xl p-4 ${r === fastest ? "border-green-500/40" : "border-white/10"}`}>
+                    <div key={`${r.algo_id}-${r.model}`} className={`bg-card border rounded-xl p-4 shadow-sm hover:shadow-md transition-all ${r === fastest ? "border-emerald-500/40" : "border-border"}`}>
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-sm font-semibold">{r.model}</span>
-                        <span className={`text-xs font-mono ${r === fastest ? "text-green-400" : "text-gray-400"}`}>{r.latency_ms}ms</span>
+                        <span className="text-sm font-semibold text-foreground">{r.model}</span>
+                        <span className={`text-xs font-mono ${r === fastest ? "text-emerald-500" : "text-muted-foreground"}`}>{r.latency_ms}ms</span>
                       </div>
                       {r.error ? (
-                        <p className="text-red-400 text-xs">{r.error}</p>
+                        <p className="text-destructive text-xs">{r.error}</p>
                       ) : (
-                        <pre className="text-xs font-mono text-blue-300 overflow-auto max-h-48 leading-relaxed">
+                        <pre className="text-xs font-mono text-primary overflow-auto max-h-48 leading-relaxed">
                           {JSON.stringify(r.output, null, 2)}
                         </pre>
                       )}
@@ -186,7 +186,7 @@ export default function ComparePage() {
               </div>
             )}
             {!running && results.length === 0 && (
-              <div className="bg-[#0d1117] border border-white/5 rounded-xl p-10 text-center text-gray-600 text-sm">
+              <div className="bg-card border border-border rounded-xl p-10 text-center text-muted-foreground text-sm shadow-sm">
                 Configure models and click "Run Comparison"
               </div>
             )}

@@ -58,13 +58,13 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-200">
       <Navbar />
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 min-h-screen bg-[#0d1117] border-r border-white/10 pt-6 px-4">
-          <p className="text-xs text-gray-500 uppercase tracking-widest mb-4 px-2">Specialist Studio</p>
+        <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border pt-6 px-4">
+          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-4 px-2">Specialist Studio</p>
           <nav className="space-y-1">
             {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
               const active = pathname?.endsWith(href) || (href === "/studio/settings" && pathname?.endsWith("/settings"))
@@ -73,7 +73,7 @@ export default function SettingsPage() {
                   key={href}
                   href={href}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                    active ? "text-white bg-white/10" : "text-gray-300 hover:text-white hover:bg-white/5"
+                    active ? "bg-primary/10 text-primary border border-primary/20" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -83,20 +83,20 @@ export default function SettingsPage() {
             })}
           </nav>
           <div className="mt-8 px-2">
-            <p className="text-xs text-gray-600 mb-2">Quick Links</p>
-            <Link href="/admin" className="block text-xs text-gray-500 hover:text-white py-1 transition-colors">→ Admin Console</Link>
-            <Link href="/owner" className="block text-xs text-gray-500 hover:text-white py-1 transition-colors">→ Owner Console</Link>
+            <p className="text-xs text-muted-foreground mb-2">Quick Links</p>
+            <Link href="/admin" className="block text-xs text-muted-foreground hover:text-foreground py-1 transition-colors">→ Admin Console</Link>
+            <Link href="/owner" className="block text-xs text-muted-foreground hover:text-foreground py-1 transition-colors">→ Owner Console</Link>
           </div>
         </aside>
 
         {/* Main */}
         <main className="flex-1 p-8 max-w-3xl">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <Settings className="w-8 h-8 text-gray-400" />
+            <h1 className="text-3xl font-bold flex items-center gap-3 text-foreground">
+              <Settings className="w-8 h-8 text-muted-foreground" />
               Settings
             </h1>
-            <p className="text-gray-400 mt-1">Manage your AI engine, language, and notification preferences</p>
+            <p className="text-muted-foreground mt-1">Manage your AI engine, language, and notification preferences</p>
           </div>
 
           <div className="space-y-6">
@@ -109,9 +109,9 @@ export default function SettingsPage() {
             </section>
 
             {/* Language */}
-            <section className="bg-[#0d1117] border border-white/10 rounded-xl p-6">
+            <section className="bg-card border border-border rounded-xl p-6 shadow-sm">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Globe className="w-4 h-4 text-blue-400" />
+                <Globe className="w-4 h-4 text-blue-500" />
                 Language
               </h2>
               <div className="flex gap-3">
@@ -119,10 +119,10 @@ export default function SettingsPage() {
                   <button
                     key={l}
                     onClick={() => setLocale(l)}
-                    className={`px-5 py-2.5 rounded-lg text-sm border transition-colors ${
+                    className={`px-5 py-2.5 rounded-lg text-sm border transition-colors shadow-sm ${
                       locale === l
-                        ? "border-blue-500/50 bg-blue-500/10 text-blue-400"
-                        : "border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-white/10"
+                        ? "border-primary/50 bg-primary/10 text-primary"
+                        : "border-border bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted"
                     }`}
                   >
                     {l === "en" ? "English" : "ภาษาไทย"}
@@ -132,42 +132,42 @@ export default function SettingsPage() {
             </section>
 
             {/* Notifications */}
-            <section className="bg-[#0d1117] border border-white/10 rounded-xl p-6">
+            <section className="bg-card border border-border rounded-xl p-6 shadow-sm">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Bell className="w-4 h-4 text-yellow-400" />
+                <Bell className="w-4 h-4 text-amber-500" />
                 Notifications
               </h2>
               <label className="flex items-center gap-3 cursor-pointer">
                 <div
                   onClick={() => setNotifications(!notifications)}
-                  className={`w-10 h-6 rounded-full flex items-center transition-colors ${
-                    notifications ? "bg-blue-500 justify-end" : "bg-gray-700 justify-start"
+                  className={`w-10 h-6 rounded-full flex items-center transition-colors shadow-inner ${
+                    notifications ? "bg-primary justify-end" : "bg-muted-foreground/30 justify-start"
                   }`}
                 >
-                  <div className="w-4 h-4 bg-white rounded-full mx-1" />
+                  <div className="w-4 h-4 bg-white rounded-full mx-1 shadow-sm" />
                 </div>
-                <span className="text-sm text-gray-300">
+                <span className="text-sm text-muted-foreground">
                   Enable push notifications
                 </span>
               </label>
             </section>
 
             {/* Privacy */}
-            <section className="bg-[#0d1117] border border-white/10 rounded-xl p-6">
+            <section className="bg-card border border-border rounded-xl p-6 shadow-sm">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-green-400" />
+                <Shield className="w-4 h-4 text-emerald-500" />
                 Privacy
               </h2>
               <label className="flex items-center gap-3 cursor-pointer">
                 <div
                   onClick={() => setPrivacyMode(!privacyMode)}
-                  className={`w-10 h-6 rounded-full flex items-center transition-colors ${
-                    privacyMode ? "bg-green-500 justify-end" : "bg-gray-700 justify-start"
+                  className={`w-10 h-6 rounded-full flex items-center transition-colors shadow-inner ${
+                    privacyMode ? "bg-emerald-500 justify-end" : "bg-muted-foreground/30 justify-start"
                   }`}
                 >
-                  <div className="w-4 h-4 bg-white rounded-full mx-1" />
+                  <div className="w-4 h-4 bg-white rounded-full mx-1 shadow-sm" />
                 </div>
-                <span className="text-sm text-gray-300">
+                <span className="text-sm text-muted-foreground">
                   Privacy mode — mask personal data in memory timeline
                 </span>
               </label>
@@ -176,10 +176,10 @@ export default function SettingsPage() {
             {/* Save */}
             <button
               onClick={handleSave}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-all shadow-sm ${
                 saved
-                  ? "bg-green-500/20 border border-green-500/30 text-green-400"
-                  : "bg-blue-600 hover:bg-blue-700 text-white"
+                  ? "bg-emerald-500/20 border border-emerald-500/30 text-emerald-500"
+                  : "bg-primary hover:bg-primary/90 text-primary-foreground"
               }`}
             >
               {saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}

@@ -44,15 +44,15 @@ const NAV_ITEMS = [
 ]
 
 const CATEGORY_COLORS: Record<string, string> = {
-  nlp: "text-purple-400 bg-purple-400/10 border-purple-400/30",
-  code: "text-blue-400 bg-blue-400/10 border-blue-400/30",
-  multimodal: "text-green-400 bg-green-400/10 border-green-400/30",
+  nlp: "text-primary bg-primary/10 border-primary/30",
+  code: "text-blue-500 bg-blue-500/10 border-blue-500/30",
+  multimodal: "text-emerald-500 bg-emerald-500/10 border-emerald-500/30",
 }
 
 function getAlgoStatus(pct: number): { label: string; color: string } {
-  if (pct >= 90) return { label: "active", color: "text-green-400 bg-green-400/10 border-green-400/30" }
-  if (pct >= 60) return { label: "beta", color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/30" }
-  return { label: "deprecated", color: "text-red-400 bg-red-400/10 border-red-400/30" }
+  if (pct >= 90) return { label: "active", color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/30" }
+  if (pct >= 60) return { label: "beta", color: "text-amber-500 bg-amber-500/10 border-amber-500/30" }
+  return { label: "deprecated", color: "text-destructive bg-destructive/10 border-destructive/30" }
 }
 
 function Sparkline({ baseLatency }: { baseLatency: number }) {
@@ -83,23 +83,23 @@ function AlgoCard({ algo }: { algo: Algorithm }) {
   const status = getAlgoStatus(pct)
   return (
     <Link href={`/studio/algorithms/${algo.algo_id}`}>
-      <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5 hover:border-white/20 hover:bg-white/3 transition-all cursor-pointer h-full flex flex-col">
+      <div className="group bg-card border border-border rounded-xl p-5 hover:border-primary/40 hover:shadow-md transition-all duration-200 h-full flex flex-col">
         <div className="flex items-start justify-between mb-3">
-          <span className="text-xs font-mono text-gray-500">{algo.algo_id}</span>
-          <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${CATEGORY_COLORS[algo.category] || "text-gray-400 bg-gray-400/10 border-gray-400/30"}`}>
+          <code className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">{algo.algo_id}</code>
+          <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${CATEGORY_COLORS[algo.category] || "text-muted-foreground bg-muted border-border"}`}>
             {algo.category}
           </span>
         </div>
-        <h3 className="font-semibold text-sm mb-1">{algo.name}</h3>
-        <p className="text-xs text-gray-400 line-clamp-2 mb-3 flex-1">{algo.description}</p>
-        <div className="flex items-center justify-between mt-auto mb-2">
+        <h3 className="font-semibold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">{algo.name}</h3>
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">{algo.description}</p>
+        <div className="flex items-center justify-between mb-2">
           <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${status.color}`}>
             {status.label}
           </span>
           <Sparkline baseLatency={algo.avg_latency_ms} />
         </div>
-        <div className="flex items-center justify-between text-xs text-gray-500">
-          <span className="text-green-400 font-mono">{pct}%</span>
+        <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border pt-2 mt-1">
+          <span className="text-emerald-500 font-mono font-medium">{pct}%</span>
           <span>{algo.avg_latency_ms}ms avg</span>
         </div>
       </div>
@@ -167,13 +167,13 @@ export default function StudioPage() {
   const stats = summary ?? MOCK_SUMMARY
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-200">
       <Navbar />
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 min-h-screen bg-[#0d1117] border-r border-white/10 pt-6 px-4">
-          <p className="text-xs text-gray-500 uppercase tracking-widest mb-4 px-2">Specialist Studio</p>
+        <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border pt-6 px-4">
+          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-4 px-2">Specialist Studio</p>
           <nav className="space-y-1">
             {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
               <Link
@@ -181,8 +181,8 @@ export default function StudioPage() {
                 href={href}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                   pathname === href
-                    ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                    ? "bg-primary/10 text-primary border border-primary/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -191,9 +191,9 @@ export default function StudioPage() {
             ))}
           </nav>
           <div className="mt-8 px-2">
-            <p className="text-xs text-gray-600 mb-2">Quick Links</p>
-            <Link href="/admin" className="block text-xs text-gray-500 hover:text-white py-1 transition-colors">→ Admin Console</Link>
-            <Link href="/owner" className="block text-xs text-gray-500 hover:text-white py-1 transition-colors">→ Owner Console</Link>
+            <p className="text-xs text-muted-foreground mb-2">Quick Links</p>
+            <Link href="/admin" className="block text-xs text-muted-foreground hover:text-foreground py-1 transition-colors">→ Admin Console</Link>
+            <Link href="/owner" className="block text-xs text-muted-foreground hover:text-foreground py-1 transition-colors">→ Owner Console</Link>
           </div>
         </aside>
 
@@ -201,20 +201,20 @@ export default function StudioPage() {
         <main className="flex-1 p-8">
           <div className="mb-8 flex items-start justify-between">
             <div>
-              <h1 className="text-3xl font-bold flex items-center gap-3">
-                <FlaskConical className="w-8 h-8 text-purple-400" />
+              <h1 className="text-3xl font-bold flex items-center gap-3 text-foreground">
+                <FlaskConical className="w-8 h-8 text-primary" />
                 Specialist Studio
               </h1>
-              <p className="text-gray-400 mt-1">Algorithm playground · A/B comparison · Experiment tracking · Dataset catalog</p>
+              <p className="text-muted-foreground mt-1">Algorithm playground · A/B comparison · Experiment tracking · Dataset catalog</p>
             </div>
             {userEmail && (
-              <div className="flex items-center gap-3 bg-[#161b22] border border-white/10 rounded-full px-4 py-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm">
+              <div className="flex items-center gap-3 bg-muted border border-border rounded-full px-4 py-2">
+                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
                   {userEmail.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs text-gray-400 leading-tight">Logged in as</span>
-                  <span className="text-sm font-medium text-white leading-tight">{userEmail}</span>
+                  <span className="text-xs text-muted-foreground leading-tight">Logged in as</span>
+                  <span className="text-sm font-medium text-foreground leading-tight">{userEmail}</span>
                 </div>
               </div>
             )}
@@ -223,16 +223,16 @@ export default function StudioPage() {
           {/* Stats row */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
             {[
-              { label: "Algorithms", value: stats.total_algorithms, color: "text-purple-400" },
-              { label: "Experiments", value: stats.total_experiments, color: "text-blue-400" },
-              { label: "Datasets", value: stats.total_datasets, color: "text-green-400" },
-              { label: "Runs Today", value: stats.playground_runs_today, color: "text-yellow-400" },
-              { label: "Avg Accuracy", value: `${stats.avg_accuracy_pct}%`, color: "text-emerald-400" },
-              { label: "Top Algo", value: stats.most_used_algorithm, color: "text-pink-400" },
+              { label: "Algorithms", value: stats.total_algorithms, color: "text-primary" },
+              { label: "Experiments", value: stats.total_experiments, color: "text-foreground" },
+              { label: "Datasets", value: stats.total_datasets, color: "text-foreground" },
+              { label: "Runs Today", value: stats.playground_runs_today, color: "text-primary" },
+              { label: "Avg Accuracy", value: `${stats.avg_accuracy_pct}%`, color: "text-emerald-500" },
+              { label: "Top Algo", value: stats.most_used_algorithm, color: "text-muted-foreground" },
             ].map(({ label, value, color }) => (
-              <div key={label} className="bg-[#0d1117] border border-white/10 rounded-xl p-4 text-center">
+              <div key={label} className="bg-card border border-border rounded-xl p-4 text-center shadow-sm">
                 <p className={`text-xl font-bold ${color}`}>{value}</p>
-                <p className="text-xs text-gray-500 mt-1">{label}</p>
+                <p className="text-xs text-muted-foreground mt-1">{label}</p>
               </div>
             ))}
           </div>
@@ -240,17 +240,17 @@ export default function StudioPage() {
           {/* Quick Actions */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {[
-              { href: "/studio/playground", label: "Run Playground", desc: "Test algorithms interactively", icon: Play, color: "text-green-400" },
-              { href: "/studio/compare", label: "Compare Models", desc: "Side-by-side A/B testing", icon: GitCompare, color: "text-blue-400" },
-              { href: "/studio/experiments", label: "Experiments", desc: "Track runs & results", icon: Beaker, color: "text-yellow-400" },
-              { href: "/studio/datasets", label: "Datasets", desc: "Browse training data", icon: Database, color: "text-purple-400" },
+              { href: "/studio/playground", label: "Run Playground", desc: "Test algorithms interactively", icon: Play, color: "text-emerald-500" },
+              { href: "/studio/compare", label: "Compare Models", desc: "Side-by-side A/B testing", icon: GitCompare, color: "text-blue-500" },
+              { href: "/studio/experiments", label: "Experiments", desc: "Track runs & results", icon: Beaker, color: "text-amber-500" },
+              { href: "/studio/datasets", label: "Datasets", desc: "Browse training data", icon: Database, color: "text-primary" },
             ].map(({ href, label, desc, icon: Icon, color }) => (
               <Link key={href} href={href}>
-                <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5 hover:border-white/30 hover:bg-white/3 transition-all cursor-pointer">
+                <div className="bg-card border border-border rounded-xl p-5 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer shadow-sm">
                   <Icon className={`w-7 h-7 ${color} mb-3`} />
-                  <p className="font-semibold text-sm">{label}</p>
-                  <p className="text-xs text-gray-500 mt-1">{desc}</p>
-                  <ChevronRight className="w-4 h-4 text-gray-600 mt-2" />
+                  <p className="font-semibold text-sm text-foreground">{label}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{desc}</p>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground mt-2" />
                 </div>
               </Link>
             ))}
@@ -258,18 +258,18 @@ export default function StudioPage() {
 
           {/* Algorithm Grid */}
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-purple-400" />
+            <h2 className="text-xl font-semibold flex items-center gap-2 text-foreground">
+              <Cpu className="w-5 h-5 text-primary" />
               All Algorithms ({algorithms.length > 0 ? algorithms.length : 10})
             </h2>
-            <Link href="/studio/algorithms" className="text-sm text-purple-400 hover:text-purple-300">View all →</Link>
+            <Link href="/studio/algorithms" className="text-sm text-primary hover:text-primary/80">View all →</Link>
           </div>
           {loading ? (
-            <div className="py-16 text-center text-gray-500">Loading algorithms…</div>
+            <div className="py-16 text-center text-muted-foreground">Loading algorithms…</div>
           ) : algorithms.length === 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {Array.from({ length: 10 }, (_, i) => (
-                <div key={i} className="bg-[#0d1117] border border-white/5 rounded-xl p-5 animate-pulse h-36" />
+                <div key={i} className="bg-card border border-border rounded-xl p-5 animate-pulse h-36" />
               ))}
             </div>
           ) : (

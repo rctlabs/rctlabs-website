@@ -104,26 +104,26 @@ export default function PlaygroundPage() {
   const selectedAlgoObj = algorithms.find((a) => a.algo_id === selectedAlgo)
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-200">
       <Navbar />
       <main className="max-w-7xl mx-auto px-6 pt-28 pb-20">
-        <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-          <Link href="/studio" className="hover:text-white flex items-center gap-1"><ChevronLeft className="w-3 h-3" />Studio</Link>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+          <Link href="/studio" className="hover:text-foreground flex items-center gap-1"><ChevronLeft className="w-3 h-3" />Studio</Link>
           <span>/</span>
-          <span className="text-white">Playground</span>
+          <span className="text-foreground">Playground</span>
         </div>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold flex items-center gap-3"><Play className="w-8 h-8 text-green-400" />Playground</h1>
-          <p className="text-gray-400 mt-1 text-sm">Interactive algorithm execution with optional distributed tracing</p>
+          <h1 className="text-3xl font-bold flex items-center gap-3 text-foreground"><Play className="w-8 h-8 text-primary" />Playground</h1>
+          <p className="text-muted-foreground mt-1 text-sm">Interactive algorithm execution with optional distributed tracing</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Input Panel */}
           <div className="lg:col-span-2 space-y-4">
             {/* Algorithm selector */}
-            <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5">
-              <label className="text-xs text-gray-400 uppercase tracking-wider mb-3 block">Algorithm</label>
+            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+              <label className="text-xs text-muted-foreground uppercase tracking-wider mb-3 block">Algorithm</label>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
                 {algorithms.map((a) => (
                   <button
@@ -133,23 +133,23 @@ export default function PlaygroundPage() {
                       setInputText(JSON.stringify(a.example_input, null, 2))
                       setResult(null)
                     }}
-                    className={`px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors ${selectedAlgo === a.algo_id ? "bg-green-600 text-white" : "bg-white/5 text-gray-400 hover:bg-white/10"}`}
+                    className={`px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors shadow-sm ${selectedAlgo === a.algo_id ? "bg-primary text-primary-foreground" : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}
                   >
                     <span className="font-mono text-xs">{a.algo_id}</span>
-                    <p className="truncate text-[10px] mt-0.5 text-white/60">{a.name.split("(")[0].trim()}</p>
+                    <p className="truncate text-[10px] mt-0.5 opacity-70">{a.name.split("(")[0].trim()}</p>
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Input JSON */}
-            <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5">
+            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
               <div className="flex items-center justify-between mb-3">
-                <label className="text-xs text-gray-400 uppercase tracking-wider">Input (JSON)</label>
+                <label className="text-xs text-muted-foreground uppercase tracking-wider">Input (JSON)</label>
                 {selectedAlgoObj && (
                   <button
                     onClick={() => setInputText(JSON.stringify(selectedAlgoObj.example_input, null, 2))}
-                    className="text-xs text-blue-400 hover:text-blue-300"
+                    className="text-xs text-primary hover:text-primary/80 transition-colors"
                   >
                     Load example
                   </button>
@@ -159,28 +159,28 @@ export default function PlaygroundPage() {
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 rows={10}
-                className="w-full bg-[#080c14] border border-white/10 rounded-lg px-4 py-3 text-sm font-mono text-green-300 placeholder-gray-600 focus:outline-none focus:border-green-500 resize-y"
+                className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm font-mono text-primary placeholder:text-muted-foreground focus:outline-none focus:border-primary resize-y"
                 placeholder='{"text": "..."}'
               />
-              {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
+              {error && <p className="text-destructive text-xs mt-2">{error}</p>}
             </div>
 
             {/* Options */}
-            <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5 flex flex-wrap gap-4 items-center">
+            <div className="bg-card border border-border rounded-xl p-5 flex flex-wrap gap-4 items-center shadow-sm">
               <div className="flex-1 min-w-[200px]">
-                <label className="text-xs text-gray-400 mb-1 block">Model Override (optional)</label>
+                <label className="text-xs text-muted-foreground mb-1 block">Model Override (optional)</label>
                 <input
                   value={modelOverride}
                   onChange={(e) => setModelOverride(e.target.value)}
                   placeholder="e.g. gpt-4o"
-                  className="w-full bg-[#080c14] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-green-500"
+                  className="w-full bg-muted border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
                 />
               </div>
-              <label className="flex items-center gap-2 text-sm text-gray-400 cursor-pointer mt-4">
-                <input type="checkbox" checked={enableTrace} onChange={(e) => setEnableTrace(e.target.checked)} className="accent-green-500" />
+              <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer mt-4">
+                <input type="checkbox" checked={enableTrace} onChange={(e) => setEnableTrace(e.target.checked)} className="accent-primary" />
                 Enable Distributed Trace
               </label>
-              <Button onClick={runAlgorithm} disabled={running} className="bg-green-600 hover:bg-green-700 text-white mt-4 ml-auto">
+              <Button onClick={runAlgorithm} disabled={running} className="bg-primary hover:bg-primary/90 text-primary-foreground mt-4 ml-auto shadow-sm">
                 <Zap className={`w-4 h-4 mr-2 ${running ? "animate-pulse" : ""}`} />
                 {running ? "Running…" : "Run Algorithm"}
               </Button>
@@ -188,23 +188,23 @@ export default function PlaygroundPage() {
 
             {/* Result */}
             {result && (
-              <div className="bg-[#080c14] border border-green-500/30 rounded-xl p-5">
+              <div className="bg-card border border-primary/30 rounded-xl p-5 shadow-sm">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-green-400 flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-primary flex items-center gap-2">
                     <Eye className="w-4 h-4" />Result — {result.run_id}
                   </h3>
-                  <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
                     <span>{result.latency_ms}ms</span>
                     <span>Model: {result.model_used}</span>
                   </div>
                 </div>
-                <pre className="text-xs text-green-300 font-mono overflow-auto max-h-64 leading-relaxed">
+                <pre className="text-xs text-primary font-mono overflow-auto max-h-64 leading-relaxed">
                   {JSON.stringify(result.output, null, 2)}
                 </pre>
                 {result.trace && (
                   <details className="mt-3">
-                    <summary className="text-xs text-gray-500 cursor-pointer hover:text-gray-300">Trace data</summary>
-                    <pre className="text-xs text-gray-400 font-mono overflow-auto max-h-48 mt-2">
+                    <summary className="text-xs text-muted-foreground cursor-pointer hover:text-foreground transition-colors">Trace data</summary>
+                    <pre className="text-xs text-muted-foreground font-mono overflow-auto max-h-48 mt-2">
                       {JSON.stringify(result.trace, null, 2)}
                     </pre>
                   </details>
@@ -215,39 +215,39 @@ export default function PlaygroundPage() {
 
           {/* History sidebar */}
           <div className="space-y-4">
-            <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5">
+            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold">Run History</h3>
-                <Button variant="ghost" size="sm" onClick={clearHistory} disabled={loadingHistory || history.length === 0} className="text-gray-500 hover:text-red-400 p-1.5">
+                <h3 className="text-sm font-semibold text-foreground">Run History</h3>
+                <Button variant="ghost" size="sm" onClick={clearHistory} disabled={loadingHistory || history.length === 0} className="text-muted-foreground hover:text-destructive transition-colors p-1.5">
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
               {history.length === 0 ? (
-                <p className="text-xs text-gray-600 text-center py-8">No runs yet</p>
+                <p className="text-xs text-muted-foreground/70 text-center py-8">No runs yet</p>
               ) : (
                 <div className="space-y-2">
                   {history.map((h) => (
-                    <div key={h.run_id} className="rounded-lg bg-white/3 border border-white/5 p-3">
+                    <div key={h.run_id} className="rounded-lg bg-muted/50 border border-border p-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-xs font-mono text-purple-400">{h.algo_id}</span>
-                        <span className="text-xs text-gray-600">{h.latency_ms}ms</span>
+                        <span className="text-xs font-mono text-primary">{h.algo_id}</span>
+                        <span className="text-xs text-muted-foreground/70">{h.latency_ms}ms</span>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">{h.model_used}</p>
-                      <p className="text-xs text-gray-700 mt-0.5">{new Date(h.timestamp).toLocaleTimeString()}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{h.model_used}</p>
+                      <p className="text-xs text-muted-foreground/50 mt-0.5">{new Date(h.timestamp).toLocaleTimeString()}</p>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5">
-              <h3 className="text-sm font-semibold mb-3">What is this?</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
+            <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+              <h3 className="text-sm font-semibold mb-3 text-foreground">What is this?</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 The Playground lets you run any RCT algorithm against live input data. Results are deterministic in mock mode — connect to live microservices to see actual inference output.
               </p>
               <div className="mt-3 space-y-1.5">
-                <Link href="/studio/compare" className="block text-xs text-blue-400 hover:text-blue-300">→ Compare multiple models</Link>
-                <Link href="/studio/experiments" className="block text-xs text-blue-400 hover:text-blue-300">→ Save as experiment</Link>
+                <Link href="/studio/compare" className="block text-xs text-primary hover:text-primary/80 transition-colors">→ Compare multiple models</Link>
+                <Link href="/studio/experiments" className="block text-xs text-primary hover:text-primary/80 transition-colors">→ Save as experiment</Link>
               </div>
             </div>
           </div>
