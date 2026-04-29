@@ -30,10 +30,15 @@ export function getSupabaseConfig(runtime: SupabaseRuntime): SupabaseConfig {
     }
   }
 
-  return {
-    url,
-    key: getRequiredEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
+  // IMPORTANT: NEXT_PUBLIC_* variables must be accessed via static property syntax
+  // (process.env.NEXT_PUBLIC_FOO) NOT dynamic bracket notation (process.env["NEXT_PUBLIC_FOO"])
+  // because Next.js/webpack only inlines static accesses during build.
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!anonKey) {
+    throw new Error("Missing required environment variable: NEXT_PUBLIC_SUPABASE_ANON_KEY")
   }
+
+  return { url, key: anonKey }
 }
 
 export function hasPublicSupabaseEnv() {

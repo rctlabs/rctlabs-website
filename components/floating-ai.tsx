@@ -18,6 +18,7 @@ import {
   Maximize2,
   CheckCircle,
 } from "lucide-react"
+import { getSupabaseBrowserClient } from "@/lib/auth/browser-client"
 // Chat is proxied through /api/chat (server-side route) to hide backend credentials
 // and provide graceful fallback when the backend is not yet deployed.
 
@@ -60,8 +61,6 @@ const SCENARIOS = [
   { emoji: "🧠", label: "รู้จักภาษา JITNA", query: "What is JITNA?" },
 ]
 
-const SESSION_ID = "rctlabs-v0-" + Date.now()
-
 /* ------------------------------------------------------------------ */
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
@@ -74,10 +73,34 @@ export function FloatingAI() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
-  
+
+  // P7 — Session ID: persistent across page navigations within the same browser session
+  const [sessionId] = useState<string>(() => {
+    if (typeof window === "undefined") return "rctlabs-v0-ssr"
+    const stored = sessionStorage.getItem("rct-session-id")
+    if (stored) return stored
+    const id = "rctlabs-v0-" + Date.now()
+    sessionStorage.setItem("rct-session-id", id)
+    return id
+  })
+
+  // P6 — Authenticated user ID from Supabase session
+  const [userId, setUserId] = useState<string>("anonymous")
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const supabase = getSupabaseBrowserClient()
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session?.user?.id) setUserId(session.user.id)
+      } catch { /* not critical */ }
+    }
+    void fetchUserId()
+  }, [])
+
   // Analysis mode state
   const [analysisMode, setAnalysisMode] = useState<AnalysisMode>("chat")
-  const [, setAnalysisResult] = useState<Record<string, unknown> | null>(null)
+  // P8 — analysisResult is now read + used for metadata display
+  const [analysisResult, setAnalysisResult] = useState<Record<string, unknown> | null>(null)
 
   /* Auto-scroll on new messages */
   useEffect(() => {
@@ -119,10 +142,10 @@ export function FloatingAI() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            user_id: "anonymous",
-            session_id: SESSION_ID,
+            user_id: userId,
+            session_id: sessionId,
             message: text.trim(),
-            language: "en",
+            language: typeof window !== "undefined" && window.location.pathname.startsWith("/th") ? "th" : "en",
             channel: "web",
             conversation_history: buildHistory(),
           }),
@@ -165,7 +188,7 @@ export function FloatingAI() {
         setLoading(false)
       }
     },
-    [loading, buildHistory],
+    [loading, buildHistory, userId, sessionId],
   )
 
   /* ---------------------------------------------------------------- */
@@ -226,7 +249,7 @@ export function FloatingAI() {
             mode: mode === "mirror" ? "mirror" : "deep",
             query_type: "general",
             complexity: "high",
-            session_id: SESSION_ID,
+            session_id: sessionId,
           }),
         })
 
@@ -273,7 +296,7 @@ export function FloatingAI() {
         setLoading(false)
       }
     },
-    [loading]
+    [loading, sessionId]
   )
 
   // Format analysis result
@@ -611,6 +634,31 @@ export function FloatingAI() {
                     {s}
                   </button>
                 ))}
+              </div>
+            )}
+
+            {/* ---------- P8: Analysis Result Metadata Strip ---------- */}
+            {analysisResult && analysisMode !== "chat" && (
+              <div className="mx-3 mb-1 px-3 py-2 rounded-lg bg-warm-amber/5 border border-warm-amber/20 text-xs text-muted-foreground flex items-center gap-3 flex-wrap">
+                <span className="text-warm-amber font-medium">
+                  {analysisMode === "mirror" ? "🪞 Mirror" : "🔍 Analyse"}
+                </span>
+                {typeof (analysisResult as Record<string, unknown>).status === "string" && (
+                  <span>Status: {String((analysisResult as Record<string, unknown>).status)}</span>
+                )}
+                {typeof ((analysisResult as Record<string, unknown>).analysis as Record<string, unknown> | undefined)?.confidence === "number" && (
+                  <span>Confidence: {(((analysisResult as Record<string, unknown>).analysis as Record<string, unknown>).confidence as number * 100).toFixed(0)}%</span>
+                )}
+                {typeof ((analysisResult as Record<string, unknown>).analysis as Record<string, unknown> | undefined)?.iterations === "number" && (
+                  <span>Iterations: {((analysisResult as Record<string, unknown>).analysis as Record<string, unknown>).iterations as number}</span>
+                )}
+                <button
+                  onClick={() => setAnalysisResult(null)}
+                  className="ml-auto text-muted-foreground/50 hover:text-muted-foreground"
+                  aria-label="Dismiss"
+                >
+                  <X className="w-3 h-3" />
+                </button>
               </div>
             )}
 

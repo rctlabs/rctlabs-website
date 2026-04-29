@@ -19,6 +19,9 @@ export default function SignInPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     setNextPath(getSafeNextPath(params.get("next")))
+    if (params.get("error") === "callback_failed") {
+      setError("Sign-in link expired or already used. Please request a new one.")
+    }
   }, [])
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {

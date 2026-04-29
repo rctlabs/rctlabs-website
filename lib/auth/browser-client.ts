@@ -1,7 +1,11 @@
-import { createClient } from "@supabase/supabase-js"
+import { createBrowserClient } from "@supabase/ssr"
 import { getSupabaseConfig } from "./config"
 
-let browserClient: ReturnType<typeof createClient> | null = null
+// IMPORTANT: createBrowserClient (from @supabase/ssr) stores the PKCE code verifier
+// in cookies — accessible by the server-side /auth/callback route handler.
+// Do NOT use createClient (@supabase/supabase-js) here: it stores the verifier
+// in localStorage which the server cannot read, causing exchangeCodeForSession to fail.
+let browserClient: ReturnType<typeof createBrowserClient> | null = null
 
 export function getSupabaseBrowserClient() {
   if (typeof window === "undefined") {
@@ -13,13 +17,7 @@ export function getSupabaseBrowserClient() {
   }
 
   const { url, key } = getSupabaseConfig("browser")
-  browserClient = createClient(url, key, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-    },
-  })
+  browserClient = createBrowserClient(url, key)
 
   return browserClient
 }

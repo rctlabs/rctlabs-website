@@ -6,6 +6,8 @@ import { getRequestLocale } from "@/lib/request-locale"
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/schema"
 import Link from "next/link"
 import { ArrowLeft, ShieldCheck, Dna } from "lucide-react"
+import AuthorBlock from "@/components/author-block"
+import RelatedContent from "@/components/related-content"
 import { Button } from "@/components/ui/button"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -262,6 +264,16 @@ export default async function GenomeSignedAIPage() {
                 <ArrowLeft className="w-4 h-4 text-foreground/30 group-hover:text-warm-amber transition-colors rotate-180" />
               </Link>
             </div>
+
+            <RelatedContent
+              title={isTh ? "เนื้อหาที่เกี่ยวข้อง" : "Related Content"}
+              items={[
+                { href: `${localePrefix}/protocols`, title: isTh ? "ข้อกำหนด Protocol" : "Protocol Specifications", description: isTh ? "โปรโตคอลทางเทคนิคที่ขับเคลื่อน RCT Ecosystem" : "The technical protocols powering the RCT Ecosystem.", category: "Protocols" },
+                { href: `${localePrefix}/genome`, title: isTh ? "7 Genome System" : "7 Genome System", description: isTh ? "สำรวจ Genome ทั้ง 7 ตัวของ RCT Ecosystem" : "Explore all 7 Genomes of the RCT Ecosystem.", category: "Genome" },
+                { href: `${localePrefix}/blog`, title: isTh ? "บทความวิจัย" : "Research & Blog", description: isTh ? "งานวิจัยและบทความเกี่ยวกับ AI จาก RCT Labs" : "Research papers and AI articles from RCT Labs.", category: "Research" },
+              ]}
+            />
+            <AuthorBlock authorSlug="ittirit-saengow" locale={locale} />
           </article>
         </section>
 
