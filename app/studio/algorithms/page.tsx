@@ -5,6 +5,7 @@ import Link from "next/link"
 import { BookOpen, ChevronLeft, Search, Play } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
 const STUDIO_API = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
@@ -31,6 +32,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 }
 
 export default function AlgorithmsPage() {
+  useRequireAuth()
   const [algorithms, setAlgorithms] = useState<Algorithm[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")

@@ -21,8 +21,9 @@ import {
 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+const API_BASE = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
 const NAV_ITEMS = [
   { href: "/studio", label: "Overview", icon: BarChart3 },
@@ -73,6 +74,7 @@ function MemoryCard({ entry }: { entry: MemoryEntry }) {
 }
 
 export default function MemoryPage() {
+  useRequireAuth()
   const [entries, setEntries] = useState<MemoryEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)

@@ -6,6 +6,7 @@ import { Play, ChevronLeft, Zap, Eye, Trash2 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
+import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
 const STUDIO_API = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
@@ -36,6 +37,7 @@ interface HistoryEntry {
 }
 
 export default function PlaygroundPage() {
+  useRequireAuth()
   const [algorithms, setAlgorithms] = useState<Algorithm[]>([])
   const [selectedAlgo, setSelectedAlgo] = useState("algo-10")
   const [inputText, setInputText] = useState("")

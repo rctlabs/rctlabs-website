@@ -21,8 +21,9 @@ import {
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { AIEngineSelector } from "@/components/ai-engine-selector"
+import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+const API_BASE = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
 const NAV_ITEMS = [
   { href: "/studio", label: "Overview", icon: BarChart3 },
@@ -36,6 +37,7 @@ const NAV_ITEMS = [
 ]
 
 export default function SettingsPage() {
+  useRequireAuth()
   const pathname = usePathname()
   const initialLocale: "en" | "th" = pathname?.startsWith("/th") ? "th" : "en"
   const [locale, setLocale] = useState<"en" | "th">(initialLocale)

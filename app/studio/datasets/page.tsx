@@ -6,6 +6,7 @@ import { Database, ChevronLeft, Plus, Eye, Tag, Search } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
+import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
 const STUDIO_API = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
@@ -29,6 +30,7 @@ interface PreviewResponse {
 }
 
 export default function DatasetsPage() {
+  useRequireAuth()
   const [datasets, setDatasets] = useState<Dataset[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")

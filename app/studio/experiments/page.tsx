@@ -6,6 +6,7 @@ import { Beaker, ChevronLeft, Plus, Play, CheckCircle, Clock, Loader, PauseCircl
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
+import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
 const STUDIO_API = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
@@ -38,6 +39,7 @@ const STATUS_ICONS: Record<string, React.FC<{ className?: string }>> = {
 }
 
 export default function ExperimentsPage() {
+  useRequireAuth()
   const [experiments, setExperiments] = useState<Experiment[]>([])
   const [loading, setLoading] = useState(true)
   const [acting, setActing] = useState<Set<string>>(new Set())

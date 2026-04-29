@@ -6,6 +6,7 @@ import { GitCompare, ChevronLeft, Zap, Plus, X } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
+import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
 const STUDIO_API = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
@@ -25,6 +26,7 @@ interface CompareResult {
 }
 
 export default function ComparePage() {
+  useRequireAuth()
   const [algorithms, setAlgorithms] = useState<Algorithm[]>([])
   const [selectedAlgo, setSelectedAlgo] = useState("algo-10")
   const [inputText, setInputText] = useState("")

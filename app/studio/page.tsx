@@ -86,14 +86,14 @@ export default function StudioPage() {
         const { data: { session }, error } = await supabase.auth.getSession()
         
         if (error || !session) {
-          router.push("/auth")
+          router.push("/auth/signin?next=/studio")
           return
         }
         
         setUserEmail(session.user.email || "Unknown User")
       } catch (err) {
         console.error("Auth check failed:", err)
-        router.push("/auth")
+        router.push("/auth/signin?next=/studio")
       }
     }
     
