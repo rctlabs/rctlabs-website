@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { FlaskConical, Play, GitCompare, Beaker, Database, BarChart3, ChevronRight, Cpu, BookOpen, Brain, Settings } from "lucide-react"
+import { FlaskConical, Play, GitCompare, Beaker, Database, ChevronRight, Cpu, BookOpen } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { getSupabaseBrowserClient } from "@/lib/auth/browser-client"
-import { useRouter, usePathname } from "next/navigation"
+import { StudioSidebar } from "@/components/studio/studio-sidebar"
+import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
 const STUDIO_API = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
 
@@ -31,17 +31,6 @@ interface ResultSummary {
   avg_accuracy_pct: number
   most_used_algorithm: string
 }
-
-const NAV_ITEMS = [
-  { href: "/studio", label: "Overview", icon: BarChart3 },
-  { href: "/studio/playground", label: "Playground", icon: Play },
-  { href: "/studio/compare", label: "Compare", icon: GitCompare },
-  { href: "/studio/experiments", label: "Experiments", icon: Beaker },
-  { href: "/studio/datasets", label: "Datasets", icon: Database },
-  { href: "/studio/algorithms", label: "Algorithms", icon: BookOpen },
-  { href: "/studio/memory", label: "Memory", icon: Brain },
-  { href: "/studio/settings", label: "Settings", icon: Settings },
-]
 
 const CATEGORY_COLORS: Record<string, string> = {
   nlp: "text-primary bg-primary/10 border-primary/30",
@@ -108,33 +97,10 @@ function AlgoCard({ algo }: { algo: Algorithm }) {
 }
 
 export default function StudioPage() {
+  const { isLoading: authLoading } = useRequireAuth()
   const [algorithms, setAlgorithms] = useState<Algorithm[]>([])
   const [summary, setSummary] = useState<ResultSummary | null>(null)
   const [loading, setLoading] = useState(true)
-  const [userEmail, setUserEmail] = useState<string | null>(null)
-  const router = useRouter()
-  const pathname = usePathname()
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const supabase = getSupabaseBrowserClient()
-        const { data: { session }, error } = await supabase.auth.getSession()
-        
-        if (error || !session) {
-          router.push("/auth/signin?next=/studio")
-          return
-        }
-        
-        setUserEmail(session.user.email || "Unknown User")
-      } catch (err) {
-        console.error("Auth check failed:", err)
-        router.push("/auth/signin?next=/studio")
-      }
-    }
-    
-    checkAuth()
-  }, [router])
 
   async function fetchData() {
     setLoading(true)
@@ -149,12 +115,13 @@ export default function StudioPage() {
   }
 
   useEffect(() => {
+    // Only fetch data after auth check passes (isLoading=false = user is authenticated)
+    if (authLoading) return
     const timer = setTimeout(() => {
       void fetchData()
     }, 0)
-
     return () => clearTimeout(timer)
-  }, [])
+  }, [authLoading])
 
   const MOCK_SUMMARY: ResultSummary = {
     total_algorithms: 10,
@@ -171,34 +138,26 @@ export default function StudioPage() {
       <Navbar />
 
       <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border pt-6 px-4">
-          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-4 px-2">Specialist Studio</p>
-          <nav className="space-y-1">
-            {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                  pathname === href
-                    ? "bg-primary/10 text-primary border border-primary/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {label}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-8 px-2">
-            <p className="text-xs text-muted-foreground mb-2">Quick Links</p>
-            <Link href="/admin" className="block text-xs text-muted-foreground hover:text-foreground py-1 transition-colors">→ Admin Console</Link>
-            <Link href="/owner" className="block text-xs text-muted-foreground hover:text-foreground py-1 transition-colors">→ Owner Console</Link>
-          </div>
-        </aside>
+        <StudioSidebar />
 
-        {/* Main */}
+        {/* Main content — shows skeleton while auth is checking */}
         <main className="flex-1 p-8">
+          {authLoading ? (
+            <div className="space-y-4 animate-pulse">
+              <div className="h-10 bg-muted rounded-xl w-64" />
+              <div className="grid grid-cols-6 gap-4">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <div key={i} className="h-20 bg-muted rounded-xl" />
+                ))}
+              </div>
+              <div className="grid grid-cols-4 gap-4">
+                {Array.from({ length: 4 }, (_, i) => (
+                  <div key={i} className="h-28 bg-muted rounded-xl" />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
           <div className="mb-8 flex items-start justify-between">
             <div>
               <h1 className="text-3xl font-bold flex items-center gap-3 text-foreground">
@@ -207,17 +166,6 @@ export default function StudioPage() {
               </h1>
               <p className="text-muted-foreground mt-1">Algorithm playground · A/B comparison · Experiment tracking · Dataset catalog</p>
             </div>
-            {userEmail && (
-              <div className="flex items-center gap-3 bg-muted border border-border rounded-full px-4 py-2">
-                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
-                  {userEmail.charAt(0).toUpperCase()}
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground leading-tight">Logged in as</span>
-                  <span className="text-sm font-medium text-foreground leading-tight">{userEmail}</span>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Stats row */}
@@ -276,6 +224,8 @@ export default function StudioPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {algorithms.map((algo) => <AlgoCard key={algo.algo_id} algo={algo} />)}
             </div>
+          )}
+            </>
           )}
         </main>
       </div>

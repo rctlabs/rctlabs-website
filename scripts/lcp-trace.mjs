@@ -159,11 +159,24 @@ async function main() {
     stdio: ["ignore", "pipe", "pipe"],
     env: process.env,
     shell: isWin,
+    // On Linux: create a new process group so we can kill the entire tree
+    // (npm → next start grandchild) with process.kill(-pid) in the finally block.
+    // Without this, killing npm leaves an orphaned `next start` that holds the
+    // pipe write-ends open, preventing Node.js from exiting.
+    detached: !isWin,
   })
 
   try {
     console.log(`[perf] starting production server on port ${port}...`)
     await waitForReady(serverProc)
+    // Release the pipe handles immediately after the server is ready.
+    // `next start` inherits the write-end of these pipes from npm, so even
+    // after npm exits, the streams never reach EOF unless we destroy them here.
+    // Keeping them open would cause Node.js to hang on exit (active handle loop).
+    serverProc.stdout?.destroy()
+    serverProc.stderr?.destroy()
+    // Don't let the server process ref prevent lcp-trace.mjs from exiting.
+    serverProc.unref()
 
     console.log(`[perf] ${RUNS_PER_LOCALE} run(s) per locale  threshold=${lcpMaxMs} ms\n`)
 
@@ -258,11 +271,22 @@ async function main() {
 
     console.log("\n[perf] LCP regression guard PASSED (median).")
   } finally {
+    // Ensure pipes are destroyed so they never block process exit.
+    serverProc.stdout?.destroy()
+    serverProc.stderr?.destroy()
     if (!serverProc.killed) {
-      if (isWin) {
-        serverProc.kill()
-      } else {
-        serverProc.kill("SIGTERM")
+      try {
+        if (isWin) {
+          serverProc.kill()
+        } else {
+          // Kill the entire process group (negative PID) to also terminate the
+          // `next start` grandchild that npm spawned. A plain SIGTERM to the npm
+          // PID leaves `next start` running as an orphan, keeping the CI runner
+          // busy and preventing the next workflow step from starting.
+          process.kill(-serverProc.pid, "SIGTERM")
+        }
+      } catch {
+        // Process group may have already exited; ignore.
       }
     }
   }

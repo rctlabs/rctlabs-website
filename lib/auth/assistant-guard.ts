@@ -27,9 +27,10 @@ export async function resolveAssistantAuth(request: NextRequest): Promise<Assist
 
   try {
     const supabase = createSupabaseRequestClient(request, authResponse)
-    const { data: { session } } = await supabase.auth.getSession()
+    // Use getUser() — verifies JWT with Supabase Auth server (secure)
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!session?.access_token) {
+    if (!user) {
       return {
         token: null,
         applyCookies,
@@ -39,8 +40,10 @@ export async function resolveAssistantAuth(request: NextRequest): Promise<Assist
       }
     }
 
+    // getUser() confirmed token is valid — read access_token for backend forwarding
+    const { data: { session } } = await supabase.auth.getSession()
     return {
-      token: session.access_token,
+      token: session?.access_token ?? null,
       applyCookies,
       deniedResponse: null,
     }

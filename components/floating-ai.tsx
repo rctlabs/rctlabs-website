@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, useCallback, type FormEvent } from "react"
+import { useState, useRef, useEffect, useCallback, Fragment, type FormEvent } from "react"
 import { m, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -39,6 +39,11 @@ interface ChatMessage {
   source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch"
   model_used?: string
   tokens_used?: number
+  isStreaming?: boolean
+  isAuthError?: boolean
+  isError?: boolean        // G9: marks a failed message that can be retried
+  retryQuery?: string      // G9: original query text for retry
+  mode?: AnalysisMode      // G5: which mode produced this message
   metadata?: {
     intent?: string
     keywords?: string[]
@@ -51,15 +56,27 @@ interface ChatMessage {
 type AnalysisMode = "chat" | "analyze" | "mirror"
 
 /* ------------------------------------------------------------------ */
-/* Quick-action scenarios shown on first open                          */
+/* Quick-action scenarios (locale-aware) — G2                        */
 /* ------------------------------------------------------------------ */
 
-const SCENARIOS = [
-  { emoji: "🎯", label: "เข้าใจ RCT ใน 3 นาที", query: "What is RCT?" },
-  { emoji: "🧪", label: "สูตร FDIA คืออะไร?", query: "What is the FDIA formula?" },
-  { emoji: "✅", label: "ดู AI ตรวจ AI (SignedAI)", query: "How does SignedAI verification work?" },
-  { emoji: "🧠", label: "รู้จักภาษา JITNA", query: "What is JITNA?" },
+const SCENARIOS_TH = [
+  { emoji: "🎯", label: "เข้าใจ RCT ใน 3 นาที", query: "RCT คืออะไร?" },
+  { emoji: "🧪", label: "สูตร FDIA คืออะไร?", query: "FDIA คืออะไร?" },
+  { emoji: "✅", label: "SignedAI ตรวจสอบอย่างไร?", query: "SignedAI ทำงานอย่างไร?" },
+  { emoji: "👤", label: "ใครสร้าง RCT?", query: "ใครสร้าง RCT?" },
 ]
+
+const SCENARIOS_EN = [
+  { emoji: "🎯", label: "Understand RCT in 3 min", query: "What is RCT?" },
+  { emoji: "🧪", label: "The FDIA formula", query: "What is the FDIA formula?" },
+  { emoji: "✅", label: "AI verifies AI (SignedAI)", query: "How does SignedAI verification work?" },
+  { emoji: "👤", label: "Who built this?", query: "Who created RCT?" },
+]
+
+function useScenarios() {
+  const isThai = typeof window !== "undefined" && window.location.pathname.startsWith("/th")
+  return isThai ? SCENARIOS_TH : SCENARIOS_EN
+}
 
 /* ------------------------------------------------------------------ */
 /* Component                                                           */
@@ -73,6 +90,8 @@ export function FloatingAI() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  // G2: locale-aware scenarios
+  const scenarios = useScenarios()
 
   // P7 — Session ID: persistent across page navigations within the same browser session
   const [sessionId] = useState<string>(() => {
@@ -85,16 +104,20 @@ export function FloatingAI() {
   })
 
   // P6 — Authenticated user ID from Supabase session
+  // B7: refresh on window focus so login/logout mid-session is reflected
   const [userId, setUserId] = useState<string>("anonymous")
   useEffect(() => {
     const fetchUserId = async () => {
       try {
         const supabase = getSupabaseBrowserClient()
         const { data: { session } } = await supabase.auth.getSession()
-        if (session?.user?.id) setUserId(session.user.id)
+        setUserId(session?.user?.id ?? "anonymous")
       } catch { /* not critical */ }
     }
     void fetchUserId()
+    const onFocus = () => void fetchUserId()
+    window.addEventListener("focus", onFocus)
+    return () => window.removeEventListener("focus", onFocus)
   }, [])
 
   // Analysis mode state
@@ -109,9 +132,10 @@ export function FloatingAI() {
     }
   }, [messages, loading])
 
-  /* Build conversation_history from last 6 messages for API context */
+  /* Build conversation_history from last 6 messages for API context.
+     Filters out empty streaming placeholders to avoid polluting history. */
   const buildHistory = useCallback((): Array<{ role: string; content: string; _topic?: string }> => {
-    return messages.slice(-6).map((_item) => ({
+    return messages.filter((m) => !m.isStreaming && m.content).slice(-6).map((_item) => ({
       role: _item.role,
       content: _item.content,
       ...(_item.topic ? { _topic: _item.topic } : {}),
@@ -126,6 +150,9 @@ export function FloatingAI() {
     async (text: string) => {
       if (!text.trim() || loading) return
 
+      // Capture history before any state changes
+      const history = buildHistory()
+
       const userMsg: ChatMessage = {
         id: Date.now().toString(),
         role: "user",
@@ -137,8 +164,23 @@ export function FloatingAI() {
       setLoading(true)
       setShowScenarios(false)
 
+      // Add streaming placeholder immediately so user sees activity
+      const assistantId = `asst-${Date.now()}`
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: assistantId,
+          role: "assistant" as const,
+          content: "",
+          timestamp: new Date(),
+          feedback: null,
+          source: "knowledge_base" as const,
+          isStreaming: true,
+        },
+      ])
+
       try {
-        const res = await fetch("/api/chat", {
+        const res = await fetch("/api/chat/stream", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -147,43 +189,101 @@ export function FloatingAI() {
             message: text.trim(),
             language: typeof window !== "undefined" && window.location.pathname.startsWith("/th") ? "th" : "en",
             channel: "web",
-            conversation_history: buildHistory(),
+            conversation_history: history,
           }),
         })
 
-        if (!res.ok) throw new Error("API error")
+        if (!res.ok) {
+          const isAuth = res.status === 401
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? {
+                    ...m,
+                    content: isAuth
+                      ? "กรุณาล็อกอินก่อนใช้งาน RCT AI Assistant"
+                      : "ขณะนี้ระบบ AI กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\nสามารถติดต่อทีมงานได้ที่ contact@rctlabs.co",
+                    verified: false,
+                    source: "fallback" as const,
+                    isStreaming: false,
+                    isAuthError: isAuth,
+                  }
+                : m,
+            ),
+          )
+          return
+        }
 
-        const data = await res.json()
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: data.execution_id || (Date.now() + 1).toString(),
-            role: "assistant",
-            content: data.reply,
-            timestamp: new Date(),
-            verified: true,
-            intent: data.intent,
-            topic: data.topic,
-            suggestions: data.suggestions || [],
-            feedback: null,
-            source: data.source || "knowledge_base",
-            model_used: data.model_used,
-            tokens_used: data.tokens_used,
-          },
-        ])
+        const reader = res.body?.getReader()
+        const decoder = new TextDecoder()
+        let buffer = ""
+        let accumulated = ""
+        let finalMeta: Partial<ChatMessage> = {}
+
+        if (reader) {
+          // eslint-disable-next-line no-constant-condition
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            buffer += decoder.decode(value, { stream: true })
+            const lines = buffer.split("\n")
+            buffer = lines.pop() ?? ""
+            for (const line of lines) {
+              if (!line.startsWith("data: ")) continue
+              const jsonStr = line.slice(6).trim()
+              if (!jsonStr) continue
+              try {
+                const event = JSON.parse(jsonStr) as Record<string, unknown>
+                if (event.done) {
+                  finalMeta = {
+                    verified: true,
+                    intent: typeof event.intent === "string" ? event.intent : undefined,
+                    topic: typeof event.topic === "string" ? event.topic : null,
+                    suggestions: Array.isArray(event.suggestions) ? (event.suggestions as string[]) : [],
+                    source: (event.source as ChatMessage["source"]) ?? "knowledge_base",
+                  }
+                } else {
+                  accumulated += typeof event.token === "string" ? event.token : ""
+                  setMessages((prev) =>
+                    prev.map((m) => (m.id === assistantId ? { ...m, content: accumulated } : m)),
+                  )
+                }
+              } catch {
+                /* ignore malformed SSE event */
+              }
+            }
+          }
+        }
+
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? {
+                  ...m,
+                  content: accumulated || "ขออภัย — ไม่ได้รับข้อมูลจากระบบ",
+                  isStreaming: false,
+                  ...finalMeta,
+                }
+              : m,
+          ),
+        )
       } catch {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            role: "assistant",
-            content: "ขณะนี้ระบบ AI กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\nสามารถติดต่อทีมงานได้ที่ contact@rctlabs.co หรือดูข้อมูลเพิ่มเติมได้ที่ /docs",
-            timestamp: new Date(),
-            verified: false,
-            feedback: null,
-            source: "fallback" as const,
-          },
-        ])
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? {
+                  ...m,
+                  content:
+                    "ขณะนี้ระบบ AI กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\nสามารถติดต่อทีมงานได้ที่ contact@rctlabs.co หรือดูข้อมูลเพิ่มเติมได้ที่ /docs",
+                  verified: false,
+                  source: "fallback" as const,
+                  isStreaming: false,
+                  isError: true,
+                  retryQuery: text,
+                }
+              : m,
+          ),
+        )
       } finally {
         setLoading(false)
       }
@@ -212,6 +312,12 @@ export function FloatingAI() {
     setMessages((prev) =>
       prev.map((_item) => (_item.id === msgId ? { ..._item, feedback: type } : _item)),
     )
+    // Fire-and-forget feedback to backend analytics — failure is non-critical
+    void fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message_id: msgId, type, session_id: sessionId }),
+    }).catch(() => { /* intentionally silent */ })
   }
 
   function handleClearChat() {
@@ -237,10 +343,11 @@ export function FloatingAI() {
       setShowScenarios(false)
 
       try {
-        const endpoint = mode === "mirror" 
-          ? `/api/mirror?max_iterations=3`
-          : `/api/analyze`
-        
+        // B3: capture conversation history for context-aware analysis
+        const history = buildHistory()
+        // B5: max_iterations moved from query param to request body
+        const endpoint = mode === "mirror" ? `/api/mirror` : `/api/analyze`
+
         const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -250,10 +357,29 @@ export function FloatingAI() {
             query_type: "general",
             complexity: "high",
             session_id: sessionId,
+            max_iterations: 3,
+            conversation_history: history,
           }),
         })
 
-        if (!res.ok) throw new Error("API error")
+        if (!res.ok) {
+          const isAuth = res.status === 401
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: (Date.now() + 1).toString(),
+              role: "assistant" as const,
+              content: isAuth
+                ? "กรุณาล็อกอินก่อนใช้งาน RCT AI Assistant"
+                : "ขออภัย — ไม่สามารถวิเคราะห์คำถามได้ในขณะนี้",
+              timestamp: new Date(),
+              verified: false,
+              source: "fallback" as const,
+              isAuthError: isAuth,
+            },
+          ])
+          return
+        }
 
         const data = await res.json()
         setAnalysisResult(data)
@@ -271,6 +397,7 @@ export function FloatingAI() {
             timestamp: new Date(),
             verified: data.status === "success",
             source: data.source || "analysearch",
+            mode: mode,  // G5: stamp mode
             metadata: {
               intent: analysis.intent,
               keywords: analysis.keywords,
@@ -290,6 +417,8 @@ export function FloatingAI() {
             timestamp: new Date(),
             verified: false,
             source: "fallback",
+            isError: true,
+            retryQuery: text,
           },
         ])
       } finally {
@@ -303,13 +432,17 @@ export function FloatingAI() {
   const formatAnalysisResult = (analysis: Record<string, unknown>): string => {
     const lines: string[] = []
     
+    // If backend is in fallback mode, show the helpful reply directly
+    if (typeof analysis.reply === "string") {
+      return analysis.reply
+    }
     if (analysis.intent) {
       lines.push(`**Intent Detected:** ${analysis.intent}`)
     }
     if (analysis.confidence) {
       lines.push(`**Confidence:** ${((analysis.confidence as number) * 100).toFixed(1)}%`)
     }
-    if (analysis.keywords && Array.isArray(analysis.keywords)) {
+    if (analysis.keywords && Array.isArray(analysis.keywords) && (analysis.keywords as string[]).length > 0) {
       lines.push(`**Keywords:** ${(analysis.keywords as string[]).join(", ")}`)
     }
     if (analysis.crystallized) {
@@ -328,7 +461,7 @@ export function FloatingAI() {
     const ANALYZE_KEYWORDS = [
       "architecture", "layer", "algorithm", "fdia", "jitna", "signemai", "signedai",
       "consensus", "rctdb", "genome", "benchmark", "hallucination", "แสดง", "วิเคราะห์",
-      "อธิบาย", "explain", "compare", "compare", "breakdown", "how does", "what is",
+      "อธิบาย", "explain", "compare", "breakdown", "how does", "what is",
       "สถาปัตยกรรม", "โปรโตคอล",
     ]
     const MIRROR_KEYWORDS = [
@@ -394,6 +527,81 @@ export function FloatingAI() {
         ✓
       </span>
     )
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Markdown renderer — G4: heading, bullet, numbered, divider       */
+  /* ---------------------------------------------------------------- */
+
+  // Inline renderer: **bold** and `code` only
+  function renderInline(text: string) {
+    const parts = text.split(/(\*\*[^*\n]+\*\*|`[^`\n]+`)/g)
+    return parts.map((part, i) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>
+      }
+      if (part.startsWith("`") && part.endsWith("`")) {
+        return (
+          <code key={i} className="font-mono text-[0.8em] bg-warm-amber/20 dark:bg-warm-amber/10 px-1 rounded">
+            {part.slice(1, -1)}
+          </code>
+        )
+      }
+      return <Fragment key={i}>{part}</Fragment>
+    })
+  }
+
+  // Full block renderer — handles headings, bullets, numbered lists, dividers
+  function renderMarkdown(text: string) {
+    const lines = text.split("\n")
+    return lines.map((line, lineIdx) => {
+      // Horizontal divider
+      if (line.trim() === "---") {
+        return <hr key={lineIdx} className="border-border/30 my-1.5" />
+      }
+      // ## Heading 2
+      if (line.startsWith("## ")) {
+        return (
+          <p key={lineIdx} className="font-bold text-sm mt-2 mb-0.5 text-foreground">
+            {renderInline(line.slice(3))}
+          </p>
+        )
+      }
+      // # Heading 1
+      if (line.startsWith("# ")) {
+        return (
+          <p key={lineIdx} className="font-bold text-base mt-2 mb-0.5 text-foreground">
+            {renderInline(line.slice(2))}
+          </p>
+        )
+      }
+      // Bullet: • or -
+      if (line.startsWith("• ") || line.startsWith("- ")) {
+        const content = line.startsWith("• ") ? line.slice(2) : line.slice(2)
+        return (
+          <div key={lineIdx} className="flex gap-1.5 ml-1 my-0.5">
+            <span className="text-warm-amber mt-0.5 shrink-0">•</span>
+            <span>{renderInline(content)}</span>
+          </div>
+        )
+      }
+      // Numbered list: 1. 2. 3.
+      const numMatch = line.match(/^(\d+)\.\s(.+)/)
+      if (numMatch) {
+        return (
+          <div key={lineIdx} className="flex gap-1.5 ml-1 my-0.5">
+            <span className="text-warm-amber font-mono text-xs min-w-[1.1rem] mt-0.5 shrink-0">{numMatch[1]}.</span>
+            <span>{renderInline(numMatch[2])}</span>
+          </div>
+        )
+      }
+      // Empty line → spacer
+      if (line.trim() === "") {
+        return <span key={lineIdx} className="block h-1" />
+      }
+      // Normal line
+      return <span key={lineIdx} className="block">{renderInline(line)}</span>
+    })
   }
 
   /* ---------------------------------------------------------------- */
@@ -535,7 +743,7 @@ export function FloatingAI() {
                     <p className="text-xs text-muted-foreground mt-1">เลือกหัวข้อที่สนใจ หรือพิมพ์คำถามของคุณ</p>
                   </div>
                   <div className="space-y-2">
-                    {SCENARIOS.map((s) => (
+                    {scenarios.map((s) => (
                       <button
                         key={s.query}
                         onClick={() => handleScenario(s.query)}
@@ -561,11 +769,21 @@ export function FloatingAI() {
                           : "bg-[#EDE8E0] dark:bg-[#1E1E1E] text-warm-charcoal dark:text-warm-light-gray border border-[#D8D3CC] dark:border-[#2A2A2A]"
                       }`}
                     >
-                      {msg.content}
-                      {msg.role === "assistant" && (
+                      {msg.role === "assistant" ? renderMarkdown(msg.content) : msg.content}
+                      {msg.isStreaming && (
+                        <span className="inline-block w-0.5 h-3.5 bg-warm-amber animate-pulse ml-0.5 align-text-bottom" />
+                      )}
+                      {msg.role === "assistant" && !msg.isStreaming && (
                         <span className="ml-1 text-xs">
                           {sourceIndicator(msg)}
                         </span>
+                      )}
+                      {msg.isAuthError && (
+                        <div className="mt-2 pt-2 border-t border-border/50">
+                          <a href="/auth/signin" className="text-xs text-warm-amber hover:underline">
+                            → ล็อกอินเพื่อใช้งาน RCT AI Assistant
+                          </a>
+                        </div>
                       )}
 
                       {/* Verification Badge */}
@@ -601,19 +819,36 @@ export function FloatingAI() {
                       >
                         <ThumbsDown className="w-3 h-3" />
                       </button>
+                      {/* G5: mode badge */}
+                      {msg.mode && msg.mode !== "chat" && (
+                        <span className="text-xs text-muted-foreground/60 ml-1" title={`Answered in ${msg.mode} mode`}>
+                          {msg.mode === "analyze" ? "🔍" : "🪩"}
+                        </span>
+                      )}
                       {msg.intent && (
                         <span className="text-xs text-muted-foreground/60 ml-1">{msg.intent}</span>
                       )}
                       {msg.source === "llm" && msg.model_used && (
                         <span className="text-xs text-muted-foreground/60 ml-1">({msg.model_used})</span>
                       )}
+                      {/* G9: retry button for error messages */}
+                      {msg.isError && msg.retryQuery && (
+                        <button
+                          onClick={() => sendMessage(msg.retryQuery!)}
+                          className="ml-auto text-xs text-warm-amber hover:underline"
+                          title="ลองใหม่"
+                        >
+                          ↺ ลองใหม่
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
               ))}
 
-              {/* Loading indicator */}
-              {loading && (
+              {/* Loading indicator — only for analyze/mirror mode.
+                  Chat mode uses live-streaming message bubble instead. */}
+              {loading && !messages.some((m) => m.isStreaming) && (
                 <div className="flex justify-start">
                   <div className="bg-[#EDE8E0] dark:bg-[#1E1E1E] border border-[#D8D3CC] dark:border-[#2A2A2A] rounded-xl px-3 py-2">
                     <Loader2 className="w-4 h-4 animate-spin text-warm-amber" />
@@ -667,7 +902,7 @@ export function FloatingAI() {
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about RCT Ecosystem..."
+                placeholder={typeof window !== "undefined" && window.location.pathname.startsWith("/th") ? "ถามเกี่ยวกับ RCT Ecosystem..." : "Ask about RCT Ecosystem..."}
                 className="flex-1 h-9 text-sm bg-secondary/30"
                 disabled={loading}
               />

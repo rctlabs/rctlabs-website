@@ -311,10 +311,10 @@
   "floating_ai": {
     "title": "FloatingAI Assistant",
     "coming_soon": "Coming Soon",
-    "coming_soon_message": "Our AI assistant is currently under development. We're building something amazing with 55+ knowledge base topics covering all 41 algorithms.",
+    "coming_soon_message": "Our AI assistant is currently under development. We're building something amazing with 60+ knowledge base topics covering all 41 algorithms, the 5 core values, HexaCore architecture, and the creator's origin story.",
     "features_title": "What to Expect:",
     "feature_1": "Multi-LLM consensus responses",
-    "feature_2": "55+ knowledge base topics",
+    "feature_2": "60+ knowledge base topics",
     "feature_3": "Real-time intent detection",
     "feature_4": "Bilingual support (EN/TH)",
     "notify_me": "Notify me when ready",

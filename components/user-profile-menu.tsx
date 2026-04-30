@@ -44,10 +44,10 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
 
       const supabase = getSupabaseBrowserClient()
 
-      void supabase.auth.getSession().then(({ data }) => {
+      void supabase.auth.getUser().then(({ data }) => {
         if (!active) return
 
-        if (!data.session?.user) {
+        if (!data.user) {
           setResolvedAuth(isAuthenticated)
           setResolvedUser(user)
           return
@@ -56,13 +56,13 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
         setResolvedAuth(true)
         setResolvedUser({
           name:
-            (typeof data.session.user.user_metadata?.full_name === "string" && data.session.user.user_metadata.full_name) ||
-            (typeof data.session.user.user_metadata?.name === "string" && data.session.user.user_metadata.name) ||
+            (typeof data.user.user_metadata?.full_name === "string" && data.user.user_metadata.full_name) ||
+            (typeof data.user.user_metadata?.name === "string" && data.user.user_metadata.name) ||
             undefined,
-          email: data.session.user.email,
+          email: data.user.email,
           avatarUrl:
-            typeof data.session.user.user_metadata?.avatar_url === "string"
-              ? data.session.user.user_metadata.avatar_url
+            typeof data.user.user_metadata?.avatar_url === "string"
+              ? data.user.user_metadata.avatar_url
               : undefined,
         })
       })

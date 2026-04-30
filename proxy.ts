@@ -110,16 +110,17 @@ export async function proxy(request: NextRequest) {
     } else {
       authResponse = NextResponse.next()
       const supabase = createSupabaseRequestClient(request, authResponse)
-      const { data: { session } } = await supabase.auth.getSession()
+      // Use getUser() — verifies JWT with Supabase Auth server (secure)
+      const { data: { user } } = await supabase.auth.getUser()
 
-      if (!session) {
+      if (!user) {
         const signInUrl = request.nextUrl.clone()
         signInUrl.pathname = '/auth/signin'
         signInUrl.searchParams.set('next', safeNextPath(pathname, request.nextUrl.search))
         return withAuthCookies(NextResponse.redirect(signInUrl))
       }
 
-      const userRole = resolveRole(session)
+      const userRole = resolveRole({ user })
       if (!hasRequiredRole(userRole, protectedRoute.requiredRole)) {
         const fallbackUrl = request.nextUrl.clone()
         fallbackUrl.pathname = protectedRoute.fallbackHref

@@ -13,14 +13,14 @@ export async function POST(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url)
-  const maxIterations = searchParams.get("max_iterations") ?? "3"
-
-  let body: unknown
+  // B5: Accept max_iterations from body (preferred) or query param (fallback)
+  let body: Record<string, unknown>
   try {
     body = await request.json()
   } catch {
     return applyCookies(NextResponse.json({ error: "Invalid JSON body" }, { status: 400 }))
   }
+  const maxIterations = (body.max_iterations as string | number | undefined) ?? searchParams.get("max_iterations") ?? "3"
 
   try {
     const upstream = await fetch(
@@ -47,8 +47,20 @@ export async function POST(request: NextRequest) {
     return applyCookies(NextResponse.json(
       {
         status: "fallback",
-        analysis: {},
+        analysis: {
+          reply:
+            "ขณะนี้ระบบ Mirror Mode กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\n\nสำหรับข้อมูลเพิ่มเติม สามารถติดต่อได้ที่ contact@rctlabs.co หรือดูเอกสารได้ที่ /docs",
+          intent: "general",
+          confidence: 0,
+          iterations: 0,
+          keywords: [],
+        },
         source: "fallback",
+        suggestions: [
+          "สำรวจ Architecture →",
+          "อ่าน Documentation →",
+          "ติดต่อทีมงาน →",
+        ],
       },
       { status: 200 },
     ))
