@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, useCallback, type FormEvent } from "react"
+import { useState, useRef, useEffect, useCallback, Fragment, type FormEvent } from "react"
 import { m, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -39,6 +39,8 @@ interface ChatMessage {
   source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch"
   model_used?: string
   tokens_used?: number
+  isStreaming?: boolean
+  isAuthError?: boolean
   metadata?: {
     intent?: string
     keywords?: string[]
@@ -109,9 +111,10 @@ export function FloatingAI() {
     }
   }, [messages, loading])
 
-  /* Build conversation_history from last 6 messages for API context */
+  /* Build conversation_history from last 6 messages for API context.
+     Filters out empty streaming placeholders to avoid polluting history. */
   const buildHistory = useCallback((): Array<{ role: string; content: string; _topic?: string }> => {
-    return messages.slice(-6).map((_item) => ({
+    return messages.filter((m) => !m.isStreaming && m.content).slice(-6).map((_item) => ({
       role: _item.role,
       content: _item.content,
       ...(_item.topic ? { _topic: _item.topic } : {}),
@@ -126,6 +129,9 @@ export function FloatingAI() {
     async (text: string) => {
       if (!text.trim() || loading) return
 
+      // Capture history before any state changes
+      const history = buildHistory()
+
       const userMsg: ChatMessage = {
         id: Date.now().toString(),
         role: "user",
@@ -137,8 +143,23 @@ export function FloatingAI() {
       setLoading(true)
       setShowScenarios(false)
 
+      // Add streaming placeholder immediately so user sees activity
+      const assistantId = `asst-${Date.now()}`
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: assistantId,
+          role: "assistant" as const,
+          content: "",
+          timestamp: new Date(),
+          feedback: null,
+          source: "knowledge_base" as const,
+          isStreaming: true,
+        },
+      ])
+
       try {
-        const res = await fetch("/api/chat", {
+        const res = await fetch("/api/chat/stream", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -147,43 +168,99 @@ export function FloatingAI() {
             message: text.trim(),
             language: typeof window !== "undefined" && window.location.pathname.startsWith("/th") ? "th" : "en",
             channel: "web",
-            conversation_history: buildHistory(),
+            conversation_history: history,
           }),
         })
 
-        if (!res.ok) throw new Error("API error")
+        if (!res.ok) {
+          const isAuth = res.status === 401
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? {
+                    ...m,
+                    content: isAuth
+                      ? "กรุณาล็อกอินก่อนใช้งาน RCT AI Assistant"
+                      : "ขณะนี้ระบบ AI กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\nสามารถติดต่อทีมงานได้ที่ contact@rctlabs.co",
+                    verified: false,
+                    source: "fallback" as const,
+                    isStreaming: false,
+                    isAuthError: isAuth,
+                  }
+                : m,
+            ),
+          )
+          return
+        }
 
-        const data = await res.json()
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: data.execution_id || (Date.now() + 1).toString(),
-            role: "assistant",
-            content: data.reply,
-            timestamp: new Date(),
-            verified: true,
-            intent: data.intent,
-            topic: data.topic,
-            suggestions: data.suggestions || [],
-            feedback: null,
-            source: data.source || "knowledge_base",
-            model_used: data.model_used,
-            tokens_used: data.tokens_used,
-          },
-        ])
+        const reader = res.body?.getReader()
+        const decoder = new TextDecoder()
+        let buffer = ""
+        let accumulated = ""
+        let finalMeta: Partial<ChatMessage> = {}
+
+        if (reader) {
+          // eslint-disable-next-line no-constant-condition
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            buffer += decoder.decode(value, { stream: true })
+            const lines = buffer.split("\n")
+            buffer = lines.pop() ?? ""
+            for (const line of lines) {
+              if (!line.startsWith("data: ")) continue
+              const jsonStr = line.slice(6).trim()
+              if (!jsonStr) continue
+              try {
+                const event = JSON.parse(jsonStr) as Record<string, unknown>
+                if (event.done) {
+                  finalMeta = {
+                    verified: true,
+                    intent: typeof event.intent === "string" ? event.intent : undefined,
+                    topic: typeof event.topic === "string" ? event.topic : null,
+                    suggestions: Array.isArray(event.suggestions) ? (event.suggestions as string[]) : [],
+                    source: (event.source as ChatMessage["source"]) ?? "knowledge_base",
+                  }
+                } else {
+                  accumulated += typeof event.token === "string" ? event.token : ""
+                  setMessages((prev) =>
+                    prev.map((m) => (m.id === assistantId ? { ...m, content: accumulated } : m)),
+                  )
+                }
+              } catch {
+                /* ignore malformed SSE event */
+              }
+            }
+          }
+        }
+
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? {
+                  ...m,
+                  content: accumulated || "ขออภัย — ไม่ได้รับข้อมูลจากระบบ",
+                  isStreaming: false,
+                  ...finalMeta,
+                }
+              : m,
+          ),
+        )
       } catch {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            role: "assistant",
-            content: "ขณะนี้ระบบ AI กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\nสามารถติดต่อทีมงานได้ที่ contact@rctlabs.co หรือดูข้อมูลเพิ่มเติมได้ที่ /docs",
-            timestamp: new Date(),
-            verified: false,
-            feedback: null,
-            source: "fallback" as const,
-          },
-        ])
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? {
+                  ...m,
+                  content:
+                    "ขณะนี้ระบบ AI กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\nสามารถติดต่อทีมงานได้ที่ contact@rctlabs.co หรือดูข้อมูลเพิ่มเติมได้ที่ /docs",
+                  verified: false,
+                  source: "fallback" as const,
+                  isStreaming: false,
+                }
+              : m,
+          ),
+        )
       } finally {
         setLoading(false)
       }
@@ -212,6 +289,12 @@ export function FloatingAI() {
     setMessages((prev) =>
       prev.map((_item) => (_item.id === msgId ? { ..._item, feedback: type } : _item)),
     )
+    // Fire-and-forget feedback to backend analytics — failure is non-critical
+    void fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message_id: msgId, type, session_id: sessionId }),
+    }).catch(() => { /* intentionally silent */ })
   }
 
   function handleClearChat() {
@@ -397,6 +480,27 @@ export function FloatingAI() {
   }
 
   /* ---------------------------------------------------------------- */
+  /* Minimal inline markdown renderer (bold + inline code)           */
+  /* Used inside whitespace-pre-line container — handles \n natively  */
+  /* ---------------------------------------------------------------- */
+  function renderMarkdown(text: string) {
+    const parts = text.split(/(\*\*[^*\n]+\*\*|`[^`\n]+`)/g)
+    return parts.map((part, i) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>
+      }
+      if (part.startsWith("`") && part.endsWith("`")) {
+        return (
+          <code key={i} className="font-mono text-[0.8em] bg-warm-amber/20 dark:bg-warm-amber/10 px-1 rounded">
+            {part.slice(1, -1)}
+          </code>
+        )
+      }
+      return <Fragment key={i}>{part}</Fragment>
+    })
+  }
+
+  /* ---------------------------------------------------------------- */
   /* Render                                                            */
   /* ---------------------------------------------------------------- */
 
@@ -561,11 +665,21 @@ export function FloatingAI() {
                           : "bg-[#EDE8E0] dark:bg-[#1E1E1E] text-warm-charcoal dark:text-warm-light-gray border border-[#D8D3CC] dark:border-[#2A2A2A]"
                       }`}
                     >
-                      {msg.content}
-                      {msg.role === "assistant" && (
+                      {msg.role === "assistant" ? renderMarkdown(msg.content) : msg.content}
+                      {msg.isStreaming && (
+                        <span className="inline-block w-0.5 h-3.5 bg-warm-amber animate-pulse ml-0.5 align-text-bottom" />
+                      )}
+                      {msg.role === "assistant" && !msg.isStreaming && (
                         <span className="ml-1 text-xs">
                           {sourceIndicator(msg)}
                         </span>
+                      )}
+                      {msg.isAuthError && (
+                        <div className="mt-2 pt-2 border-t border-border/50">
+                          <a href="/auth/signin" className="text-xs text-warm-amber hover:underline">
+                            → ล็อกอินเพื่อใช้งาน RCT AI Assistant
+                          </a>
+                        </div>
                       )}
 
                       {/* Verification Badge */}
@@ -612,8 +726,9 @@ export function FloatingAI() {
                 </div>
               ))}
 
-              {/* Loading indicator */}
-              {loading && (
+              {/* Loading indicator — only for analyze/mirror mode.
+                  Chat mode uses live-streaming message bubble instead. */}
+              {loading && !messages.some((m) => m.isStreaming) && (
                 <div className="flex justify-start">
                   <div className="bg-[#EDE8E0] dark:bg-[#1E1E1E] border border-[#D8D3CC] dark:border-[#2A2A2A] rounded-xl px-3 py-2">
                     <Loader2 className="w-4 h-4 animate-spin text-warm-amber" />

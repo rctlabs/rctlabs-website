@@ -47,8 +47,20 @@ export async function POST(request: NextRequest) {
     return applyCookies(NextResponse.json(
       {
         status: "fallback",
-        analysis: {},
+        analysis: {
+          reply:
+            "ขณะนี้ระบบ Mirror Mode กำลังอยู่ในช่วงพัฒนา — ทีมงานกำลังเตรียม Backend สำหรับ production\n\nสำหรับข้อมูลเพิ่มเติม สามารถติดต่อได้ที่ contact@rctlabs.co หรือดูเอกสารได้ที่ /docs",
+          intent: "general",
+          confidence: 0,
+          iterations: 0,
+          keywords: [],
+        },
         source: "fallback",
+        suggestions: [
+          "สำรวจ Architecture →",
+          "อ่าน Documentation →",
+          "ติดต่อทีมงาน →",
+        ],
       },
       { status: 200 },
     ))
