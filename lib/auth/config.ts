@@ -12,6 +12,12 @@ function getSupabaseUrl(): string {
 function getRequiredEnv(name: string): string {
   const value = process.env[name]
   if (!value) {
+    // During `next build` on CI without env vars, return placeholder so build succeeds.
+    // At runtime the real env vars must be set; the auth guard will redirect if Supabase
+    // returns an auth error.
+    if (process.env.NODE_ENV === "production" && process.env.CI) {
+      return `placeholder-${name}`
+    }
     throw new Error(`Missing required environment variable: ${name}`)
   }
   return value
@@ -20,6 +26,11 @@ function getRequiredEnv(name: string): string {
 export function getSupabaseConfig(runtime: SupabaseRuntime): SupabaseConfig {
   const url = getSupabaseUrl()
   if (!url) {
+    // Allow build to proceed on CI without Supabase env vars.
+    // Studio pages are force-dynamic so they won't be prerendered.
+    if (process.env.CI) {
+      return { url: "https://placeholder.supabase.co", key: "placeholder-key" }
+    }
     throw new Error("Missing required environment variable: SUPABASE_URL or NEXT_PUBLIC_SUPABASE_URL")
   }
 
