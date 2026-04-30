@@ -18,10 +18,10 @@ export function useRequireAuth() {
       try {
         const supabase = getSupabaseBrowserClient()
         const {
-          data: { session },
+          data: { user },
           error,
-        } = await supabase.auth.getSession()
-        if (error || !session) {
+        } = await supabase.auth.getUser()
+        if (error || !user) {
           router.push(`/auth/signin?next=${encodeURIComponent(pathname)}`)
         }
       } catch {
