@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Beaker, ChevronLeft, Plus, Play, CheckCircle, Clock, Loader, PauseCircle } from "lucide-react"
+import { Beaker, ChevronLeft, Plus, Play, CheckCircle, Clock, Loader, PauseCircle, Trash2 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -84,6 +84,14 @@ export default function ExperimentsPage() {
     try {
       await fetch(`${STUDIO_API}/experiments/${id}/complete`, { method: "POST" })
       fetchExperiments()
+    } finally { setActing((prev) => { const s = new Set(prev); s.delete(id); return s }) }
+  }
+
+  async function deleteExperiment(id: string) {
+    setActing((prev) => new Set(prev).add(id))
+    try {
+      await fetch(`${STUDIO_API}/experiments/${id}`, { method: "DELETE" })
+      setExperiments((prev) => prev.filter((e) => e.experiment_id !== id))
     } finally { setActing((prev) => { const s = new Set(prev); s.delete(id); return s }) }
   }
 
@@ -222,6 +230,15 @@ export default function ExperimentsPage() {
                           <CheckCircle className="w-3.5 h-3.5 mr-1.5" />Complete
                         </Button>
                       )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => deleteExperiment(exp.experiment_id)}
+                        disabled={acting.has(exp.experiment_id)}
+                        className="border-destructive/30 text-destructive hover:bg-destructive/10 text-xs"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 mr-1.5" />Delete
+                      </Button>
                     </div>
                   </div>
                 </div>

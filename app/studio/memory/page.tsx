@@ -1,17 +1,8 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import {
   Brain,
-  BarChart3,
-  Play,
-  GitCompare,
-  Beaker,
-  Database,
-  BookOpen,
-  Settings,
   Search,
   RefreshCw,
   MessageSquare,
@@ -21,20 +12,10 @@ import {
 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { StudioSidebar } from "@/components/studio/studio-sidebar"
 import { useRequireAuth } from "@/lib/auth/use-require-auth"
 
 const API_BASE = process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:8054"
-
-const NAV_ITEMS = [
-  { href: "/studio", label: "Overview", icon: BarChart3 },
-  { href: "/studio/playground", label: "Playground", icon: Play },
-  { href: "/studio/compare", label: "Compare", icon: GitCompare },
-  { href: "/studio/experiments", label: "Experiments", icon: Beaker },
-  { href: "/studio/datasets", label: "Datasets", icon: Database },
-  { href: "/studio/algorithms", label: "Algorithms", icon: BookOpen },
-  { href: "/studio/memory", label: "Memory", icon: Brain },
-  { href: "/studio/settings", label: "Settings", icon: Settings },
-]
 
 type MemoryType = "conversation" | "module" | "intent"
 
@@ -78,6 +59,7 @@ export default function MemoryPage() {
   const [entries, setEntries] = useState<MemoryEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
+  const [fetchError, setFetchError] = useState<string | null>(null)
   const [filter, setFilter] = useState<MemoryType | "all">("all")
   const [search, setSearch] = useState("")
   const [offset, setOffset] = useState(0)
@@ -102,6 +84,7 @@ export default function MemoryPage() {
         if (!res.ok) throw new Error("fetch failed")
         const data = await res.json()
         const items: MemoryEntry[] = data.entries ?? data ?? []
+        setFetchError(null)
 
         if (reset) {
           setEntries(items)
@@ -113,6 +96,7 @@ export default function MemoryPage() {
         setHasMore(items.length >= LIMIT)
       } catch {
         if (reset) setEntries([])
+        setFetchError("Memory service is unavailable. Check that the studio backend is running.")
       } finally {
         setLoading(false)
         setLoadingMore(false)
@@ -132,32 +116,7 @@ export default function MemoryPage() {
       <Navbar />
 
       <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border pt-6 px-4">
-          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-4 px-2">Specialist Studio</p>
-          <nav className="space-y-1">
-            {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
-              const active = pathname?.endsWith(href) || (href === "/studio/memory" && pathname?.endsWith("/memory"))
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                    active ? "bg-primary/10 text-primary border border-primary/20" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  {label}
-                </Link>
-              )
-            })}
-          </nav>
-          <div className="mt-8 px-2">
-            <p className="text-xs text-muted-foreground mb-2">Quick Links</p>
-            <Link href="/admin" className="block text-xs text-muted-foreground hover:text-foreground py-1 transition-colors">→ Admin Console</Link>
-            <Link href="/owner" className="block text-xs text-muted-foreground hover:text-foreground py-1 transition-colors">→ Owner Console</Link>
-          </div>
-        </aside>
+        <StudioSidebar />
 
         {/* Main */}
         <main className="flex-1 p-8">
@@ -205,6 +164,14 @@ export default function MemoryPage() {
               </button>
             ))}
           </div>
+
+          {/* Error banner */}
+          {fetchError && (
+            <div className="flex items-center gap-3 bg-destructive/10 border border-destructive/30 text-destructive rounded-xl px-5 py-4 text-sm mb-6">
+              <span className="text-destructive">⚠</span>
+              {fetchError}
+            </div>
+          )}
 
           {/* Content */}
           {loading ? (

@@ -13,14 +13,14 @@ export async function POST(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url)
-  const maxIterations = searchParams.get("max_iterations") ?? "3"
-
-  let body: unknown
+  // B5: Accept max_iterations from body (preferred) or query param (fallback)
+  let body: Record<string, unknown>
   try {
     body = await request.json()
   } catch {
     return applyCookies(NextResponse.json({ error: "Invalid JSON body" }, { status: 400 }))
   }
+  const maxIterations = (body.max_iterations as string | number | undefined) ?? searchParams.get("max_iterations") ?? "3"
 
   try {
     const upstream = await fetch(

@@ -41,6 +41,9 @@ interface ChatMessage {
   tokens_used?: number
   isStreaming?: boolean
   isAuthError?: boolean
+  isError?: boolean        // G9: marks a failed message that can be retried
+  retryQuery?: string      // G9: original query text for retry
+  mode?: AnalysisMode      // G5: which mode produced this message
   metadata?: {
     intent?: string
     keywords?: string[]
@@ -53,15 +56,27 @@ interface ChatMessage {
 type AnalysisMode = "chat" | "analyze" | "mirror"
 
 /* ------------------------------------------------------------------ */
-/* Quick-action scenarios shown on first open                          */
+/* Quick-action scenarios (locale-aware) — G2                        */
 /* ------------------------------------------------------------------ */
 
-const SCENARIOS = [
-  { emoji: "🎯", label: "เข้าใจ RCT ใน 3 นาที", query: "What is RCT?" },
-  { emoji: "🧪", label: "สูตร FDIA คืออะไร?", query: "What is the FDIA formula?" },
-  { emoji: "✅", label: "ดู AI ตรวจ AI (SignedAI)", query: "How does SignedAI verification work?" },
-  { emoji: "🧠", label: "รู้จักภาษา JITNA", query: "What is JITNA?" },
+const SCENARIOS_TH = [
+  { emoji: "🎯", label: "เข้าใจ RCT ใน 3 นาที", query: "RCT คืออะไร?" },
+  { emoji: "🧪", label: "สูตร FDIA คืออะไร?", query: "FDIA คืออะไร?" },
+  { emoji: "✅", label: "SignedAI ตรวจสอบอย่างไร?", query: "SignedAI ทำงานอย่างไร?" },
+  { emoji: "👤", label: "ใครสร้าง RCT?", query: "ใครสร้าง RCT?" },
 ]
+
+const SCENARIOS_EN = [
+  { emoji: "🎯", label: "Understand RCT in 3 min", query: "What is RCT?" },
+  { emoji: "🧪", label: "The FDIA formula", query: "What is the FDIA formula?" },
+  { emoji: "✅", label: "AI verifies AI (SignedAI)", query: "How does SignedAI verification work?" },
+  { emoji: "👤", label: "Who built this?", query: "Who created RCT?" },
+]
+
+function useScenarios() {
+  const isThai = typeof window !== "undefined" && window.location.pathname.startsWith("/th")
+  return isThai ? SCENARIOS_TH : SCENARIOS_EN
+}
 
 /* ------------------------------------------------------------------ */
 /* Component                                                           */
@@ -75,6 +90,8 @@ export function FloatingAI() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  // G2: locale-aware scenarios
+  const scenarios = useScenarios()
 
   // P7 — Session ID: persistent across page navigations within the same browser session
   const [sessionId] = useState<string>(() => {
@@ -87,16 +104,20 @@ export function FloatingAI() {
   })
 
   // P6 — Authenticated user ID from Supabase session
+  // B7: refresh on window focus so login/logout mid-session is reflected
   const [userId, setUserId] = useState<string>("anonymous")
   useEffect(() => {
     const fetchUserId = async () => {
       try {
         const supabase = getSupabaseBrowserClient()
         const { data: { session } } = await supabase.auth.getSession()
-        if (session?.user?.id) setUserId(session.user.id)
+        setUserId(session?.user?.id ?? "anonymous")
       } catch { /* not critical */ }
     }
     void fetchUserId()
+    const onFocus = () => void fetchUserId()
+    window.addEventListener("focus", onFocus)
+    return () => window.removeEventListener("focus", onFocus)
   }, [])
 
   // Analysis mode state
@@ -257,6 +278,8 @@ export function FloatingAI() {
                   verified: false,
                   source: "fallback" as const,
                   isStreaming: false,
+                  isError: true,
+                  retryQuery: input,
                 }
               : m,
           ),
@@ -320,10 +343,11 @@ export function FloatingAI() {
       setShowScenarios(false)
 
       try {
-        const endpoint = mode === "mirror" 
-          ? `/api/mirror?max_iterations=3`
-          : `/api/analyze`
-        
+        // B3: capture conversation history for context-aware analysis
+        const history = buildHistory()
+        // B5: max_iterations moved from query param to request body
+        const endpoint = mode === "mirror" ? `/api/mirror` : `/api/analyze`
+
         const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -333,6 +357,8 @@ export function FloatingAI() {
             query_type: "general",
             complexity: "high",
             session_id: sessionId,
+            max_iterations: 3,
+            conversation_history: history,
           }),
         })
 
@@ -371,6 +397,7 @@ export function FloatingAI() {
             timestamp: new Date(),
             verified: data.status === "success",
             source: data.source || "analysearch",
+            mode: mode,  // G5: stamp mode
             metadata: {
               intent: analysis.intent,
               keywords: analysis.keywords,
@@ -390,6 +417,8 @@ export function FloatingAI() {
             timestamp: new Date(),
             verified: false,
             source: "fallback",
+            isError: true,
+            retryQuery: query,
           },
         ])
       } finally {
@@ -432,7 +461,7 @@ export function FloatingAI() {
     const ANALYZE_KEYWORDS = [
       "architecture", "layer", "algorithm", "fdia", "jitna", "signemai", "signedai",
       "consensus", "rctdb", "genome", "benchmark", "hallucination", "แสดง", "วิเคราะห์",
-      "อธิบาย", "explain", "compare", "compare", "breakdown", "how does", "what is",
+      "อธิบาย", "explain", "compare", "breakdown", "how does", "what is",
       "สถาปัตยกรรม", "โปรโตคอล",
     ]
     const MIRROR_KEYWORDS = [
@@ -501,10 +530,11 @@ export function FloatingAI() {
   }
 
   /* ---------------------------------------------------------------- */
-  /* Minimal inline markdown renderer (bold + inline code)           */
-  /* Used inside whitespace-pre-line container — handles \n natively  */
+  /* Markdown renderer — G4: heading, bullet, numbered, divider       */
   /* ---------------------------------------------------------------- */
-  function renderMarkdown(text: string) {
+
+  // Inline renderer: **bold** and `code` only
+  function renderInline(text: string) {
     const parts = text.split(/(\*\*[^*\n]+\*\*|`[^`\n]+`)/g)
     return parts.map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {
@@ -518,6 +548,59 @@ export function FloatingAI() {
         )
       }
       return <Fragment key={i}>{part}</Fragment>
+    })
+  }
+
+  // Full block renderer — handles headings, bullets, numbered lists, dividers
+  function renderMarkdown(text: string) {
+    const lines = text.split("\n")
+    return lines.map((line, lineIdx) => {
+      // Horizontal divider
+      if (line.trim() === "---") {
+        return <hr key={lineIdx} className="border-border/30 my-1.5" />
+      }
+      // ## Heading 2
+      if (line.startsWith("## ")) {
+        return (
+          <p key={lineIdx} className="font-bold text-sm mt-2 mb-0.5 text-foreground">
+            {renderInline(line.slice(3))}
+          </p>
+        )
+      }
+      // # Heading 1
+      if (line.startsWith("# ")) {
+        return (
+          <p key={lineIdx} className="font-bold text-base mt-2 mb-0.5 text-foreground">
+            {renderInline(line.slice(2))}
+          </p>
+        )
+      }
+      // Bullet: • or -
+      if (line.startsWith("• ") || line.startsWith("- ")) {
+        const content = line.startsWith("• ") ? line.slice(2) : line.slice(2)
+        return (
+          <div key={lineIdx} className="flex gap-1.5 ml-1 my-0.5">
+            <span className="text-warm-amber mt-0.5 shrink-0">•</span>
+            <span>{renderInline(content)}</span>
+          </div>
+        )
+      }
+      // Numbered list: 1. 2. 3.
+      const numMatch = line.match(/^(\d+)\.\s(.+)/)
+      if (numMatch) {
+        return (
+          <div key={lineIdx} className="flex gap-1.5 ml-1 my-0.5">
+            <span className="text-warm-amber font-mono text-xs min-w-[1.1rem] mt-0.5 shrink-0">{numMatch[1]}.</span>
+            <span>{renderInline(numMatch[2])}</span>
+          </div>
+        )
+      }
+      // Empty line → spacer
+      if (line.trim() === "") {
+        return <span key={lineIdx} className="block h-1" />
+      }
+      // Normal line
+      return <span key={lineIdx} className="block">{renderInline(line)}</span>
     })
   }
 
@@ -660,7 +743,7 @@ export function FloatingAI() {
                     <p className="text-xs text-muted-foreground mt-1">เลือกหัวข้อที่สนใจ หรือพิมพ์คำถามของคุณ</p>
                   </div>
                   <div className="space-y-2">
-                    {SCENARIOS.map((s) => (
+                    {scenarios.map((s) => (
                       <button
                         key={s.query}
                         onClick={() => handleScenario(s.query)}
@@ -736,11 +819,27 @@ export function FloatingAI() {
                       >
                         <ThumbsDown className="w-3 h-3" />
                       </button>
+                      {/* G5: mode badge */}
+                      {msg.mode && msg.mode !== "chat" && (
+                        <span className="text-xs text-muted-foreground/60 ml-1" title={`Answered in ${msg.mode} mode`}>
+                          {msg.mode === "analyze" ? "🔍" : "🪩"}
+                        </span>
+                      )}
                       {msg.intent && (
                         <span className="text-xs text-muted-foreground/60 ml-1">{msg.intent}</span>
                       )}
                       {msg.source === "llm" && msg.model_used && (
                         <span className="text-xs text-muted-foreground/60 ml-1">({msg.model_used})</span>
+                      )}
+                      {/* G9: retry button for error messages */}
+                      {msg.isError && msg.retryQuery && (
+                        <button
+                          onClick={() => sendMessage(msg.retryQuery!)}
+                          className="ml-auto text-xs text-warm-amber hover:underline"
+                          title="ลองใหม่"
+                        >
+                          ↺ ลองใหม่
+                        </button>
                       )}
                     </div>
                   )}
@@ -803,7 +902,7 @@ export function FloatingAI() {
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about RCT Ecosystem..."
+                placeholder={typeof window !== "undefined" && window.location.pathname.startsWith("/th") ? "ถามเกี่ยวกับ RCT Ecosystem..." : "Ask about RCT Ecosystem..."}
                 className="flex-1 h-9 text-sm bg-secondary/30"
                 disabled={loading}
               />

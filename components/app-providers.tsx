@@ -4,12 +4,37 @@ import dynamic from "next/dynamic"
 import { LazyMotion, domAnimation } from "framer-motion"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider, useLanguage, type Language } from "@/components/language-provider"
-import { useEffect, useState, type ReactNode } from "react"
+import { useEffect, useState, type ReactNode, Component, type ErrorInfo } from "react"
 
 const FloatingAI = dynamic(
   () => import("@/components/floating-ai").then((module) => module.FloatingAI),
   { ssr: false, loading: () => null },
 )
+
+/* ------------------------------------------------------------------ */
+/* G10: Error Boundary for FloatingAI widget                           */
+/* ------------------------------------------------------------------ */
+
+interface FloatingAIBoundaryState { hasError: boolean }
+
+class FloatingAIErrorBoundary extends Component<{ children: ReactNode }, FloatingAIBoundaryState> {
+  constructor(props: { children: ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError(_: Error): FloatingAIBoundaryState {
+    return { hasError: true }
+  }
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("[FloatingAI] Crashed:", error, info)
+    }
+  }
+  render() {
+    if (this.state.hasError) return null // silently hide widget on crash
+    return this.props.children
+  }
+}
 
 type IdleHandle = number
 
@@ -78,7 +103,9 @@ export function AppProviders({ children, initialLocale = "en" }: AppProvidersPro
       <LanguageProvider initialLocale={initialLocale}>
         <LazyMotion features={domAnimation}>
           {children}
-          <DeferredFloatingAI />
+          <FloatingAIErrorBoundary>
+            <DeferredFloatingAI />
+          </FloatingAIErrorBoundary>
           <LocaleTransitionOverlay />
         </LazyMotion>
       </LanguageProvider>
