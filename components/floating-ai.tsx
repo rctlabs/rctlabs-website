@@ -336,7 +336,24 @@ export function FloatingAI() {
           }),
         })
 
-        if (!res.ok) throw new Error("API error")
+        if (!res.ok) {
+          const isAuth = res.status === 401
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: (Date.now() + 1).toString(),
+              role: "assistant" as const,
+              content: isAuth
+                ? "กรุณาล็อกอินก่อนใช้งาน RCT AI Assistant"
+                : "ขออภัย — ไม่สามารถวิเคราะห์คำถามได้ในขณะนี้",
+              timestamp: new Date(),
+              verified: false,
+              source: "fallback" as const,
+              isAuthError: isAuth,
+            },
+          ])
+          return
+        }
 
         const data = await res.json()
         setAnalysisResult(data)
@@ -386,13 +403,17 @@ export function FloatingAI() {
   const formatAnalysisResult = (analysis: Record<string, unknown>): string => {
     const lines: string[] = []
     
+    // If backend is in fallback mode, show the helpful reply directly
+    if (typeof analysis.reply === "string") {
+      return analysis.reply
+    }
     if (analysis.intent) {
       lines.push(`**Intent Detected:** ${analysis.intent}`)
     }
     if (analysis.confidence) {
       lines.push(`**Confidence:** ${((analysis.confidence as number) * 100).toFixed(1)}%`)
     }
-    if (analysis.keywords && Array.isArray(analysis.keywords)) {
+    if (analysis.keywords && Array.isArray(analysis.keywords) && (analysis.keywords as string[]).length > 0) {
       lines.push(`**Keywords:** ${(analysis.keywords as string[]).join(", ")}`)
     }
     if (analysis.crystallized) {
