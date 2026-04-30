@@ -65,7 +65,6 @@ export default function MemoryPage() {
   const [offset, setOffset] = useState(0)
   const [hasMore, setHasMore] = useState(true)
   const LIMIT = 20
-  const pathname = usePathname()
 
   const fetchMemory = useCallback(
     async ({ reset, offsetValue, query }: { reset: boolean; offsetValue?: number; query?: string }) => {

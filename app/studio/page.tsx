@@ -167,7 +167,6 @@ export default function StudioPage() {
               <p className="text-muted-foreground mt-1">Algorithm playground · A/B comparison · Experiment tracking · Dataset catalog</p>
             </div>
           </div>
-          </div>
 
           {/* Stats row */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">

@@ -279,7 +279,7 @@ export function FloatingAI() {
                   source: "fallback" as const,
                   isStreaming: false,
                   isError: true,
-                  retryQuery: input,
+                  retryQuery: text,
                 }
               : m,
           ),
@@ -418,7 +418,7 @@ export function FloatingAI() {
             verified: false,
             source: "fallback",
             isError: true,
-            retryQuery: query,
+            retryQuery: text,
           },
         ])
       } finally {
