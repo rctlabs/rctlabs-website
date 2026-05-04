@@ -1,0 +1,169 @@
+---
+title: "Circuit Breaker Pattern สำหรับระบบ AI: สร้าง AI Pipeline ที่ต้านทานความล้มเหลว"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-07"
+lastReviewed: "2026-05-04"
+category: "research"
+excerpt: "Circuit breaker pattern ที่ยืมมาจากวิศวกรรมไฟฟ้าคือ reliability layer ที่ขาดหายไปใน AI pipeline ขององค์กรส่วนใหญ่ บทความนี้อธิบายวิธีนำไปใช้กับระบบ AI สิ่งที่ RCT Platform implement แบบ native และวิธีป้องกัน cascading failure ใน multi-agent architecture"
+tags: ["Circuit Breaker Pattern", "AI Reliability", "Enterprise AI", "Fault Isolation", "RCT Platform", "AI Architecture", "Resilience Engineering", "Multi-Agent AI"]
+readTime: 14
+references:
+  - "https://martinfowler.com/bliki/CircuitBreaker.html"
+  - "https://arxiv.org/abs/2210.03629"
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://owasp.org/www-project-ai-security-and-privacy-guide/"
+  - "https://rctlabs.github.io/rct-platform/architecture/KERNEL_RFC_006_FAULT_ISOLATION/"
+  - "https://rctlabs.co/th/core-systems"
+  - "https://rctlabs.co/th/algorithms"
+---
+
+# Circuit Breaker Pattern สำหรับระบบ AI: สร้าง AI Pipeline ที่ต้านทานความล้มเหลว
+
+เมื่อ load balancer ตรวจพบ backend ที่ล้มเหลว มันหยุดส่ง traffic ไปที่นั่นทันที เมื่อ database connection pool หมด ORM สมัยใหม่จะปฏิเสธ request ใหม่ทันทีแทนที่จะ queue ไว้ไม่สิ้นสุด เมื่อวงจรไฟฟ้าในบ้านทริป มันจะตัดการเชื่อมต่อก่อนที่ไฟจะลาม นี่คือการ implement หลักการวิศวกรรมเดียวกัน: **หยุดการแพร่กระจายความล้มเหลวก่อนที่มันจะบานปลาย**
+
+AI pipeline ขององค์กรไม่มีการป้องกันแบบเดียวกันตามค่าเริ่มต้น เมื่อ LLM provider ส่ง response ที่ลดคุณภาพ pipeline ส่วนใหญ่ยังคง route query ไปที่นั่นต่อไป เมื่อ vector search index ส่งผลลัพธ์ที่ไม่เกี่ยวข้อง generation layer ก็ยังนำมาสังเคราะห์อยู่ดี เมื่อ agent หนึ่งใน multi-agent chain ล้มเหลว agent ที่ขึ้นอยู่กับมันมักได้รับ input ที่ผิดรูปแบบโดยไม่มีสัญญาณว่า upstream result ไม่น่าเชื่อถือ ผลคือ cascading failure ที่แต่งตัวเป็น output ปกติ — โหมดความล้มเหลวที่เลวร้ายที่สุดเพราะมองไม่เห็น
+
+**Circuit breaker pattern** ถูกอธิบายอย่างเป็นทางการโดย Michael Nygard ใน *Release It!* และเป็นที่นิยมโดย Martin Fowler มันเป็นพื้นฐานในวิศวกรรม distributed microservices ปัจจุบัน ใน AI systems มันแก้ปัญหาที่แตกต่างแต่มีโครงสร้างเหมือนกัน: จะหยุด AI component ที่ลดคุณภาพจากการทำให้ component ที่พึ่งพามันเสียหายได้อย่างไร?
+
+บทความนี้อธิบาย pattern วิธีที่ AI pipeline ต้องการมันอย่างเร่งด่วน วิธีที่ RCT Platform implement มันแบบ native ผ่าน RFC-006 Fault Isolation และสิ่งที่ต้องวัดเพื่อให้รู้ว่า circuit breaker ทำงานจริง
+
+## เหตุใด AI Pipeline จึงล้มเหลวแบบเงียบๆ
+
+ก่อนออกแบบโซลูชัน ควรเข้าใจว่า AI systems ล้มเหลวต่างจาก traditional software อย่างไร
+
+**ความล้มเหลวของ traditional software มักเป็นแบบ binary** service ขึ้นหรือล่ม API ส่ง 200 หรือ 500 query ส่งผลลัพธ์หรือ empty set ความล้มเหลวแบบ binary ทริก alert circuit breaker เปิดขึ้น และ engineer เข้ามาสืบสวน
+
+**ความล้มเหลวของ AI เป็นแบบ probabilistic และค่อยๆ เกิดขึ้น** LLM provider อาจส่ง response ที่ valid JSON แต่ semantic ลดคุณภาพ — confidence score สูงบนคำตอบผิด output ที่ฟังดูสมเหตุสมผลแต่ผิดข้อเท็จจริง หรือ reasoning ที่เหมาะกับ context แต่มี bias ละเอียด ความล้มเหลวเหล่านี้ผ่าน syntactic validation ทั้งหมด มักผ่าน embedding-based semantic similarity check ด้วย ล้มเหลวเฉพาะเมื่อมนุษย์อ่าน output — มักหลังจาก query ถูก process ไปนานแล้ว
+
+ความไม่สมดุลนี้สร้างโหมดความล้มเหลวที่อันตราย 3 แบบที่ AI systems มีเฉพาะ:
+
+**Silent context poisoning** ใน RAG pipeline การ retrieve ที่ลดคุณภาพส่ง chunk ที่ไม่เกี่ยวข้อง generation step รับมาเพราะไม่มีวิธีตรวจ retrieval quality degradation ในขณะ inference output ฟังดูสมเหตุสมผลแต่ตั้งอยู่บน context ผิด circuit breaker บน retrieval layer — ทริกโดยการลดลงของ retrieval precision metrics — จะหยุด request ก่อน generation และ route ไป fallback path
+
+**Cascading hallucination ใน multi-agent chains** เมื่อ Agent A สร้าง output ที่ hallucinated และส่งให้ Agent B เป็น ground truth Agent B ต่อยอดจากสมมติฐานผิด output ของ Agent B ถูกส่งให้ Agent C ภายในเวลาที่ output สุดท้ายถึงผู้ใช้ hallucination เดิมถูกขยาย ปรับแต่ง และฝังใน response ที่ฟังดูมั่นใจ circuit breaker ระหว่าง agent — ทริกเมื่อ confidence score ของ upstream agent ต่ำกว่า threshold — จะบล็อกการแพร่กระจายที่แหล่งกำเนิด
+
+**Timeout accumulation ใน concurrent pipelines** เมื่อ LLM provider ตอบช้า — ไม่ล้มเหลว แค่ช้า — pipeline ที่รอ response แต่ละอันจะบล็อก downstream processing หมด thread pool และในที่สุดทำให้เกิด timeout ใน component ที่ไม่มีปัญหาใดๆ circuit breaker ที่มี latency threshold จะเปิดทันทีเมื่อ response time เกิน threshold ลด load ก่อนที่มันจะ cascade
+
+## สาม State ของ Circuit Breaker
+
+Circuit breaker pattern มี 3 state การทำงาน ต้องเข้าใจทั้งสามเพราะคำอธิบายส่วนใหญ่ focus เฉพาะ open state
+
+### CLOSED — การทำงานปกติ
+
+ใน state CLOSED request ผ่านตามปกติ circuit breaker monitor success rate, latency distribution และ error rate สำหรับทุก request เมื่อ metrics ทั้งหมดอยู่ใน threshold วงจรยังคง CLOSED
+
+จุดสำคัญใน implementation คือการ monitor ต้องเกิดขึ้น **per component** ไม่ใช่ per pipeline circuit breaker บน AI pipeline ทั้งหมดไม่สามารถ isolate ได้ว่า component ไหนล้มเหลว ต้องวาง circuit breaker ที่แต่ละ integration point: LLM provider calls, embedding model calls, vector search calls, external tool calls และ agent-to-agent handoffs
+
+### OPEN — บล็อก Traffic ที่ลดคุณภาพ
+
+เมื่อ failure metrics ข้าม threshold circuit breaker จะเปิด ใน state OPEN request ไปยัง component ที่ลดคุณภาพจะถูกปฏิเสธทันที — ไม่แม้แต่พยายามไปถึง component นั้น แทนที่ circuit breaker จะส่งสัญญาณความล้มเหลวกลับไปยัง caller ภายในไม่กี่ไมโครวินาที
+
+จากนั้น caller มีตัวเลือก: retry บน provider อื่น ส่ง cached result กลับ route ไป simpler fallback model หรือส่ง error ที่ซื่อสัตย์กลับไปยังผู้ใช้ ทั้งหมดดีกว่าการส่ง query ไปยัง component ที่มีโอกาส 80% ที่จะส่ง output ที่ลดคุณภาพ
+
+state OPEN ยังทำหน้าที่ recovery: ด้วยการหยุด traffic ไปยัง component ที่ลดคุณภาพ มันให้เวลา component นั้น recover โดยไม่มีแรงกดดันจาก request ที่เข้ามาต่อเนื่อง
+
+### HALF-OPEN — การทดสอบ Recovery แบบ Controlled
+
+หลังจาก timeout ที่กำหนดได้ circuit breaker จะย้ายไป HALF-OPEN มันอนุญาตให้ test request จำนวนน้อยผ่าน หาก request เหล่านั้นสำเร็จ วงจรจะ transition กลับไป CLOSED หากล้มเหลว มันกลับไป OPEN
+
+state นี้ถูกละเว้นบ่อยๆ ใน naive implementations หากไม่มีมัน วงจรจะอยู่ open ไม่สิ้นสุด (ทำให้เกิด permanent service degradation) หรือ close เร็วเกินไปและ open ซ้ำๆ เมื่อปัญหาพื้นฐานยังไม่ได้รับการแก้ไข state HALF-OPEN คือสิ่งที่ทำให้ circuit breaker self-healing แทนที่จะ self-locking
+
+## สมการ FDIA ในฐานะ Circuit Breaker Signal
+
+RCT Platform ให้สัญญาณที่มีพื้นฐานทางคณิตศาสตร์สำหรับการตัดสินใจ circuit breaker: สมการ FDIA
+
+$$F = D^I \times A$$
+
+โดยที่:
+- **F** — Future: คะแนนความมั่นใจ output
+- **D** — Data quality: ความแม่นยำการ retrieve, ความเกี่ยวข้องของ context
+- **I** — Intent precision: query map กับ intent เฉพาะได้ชัดเจนแค่ไหน
+- **A** — Architect score: Human-in-the-loop approval gate (0.0–1.0)
+
+เมื่อ A = 0 วงจรจะถูก force open ในระดับสมการ เมื่อ D ต่ำกว่า threshold ที่กำหนดได้ I กลายเป็น amplifier ของ degradation — เพราะ context คุณภาพต่ำที่มี high-precision intent ก็ยังสร้าง F score ที่ไม่น่าเชื่อถือ สมการให้ **continuous quality signal** แทน binary success/failure signal ซึ่งเป็นสิ่งที่ AI circuit breaker ต้องการ
+
+นี่แตกต่างพื้นฐานจาก boolean circuit breaker ที่ใช้ใน microservices circuit breaker แบบดั้งเดิมบอกว่า: "service ส่ง error กลับมา เปิดวงจร" circuit breaker ที่ใช้ FDIA บอกว่า: "service ส่ง syntactically valid response กลับมา แต่สัญญาณคุณภาพทำนายว่า response นี้จะผิด 78% ของเวลา — เปิดวงจร"
+
+## RFC-006: วิธีที่ RCT Platform Implement Fault Isolation
+
+RFC-006 Fault Isolation specification ของ RCT Platform กำหนด fault isolation architecture สำหรับ multi-agent pipelines การตัดสินใจออกแบบสำคัญ:
+
+**Isolation boundary per tier** โครงสร้าง Tier 1–9 algorithm ของ platform (จาก basic intent parsing ที่ Tier 1 ถึง autonomous pipeline execution ที่ Tier 9) สร้าง isolation boundary ตามธรรมชาติ fault ใน Tier 4 component ไม่ propagate ไป Tier 5 โดยอัตโนมัติ แต่ละ tier boundary ทำหน้าที่เป็น circuit breaker checkpoint
+
+**Constitutional quality gates** ทุก component output ต้องผ่าน constitutional quality evaluation ก่อนส่งไปยัง stage ถัดไป หาก quality score ต่ำกว่า constitutional threshold output จะถูกบล็อกและ circuit breaker state สำหรับ component นั้นจะถูกอัปเดต
+
+**Signed failure records** เมื่อ circuit breaker เปิด RCT Platform สร้าง signed failure record ใน RCTDB record นี้ประกอบด้วย component identity, failure signal, FDIA scores ณ เวลาที่ล้มเหลว และ timestamp Engineer สามารถ reconstruct ได้ว่าทำไมวงจรถึงเปิดและ quality signal มีลักษณะอย่างไรก่อนเปิด
+
+**Automatic fallback routing** เมื่อวงจรของ primary provider เปิด JITNA protocol's routing layer จะเลือก provider ที่มีสิทธิ์ถัดไปโดยอัตโนมัติจาก HexaCore registry ที่มี quality signal ปัจจุบันสูงสุดสำหรับ intent type ปัจจุบัน นี่คือ circuit breaker + intelligent routing ในกลไกเดียว
+
+## Placement Pattern: วางไว้ที่ไหน
+
+สำหรับทีมที่ implement pattern นี้นอก RCT Platform กฎคือ: **วาง circuit breaker ที่ทุก external call boundary และทุก agent-to-agent boundary**
+
+การวาง circuit breaker ขั้นต่ำสำหรับ production RAG pipeline:
+
+```
+[User Query]
+     ↓
+[Intent Classifier] ← CB #1 (latency + intent confidence threshold)
+     ↓
+[Retrieval Layer]   ← CB #2 (retrieval precision + result count threshold)
+     ↓
+[Re-ranker]         ← CB #3 (re-rank score distribution threshold)
+     ↓
+[LLM Provider]      ← CB #4 (error rate + latency + response quality)
+     ↓
+[Verification Layer] ← CB #5 (factual consistency score threshold)
+     ↓
+[Output]
+```
+
+สำหรับ multi-agent pipeline เพิ่ม circuit breaker ระหว่าง agent handoff แต่ละครั้ง agent ที่รับ handoff ควร validate คุณภาพของ context ที่ได้รับก่อน incorporate มัน แทนที่จะ trust มันแบบไม่มีเงื่อนไข
+
+## Metrics ที่ต้องวัด
+
+| Metric | สิ่งที่วัด | ตัวอย่าง Threshold |
+|---|---|---|
+| **LLM error rate** | HTTP errors, token limit, context errors | เปิดที่ >5% ใน 60 วินาที |
+| **Response latency p95** | provider ช้า | เปิดถ้า p95 > 8 วินาที |
+| **Retrieval precision@k** | คุณภาพ chunk ที่ retrieve | เปิดถ้า precision@5 < 0.6 |
+| **Generation confidence** | confidence ที่โมเดลรายงานตัวเอง | เปิดถ้า avg < 0.55 |
+| **FDIA F-score** | combined quality signal | เปิดถ้า F < 0.65 |
+| **Hallucination rate** | incorrect claims ที่ verify แล้ว | เปิดถ้า rate > 2% |
+| **Agent handoff rejection rate** | downstream agent ปฏิเสธ upstream output | เปิดที่ >10% ใน 5 นาที |
+
+metric สุดท้าย — agent handoff rejection rate — เป็นสัญญาณเตือนล่วงหน้าที่แข็งแกร่งที่สุดสำหรับ cascading failure เมื่อ downstream agent เริ่มปฏิเสธ upstream output ในอัตราสูง systemic quality degradation เริ่มแล้ว circuit breaker ควรเปิดก่อนที่ rejection rate จะถึง 10%
+
+## ตัวเลขสำคัญจาก RCT Platform
+
+- **0.3% hallucination rate** (เทียบกับ 12–15% industry baseline) — ผลของ multi-layer quality gates ที่ implement circuit breaker logic ระหว่างทุก pipeline stage
+- **<50ms warm recall latency** — รักษาไว้แม้ภายใต้ fault condition เพราะ circuit breaker ลด degraded traffic ก่อนที่จะสร้าง backpressure
+- **ED25519 signed outputs** — ทุก output ที่ผ่านระบบ circuit breaker มี cryptographic signature ที่พิสูจน์ว่าไม่ได้ผลิตภายใต้ DEGRADED หรือ OPEN circuit state
+- **7 fallback providers ใน HexaCore** — เมื่อวงจรของ provider หนึ่งเปิด automatic routing ไป provider ถัดไปเกิดขึ้นภายใน 100ms
+
+## เมื่อ Circuit Breaker ไม่เพียงพอ
+
+Circuit breaker ป้องกัน cascading failure ไม่ใช่ความล้มเหลวเริ่มต้น ทีมที่ implement circuit breaker แล้วถือว่า reliability แก้แล้วได้แก้ไข propagation แต่ไม่ใช่ root cause
+
+reliability stack เต็มรูปแบบต้องการ:
+
+1. **Circuit breakers** — หยุด failure propagation
+2. **Retrieval quality monitoring** — catch degradation ก่อนทริป breaker
+3. **Constitutional quality gates** — validate output แม้วงจรจะ closed
+4. **Human-in-the-loop review** — catch systematic biases ที่อยู่ต่ำกว่า threshold
+5. **Signed audit trails** — reconstruct failure sequences สำหรับ post-incident analysis
+
+constitutional architecture ของ RCT Platform รวม 5 layer ทั้งหมด circuit breaker ไม่ใช่ workaround — มันคือ propagation prevention layer ใน five-layer reliability stack
+
+## สรุป
+
+Circuit breaker pattern ไม่ใช่ optional สำหรับ production AI systems มันคือความแตกต่างระหว่าง isolated failure กับ cascading failure ระหว่าง component ที่ลดคุณภาพกับ pipeline ที่ลดคุณภาพ ระหว่าง recoverable incident กับ trust-destroying event
+
+การตัดสินใจ implementation หลัก: วาง breaker ที่ทุก external call boundary ใช้ AI-specific quality metrics (ไม่ใช่แค่ error rate และ latency) รวม HALF-OPEN state สำหรับ self-healing และเชื่อม breaker กับ intelligent routing เพื่อให้ open circuit ทริก automatic fallback แทน blank error
+
+RCT Platform implement สิ่งนี้แบบ native ผ่าน RFC-006 Fault Isolation และสมการ FDIA — ให้ continuous quality signal ที่ทำหน้าที่เป็น measurement instrument สำหรับการตัดสินใจ circuit breaker ตลอดทุก pipeline stage
+
+---
+
+*ขอบเขตการเปิดเผย: บทความนี้อธิบาย circuit breaker pattern ในระดับ method และสถาปัตยกรรม implementation threshold, constitutional enforcement specifics และ internal routing configuration เป็นกรรมสิทธิ์ของ RCT Labs สมการ FDIA และ RFC-006 Fault Isolation specification เผยแพร่ภายใต้ Apache 2.0 และมีใน [SDK documentation](https://rctlabs.github.io/rct-platform/)*

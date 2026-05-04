@@ -1,0 +1,170 @@
+---
+title: "Intent Operating System: ทำไม Enterprise AI จึงต้องการ Orchestration Layer"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-03-28"
+lastReviewed: "2026-04-16"
+category: "philosophy"
+excerpt: "LLM ไม่ใช่ operating system มันคือ application Enterprise AI ต้องการสิ่งที่ enterprise software ทุกระบบต้องการ: orchestration layer ที่จัดการทรัพยากร บังคับใช้ policies route task และรักษา state นี่คือสิ่งที่ Intent OS มีให้ และทำไม RCT Ecosystem จึงสร้างเป็นหนึ่ง"
+tags: ["intent OS", "AI operating system", "orchestration", "JITNA", "FDIA", "enterprise AI architecture", "constitutional AI", "multi-agent systems"]
+readTime: 14
+references:
+  - "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback"
+  - "https://arxiv.org/abs/2210.11610"
+  - "https://hai.stanford.edu/"
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://rctlabs.co/th/architecture"
+---
+
+# Intent Operating System: ทำไม Enterprise AI จึงต้องการ Orchestration Layer
+
+ในปี 1969 operating system แก้ปัญหาเฉพาะ: คอมพิวเตอร์ทรงพลังแต่ควบคุมไม่ได้ แต่ละโปรแกรมต้องการควบคุม hardware โดยตรง หากไม่มี OS การเพิ่ม application ใหม่อาจทำให้ทุก application อื่นพัง OS กลายเป็น governance layer — มันจัดการ memory, schedule CPU time, handle I/O และบังคับใช้ access policy Applications ทำงานบนมัน ไม่ใช่แทนมัน
+
+เราอยู่ในตำแหน่งเดียวกับ enterprise AI วันนี้ LLM ทรงพลังแต่ควบคุมไม่ได้ แต่ละ deployment ตัดสินใจเองเรื่อง context management, safety, compliance และ access control หากไม่มี orchestration layer การเพิ่ม AI capability ใหม่อาจทำให้ทุก capability อื่นพัง
+
+RCT Ecosystem คือคำตอบของฉันสำหรับปัญหานี้ มันไม่ใช่ LLM ไม่ใช่ AI agent **มันคือ Intent Operating System** — constitutional AI orchestration layer ที่ควบคุมว่า AI capabilities ถูก allocate, constrain และ audit อย่างไรทั่ว enterprise
+
+---
+
+## สิ่งที่ Operating System ทำจริงๆ
+
+ก่อนจะโต้แย้งว่า AI ต้องการ OS-like layer ควรแม่นยำว่า operating system ทำอะไร:
+
+1. **Resource allocation** — ตัดสินใจว่า process ไหนได้รับ CPU, memory, I/O ณ ขณะใด
+2. **Access control** — บังคับใช้ policies ว่าใครเข้าถึง resource อะไรได้
+3. **State management** — รักษา persistent state ตลอด application session
+4. **Scheduling** — จัดลำดับและ prioritize task ตาม system-wide policy
+5. **Error isolation** — ทำให้ process ที่ล้มเหลวหนึ่งไม่สามารถทำ crash ทั้งระบบ
+6. **Audit trail** — บันทึกสิ่งที่เกิดขึ้น เมื่อไร และทำไม (system logs)
+
+ตอนนี้ map สิ่งเหล่านี้กับ enterprise AI requirements:
+
+| OS Function | AI Equivalent | RCT Implementation |
+|---|---|---|
+| Resource allocation | Model routing (LLM ไหน process task ไหน) | HexaCore 7-model router |
+| Access control | Authorization gates (ใครขอ AI capability อะไรได้) | FDIA Architect gate (ตัวแปร A) |
+| State management | Persistent AI memory ตลอด session | RCTDB 8-dimensional schema |
+| Scheduling | Intent prioritization และ task queueing | Intent Loop Engine (7 states) |
+| Error isolation | Constitutional kill switch (ป้องกัน cascade failure) | FDIA: A=0 → F=0 ไม่มีเงื่อนไข |
+| Audit trail | Decision provenance สำหรับ compliance | RCTDB dimension 8: provenance |
+
+LLM คือ application มันให้ความสามารถเดียว: text generation ตาม context มันไม่สามารถควบคุมตัวเอง, route task ไป model ที่เหมาะกว่า, รักษา state ตลอด session หรือบังคับใช้ access policy นั่นคืองานของ OS
+
+---
+
+## Architecture ของ Intent OS
+
+RCT Ecosystem implement 4 core architectural layer ที่สอดคล้องกับ traditional OS layer:
+
+### Layer 1: Constitutional Layer (Kernel)
+**เทียบกับ traditional OS:** Kernel — layer ที่มีสิทธิ์สูงสุด
+
+สมการ FDIA (`F = (D^I) × A`) คือ constitutional kernel ของ Intent OS เหมือน kernel มันทำงานในระดับ privilege สูงสุดและการตัดสินใจของมันไม่สามารถถูก override โดย application-level code
+
+invariant หลักที่ constitutional layer บังคับใช้:
+- เมื่อ A=0 ไม่มี output ถูกสร้าง ไม่ว่า model จะ output อะไร
+- ทุก request ถูก log พร้อม FDIA score ก่อนและหลัง processing
+- ทุกการตัดสินใจมี documented lawful basis (ต้องการสำหรับ PDPA Section 33)
+
+Constitutional layer ทำงานก่อน LLM call ใดๆ มันกำหนดว่า request valid หรือไม่ data quality threshold ที่ต้องการคืออะไร และ Architect ได้ authorize request class นี้หรือไม่
+
+### Layer 2: Protocol Layer (IPC)
+**เทียบกับ traditional OS:** Inter-Process Communication
+
+JITNA (Just In Time Nodal Assembly) คือ IPC layer ของ Intent OS ใน traditional OS IPC ให้วิธีมาตรฐานสำหรับ process สื่อสาร ใน Intent OS JITNA ให้วิธีมาตรฐานสำหรับ AI agent สื่อสาร
+
+JITNA packet format กำหนด:
+- **Source:** Requesting agent (พร้อม Ed25519 public key)
+- **Destination:** Target agent หรือ service
+- **Task:** สิ่งที่ขอ (พร้อม intent classification)
+- **Jurisdiction:** Regulatory context ไหนที่ใช้บังคับ (เช่น ไทย/PDPA)
+- **Checkpoint:** SHA-256 hash ของ current state (สำหรับ replay verification)
+
+หากไม่มี JITNA แต่ละ agent integration ต้องการ custom code ด้วย JITNA agent ปฏิบัติตาม standard negotiation flow (PROPOSE → COUNTER → ACCEPT) ที่ทำงานได้ตลอด 62 microservices
+
+### Layer 3: Memory Layer (Storage)
+**เทียบกับ traditional OS:** File system + memory management
+
+RCTDB + Delta Engine สร้าง memory layer ของ Intent OS Intent OS มีลำดับชั้น: hot zone (in-memory, <1ms) → warm zone (warm cache, 1–5ms) → cold zone (persistent storage, 10ms+)
+
+8-dimensional RCTDB schema ออกแบบสำหรับ AI memory ไม่ใช่ general-purpose storage:
+1. `query_hash` — semantic fingerprint สำหรับ cache lookup
+2. `fdia_scores` — ค่า D, I, A, F ณ เวลา processing
+3. `subject_uuid` — PDPA-compliant anonymized reference
+4. `model_chain` — model ไหนที่ involved (สำหรับ explainability)
+5. `consensus_result` — SignedAI agreement level (สำหรับ audit)
+6. `delta_chain` — incremental state (เปิดใช้ compression 74%)
+7. `timestamp` — immutable creation time
+8. `provenance` — source documentation, citations, access log
+
+Delta Engine เก็บเฉพาะสิ่งที่เปลี่ยนระหว่าง state สำหรับ enterprise query ที่ stable และซ้ำๆ (ส่วนใหญ่ของ enterprise AI query) หมายความว่า storage 74% ไม่เคยถูกเขียน — เก็บแค่ delta Warm recall serve query เหล่านี้ใน <50ms โดยไม่มี LLM call
+
+### Layer 4: Verification Layer (Security Ring)
+**เทียบกับ traditional OS:** CPU protection rings (Ring 0 = kernel, Ring 3 = user)
+
+SignedAI implement verification ring 4 ระดับ:
+- **Tier S (Sovereign):** 8-model consensus + Architect approval — สำหรับการตัดสินใจวิกฤตที่ยกเลิกไม่ได้
+- **Tier 4:** 4-model consensus — สำหรับการตัดสินใจ enterprise ที่มีความเสี่ยงสูง
+- **Tier 6:** 6-model consensus — enterprise operation มาตรฐาน
+- **Tier 8:** Single model — สำหรับ task ที่มีความเสี่ยงต่ำและเข้าใจดี
+
+เหมือน CPU protection ring tier สูงกว่าต้องการ consensus มากกว่าแต่ให้ safety guarantee ที่แข็งแกร่งกว่า ระบบเลือก tier ที่เหมาะสมโดยอัตโนมัติตาม FDIA Intent score (I) และ domain classification
+
+---
+
+## ทำไมจึงสำคัญสำหรับผู้ซื้อ Enterprise AI
+
+การสนทนาที่เกิดซ้ำกับทีม enterprise มักเป็นแบบนี้:
+
+**ทีม enterprise:** "เรา deploy GPT-4o บน internal knowledge base มันทำงานส่วนใหญ่"
+
+**คำถาม:** "เกิดอะไรขึ้นเมื่อมันไม่ทำงาน?"
+
+**ทีม enterprise:** "เรามองที่ output และตัดสินใจว่าดูสมเหตุสมผลหรือไม่"
+
+**คำถาม:** "ใครรับรอง query แต่ละอัน? audit trail ของคุณสำหรับ PDPA คืออะไร? จะจัดการ right-to-erasure request ได้อย่างไร?"
+
+**ทีม enterprise:** [เงียบ]
+
+Intent OS ตอบคำถามทั้งสามทาง architectural ไม่ใช่ procedural:
+
+- **Authorization:** FDIA Architect gate (A) ต้องการสำหรับทุก query ไม่มี query ถูก process โดยไม่ตรวจสอบ A นี่ไม่ใช่ policy — มันคือ mathematical invariant
+
+- **Audit trail:** ทุก query สร้าง RCTDB record พร้อม dimension 8 (provenance) นี่ไม่ใช่ log file — มันคือ structured record ที่สามารถตอบ "ทำไม information นี้จึงถูกใช้ใน response นี้?" สำหรับ PDPA Section 33
+
+- **Right to erasure:** เมื่อ data subject ขอ erasure `subject_uuid` จะถูก tombstone ใน RCTDB query ถัดมาที่จะดึง UUID นั้นได้รับข้อมูลเป็นศูนย์ — ไม่ใช่ placeholder ไม่ใช่ error ไม่มีอะไร การ erase สมบูรณ์
+
+---
+
+## ความแตกต่างระหว่าง AI Platform กับ Intent OS
+
+AI platform ให้ AI capabilities Intent OS ควบคุมวิธีที่ AI capabilities ถูกใช้
+
+ความแตกต่างนี้สำคัญเพราะ enterprise risk ไม่ได้เกี่ยวกับ AI capability — มันเกี่ยวกับ AI governance คำถามไม่ใช่ "AI ของเราตอบคำถามนี้ได้ไหม?" มันคือ "ควรหรือเปล่า? ใครรับรอง? เราพิสูจน์ได้ไหมว่าใช้ข้อมูลอะไร? เราลบข้อมูลนั้นได้ถ้าจำเป็น?"
+
+LLM API ตอบคำถาม capability Intent OS ตอบคำถาม governance
+
+---
+
+## คำศัพท์สำคัญ
+
+**Intent Operating System (Intent OS):** AI orchestration layer ที่จัดการ resource allocation, access control, state management, task scheduling, error isolation และ audit trail สำหรับ enterprise AI deployment
+
+**Constitutional Layer:** Layer ที่มีสิทธิ์สูงสุดของ Intent OS implement mathematical invariant ที่ไม่สามารถถูก override โดย application-level code
+
+**JITNA (Just In Time Nodal Assembly):** Inter-agent communication protocol ของ RCT Intent OS กำหนด standardized negotiation, execution และ verification flow สำหรับ AI agent
+
+**RCTDB:** 8-dimensional memory schema ของ RCT Intent OS ออกแบบสำหรับ AI memory (semantic lookup, provenance tracking, PDPA compliance) แทน general-purpose storage
+
+---
+
+### แหล่งอ้างอิงเพิ่มเติม
+
+- [JITNA Protocol — IPC layer ของ RCT Intent OS](/th/blog/jitna-language-release)
+- [สมการ FDIA — Constitutional Layer (kernel) ของ Intent OS](/th/blog/fdia-equation-explained)
+- [JITNA Entity Page — structured DefinedTerm schema สำหรับ protocol layer](/th/entity/jitna-protocol)
+
+---
+
+*Ittirit Saengow ออกแบบและสร้าง RCT Intent OS ในฐานะ solo developer ภายใน 30 วันในเดือนมิถุนายน–สิงหาคม 2025 บทความนี้แสดงความเข้าใจของเขาว่าทำไม enterprise AI จึงต้องการ orchestration layer และ RCT Ecosystem implement อย่างไร*

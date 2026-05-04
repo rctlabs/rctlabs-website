@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerApiBaseUrl } from "@/lib/api-config"
+import { getServerApiBaseUrl, getAssistantBasePath } from "@/lib/api-config"
 import { resolveAssistantAuth } from "@/lib/auth/assistant-guard"
 
 const API_BASE_URL = getServerApiBaseUrl()
+const ASSISTANT_PATH = getAssistantBasePath()
 
 export const dynamic = "force-dynamic"
 
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const upstream = await fetch(`${API_BASE_URL}/rctlabs/assistant/analyze`, {
+    const upstream = await fetch(`${API_BASE_URL}${ASSISTANT_PATH}/analyze`, {
       method: "POST",
       signal: AbortSignal.timeout(15000),
       headers: {

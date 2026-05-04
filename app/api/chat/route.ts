@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerApiBaseUrl } from "@/lib/api-config"
+import { getServerApiBaseUrl, getAssistantBasePath } from "@/lib/api-config"
 import { resolveAssistantAuth } from "@/lib/auth/assistant-guard"
 
 // Server-side only — not exposed to browser bundle.
 // Set API_BASE_URL in Vercel environment variables to point to the production backend.
 // Falls back to localhost for local development.
 const API_BASE_URL = getServerApiBaseUrl()
+const ASSISTANT_PATH = getAssistantBasePath()
 
 // No ISR — chat responses must be fresh and user-specific
 export const dynamic = "force-dynamic"
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const upstream = await fetch(`${API_BASE_URL}/rctlabs/assistant/chat`, {
+    const upstream = await fetch(`${API_BASE_URL}${ASSISTANT_PATH}/chat`, {
       method: "POST",
       signal: AbortSignal.timeout(12000),
       headers: {
