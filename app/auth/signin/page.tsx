@@ -56,7 +56,20 @@ export default function SignInPage() {
       setMessage("Check your email for the sign-in link.")
     } catch (submitError) {
       const fallback = "Unable to send sign-in link. Please try again."
-      setError(submitError instanceof Error ? submitError.message : fallback)
+      const rawMessage = submitError instanceof Error ? submitError.message : fallback
+      // B3: Map raw Supabase errors to user-friendly messages
+      const ERROR_MAP: [string, string][] = [
+        ["rate limit", "คุณส่งคำขอบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่ (Rate limited)"],
+        ["invalid email", "รูปแบบอีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง"],
+        ["unable to validate", "ไม่สามารถยืนยันอีเมลได้ กรุณาลองใหม่"],
+        ["email not confirmed", "อีเมลยังไม่ได้รับการยืนยัน กรุณาตรวจสอบ inbox"],
+        ["user not found", "ไม่พบบัญชีผู้ใช้นี้ กรุณาติดต่อทีมงาน"],
+        ["email link is invalid", "ลิ้งค์หมดอายุหรือถูกใช้ไปแล้ว กรุณาขอลิ้งค์ใหม่"],
+        ["signup is disabled", "การสมัครสมาชิกถูกปิดไว้ชั่วคราว กรุณาติดต่อทีมงาน"],
+      ]
+      const lower = rawMessage.toLowerCase()
+      const mapped = ERROR_MAP.find(([key]) => lower.includes(key))
+      setError(mapped ? mapped[1] : rawMessage)
     } finally {
       setSubmitting(false)
     }

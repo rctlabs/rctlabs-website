@@ -79,6 +79,27 @@ function useScenarios() {
 }
 
 /* ------------------------------------------------------------------ */
+/* A3: classifyIntent — pure module-level function (stable reference) */
+/* ------------------------------------------------------------------ */
+
+function classifyIntent(text: string): AnalysisMode {
+  const lower = text.toLowerCase()
+  const ANALYZE_KEYWORDS = [
+    "architecture", "layer", "algorithm", "fdia", "jitna", "signemai", "signedai",
+    "consensus", "rctdb", "genome", "benchmark", "hallucination", "แสดง", "วิเคราะห์",
+    "อธิบาย", "explain", "compare", "breakdown", "how does", "what is",
+    "สถาปัตยกรรม", "โปรโตคอล",
+  ]
+  const MIRROR_KEYWORDS = [
+    "refine", "improve", "rewrite", "revise", "better", "alternative", "version",
+    "ปรับปรุง", "เขียนใหม่", "แก้ไข",
+  ]
+  if (MIRROR_KEYWORDS.some((kw) => lower.includes(kw))) return "mirror"
+  if (text.length > 80 || ANALYZE_KEYWORDS.some((kw) => lower.includes(kw))) return "analyze"
+  return "chat"
+}
+
+/* ------------------------------------------------------------------ */
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
 
@@ -86,7 +107,18 @@ export function FloatingAI() {
   const [isOpen, setIsOpen] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   const [showScenarios, setShowScenarios] = useState(true)
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  // C1: Initialize messages from localStorage so history survives page refresh
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    if (typeof window === "undefined") return []
+    try {
+      const stored = localStorage.getItem("rct-chat-history")
+      if (!stored) return []
+      const parsed = JSON.parse(stored) as Array<Record<string, unknown>>
+      return parsed.map((m) => ({ ...m, timestamp: new Date(m.timestamp as string) })) as ChatMessage[]
+    } catch {
+      return []
+    }
+  })
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -140,6 +172,13 @@ export function FloatingAI() {
       content: _item.content,
       ...(_item.topic ? { _topic: _item.topic } : {}),
     }))
+  }, [messages])
+
+  /* C1: Persist messages to localStorage (max 20) — survives page refresh */
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem("rct-chat-history", JSON.stringify(messages.slice(-20)))
+    }
   }, [messages])
 
   /* ---------------------------------------------------------------- */
@@ -324,6 +363,9 @@ export function FloatingAI() {
     setMessages([])
     setShowScenarios(true)
     setAnalysisResult(null)
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("rct-chat-history")
+    }
   }
 
   // Analysis function
@@ -425,7 +467,7 @@ export function FloatingAI() {
         setLoading(false)
       }
     },
-    [loading, sessionId]
+    [loading, sessionId, buildHistory]
   )
 
   // Format analysis result
@@ -453,24 +495,6 @@ export function FloatingAI() {
     }
     
     return lines.join("\n") || "No analysis data available"
-  }
-
-  // Auto-classify user intent → choose the best analysis mode
-  function classifyIntent(text: string): AnalysisMode {
-    const lower = text.toLowerCase()
-    const ANALYZE_KEYWORDS = [
-      "architecture", "layer", "algorithm", "fdia", "jitna", "signemai", "signedai",
-      "consensus", "rctdb", "genome", "benchmark", "hallucination", "แสดง", "วิเคราะห์",
-      "อธิบาย", "explain", "compare", "breakdown", "how does", "what is",
-      "สถาปัตยกรรม", "โปรโตคอล",
-    ]
-    const MIRROR_KEYWORDS = [
-      "refine", "improve", "rewrite", "revise", "better", "alternative", "version",
-      "ปรับปรุง", "เขียนใหม่", "แก้ไข",
-    ]
-    if (MIRROR_KEYWORDS.some((kw) => lower.includes(kw))) return "mirror"
-    if (text.length > 80 || ANALYZE_KEYWORDS.some((kw) => lower.includes(kw))) return "analyze"
-    return "chat"
   }
 
   // Handle analysis mode submission
@@ -731,6 +755,19 @@ export function FloatingAI() {
               )}
             </div>
 
+            {/* ---------- B2: Login Banner for anonymous users ---------- */}
+            {userId === "anonymous" && (
+              <div className="px-4 py-1.5 border-b border-border/30 bg-warm-amber/5 flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">ล็อกอินเพื่อบันทึกประวัติการสนทนา</span>
+                <a
+                  href="/auth/signin"
+                  className="text-xs text-warm-amber hover:underline font-medium ml-2 whitespace-nowrap"
+                >
+                  Sign in →
+                </a>
+              </div>
+            )}
+
             {/* ---------- Messages Area ---------- */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
 
@@ -850,8 +887,12 @@ export function FloatingAI() {
                   Chat mode uses live-streaming message bubble instead. */}
               {loading && !messages.some((m) => m.isStreaming) && (
                 <div className="flex justify-start">
-                  <div className="bg-[#EDE8E0] dark:bg-[#1E1E1E] border border-[#D8D3CC] dark:border-[#2A2A2A] rounded-xl px-3 py-2">
-                    <Loader2 className="w-4 h-4 animate-spin text-warm-amber" />
+                  <div className="bg-[#EDE8E0] dark:bg-[#1E1E1E] border border-[#D8D3CC] dark:border-[#2A2A2A] rounded-xl px-4 py-3">
+                    <div className="flex gap-1 items-center">
+                      <span className="w-1.5 h-1.5 bg-warm-amber rounded-full animate-bounce [animation-delay:0ms]" />
+                      <span className="w-1.5 h-1.5 bg-warm-amber rounded-full animate-bounce [animation-delay:150ms]" />
+                      <span className="w-1.5 h-1.5 bg-warm-amber rounded-full animate-bounce [animation-delay:300ms]" />
+                    </div>
                   </div>
                 </div>
               )}
@@ -898,7 +939,7 @@ export function FloatingAI() {
             )}
 
             {/* ---------- Input ---------- */}
-            <form onSubmit={handleSubmit} className="border-t border-border px-3 py-2 flex gap-2">
+            <form onSubmit={handleSubmit} className="border-t border-border px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] flex gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
