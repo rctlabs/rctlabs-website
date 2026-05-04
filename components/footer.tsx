@@ -61,6 +61,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
       { label: isTh ? "Constitutional AI" : "Constitutional AI", href: "/technology/constitutional-ai" },
       { label: "Protocols", href: "/protocols" },
       { label: isTh ? "Open SDK (Apache 2.0)" : "Open SDK (Apache 2.0)", href: SOCIAL_LINKS.platformGithub, external: true },
+      { label: isTh ? "SDK Documentation" : "SDK Documentation", href: SOCIAL_LINKS.platformDocs, external: true },
     ],
     [isTh ? "ทรัพยากร" : "Resources"]: [
       { label: "Whitepaper", href: "/whitepaper" },

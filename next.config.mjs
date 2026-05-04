@@ -78,6 +78,22 @@ const nextConfig = {
         destination: "/en/blog/fdia-equation-explained",
         permanent: true,
       },
+      // SDK docs redirect — /docs and /th/docs both point to GitHub Pages
+      {
+        source: "/docs",
+        destination: "https://rctlabs.github.io/rct-platform/",
+        permanent: false,
+      },
+      {
+        source: "/en/docs",
+        destination: "https://rctlabs.github.io/rct-platform/",
+        permanent: false,
+      },
+      {
+        source: "/th/docs",
+        destination: "https://rctlabs.github.io/rct-platform/",
+        permanent: false,
+      },
 
     ]
   },

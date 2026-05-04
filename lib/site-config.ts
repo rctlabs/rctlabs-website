@@ -17,6 +17,7 @@ export const SITE_HALLUCINATION_RATE = "0.3% benchmark"
 export const SOCIAL_LINKS = {
   github: "https://github.com/rctlabs",
   platformGithub: "https://github.com/rctlabs/rct-platform",
+  platformDocs: "https://rctlabs.github.io/rct-platform/",
   linkedin: "https://linkedin.com/company/rctlabs",
   twitter: "https://twitter.com/rctlabs",
   discord: "https://discord.gg/rctlabs",

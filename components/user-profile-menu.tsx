@@ -8,7 +8,7 @@
 import { useEffect, useState } from "react"
 import { User, LogOut, Settings, ChevronDown, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useLanguage } from "@/components/language-provider"
 import { buildContactHref } from "@/lib/funnel"
 import { resolveLocale, getLocalePrefix } from "@/lib/i18n"
@@ -25,6 +25,7 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
   const [resolvedAuth, setResolvedAuth] = useState(isAuthenticated)
   const { language } = useLanguage()
   const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     let active = true
@@ -156,9 +157,12 @@ export function UserProfileMenu({ user = null, isAuthenticated = false }: UserPr
               </Link>
               <div className="my-1 h-px bg-border" />
               <button
-                onClick={() => {
+                onClick={async () => {
                   setOpen(false)
-                  window.location.assign('/auth/signout?next=/auth/signin')
+                  const { getSupabaseBrowserClient } = await import("@/lib/auth/browser-client")
+                  const supabase = getSupabaseBrowserClient()
+                  await supabase.auth.signOut()
+                  router.push("/auth/signin")
                 }}
                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors"
               >
