@@ -23,6 +23,24 @@ export default function ChangelogClient() {
 
   const releases: ReleaseEntry[] = [
     {
+      version: "Website v3.4.0",
+      date: "2026-04-30",
+      title: language === "th" ? "MEE + MOIP blog batch · lcp-trace.mjs CI fix · SDK public launch" : "MEE + MOIP blog batch · lcp-trace.mjs CI fix · SDK public launch",
+      description: language === "th" ? "เผยแพร่บทความ MEE และ MOIP (EN + TH) พร้อม article rct-platform open-source launch แก้ไข lcp-trace.mjs hang บน Linux CI ด้วย process group kill และอัปเดต sitemap lastmod เป็น hardcoded date" : "Published MEE and MOIP articles (EN + TH), rct-platform open-source launch article, fixed lcp-trace.mjs Linux CI hang via process group kill, and hardcoded SITE_LAST_DEPLOY for stable sitemap lastmod.",
+      icon: Rocket,
+      highlights: language === "th" ? ["MEE + MOIP articles EN + TH", "rct-platform launch article", "lcp-trace.mjs CI fix (process group kill)", "SITE_LAST_DEPLOY hardcoded", "hallucinationRate card ใน /benchmark"] : ["MEE + MOIP articles EN + TH", "rct-platform launch article", "lcp-trace.mjs CI fix (process group kill)", "SITE_LAST_DEPLOY hardcoded", "hallucinationRate card in /benchmark"],
+      tone: "border-green-500/25 bg-green-500/10 text-green-600 dark:text-green-400",
+    },
+    {
+      version: "SDK v1.0.2a0",
+      date: "2026-04-30",
+      title: language === "th" ? "Public Alpha Launch — 1,193 tests · 94% coverage · Apache 2.0" : "Public Alpha Launch — 1,193 tests · 94% coverage · Apache 2.0",
+      description: language === "th" ? "เปิดตัว rct-platform public SDK บน GitHub (Apache 2.0) พร้อม 1,193 tests ผ่าน 94% coverage, 41 algorithms, 7 HexaCore models, GitHub Pages docs, Discussions, Milestones และ distribution docs ครบชุด" : "Launched rct-platform public SDK on GitHub (Apache 2.0) with 1,193 passing tests, 94% coverage, 41 algorithms, 7 HexaCore models, GitHub Pages docs, Discussions, Milestones, and full distribution docs.",
+      icon: BookOpen,
+      highlights: language === "th" ? ["1,193 tests · 94% coverage · 0 skips", "github.com/rctlabs/rct-platform public", "41 algorithms · 7 HexaCore models", "GitHub Pages + Discussions + Milestones live", "CLAIM_REGISTRY + PLATFORM_KITS docs"] : ["1,193 tests · 94% coverage · 0 skips", "github.com/rctlabs/rct-platform public", "41 algorithms · 7 HexaCore models", "GitHub Pages + Discussions + Milestones live", "CLAIM_REGISTRY + PLATFORM_KITS docs"],
+      tone: "border-teal-500/25 bg-teal-500/10 text-teal-600 dark:text-teal-400",
+    },
+    {
       version: "Website v3.3.0",
       date: "2026-04-16",
       title: language === "th" ? "Mobile optimization + FAQ/Speakable schema + BLOG_RELATED_MAP 72 edges" : "Mobile optimization + FAQ/Speakable schema + BLOG_RELATED_MAP 72 edges",
