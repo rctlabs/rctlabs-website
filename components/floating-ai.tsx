@@ -36,7 +36,7 @@ interface ChatMessage {
   topic?: string | null
   suggestions?: string[]
   feedback?: "up" | "down" | null
-  source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch"
+  source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch" | "rate_limit"
   model_used?: string
   tokens_used?: number
   isStreaming?: boolean
@@ -274,12 +274,25 @@ export function FloatingAI() {
               try {
                 const event = JSON.parse(jsonStr) as Record<string, unknown>
                 if (event.done) {
-                  finalMeta = {
-                    verified: true,
-                    intent: typeof event.intent === "string" ? event.intent : undefined,
-                    topic: typeof event.topic === "string" ? event.topic : null,
-                    suggestions: Array.isArray(event.suggestions) ? (event.suggestions as string[]) : [],
-                    source: (event.source as ChatMessage["source"]) ?? "knowledge_base",
+                  // D1: Handle rate limit response from gateway (429 converted to SSE)
+                  if (event.error === "rate_limit") {
+                    const retryAfter = typeof event.retryAfter === "number" ? event.retryAfter : 60
+                    const isThai = typeof window !== "undefined" && window.location.pathname.startsWith("/th")
+                    finalMeta = {
+                      content: isThai
+                        ? `⏱ ระบบขอพักสักครู่ — กรุณารอ ${retryAfter} วินาทีแล้วลองใหม่`
+                        : `⏱ Rate limit reached — please wait ${retryAfter}s and try again`,
+                      source: "rate_limit" as const,
+                      verified: false,
+                    }
+                  } else {
+                    finalMeta = {
+                      verified: true,
+                      intent: typeof event.intent === "string" ? event.intent : undefined,
+                      topic: typeof event.topic === "string" ? event.topic : null,
+                      suggestions: Array.isArray(event.suggestions) ? (event.suggestions as string[]) : [],
+                      source: (event.source as ChatMessage["source"]) ?? "knowledge_base",
+                    }
                   }
                 } else {
                   accumulated += typeof event.token === "string" ? event.token : ""
@@ -406,6 +419,29 @@ export function FloatingAI() {
 
         if (!res.ok) {
           const isAuth = res.status === 401
+          // D1: Rate limit handling for analyze/mirror endpoints
+          if (res.status === 429) {
+            let retryAfter = 60
+            try {
+              const body = await res.clone().json() as { retryAfter?: number }
+              if (typeof body.retryAfter === "number") retryAfter = body.retryAfter
+            } catch { /* ignore */ }
+            const isThai = typeof window !== "undefined" && window.location.pathname.startsWith("/th")
+            setMessages((prev) => [
+              ...prev,
+              {
+                id: (Date.now() + 1).toString(),
+                role: "assistant" as const,
+                content: isThai
+                  ? `⏱ ระบบขอพักสักครู่ — กรุณารอ ${retryAfter} วินาทีแล้วลองใหม่`
+                  : `⏱ Rate limit reached — please wait ${retryAfter}s and try again`,
+                timestamp: new Date(),
+                source: "rate_limit" as const,
+                verified: false,
+              },
+            ])
+            return
+          }
           setMessages((prev) => [
             ...prev,
             {
@@ -543,6 +579,13 @@ export function FloatingAI() {
       return (
         <span className="text-yellow-400" title="Fallback response">
           ⚠️
+        </span>
+      )
+    }
+    if (msg.source === "rate_limit") {
+      return (
+        <span className="text-orange-400" title="Rate limit — too many requests">
+          ⏱
         </span>
       )
     }

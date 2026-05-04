@@ -1,40 +1,30 @@
 {
-  "timestamp": "2026-04-20T04:43:05.699Z",
+  "timestamp": "2026-04-30T06:51:37.642Z",
   "thresholdMs": 7000,
-  "runsPerLocale": 3,
+  "runsPerLocale": 1,
   "results": [
     {
       "locale": "en",
       "url": "http://localhost:3012/en",
-      "medianLcp": 4317.302374999999,
-      "medianTbt": 104,
-      "medianTtfb": 7.279999999999999,
+      "medianLcp": 5175.4652750000005,
+      "medianTbt": 146,
+      "medianTtfb": 91.036,
       "runs": [
         {
-          "lcp": 4794.507875,
-          "tbt": 137,
-          "ttfb": 86.08200000000001
-        },
-        {
-          "lcp": 4317.302374999999,
-          "tbt": 104,
-          "ttfb": 7.279999999999999
-        },
-        {
-          "lcp": 4313.370274999999,
-          "tbt": 99.5,
-          "ttfb": 6.06
+          "lcp": 5175.4652750000005,
+          "tbt": 146,
+          "ttfb": 91.036
         }
       ],
       "renderBlockingCount": 2,
       "renderBlockingItems": [
         {
-          "url": "http://localhost:3012/_next/static/css/c6f4bd6004f4d561.css",
-          "wastedMs": 1057
+          "url": "http://localhost:3012/_next/static/css/593073e287684139.css",
+          "wastedMs": 1061
         },
         {
-          "url": "http://localhost:3012/_next/static/css/43900f43fc834757.css",
-          "wastedMs": 157
+          "url": "http://localhost:3012/_next/static/css/339790436af511ec.css",
+          "wastedMs": 160
         }
       ],
       "lcpElementSnippet": "",
@@ -48,35 +38,25 @@
     {
       "locale": "th",
       "url": "http://localhost:3012/th",
-      "medianLcp": 4386.94005,
-      "medianTbt": 83.5,
-      "medianTtfb": 5.318,
+      "medianLcp": 5364.3025,
+      "medianTbt": 106.5,
+      "medianTtfb": 13.931,
       "runs": [
         {
-          "lcp": 4386.94005,
-          "tbt": 83.5,
-          "ttfb": 8.821000000000002
-        },
-        {
-          "lcp": 4452.364150000001,
-          "tbt": 82.50000000000091,
-          "ttfb": 5.318
-        },
-        {
-          "lcp": 4384.860699999997,
-          "tbt": 93.99999999999909,
-          "ttfb": 4.816
+          "lcp": 5364.3025,
+          "tbt": 106.5,
+          "ttfb": 13.931
         }
       ],
       "renderBlockingCount": 2,
       "renderBlockingItems": [
         {
-          "url": "http://localhost:3012/_next/static/css/c6f4bd6004f4d561.css",
-          "wastedMs": 1355
+          "url": "http://localhost:3012/_next/static/css/593073e287684139.css",
+          "wastedMs": 1356
         },
         {
-          "url": "http://localhost:3012/_next/static/css/43900f43fc834757.css",
-          "wastedMs": 155
+          "url": "http://localhost:3012/_next/static/css/339790436af511ec.css",
+          "wastedMs": 156
         }
       ],
       "lcpElementSnippet": "",
