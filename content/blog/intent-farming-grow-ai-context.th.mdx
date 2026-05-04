@@ -1,0 +1,161 @@
+---
+title: "Intent Farming: วิธีปลูกและเพาะ AI Context ให้เติบโตตามเวลา"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-10"
+lastReviewed: "2026-05-07"
+category: "research"
+excerpt: "Intent farming คือการสะสม จัดระเบียบ และเสริมคุณค่า AI context อย่างเป็นระบบตามเวลา — แปลง one-shot query เป็น session ที่ฉลาดขึ้นเรื่อยๆ บทความนี้อธิบาย architecture, memory layer ของ RCTDB และวิธีที่ intent farming เปลี่ยน economics ของ enterprise AI"
+tags: ["Intent Farming", "AI Context", "Enterprise AI Memory", "RCTDB", "RCT Platform", "AI Architecture", "Warm Recall", "Context Management"]
+readTime: 13
+references:
+  - "https://arxiv.org/abs/2304.01373"
+  - "https://arxiv.org/abs/2210.03629"
+  - "https://rctlabs.github.io/rct-platform/"
+  - "https://rctlabs.co/th/core-systems"
+  - "https://rctlabs.co/th/algorithms"
+  - "https://www.nist.gov/artificial-intelligence"
+---
+
+# Intent Farming: วิธีปลูกและเพาะ AI Context ให้เติบโตตามเวลา
+
+Enterprise AI deployment ส่วนใหญ่เป็นระบบ one-shot ผู้ใช้ส่ง query ระบบ retrieve context สร้าง response และทิ้ง interaction นั้นไป query ถัดไปเริ่มจากศูนย์ query ที่สิบก็เริ่มจากศูนย์ query ที่หนึ่งพันก็เริ่มจากศูนย์
+
+Architecture นี้หมายความว่า AI system ของคุณไม่เรียนรู้อะไรจากการใช้งาน นักวิเคราะห์ที่ query ระบบทุกวันเป็นเวลาสองปีได้รับคุณภาพ response เหมือนกันในวันแรกและวันที่เจ็ดร้อยสามสิบ — นอกเสียจากว่ามีคน curate และ inject context สำหรับทุก session ด้วยมือ ภาระ manual curation นั้นคือเหตุผลที่ enterprise AI knowledge base ส่วนใหญ่ล้าสมัยภายในหกเดือนหลังเปิดตัว
+
+Intent farming คือทางออก มันคือการ **สะสม จัดระเบียบ และเสริมคุณค่า AI context อย่างเป็นระบบตามเวลา** — แปลง one-shot query เป็น session ที่ฉลาดขึ้นเรื่อยๆ แปลง user interaction เป็น structured knowledge ที่ compound ตลอดทุก query ถัดมา และแปลงการใช้ AI เองเป็น proprietary intelligence asset ที่คู่แข่งไม่สามารถ replicate ได้
+
+บทความนี้อธิบายว่า intent farming คืออะไร ทำไมระบบส่วนใหญ่ทำไม่ได้ ข้อกำหนด architecture สำหรับระบบที่ทำได้ และวิธีที่ RCT Platform implement มันผ่าน RCTDB และ JITNA protocol
+
+## สิ่งที่ Query มีอยู่จริง
+
+ทุก user query มีความหมายมากกว่าที่ปรากฏ เมื่อนักวิเคราะห์ enterprise ส่ง "เราเสี่ยงต่อการหยุดชะงักของ supply chain ในเอเชียตะวันออกเฉียงใต้แค่ไหน?" ข้อความนั้นประกอบด้วย:
+
+- **Explicit intent** — ระบุความเสี่ยง supply chain ในภูมิภาคทางภูมิศาสตร์
+- **Implicit organizational frame** — "เรา" หมายถึงบริษัท หน่วยงาน หรือ portfolio เฉพาะ
+- **Temporal assumption** — กาลปัจจุบันหมายถึงความเกี่ยวข้องปัจจุบัน ไม่ใช่การวิเคราะห์ประวัติศาสตร์
+- **Risk tolerance signal** — คำว่า "เสี่ยง" บอกว่าผู้ใช้คิดในแง่การบริหารความเสี่ยง ไม่ใช่โอกาส
+- **Unstated precision requirement** — นี่คือคำถามเชิงกลยุทธ์ ไม่ใช่การปฏิบัติงาน ผู้ใช้ต้องการการวิเคราะห์ ไม่ใช่ข้อมูลดิบ
+
+ระบบ one-shot ดึง explicit intent และทิ้งทุกอย่างอื่น Intent farming ดึงทั้ง 5 layer และเก็บเป็น structured context ที่เสริมคุณค่า query ในอนาคต
+
+เมื่อนักวิเคราะห์คนเดียวกันส่ง query ถัดมา — "การตัดสินใจ procurement ในภูมิภาค APAC ของเรา Q1 เป็นอย่างไร?" — ระบบที่เก็บ intent context ก่อนหน้ารู้แล้วว่า: นักวิเคราะห์นี้อยู่ใน risk management focus ที่ Southeast Asia/APAC exposure คิดในแง่กลยุทธ์ และกำลังสืบสวนคำถาม time-bound ที่น่าจะเชื่อมกับความกังวล supply chain จาก session ก่อน
+
+query ที่สองมีคุณค่ามากกว่าสำหรับทั้งนักวิเคราะห์และระบบ — โดยไม่ต้องทำงานเพิ่มเติมจากนักวิเคราะห์
+
+## เส้นโค้ง Compounding Intelligence
+
+ระบบ AI แบบดั้งเดิมรักษา performance curve แบบราบ คุณภาพ response เป็นฟังก์ชันของความสามารถโมเดลและ retrieval quality ณ ขณะนั้น ไม่ใช่ cumulative usage ระบบ intent farming ดำเนิน compounding intelligence curve:
+
+- Session 1–10: คุณภาพ baseline ระบบเรียนรู้ intent pattern เฉพาะผู้ใช้ ความชอบด้านศัพท์ domain และ organizational framing
+- Session 11–50: คุณภาพที่มี context ระบบเริ่ม pre-populate context ตามรูปแบบที่เรียนรู้ Retrieval precision ดีขึ้นเพราะระบบ narrow search space ตาม user intent ที่รู้แล้ว
+- Session 51–200: คุณภาพเชิงรับรู้ล่วงหน้า ระบบเริ่ม identify recurring intent pattern และ pre-retrieve context ที่น่าจะต้องการก่อน query ถูกส่ง
+- Session 200+: Proprietary intelligence context ที่สะสมแทน organizational knowledge ที่ไม่มีสิ่งเทียบเท่าภายนอก คู่แข่งใหม่ที่ deploy โมเดลพื้นฐานเดียวกันไม่สามารถ replicate ได้เพราะ context เป็นผลจาก interaction เฉพาะของ organization นั้นตามเวลา
+
+เส้นโค้ง compounding คือ business case ของ intent farming คุณค่าไม่ได้อยู่ที่โมเดล — โมเดลคือ commodity infrastructure คุณค่าอยู่ที่ accumulated intent context และคุณค่านั้นเป็นของ organization ที่ปลูกมันโดยสมบูรณ์
+
+## สาม Layer ของ Intent Context
+
+Intent farming จัดโครงสร้าง context เป็น 3 layer ที่มี retention policy และ retrieval behavior ต่างกัน:
+
+### Layer 1 — Session Intent (Hot Context)
+
+Session intent คือ active context ภายใน single interaction session: entities เฉพาะที่พูดถึง reasoning chain จนถึงตอนนี้ คำถามที่ถามและตอบ การตัดสินใจที่ทำ context นี้ accessible ทันที อัปเดต real time และเป็น primary context สำหรับ session ปัจจุบัน
+
+Hot context มี retention window 24–72 ชั่วโมงโดยค่าเริ่มต้น หลังจากนั้นจะ expire หรือถูก promote เป็น warm context ตาม relevance scoring
+
+### Layer 2 — User Intent Patterns (Warm Context)
+
+Warm context คือ structured summary ของ intent pattern ที่ดึงมาจาก session ประวัติศาสตร์ มันจับ: domains ที่ผู้ใช้ query บ่อยที่สุด ประเภทการวิเคราะห์ที่ชอบ entities ที่อ้างอิงซ้ำๆ ข้อกำหนด precision ที่มักเป็น และ intent framing ที่เปลี่ยนไปตามเวลา
+
+Warm context ไม่ใช่ raw session log มันคือ structured profile ที่อัปเดตต่อเนื่องซึ่งตอบคำถาม: "ด้วยประวัติผู้ใช้นี้ context อะไรที่น่าจะเกี่ยวข้องกับ query ถัดมาของเขา?"
+
+Warm recall — การ retrieve warm context ที่ถูกต้องเพื่อเสริม query ใหม่ — เป็นความสามารถสำคัญที่ enterprise AI system ส่วนใหญ่ขาดโดยสิ้นเชิง RCT Platform target warm recall latency ที่ <50ms ที่ความเร็วนั้น warm context augmentation ไม่เพิ่ม latency ที่รับรู้ได้ในประสบการณ์ query
+
+### Layer 3 — Organizational Intent Graph (Cold Context)
+
+Cold context คือ intent graph ที่ aggregate และ anonymize ทั่วทุกผู้ใช้ใน organization มันจับ: topics ที่ organization query รวมกันบ่อยที่สุด knowledge gaps ที่ปรากฏซ้ำๆ ทั่วทีม domain knowledge ที่ retrieve ร่วมกันบ่อย (เผย latent knowledge structure) และ intent pattern ที่เปลี่ยนไปตามเวลาในการตอบสนองต่อ events ภายนอก
+
+Cold context คือ organizational intelligence layer มันคือ accumulated institutional knowledge ที่ทำให้ AI system aligned กับ domain, terminology และ reasoning pattern เฉพาะของ organization มากขึ้นเรื่อยๆ — โดยไม่ต้องใช้ความพยายาม knowledge engineering อย่างชัดเจน
+
+## RCTDB: Memory Architecture ที่ทำให้ Intent Farming เป็นไปได้
+
+Intent farming ต้องการ memory architecture ที่แตกต่างพื้นฐานจาก vector database แบบดั้งเดิม Vector database เก็บ embedding และ retrieve embedding ที่คล้ายกัน นั่นคือการ retrieve ไม่ใช่ memory AI memory ที่แท้จริงต้องการ:
+
+**Temporal metadata** ทุก memory entry ต้องมี creation timestamp, last access timestamp, last update timestamp และ relevance decay function หากไม่มี temporal metadata context ที่เก็บทั้งหมดจะมีน้ำหนักเท่ากันโดยไม่คำนึงถึงความใหม่ ซึ่งหมายความว่า stale context จะปนเปื้อน query ปัจจุบัน
+
+**Intent tags** ทุก memory entry ต้องถูก tag ด้วย intent pattern ที่สร้างมาจาก สิ่งนี้ช่วยให้ retrieve ตาม intent type ไม่ใช่แค่ semantic similarity — ความแตกต่างสำคัญเมื่อ content จริงเดียวกันเกี่ยวข้องกับ intent type ต่างกันในรูปแบบต่างกัน
+
+**Provenance chains** ทุก memory entry ต้องสืบย้อนกลับไปยัง source เดิม — query ที่สร้างมัน retrieved content ที่สังเคราะห์มา model version ที่ process มัน และ quality score ณ เวลาที่สร้าง Provenance chain คือสิ่งที่ช่วยให้ระบบ decay หรือ invalidate memory เมื่อ source content เปลี่ยน
+
+**Constitutional scoring** Memory entry ต้องมี quality score ที่สะท้อนว่า produce accurate output ได้น่าเชื่อถือแค่ไหนเมื่อถูก retrieve Memory ที่คะแนนต่ำควรถูก retrieve ด้วยน้ำหนักน้อยกว่าและในที่สุด expire ถ้า correlate กับ poor quality output อย่างต่อเนื่อง
+
+**Cross-session linking** Memory entry จาก session ต่างกันที่อ้างอิง entities, concepts หรือ intent pattern เดียวกันต้องเชื่อมกันเพื่อ enable graph-based retrieval — retrieve ไม่ใช่แค่ memory ที่ semantically similar ที่สุด แต่ memory ที่เชื่อมกับ context graph ของ query ปัจจุบันมากที่สุด
+
+RCTDB implement ทั้ง 5 ข้อกำหนด มันคือ structured memory layer ที่สร้างบน vector storage ไม่ใช่การแทนที่ Vector store จัดการ semantic similarity retrieval RCTDB เพิ่ม temporal, intent, provenance, quality และ graph layer ที่แปลงการ retrieve เป็น memory
+
+## JITNA Protocol: การจับ Intent แบบ Real-Time
+
+Intent farming ต้องการให้ทุก user interaction ถูก process สำหรับ intent signal แบบ real time โดยไม่เพิ่ม latency ที่รับรู้ได้ในตัว interaction นั้น นี่คือบทบาทของ JITNA protocol: **Just-In-Time Need Analysis**
+
+JITNA ทำงานควบคู่กับ primary query pipeline ในขณะที่ query ของผู้ใช้กำลังถูก process โดย retrieval และ generation layer JITNA ทำงานพร้อมกัน:
+
+1. ดึง explicit และ implicit intent signal จาก query text
+2. จำแนก intent ตาม Tier 1–9 algorithm taxonomy
+3. คำนวณ FDIA score สำหรับ intent clarity
+4. resolve entity reference กับ organizational knowledge graph
+5. ระบุ warm context pattern ที่ query นี้ activate
+6. สร้าง structured intent metadata สำหรับเก็บใน RCTDB
+
+เพราะ JITNA ทำงานควบคู่กัน intent capture จึงไม่เพิ่ม latency ในประสบการณ์ที่ผู้ใช้เห็น intent metadata ถูกเขียนไปยัง RCTDB หลังจาก response ถูกส่งกลับไปยังผู้ใช้
+
+นี่ไม่ใช่ post-processing batch job — มันคือ real-time asynchronous enrichment ความแตกต่างนี้สำคัญเพราะ batch enrichment สร้าง delay ระหว่าง interaction และ availability ของ learned context สำหรับ query ถัดมา asynchronous write ของ JITNA ทำให้ intent context จาก query N พร้อมสำหรับ query N+1 ใน session เดียวกัน
+
+## จาก Intent Farming ถึง Intent Agriculture
+
+อุปมาเรื่องการทำเกษตรมีประโยชน์เพราะจับธรรมชาติที่เป็นระบบและสะสมของกระบวนการ — แต่มัน understate ความซับซ้อน อุปมาที่ดีกว่าคือ **precision agriculture**:
+
+- **การทดสอบดิน** ≈ quality scoring ของ knowledge base ที่มีอยู่ก่อน integrate context ใหม่
+- **การหมุนเวียนพืช** ≈ การจัดการ intent pattern diversity ป้องกันการ over-index บน intent type ที่มีความถี่สูงแต่แคบ
+- **การจัดตารางชลประทาน** ≈ proactive context pre-retrieval ตาม predicted intent pattern
+- **การจัดตารางเก็บเกี่ยว** ≈ context promotion cycle ย้าย hot context ไป warm และ warm ไป cold ในเวลาที่เหมาะสม
+- **การควบคุมศัตรูพืช** ≈ constitutional quality gate ที่ป้องกัน context คุณภาพต่ำหรือขัดแย้งจากการ integrate เข้า memory layer
+
+อุปมา precision agriculture ยังจับ time horizon ที่ยาว คุณภาพดินของฟาร์มสะท้อนการตัดสินใจหลายปี Organizational intent graph ขององค์กรสะท้อน interaction หลายปี ทั้งสองคือ proprietary asset ที่ไม่สามารถซื้อจาก vendor ได้ — ต้องปลูกขึ้นมา
+
+## Economics ของ Intent Farming
+
+Intent farming เปลี่ยน cost structure ของ enterprise AI ใน 3 วิธี:
+
+**Token efficiency** ระบบที่มี warm context สมบูรณ์ต้องการ token ต่อ query น้อยกว่าเพื่อให้ได้คุณภาพสูง เพราะ context ถูกจัด pre-organize และ pre-filter สำหรับ intent ปัจจุบันแทนที่จะ retrieve จาก cold generic corpus ตลอด query หลายพันรายการต่อวัน การประหยัด token มีนัยสำคัญ
+
+**Onboarding acceleration** ผู้ใช้ใหม่ของระบบ intent farming ได้รับประโยชน์จาก organizational cold context ทันที พวกเขาไม่เริ่มจากศูนย์ — พวกเขาเริ่มด้วย intent graph ที่สะสมขององค์กร สิ่งนี้ compress เวลาถึง productivity สำหรับสมาชิกทีมใหม่
+
+**Knowledge retention** เมื่อพนักงาน expert ออกไป domain knowledge ของพวกเขาก็ไปด้วย ระบบ intent farming ที่ติดตาม query ของพวกเขาอย่างเป็นระบบจะจับ structured representation ของ intent pattern, vocabulary preference และ domain frame ของพวกเขา — ไม่ใช่เนื้อหา expertise ของพวกเขา แต่รูปร่างที่พวกเขา query และใช้เหตุผลเกี่ยวกับ expertise นั้น นี่คือ knowledge retention ที่บางส่วนแต่มีความหมาย
+
+## Metrics สำคัญสำหรับระบบ Intent Farming
+
+| Metric | สิ่งที่วัด |
+|---|---|
+| **Warm recall hit rate** | % ของ query ที่ relevant warm context ถูก retrieve และใช้ |
+| **Context reuse rate** | จำนวน query เฉลี่ยที่แต่ละ context entry ถูก retrieve |
+| **Intent resolution latency** | เวลาในการจำแนก query intent และ retrieve warm context |
+| **Quality delta (warm vs cold)** | การปรับปรุงคุณภาพใน response ที่ใช้ warm vs cold retrieval |
+| **Context half-life** | เวลาเฉลี่ยก่อน stored context entry ต่ำกว่า quality threshold |
+| **Graph density** | จำนวน cross-session link ต่อ stored context entry |
+| **Organizational coverage** | % ของ known domain topic ขององค์กรที่แทนในn cold context |
+
+Metric ที่วินิจฉัยมากที่สุดคือ **quality delta**: ถ้า warm context retrieval ไม่ผลิต response คุณภาพสูงกว่า cold retrieval อย่างวัดได้ intent farming architecture ไม่ทำงาน ไม่ว่าจะเป็นเพราะ context quality ต่ำเกินไป intent classification ไม่แม่นยำพอ หรือ retrieval logic ไม่เชื่อมต่อ warm context ที่ถูกกับ query ที่ถูก
+
+## สรุป
+
+Enterprise AI system ที่ treat ทุก session เป็น independent กำลังทิ้ง compounding value ไว้บนโต๊ะ Intent farming คือ architectural pattern ที่แปลง AI usage เป็น accumulated organizational intelligence — AI asset เดียวที่ไม่สามารถ replicate ได้ด้วยการ adopt โมเดลใหม่กว่า
+
+ข้อกำหนดทางเทคนิคมีความเข้มข้น: temporal metadata, intent tagging, provenance chains, constitutional scoring และ cross-session linking ระบบที่ implement ข้อกำหนดเหล่านี้ใน unified memory architecture — ตามที่ RCTDB ทำ — สร้างเงื่อนไขสำหรับ AI system ที่ปรับปรุงจริงๆ ด้วยการใช้งาน
+
+เป้าหมายไม่ใช่การ retrieve ที่ดีขึ้น เป้าหมายคือ AI ที่จำได้ ในความหมายที่มีโครงสร้าง: ไม่ใช่การ recall session ที่ผ่านมาแบบ verbatim แต่เป็น model ขององค์กร intent ที่เสริมคุณค่าอย่างต่อเนื่อง ทำให้ทุก future query แม่นยำขึ้น ทุก future response มีพื้นฐานมากขึ้น และทุก future session มีคุณค่ามากกว่าครั้งก่อน
+
+---
+
+*ขอบเขตการเปิดเผย: JITNA, RCTDB และ Tier 1–9 algorithm taxonomy เป็น component ของ RCT Platform มีให้ใช้เป็น open source ภายใต้ Apache 2.0 รายละเอียดการ implement, organizational intent graph schema และรายละเอียดการบังคับใช้ constitutional quality อธิบายใน [SDK documentation](https://rctlabs.github.io/rct-platform/)*

@@ -1,0 +1,145 @@
+---
+title: "rct-platform v1.0.2a0: Public Alpha บน GitHub ภายใต้ Apache 2.0"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-04-22"
+lastReviewed: "2026-04-23"
+category: "engineering"
+excerpt: "rct-platform v1.0.2a0 พร้อมให้ดาวน์โหลดบน GitHub ภายใต้ Apache 2.0 แล้ว SDK มาพร้อม 723 tests ที่ผ่านทั้งหมด coverage 89% microservice อ้างอิง 5 รายการ และ FDIA + JITNA reference implementation แบบเต็ม — ไม่ต้องใช้ API key ในการเริ่มต้น"
+tags: ["Open Source", "SDK", "Apache 2.0", "rct-platform", "GitHub", "FDIA", "JITNA", "Constitutional AI", "Public Alpha"]
+readTime: 8
+references:
+  - "https://github.com/rctlabs/rct-platform"
+  - "https://rctlabs.co/products/rctlabs"
+  - "https://choosealicense.com/licenses/apache-2.0/"
+---
+
+# rct-platform v1.0.2a0: Public Alpha บน GitHub ภายใต้ Apache 2.0
+
+RCT Platform SDK เป็น open source แล้ว
+
+[rct-platform v1.0.2a0](https://github.com/rctlabs/rct-platform) คือ Public Alpha release ของ core SDK ของ RCT Ecosystem — layer ที่ implement สมการ FDIA, JITNA Protocol RFC-001, SignedAI multi-LLM consensus, Delta Engine และ microservice อ้างอิง 5 รายการ มาพร้อม Apache 2.0 license, 723 tests ที่ผ่านทั้งหมด, coverage 89% และ demo offline แบบเต็มที่ไม่ต้องใช้ API key
+
+นี่ไม่ใช่ demo มันคือ algorithm implementation จริงที่ขับเคลื่อน constitutional AI layer ของ RCT Ecosystem ใน production
+
+## สิ่งที่มาใน v1.0.2a0
+
+| Component | คำอธิบาย |
+|---|---|
+| **FDIA Scorer** | Engine ของสมการแบบเต็ม — `core/fdia/fdia.py` |
+| **JITNA RFC-001** | Intent protocol implementation — `rct_control_plane/` (15 modules) |
+| **SignedAI** | Multi-LLM consensus layer — `signedai/core/` |
+| **Delta Engine** | Memory compression 74% ผ่าน state diffing — `core/delta_engine/` |
+| **Regional Adapter** | รองรับ language-pair 8 คู่ — `core/regional_adapter/` |
+| **5 Microservices** | Reference implementations พร้อม 142 dedicated tests |
+| **CLI** | `rct compile`, `rct governance`, `rct timeline` |
+| **Benchmarks** | FDIA accuracy (0.92 เทียบกับ 0.65 baseline), hallucination (0.3%) |
+
+723 tests ผ่านทั้งหมดบน Python 3.10, 3.11 และ 3.12 ไม่ต้องใช้ Docker ในการรัน test suite หรือ offline demo
+
+## เริ่มต้นใช้งาน (5 นาที ไม่ต้องใช้ API key)
+
+```bash
+# Clone และติดตั้ง
+git clone https://github.com/rctlabs/rct-platform.git
+cd rct-platform
+pip install -e .
+
+# รัน offline demo
+python examples/quickdemo.py
+
+# รัน FDIA benchmark
+python benchmark/fdia_benchmark.py --verbose
+
+# ลอง CLI
+rct compile 'Protect resources from hostile agents'
+rct governance
+```
+
+Output ที่คาดไว้จาก `quickdemo.py`:
+
+```
+✅  Best action: act_001 (cooperate) — highest FDIA score
+Consensus: PASSED ✅ (threshold: 4/6)
+Final decision: EXECUTE — all 7 gates cleared, FDIA ≥ threshold, intent signed
+Memory compression ratio: 5.0× (baseline + 4 deltas vs 5 full-state copies)
+```
+
+Output ที่คาดไว้จาก `fdia_benchmark.py`:
+
+```
+RCT FDIA Score       : 0.9167
+Industry Baseline    : 0.6500
+Delta vs Baseline    : +0.2667 (+41.0%)
+✅  Benchmark PASSED
+```
+
+> **PyPI note:** v1.0.2a0 เป็น Public Alpha package ยังไม่ได้ publish ไป PyPI ใช้ `pip install -e .` จาก repository ที่ clone การ publish PyPI วางแผนสำหรับ v1.0.0 stable (Q3 2026)
+
+## ทำไมถึง open source และทำไมตอนนี้
+
+[RCT Open Protocol](/open-protocol) ถูกออกแบบมาให้ verify ได้เสมอ Constitutional AI ที่ไม่สามารถตรวจสอบได้ไม่ใช่ constitutional — มันคือ marketing การ publish reference implementation คือขั้นต่ำที่จำเป็นเพื่อให้ governance claims มีความน่าเชื่อถือ
+
+เหตุผลสามประการที่กำหนด timing ของ v1.0.2a0:
+
+**1. JITNA RFC-001 stable พอที่จะ reference** Protocol definition ไม่ได้เปลี่ยน structurally ตั้งแต่สิงหาคม 2025 implementation ใน `rct_control_plane/` คือ canonical reference สำหรับ spec การ publish มันปิดช่องว่างระหว่าง documentation และ running code
+
+**2. FDIA benchmark reproduce ได้** ตัวเลข accuracy 0.92 ที่อ้างใน benchmark summary ตรวจสอบได้โดยใครก็ตามที่ clone repository และรัน `python benchmark/fdia_benchmark.py`
+
+**3. Test suite coverage เพียงพอ** 723 tests ที่ coverage 89% ไม่สมบูรณ์แบบแต่เพียงพอสำหรับ public alpha ที่มีความหมาย ช่องว่าง 11% อยู่ใน optional enterprise integrations ที่ขึ้นอยู่กับบริการภายนอก
+
+## Apache 2.0 หมายความว่าอะไรสำหรับคุณ
+
+- **ใช้เชิงพาณิชย์ได้** คุณสามารถใช้ แก้ไข และ distribute `rct-platform` ในผลิตภัณฑ์ proprietary โดยไม่ต้องเผยแพร่การแก้ไขของคุณ
+- **ต้องให้ attribution** รวมไฟล์ `NOTICE` และ copyright header ในทุก distribution
+- **มี patent grant** Contributors ให้ royalty-free, worldwide patent license ครอบคลุม contributions ของพวกเขา
+- **ไม่มี copyleft** ต่างจาก GPL Apache 2.0 ไม่กำหนดให้ derivative works เป็น open source
+
+Enterprise layer — 62 microservices, HexaCore inference cluster, RCTDB, MEE production pipeline — ยังคงเป็น proprietary SDK คือ public interface ที่เชื่อมต่อกับ layer นั้น
+
+## รายละเอียด Test Coverage
+
+| Dimension | จำนวน | หมายเหตุ |
+|---|---|---|
+| Unit tests | 581 | Per-function, algorithm-level isolation |
+| Integration tests | 142 | 5 microservices end-to-end ไม่มี external dependencies |
+| Benchmark suite | — | Script แยกใน `benchmark/` ไม่ใช่ใน pytest |
+
+Coverage แยกตาม subsystem:
+
+| Subsystem | Coverage |
+|---|---|
+| FDIA engine | 97% |
+| JITNA protocol | 94% |
+| SignedAI consensus | 91% |
+| Delta Engine | 88% |
+| Regional Adapter | 85% |
+| Reference microservices | 82% |
+| Optional integrations | 41% |
+
+## สิ่งที่ v1.0.3a0 จะเพิ่ม (พฤษภาคม 2026)
+
+- **GitHub Discussions** — async community Q&A, design discussions และ RFC feedback
+- **MOIP reference implementation** — Multi-Objective Intent Planning algorithm เป็น standalone module
+- **PyPI alpha publish** — `pip install rct-platform==1.0.3a0`
+- **MEE v2 integration** — Meta-Evolution Engine growth formula ใน public SDK
+
+## ความสัมพันธ์กับ Enterprise Layer
+
+```
+rct-platform (Apache 2.0, public)
+    └── core/          ← FDIA, Delta Engine, Regional Adapter
+    └── signedai/      ← Multi-LLM consensus
+    └── rct_control_plane/  ← JITNA RFC-001
+    └── microservices/ ← 5 reference implementations
+
+RCT Enterprise (proprietary, rctlabs.co)
+    └── 62 microservices
+    └── RCTDB (8-dimensional memory schema)
+    └── HexaCore 7-model inference cluster
+    └── MEE production pipeline
+    └── 4,849 enterprise test suite
+```
+
+SDK ไม่ใช่ stripped-down version ของ enterprise layer มันคือ canonical reference implementation ของ protocols และ algorithms ที่ enterprise layer ใช้ พวกเขา share interface contract ร่วมกัน — JITNA RFC-001 spec — แต่สร้างและดูแลรักษาแยกกัน

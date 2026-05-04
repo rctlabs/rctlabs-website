@@ -1,0 +1,171 @@
+---
+title: "Intent Farming: How to Cultivate and Grow AI Context Over Time"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-10"
+lastReviewed: "2026-05-07"
+category: "research"
+excerpt: "Intent farming is the systematic practice of accumulating, organizing, and enriching AI context over time — converting one-shot queries into progressively smarter sessions. This article explains the architecture, the RCTDB memory layer, and how intent farming changes the economics of enterprise AI."
+tags: ["Intent Farming", "AI Context", "Enterprise AI Memory", "RCTDB", "RCT Platform", "AI Architecture", "Warm Recall", "Context Management"]
+readTime: 13
+references:
+  - "https://arxiv.org/abs/2304.01373"
+  - "https://arxiv.org/abs/2210.03629"
+  - "https://rctlabs.github.io/rct-platform/"
+  - "https://rctlabs.co/en/core-systems"
+  - "https://rctlabs.co/en/algorithms"
+  - "https://www.nist.gov/artificial-intelligence"
+---
+
+# Intent Farming: How to Cultivate and Grow AI Context Over Time
+
+The majority of enterprise AI deployments are one-shot systems. A user submits a query, the system retrieves context, generates a response, and discards the interaction. The next query starts from zero. The tenth query starts from zero. The thousandth query starts from zero.
+
+This architecture means your AI system learns nothing from use. An analyst who queries the system daily for two years receives exactly the same quality of response on day one as on day seven hundred and thirty — unless someone manually curates and injects context for every session. That manual curation burden is precisely why most enterprise AI knowledge bases become stale within six months of launch.
+
+Intent farming is the antidote. It is the systematic practice of **accumulating, organizing, and enriching AI context over time** — converting one-shot queries into progressively smarter sessions, converting user interactions into structured knowledge that compounds across every subsequent query, and converting AI usage itself into a proprietary intelligence asset that competitors cannot replicate.
+
+This article explains what intent farming is, why most systems cannot do it, the architectural requirements for a system that can, and how the RCT Platform implements it through RCTDB and the JITNA protocol.
+
+## What a Query Actually Contains
+
+Every user query is richer than it appears. When an enterprise analyst submits "What is our exposure to Southeast Asian supply chain disruptions?" the literal text contains:
+
+- **An explicit intent** — identify supply chain risk in a geographic region
+- **An implicit organizational frame** — "our" implies a specific company, division, or portfolio
+- **A temporal assumption** — present tense implies current relevance, not historical analysis
+- **A risk tolerance signal** — the word "exposure" signals the user is thinking in risk management terms, not opportunity terms
+- **An unstated precision requirement** — this is a strategic question, not an operational one; the user wants analysis, not raw data
+
+A one-shot system extracts the explicit intent and discards everything else. Intent farming extracts all five layers and stores them as structured context that enriches future queries.
+
+When the same analyst submits their next query — "What were our Q1 procurement decisions for the APAC region?" — a system that has stored the previous intent context already knows: this analyst works in risk management, is focused on Southeast Asia / APAC exposure, is thinking in strategic terms, and is investigating a time-bound question that likely connects to the supply chain concern raised in the previous session.
+
+The second query is qualitatively richer for both the analyst and the system — without any additional work from the analyst.
+
+## The Compounding Intelligence Curve
+
+Traditional AI systems maintain a flat performance curve. Response quality is a function of model capability and retrieval quality at that moment, not of cumulative usage. Intent farming systems follow a compounding intelligence curve:
+
+- Sessions 1–10: Baseline quality. The system learns user-specific intent patterns, domain vocabulary preferences, and organizational framing.
+- Sessions 11–50: Contextualized quality. The system begins to pre-populate context based on learned patterns. Retrieval precision improves because the system narrows the search space based on known user intent.
+- Sessions 51–200: Anticipatory quality. The system begins to identify recurring intent patterns and pre-retrieves context likely to be needed before the query is submitted.
+- Sessions 200+: Proprietary intelligence. The accumulated context represents organizational knowledge that has no external equivalent. A new competitor deploying the same base model cannot replicate it because the context is a product of this specific organization's interactions over time.
+
+This compounding curve is the economic case for intent farming. The value is not in the model — models are commodity infrastructure. The value is in the accumulated intent context, and that value belongs exclusively to the organization that grew it.
+
+## The Three Layers of Intent Context
+
+Intent farming structures context into three layers with different retention policies and retrieval behaviors:
+
+### Layer 1 — Session Intent (Hot Context)
+
+Session intent is the active context within a single interaction session: the specific entities discussed, the reasoning chain so far, the questions asked and answered, the decisions made. This context is immediately accessible, updated in real time, and is the primary context for the current session.
+
+Hot context has a retention window of 24–72 hours by default. After that, it either expires or is promoted to warm context based on relevance scoring.
+
+### Layer 2 — User Intent Patterns (Warm Context)
+
+Warm context is the structured summary of intent patterns extracted from historical sessions. It captures: which domains the user queries most frequently, which types of analysis they prefer, which entities they reference repeatedly, what their precision requirements typically are, and how their intent framing evolves over time.
+
+Warm context is not raw session logs. It is a continuously updated structured profile that answers the question: "Given this user's history, what context is most likely to be relevant to their next query?"
+
+Warm recall — retrieving the right warm context to augment a new query — is a critical capability that most enterprise AI systems lack entirely. The RCT Platform targets <50ms warm recall latency. At that speed, warm context augmentation adds no perceptible latency to the query experience.
+
+### Layer 3 — Organizational Intent Graph (Cold Context)
+
+Cold context is the aggregated, anonymized intent graph across all users in an organization. It captures: which topics the organization collectively queries most often, which knowledge gaps surface repeatedly across teams, which domain knowledge is frequently retrieved together (revealing latent knowledge structure), and how intent patterns shift over time in response to external events.
+
+Cold context is the organizational intelligence layer. It is the accumulated institutional knowledge that makes the AI system progressively more aligned with the specific domain, terminology, and reasoning patterns of the organization — without any explicit knowledge engineering effort.
+
+## RCTDB: The Memory Architecture That Makes Intent Farming Possible
+
+Intent farming requires a memory architecture fundamentally different from a traditional vector database. A vector database stores embeddings and retrieves similar embeddings. That is retrieval, not memory. True AI memory requires:
+
+**Temporal metadata.** Every memory entry must have creation timestamp, last access timestamp, last update timestamp, and a relevance decay function. Without temporal metadata, all stored context is equally weighted regardless of recency, which means stale context pollutes current queries.
+
+**Intent tags.** Every memory entry must be tagged with the intent pattern it was created from. This allows retrieval by intent type, not just semantic similarity — a crucial distinction when the same factual content is relevant to different intent types in different ways.
+
+**Provenance chains.** Every memory entry must trace back to the original source — the query that generated it, the retrieved content it was synthesized from, the model version that processed it, and the quality score at the time of creation. Provenance chains are what allow the system to decay or invalidate memories when source content changes.
+
+**Constitutional scoring.** Memory entries must carry quality scores that reflect how reliably they have produced accurate outputs when retrieved. Low-scoring memories should be retrieved with lower weight and eventually expired if they consistently correlate with poor quality outputs.
+
+**Cross-session linking.** Memory entries from different sessions that reference the same entities, concepts, or intent patterns must be linked to enable graph-based retrieval — retrieving not just the most semantically similar memory, but the memory most connected to the current query's context graph.
+
+RCTDB implements all five requirements. It is a structured memory layer built on top of vector storage, not a replacement for it. The vector store handles semantic similarity retrieval. RCTDB adds the temporal, intent, provenance, quality, and graph layers that convert retrieval into memory.
+
+## The JITNA Protocol: Real-Time Intent Capture
+
+Intent farming requires that every user interaction be processed for intent signals in real time, without adding perceptible latency to the interaction itself. This is the JITNA protocol's role: **Just-In-Time Need Analysis**.
+
+JITNA operates in parallel with the primary query pipeline. While the user's query is being processed by the retrieval and generation layers, JITNA is simultaneously:
+
+1. Extracting explicit and implicit intent signals from the query text
+2. Classifying the intent against the Tier 1–9 algorithm taxonomy
+3. Computing the FDIA score for the intent clarity
+4. Resolving entity references against the organizational knowledge graph
+5. Identifying which warm context patterns this query activates
+6. Generating structured intent metadata for storage in RCTDB
+
+Because JITNA runs in parallel, intent capture adds zero latency to the user-facing response. The intent metadata is written to RCTDB after the response is returned to the user.
+
+This is not a post-processing batch job — it is real-time asynchronous enrichment. The distinction matters because batch enrichment introduces a delay between interaction and availability of the learned context for subsequent queries. JITNA's asynchronous write ensures that intent context from query N is available for query N+1 in the same session.
+
+## From Intent Farming to Intent Agriculture
+
+The analogy of farming is useful because it captures the systematic, cumulative nature of the process — but it understates the sophistication of what a well-implemented system does. A better analogy is **precision agriculture**:
+
+- **Soil testing** ≈ quality scoring of the existing knowledge base before new context is integrated
+- **Crop rotation** ≈ intent pattern diversity management, preventing over-indexing on high-frequency but narrow intent types
+- **Irrigation scheduling** ≈ proactive context pre-retrieval based on predicted intent patterns
+- **Harvest scheduling** ≈ context promotion cycles, moving hot context to warm and warm to cold at optimal times
+- **Pest management** ≈ constitutional quality gates that prevent low-quality or contradictory context from being integrated into the memory layer
+
+The precision agriculture analogy also captures the long time horizon. A farm's soil quality reflects years of decisions. An organization's intent graph reflects years of interactions. Both are proprietary assets that cannot be acquired from a vendor — they must be grown.
+
+## The Economics of Intent Farming
+
+Intent farming changes the cost structure of enterprise AI in three ways:
+
+**Token efficiency.** A system with rich warm context requires fewer tokens per query to achieve high quality, because the context is pre-organized and pre-filtered for the current intent rather than being retrieved from a cold generic corpus. Across thousands of queries per day, the token savings are substantial.
+
+**Onboarding acceleration.** New users of an intent farming system benefit from the organizational cold context immediately. They do not start from zero — they start with the organization's accumulated intent graph. This compresses the time to productivity for new team members.
+
+**Knowledge retention.** When an expert employee leaves, their domain knowledge leaves with them. An intent farming system that has been tracking their queries systematically captures structured representations of their intent patterns, vocabulary preferences, and domain frames — not the content of their expertise, but the shape of how they query and reason about that expertise. This is partial but meaningful knowledge retention.
+
+## What Intent Farming Is Not
+
+Two misconceptions are worth addressing:
+
+**Intent farming is not session logging.** Storing raw interaction logs and searching them is log retrieval, not intent farming. Intent farming requires structured extraction of intent signals, quality scoring, temporal decay, and cross-session linking. Raw logs are the input material; intent farming is the processing that converts them into memory.
+
+**Intent farming is not fine-tuning.** Fine-tuning updates model weights based on training data. Intent farming adds structured context to the retrieval layer without modifying the model. Fine-tuning changes what the model knows; intent farming changes what context the model receives. Both are valuable; they operate at different architectural layers and are complementary, not alternatives.
+
+## Key Metrics for Intent Farming Systems
+
+Measuring the effectiveness of an intent farming implementation requires metrics that are not available in standard AI monitoring dashboards:
+
+| Metric | What It Measures |
+|---|---|
+| **Warm recall hit rate** | % of queries where relevant warm context was retrieved and used |
+| **Context reuse rate** | Average number of queries each stored context entry is retrieved for |
+| **Intent resolution latency** | Time to classify query intent and retrieve relevant warm context |
+| **Quality delta (warm vs cold)** | Quality improvement in responses that used warm context vs. cold retrieval |
+| **Context half-life** | Median time before a stored context entry falls below quality threshold |
+| **Graph density** | Number of cross-session links per stored context entry |
+| **Organizational coverage** | % of the organization's known domain topics represented in cold context |
+
+The most diagnostic metric is **quality delta**: if warm context retrieval is not producing measurably higher quality responses than cold retrieval, the intent farming architecture is not working. Either the context quality is too low, the intent classification is too imprecise, or the retrieval logic is not connecting the right warm context to the right queries.
+
+## Summary
+
+Enterprise AI systems that treat every session as independent are leaving compounding value on the table. Intent farming is the architectural pattern that converts AI usage into accumulated organizational intelligence — the only AI asset that cannot be replicated by adopting a newer model.
+
+The technical requirements are demanding: temporal metadata, intent tagging, provenance chains, constitutional scoring, and cross-session linking. Systems that implement these requirements in a unified memory architecture — as RCTDB does — create the conditions for AI systems that genuinely improve with use.
+
+The goal is not better retrieval. The goal is AI that remembers, in the structured sense: not verbatim recall of past sessions, but a continuously enriched model of organizational intent that makes every future query more precise, every future response more grounded, and every future session more valuable than the last.
+
+---
+
+*Disclosure: JITNA, RCTDB, and the Tier 1–9 algorithm taxonomy are components of the RCT Platform, available as open source under Apache 2.0. Implementation specifics, organizational intent graph schemas, and constitutional quality enforcement details are described in the [SDK documentation](https://rctlabs.github.io/rct-platform/).*
