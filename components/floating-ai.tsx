@@ -65,6 +65,7 @@ const SCENARIOS_TH = [
   { emoji: "🎯", label: "เข้าใจ RCT ใน 3 นาที", query: "RCT คืออะไร?" },
   { emoji: "🧪", label: "สูตร FDIA คืออะไร?", query: "FDIA คืออะไร?" },
   { emoji: "✅", label: "SignedAI ตรวจสอบอย่างไร?", query: "SignedAI ทำงานอย่างไร?" },
+  { emoji: "🧠", label: "HexaCore ทำงานอย่างไร?", query: "HexaCore ใช้โมเดล AI อะไรบ้าง?" },
   { emoji: "👤", label: "ใครสร้าง RCT?", query: "ใครสร้าง RCT?" },
 ]
 
@@ -87,10 +88,12 @@ function useScenarios() {
 function classifyIntent(text: string): AnalysisMode {
   const lower = text.toLowerCase()
   const ANALYZE_KEYWORDS = [
-    "architecture", "layer", "algorithm", "fdia", "jitna", "signemai", "signedai",
+    "architecture", "layer", "algorithm", "fdia", "jitna", "signedai",
     "consensus", "rctdb", "genome", "benchmark", "hallucination", "แสดง", "วิเคราะห์",
     "อธิบาย", "explain", "compare", "breakdown", "how does", "what is",
-    "สถาปัตยกรรม", "โปรโตคอล",
+    "สถาปัตยกรรม", "โปรโตคอล", "hexacore", "hexa core",
+    "คืออะไร", "คือ", "ทำงานอย่างไร", "บอกเกี่ยวกับ",
+    "แสดงรายละเอียด", "อธิบายระบบ", "ระบบทำงาน", "อธิบายเกี่ยวกับ",
   ]
   const MIRROR_KEYWORDS = [
     "refine", "improve", "rewrite", "revise", "better", "alternative", "version",
