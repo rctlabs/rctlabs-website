@@ -44,6 +44,8 @@ interface ChatMessage {
   isError?: boolean        // G9: marks a failed message that can be retried
   retryQuery?: string      // G9: original query text for retry
   mode?: AnalysisMode      // G5: which mode produced this message
+  page_links?: Array<{ label: string; url: string; section?: string }>
+  external_links?: Array<{ label: string; url: string }>
   metadata?: {
     intent?: string
     keywords?: string[]
@@ -292,6 +294,8 @@ export function FloatingAI() {
                       topic: typeof event.topic === "string" ? event.topic : null,
                       suggestions: Array.isArray(event.suggestions) ? (event.suggestions as string[]) : [],
                       source: (event.source as ChatMessage["source"]) ?? "knowledge_base",
+                      page_links: Array.isArray(event.page_links) ? (event.page_links as ChatMessage["page_links"]) : [],
+                      external_links: Array.isArray(event.external_links) ? (event.external_links as ChatMessage["external_links"]) : [],
                     }
                   }
                 } else {
@@ -476,6 +480,8 @@ export function FloatingAI() {
             verified: data.status === "success",
             source: data.source || "analysearch",
             mode: mode,  // G5: stamp mode
+            page_links: Array.isArray(analysis.page_links) ? (analysis.page_links as ChatMessage["page_links"]) : [],
+            external_links: Array.isArray(analysis.external_links) ? (analysis.external_links as ChatMessage["external_links"]) : [],
             metadata: {
               intent: analysis.intent,
               keywords: analysis.keywords,
@@ -871,6 +877,38 @@ export function FloatingAI() {
                         <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border/50">
                           <CheckCircle className="w-3 h-3 text-green-400" />
                           <span className="text-xs font-mono text-green-400">SignedAI Verified</span>
+                        </div>
+                      )}
+
+                      {/* Page Links */}
+                      {msg.role === "assistant" && msg.page_links && msg.page_links.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-2 pt-2 border-t border-border/50">
+                          {msg.page_links.map((link) => (
+                            <a
+                              key={link.url}
+                              href={link.url}
+                              className="text-xs px-2 py-0.5 rounded-full bg-warm-amber/10 text-warm-amber border border-warm-amber/30 hover:bg-warm-amber/20 transition-colors"
+                            >
+                              → {link.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* External Links (GitHub etc.) */}
+                      {msg.role === "assistant" && msg.external_links && msg.external_links.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {msg.external_links.map((link) => (
+                            <a
+                              key={link.url}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs px-2 py-0.5 rounded-full bg-muted/40 text-muted-foreground border border-border hover:border-warm-amber/40 transition-colors"
+                            >
+                              ↗ {link.label}
+                            </a>
+                          ))}
                         </div>
                       )}
                     </div>
