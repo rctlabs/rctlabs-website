@@ -64,6 +64,21 @@ const glossaryTerms = [
     definitionTh: "Framework การประเมิน AI แบบรัฐธรรมนูญที่โมเดล expert หลายตัวประเมิน output เดียวจากมุมมองอิสระ ต่างจาก SignedAI ที่ใช้ consensus-by-agreement — MEE ใช้ weighted scoring จาก evaluators เฉพาะทาง (accuracy, safety, compliance, domain-knowledge) ก่อนออก verdict สุดท้าย ออกแบบสำหรับการตัดสินใจระดับองค์กรที่ blind spots ของ evaluator เดียวยอมรับไม่ได้",
     entityHref: "/en/entity/governance-layer",
   },
+  // ─── Reliability & Fault Tolerance ────────────────────────────
+  {
+    term: "Circuit Breaker Pattern",
+    termTh: "Circuit Breaker Pattern (รูปแบบตัวตัดวงจร)",
+    definition: "A fault-tolerance design pattern borrowed from electrical engineering that prevents cascade failures in distributed AI systems. Has three states: CLOSED (normal operation — requests flow through), OPEN (failure threshold exceeded — requests blocked and fallback providers used), HALF-OPEN (test mode — limited traffic checks recovery). In the RCT Platform, the FDIA score acts as the trip signal: when F drops below 0.7 the breaker opens. RFC-006 Fault Isolation implements this across all 62 microservices with 7 fallback LLM providers.",
+    definitionTh: "รูปแบบ fault-tolerance ที่ยืมมาจากวิศวกรรมไฟฟ้า ป้องกัน cascade failures ใน AI systems แบบ distributed มี 3 สถานะ: CLOSED (ปกติ), OPEN (บล็อก failures ใช้ fallback), HALF-OPEN (ทดสอบ recovery) ใน RCT Platform คะแนน FDIA ทำหน้าที่เป็น trip signal: เมื่อ F < 0.7 breaker จะ open — RFC-006 Fault Isolation ใช้งานทั่ว 62 microservices พร้อม 7 fallback LLM providers",
+    entityHref: "/en/blog/circuit-breaker-pattern-ai-systems",
+  },
+  {
+    term: "Fault Isolation Layer",
+    termTh: "Fault Isolation Layer (ชั้นแยกความผิดพลาด)",
+    definition: "RFC-006 of the RCT Platform — an architectural boundary that contains failures within a single service or agent, preventing them from propagating across the entire system. When a component's FDIA score drops below threshold, the isolation layer automatically routes around the failing component and activates a fallback provider. Combined with the Circuit Breaker Pattern, this enables the RCT Ecosystem to maintain 99.9% uptime SLA across 62 microservices.",
+    definitionTh: "RFC-006 ของ RCT Platform — ขอบเขตสถาปัตยกรรมที่กักความผิดพลาดไว้ใน service หรือ agent เดียว ป้องกันไม่ให้แพร่กระจายทั่วระบบ เมื่อคะแนน FDIA ของส่วนประกอบต่ำกว่า threshold ชั้นนี้จะ route อัตโนมัติข้ามส่วนที่ล้มเหลวและเปิดใช้ fallback provider ทำให้ RCT Ecosystem รักษา uptime SLA 99.9% ทั่ว 62 microservices",
+    entityHref: "/en/blog/circuit-breaker-pattern-ai-systems",
+  },
   // ─── Constitutional AI Concepts ────────────────────────────────
   {
     term: "Constitutional AI",

@@ -30,6 +30,14 @@ const faqSchemaData = [
     question: "What is the Delta Engine's 74% compression capability?",
     answer: "The Delta Engine is RCT's memory compression system that stores only incremental state changes (deltas) rather than full state snapshots. It achieves an average of 74% lossless compression, enabling warm recall in under 50ms vs a full cold-start LLM call of 3–5 seconds. Sub-1ms delta reconstruction means the performance overhead is negligible. This is how RCT maintains deep context across long sessions without proportional memory cost.",
   },
+  {
+    question: "How does the Circuit Breaker Pattern work in AI pipelines?",
+    answer: "The Circuit Breaker Pattern in AI systems has three states: CLOSED (normal operation — requests flow through), OPEN (failure threshold exceeded — requests are blocked and fallback providers are used), and HALF-OPEN (test mode — limited traffic allowed to check recovery). In the RCT Platform, the FDIA score acts as the trip signal: when F drops below 0.7, the breaker opens. RFC-006 Fault Isolation implements this across all 62 microservices, enabling 7 fallback LLM providers with automatic switching. This is why the RCT Platform maintains 99.9% uptime SLA even when individual model providers experience outages.",
+  },
+  {
+    question: "What is Intent Farming and how does it reduce AI costs over time?",
+    answer: "Intent Farming is the systematic practice of accumulating and enriching AI context over time, converting one-shot queries into progressively smarter sessions. Instead of starting cold each session, the RCTDB memory layer preserves intent history across 8 dimensions. The Delta Engine compresses this context by 74%, enabling warm recall in under 50ms. Over time, the percentage of queries served from warm cache increases — reducing LLM calls, cutting costs, and improving response quality through compounding context. The RCT Platform's warm recall rate improves by approximately 3–5% per week of operation.",
+  },
 ]
 
 export async function generateMetadata(): Promise<Metadata> {

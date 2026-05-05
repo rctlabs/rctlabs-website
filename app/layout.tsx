@@ -78,24 +78,22 @@ const spaceMono = Space_Mono({
   preload: false,
 })
 
-/* Thai: Kanit (matches Space Grotesk geometric style) — preload=true, fallback:
-   Changed from "swap" → "fallback" to fix 5.5s LCP Render Delay on mobile (22 Apr 2026).
-   "swap" caused LCP to be measured at font-swap time (~6s on throttled 4G) because
-   Lighthouse records LCP at the LAST paint of the LCP element, which is the font-swap repaint.
-   "fallback" gives a 100ms block period then 3s swap window: on slow connections where
-   Kanit (3×~83KB≈250KB) can't download within 3.1s, browser commits to system Thai font
-   (Leelawadee UI/Tahoma) and LCP is measured at ~1.6s instead of ~6s. adjustFontFallback
-   generates size-adjusted fallback metrics to keep CLS=0 even when fallback is used.
-   On cached/fast connections, Kanit loads within 3s and swaps correctly.
-   Previously: "optional" caused Thai text to always use system font on cold load. */
+/* Thai: Kanit (matches Space Grotesk geometric style) — preload:true, optional:
+   Changed from "fallback" → "optional" to fix 5.1s LCP Render Delay (05 May 2026).
+   Root cause: with "fallback", if Kanit downloads within the 3s swap window
+   (which it does on most connections since it's preloaded), the browser RE-PAINTS
+   the H1 when the web font arrives — Lighthouse captures LCP at that LAST repaint
+   (~5s on throttled 4G). "optional" commits to system Thai font at 100ms with NO
+   subsequent swap: LCP is measured at first paint (~0.5–1.5s), not the repaint.
+   adjustFontFallback generates size-adjusted CSS so CLS=0 when fallback is used.
+   Trade-off: on cold/uncached loads, Thai H1 uses Leelawadee UI / Tahoma.
+   On subsequent visits (cached font), Kanit renders correctly.
+   Weights reduced to 3: 400 (body), 600 (semibold), 700 (H1 bold). */
 const kanit = Kanit({
   subsets: ["thai", "latin"],
-  /* Weights reduced from 5 → 3: dropped 300 (subtitle-th now uses 400) and 500
-     (medium weight — browser font-matching picks 400 for w<550 when 500 is absent,
-     acceptable with font-synthesis:none). Saves ~2 font files (~166 KB) on cold load. */
   weight: ["400", "600", "700"],
   variable: "--rct-font-thai",
-  display: "fallback",
+  display: "optional",
   preload: true,
   adjustFontFallback: true,
 })

@@ -23,6 +23,15 @@ export default function ChangelogClient() {
 
   const releases: ReleaseEntry[] = [
     {
+      version: "Website v3.6.0",
+      date: "2026-05-05",
+      title: language === "th" ? "Phase 2 blog batch · TH variants 5 บทความ · circuit-breaker EN+TH · intent-farming EN+TH · lastReviewed rolling" : "Phase 2 blog batch · 5 TH variants · circuit-breaker EN+TH · intent-farming EN+TH · lastReviewed rolling",
+      description: language === "th" ? "เผยแพร่ Phase 2 blog batch ล่วงหน้าแผน 3–19 วัน: circuit-breaker-pattern EN+TH, intent-farming EN+TH, reverse-component TH, rct-platform-launch TH, intent-OS TH รวม 7 บทความใหม่ อัปเดต lastReviewed rolling batch 10 ไฟล์ (signedai, delta-engine, rctdb, hexacore, multi-agent) เป็น 2026-05-05 เพื่อเพิ่ม dateModified freshness signal" : "Published Phase 2 blog batch 3–19 days ahead of schedule: circuit-breaker-pattern EN+TH, intent-farming EN+TH, reverse-component TH, rct-platform-launch TH, intent-OS TH — 7 new articles total. Applied lastReviewed rolling batch to 10 files (signedai, delta-engine, rctdb, hexacore, multi-agent) → 2026-05-05 for dateModified freshness signal.",
+      icon: Rocket,
+      highlights: language === "th" ? ["circuit-breaker-pattern EN+TH (ล่วงหน้า 3 วัน)", "intent-farming EN+TH (ล่วงหน้า 6 วัน)", "reverse-component TH (ล่วงหน้า 12 วัน)", "rct-platform-launch TH (ล่วงหน้า 19 วัน)", "intent-OS TH (ล่วงหน้า 9 วัน)", "lastReviewed rolling 10 ไฟล์ → 2026-05-05", "dateModified freshness signal เพิ่มขึ้น"] : ["circuit-breaker-pattern EN+TH (3 days early)", "intent-farming EN+TH (6 days early)", "reverse-component TH (12 days early)", "rct-platform-launch TH (19 days early)", "intent-OS TH (9 days early)", "lastReviewed rolling 10 files → 2026-05-05", "dateModified freshness signal strengthened"],
+      tone: "border-green-500/25 bg-green-500/10 text-green-600 dark:text-green-400",
+    },
+    {
       version: "Website v3.5.0",
       date: "2026-05-04",
       title: language === "th" ? "Ecosystem link hardening · platformDocs · /docs redirect · E-E-A-T sameAs · MkDocs canonical fix" : "Ecosystem link hardening · platformDocs · /docs redirect · E-E-A-T sameAs · MkDocs canonical fix",
