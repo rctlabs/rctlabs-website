@@ -35,6 +35,7 @@ interface ChatMessage {
   intent?: string
   topic?: string | null
   suggestions?: string[]
+  suggestions_th?: string[]
   feedback?: "up" | "down" | null
   source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch" | "rate_limit"
   model_used?: string
@@ -94,6 +95,8 @@ function classifyIntent(text: string): AnalysisMode {
     "สถาปัตยกรรม", "โปรโตคอล", "hexacore", "hexa core",
     "คืออะไร", "คือ", "ทำงานอย่างไร", "บอกเกี่ยวกับ",
     "แสดงรายละเอียด", "อธิบายระบบ", "ระบบทำงาน", "อธิบายเกี่ยวกับ",
+    "อัลกอริทึม", "ผู้สร้าง", "เปรียบเทียบ", "ดีกว่า", "แผน", "โรดแมป", "วิธีใช้",
+    "tier", "ราคา", "แพลน", "สมัคร", "sovereign", "privacy",
   ]
   const MIRROR_KEYWORDS = [
     "refine", "improve", "rewrite", "revise", "better", "alternative", "version",
@@ -296,6 +299,7 @@ export function FloatingAI() {
                       intent: typeof event.intent === "string" ? event.intent : undefined,
                       topic: typeof event.topic === "string" ? event.topic : null,
                       suggestions: Array.isArray(event.suggestions) ? (event.suggestions as string[]) : [],
+                      suggestions_th: Array.isArray(event.suggestions_th) ? (event.suggestions_th as string[]) : [],
                       source: (event.source as ChatMessage["source"]) ?? "knowledge_base",
                       page_links: Array.isArray(event.page_links) ? (event.page_links as ChatMessage["page_links"]) : [],
                       external_links: Array.isArray(event.external_links) ? (event.external_links as ChatMessage["external_links"]) : [],
@@ -685,7 +689,11 @@ export function FloatingAI() {
   /* ---------------------------------------------------------------- */
 
   const lastAssistant = [...messages].reverse().find((msg) => msg.role === "assistant")
-  const suggestions = lastAssistant?.suggestions || []
+  const lastUser = [...messages].reverse().find((msg) => msg.role === "user")
+  const isLastQueryThai = lastUser ? /[\u0e00-\u0e7f]/.test(lastUser.content) : false
+  const suggestions = isLastQueryThai
+    ? (lastAssistant?.suggestions_th?.length ? lastAssistant.suggestions_th : lastAssistant?.suggestions || [])
+    : (lastAssistant?.suggestions || [])
 
   return (
     <>
