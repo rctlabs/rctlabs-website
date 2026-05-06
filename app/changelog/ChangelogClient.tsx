@@ -23,6 +23,15 @@ export default function ChangelogClient() {
 
   const releases: ReleaseEntry[] = [
     {
+      version: "Website v3.6.1",
+      date: "2026-05-06",
+      title: language === "th" ? "lastReviewed Batch 3 · TH variants 3 บทความ · rct-7, intent-ops, verification" : "lastReviewed Batch 3 · 3 new TH variants · rct-7, intent-ops, verification",
+      description: language === "th" ? "อัปเดต lastReviewed rolling batch 3: 12 ไฟล์ Priority A (fdia, jitna, mee, moip, intent-OS, evaluation-harnesses) จาก 2026-04-16/17/22/23 → 2026-05-06 เพิ่มความแข็งแกร่งของ dateModified freshness signal สำหรับ core protocol cluster เพิ่ม TH variants 3 บทความใหม่: rct-7-process-explained, understanding-intent-operations, verification-vs-prompt-engineering — เพิ่ม bilingual coverage เป็น 22/29 คู่" : "Applied lastReviewed rolling batch 3 to 12 Priority A files (fdia, jitna, mee, moip, intent-OS, evaluation-harnesses) from 2026-04-16/17/22/23 → 2026-05-06, strengthening dateModified freshness signal for core protocol cluster. Added 3 new TH variants: rct-7-process-explained, understanding-intent-operations, verification-vs-prompt-engineering — bilingual coverage now 22/29 pairs.",
+      icon: BookOpen,
+      highlights: language === "th" ? ["lastReviewed batch 3: 12 ไฟล์ Priority A → 2026-05-06", "fdia-equation EN+TH (2026-04-17 → 05-06)", "jitna-language EN+TH (04-17/22 → 05-06)", "mee-meta-evolution EN+TH (04-22 → 05-06)", "moip EN+TH (04-23 → 05-06)", "intent-OS EN+TH (04-16 → 05-06, เก่าสุด)", "rct-7-process-explained.th.mdx ✅ ใหม่", "understanding-intent-operations.th.mdx ✅ ใหม่", "verification-vs-prompt-engineering.th.mdx ✅ ใหม่"] : ["lastReviewed batch 3: 12 Priority A files → 2026-05-06", "fdia-equation EN+TH (2026-04-17 → 05-06)", "jitna-language EN+TH (04-17/22 → 05-06)", "mee-meta-evolution EN+TH (04-22 → 05-06)", "moip EN+TH (04-23 → 05-06)", "intent-OS EN+TH (04-16 → 05-06, oldest)", "rct-7-process-explained.th.mdx ✅ new", "understanding-intent-operations.th.mdx ✅ new", "verification-vs-prompt-engineering.th.mdx ✅ new"],
+      tone: "border-green-500/25 bg-green-500/10 text-green-600 dark:text-green-400",
+    },
+    {
       version: "Website v3.6.0",
       date: "2026-05-05",
       title: language === "th" ? "Phase 2 blog batch · TH variants 5 บทความ · circuit-breaker EN+TH · intent-farming EN+TH · lastReviewed rolling" : "Phase 2 blog batch · 5 TH variants · circuit-breaker EN+TH · intent-farming EN+TH · lastReviewed rolling",

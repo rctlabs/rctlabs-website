@@ -1,0 +1,77 @@
+---
+title: "ทำความเข้าใจ Intent Operations: รากฐานของ RCT Labs"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2025-01-20"
+lastReviewed: "2026-05-06"
+category: "philosophy"
+excerpt: "Intent Operations คือแกนกลางของแนวทาง AI ของ RCT Labs แทนที่จะมองว่า AI เป็นชุดงานที่ต้องทำ เรามองว่ามันเป็นวิธีการเข้าใจและดำเนินการตาม intent ของมนุษย์ บทความนี้อธิบายว่า Intent Operations คืออะไร ทำไมมันถึงสำคัญ และเชื่อมต่อกับสมการ FDIA อย่างไร"
+tags: ["Intent", "Philosophy", "Fundamentals", "FDIA", "RCT Labs"]
+readTime: 5
+references:
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://hai.stanford.edu/"
+  - "https://arxiv.org/abs/2210.11610"
+  - "https://rctlabs.co/protocols/fdia-equation"
+---
+
+# ทำความเข้าใจ Intent Operations
+
+Intent Operations คือการเปลี่ยนแปลงพื้นฐานในวิธีที่เราเข้าหาระบบ artificial intelligence แทนที่จะมองว่า AI เป็นชุดงานที่ต้องทำ เรามองว่ามันเป็นวิธีการเข้าใจและดำเนินการตาม intent ของมนุษย์
+
+## Intent Operations คืออะไร?
+
+ในแก่นแท้ Intent Operations คือกระบวนการที่ระบบ AI:
+
+1. **สังเกตข้อมูล** — รวบรวมข้อมูลเกี่ยวกับบริบทและสถานการณ์
+2. **วิเคราะห์ intent** — ดึง goals และ desires ที่อยู่เบื้องหลังออกมา
+3. **สร้างโซลูชัน** — สร้างการกระทำที่สอดคล้องกับ intent นั้น
+
+กระบวนการสามขั้นตอนนี้คือสิ่งที่เราเรียกว่า **สูตร F=(D^I)×A** ซึ่ง:
+- **F** คือ Function (พฤติกรรมของระบบ AI)
+- **D** คือ Data (สิ่งที่ระบบสังเกต)
+- **I** คือ Intent (สิ่งที่มันเข้าใจว่าเป็น goal)
+- **A** คือ Action/Authorization (สิ่งที่มันทำเพื่อตอบสนอง)
+
+Intent ทำหน้าที่เป็น **exponent ของ Data** — ไม่ใช่แค่ filter ธรรมดา ข้อมูลเดียวกันผ่านสองคำถามที่ต่างกันจะให้คุณภาพ output ที่แตกต่างกันอย่างมาก D^2 ≠ D ระบบที่มี intent ชัดเจนจะทำงานในคลาสที่แตกต่างกันโดยสิ้นเชิงเมื่อเทียบกับระบบที่ไม่มี
+
+## ทำไมมันถึงสำคัญ
+
+ระบบ AI แบบดั้งเดิมมักถูกฝึกให้ optimize metric หรืองานเฉพาะอย่าง สิ่งนี้อาจนำไปสู่พฤติกรรมที่บรรลุ goal ที่ระบุไว้ในทางเทคนิค แต่พลาด intent ที่แท้จริงของมนุษย์
+
+**ตัวอย่างที่เห็นได้ชัด:**
+- ระบบที่บอกให้ "ตอบเป็นภาษาไทย" จะทำตาม — ตราบใดที่ probability ของโทเค็นภาษาไทยสูงพอ
+- ระบบที่ Intent ถูก verify แล้วผ่าน FDIA จะ *ต้อง* ตอบเป็นภาษาไทย — เพราะ A=1 สำหรับ Thai-authorized requests เท่านั้น
+
+Intent Operations ช่วยให้ระบบ AI มีความยืดหยุ่นมากขึ้น ตีความได้มากขึ้น และสอดคล้องกับสิ่งที่มนุษย์ต้องการจริงๆ มากขึ้น ไม่ใช่แค่สิ่งที่พวกเขาพิมพ์ลงไป
+
+## ทำไม Intent ถึงเป็น Exponent?
+
+ในสมการ FDIA การวาง I เป็น exponent ของ D ไม่ใช่แค่การแสดงทางคณิตศาสตร์ — มันจับพฤติกรรมจริงที่สังเกตได้:
+
+| D (Data) | I (Intent) | F = D^I × A |
+|---|---|---|
+| ข้อมูลเดียวกัน | Intent ต่ำ (I=0.3) | Output คุณภาพต่ำ |
+| ข้อมูลเดียวกัน | Intent สูง (I=0.9) | Output คุณภาพสูงมาก |
+| ข้อมูลน้อย | Intent สูง | ดีกว่าข้อมูลมากที่ Intent ต่ำ |
+
+นี่คือเหตุผลที่ RCT Ecosystem ลงทุนอย่างหนักใน **JITNA protocol** — เพื่อให้แน่ใจว่า I ถูก measure และ classify อย่างถูกต้องสำหรับทุก request ก่อนที่จะส่งไปยัง LLM ใดๆ
+
+## กระบวนการ RCT-7
+
+เพื่อ implement Intent Operations อย่างเป็นระบบ เราพัฒนา **กระบวนการ RCT-7** — กรอบเจ็ดขั้นตอนสำหรับวิเคราะห์และตอบสนองต่อ intent:
+
+1. Decompose (แยกย่อย)
+2. Reverse-Map Dependencies (ย้อนแผนที่)
+3. Define Constitutional Constraints (กำหนดกรอบรัฐธรรมนูญ)
+4. Build with Verification (สร้างพร้อมตรวจสอบ)
+5. Assemble with Consensus (ประกอบด้วย consensus)
+6. Monitor with Memory (ตรวจสอบด้วยหน่วยความจำ)
+7. Evolve (วิวัฒนาการ)
+
+อ่านรายละเอียดของกระบวนการ RCT-7 ในคู่มือฉบับสมบูรณ์ของเรา
+
+---
+
+*บทความนี้เป็นส่วนหนึ่งของซีรีส์เรื่อง intent-driven AI ติดตามบล็อกของเราสำหรับข้อมูลเชิงลึกเพิ่มเติมเกี่ยวกับแนวทางนี้ในการสร้างระบบ AI*

@@ -1,0 +1,112 @@
+---
+title: "Verification vs Prompt Engineering: ทำไม Constitutional AI จึงเปลี่ยนสมการ"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-03-28"
+lastReviewed: "2026-05-06"
+category: "research"
+excerpt: "Prompt engineering บอก model ว่าต้องทำอะไร Constitutional AI verification ทำให้ระบบสามารถทำได้เฉพาะสิ่งที่ได้รับอนุญาตเท่านั้น บทความนี้อธิบายความแตกต่างพื้นฐาน — ว่าทำไม verification ถึงเป็น deterministic และ prompt engineering เป็น probabilistic — และความหมายของสิ่งนี้ต่อการ deploy AI ระดับองค์กร"
+tags: ["Verification", "Prompt Engineering", "Constitutional AI", "Enterprise AI", "FDIA", "SignedAI"]
+readTime: 8
+references:
+  - "https://arxiv.org/abs/2212.08073"
+  - "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback"
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://owasp.org/www-project-ai-security-and-privacy-guide/"
+---
+
+# Verification vs Prompt Engineering: ทำไม Constitutional AI จึงเปลี่ยนสมการ
+
+เมื่อ AI model เพิกเฉยต่อคำสั่งของคุณ นั่นไม่ใช่ bug แต่มันคือ feature ของวิธีที่ language models ทำงาน
+
+Language models ผลิต continuation ที่มีความน่าจะเป็นสูงที่สุดของ input ตามการฝึกอบรม เมื่อคุณเพิ่ม "ตอบเป็นภาษาไทยเสมอ" ใน system prompt คุณไม่ได้ออกคำสั่ง — คุณกำลังเพิ่ม tokens ที่ทำให้ continuations ภาษาไทยมีความน่าจะเป็นมากขึ้น ส่วนใหญ่ model จะทำตาม แต่มันเป็น probabilistic มันสามารถล้มเหลวได้
+
+**Constitutional AI แทนที่ probability ด้วย constraint**
+
+---
+
+## ความแตกต่างพื้นฐาน
+
+| กลไก | Prompt Engineering | Constitutional AI Verification |
+|---|---|---|
+| **ระดับ** | Model (text input) | System (execution control) |
+| **การบังคับใช้** | Probabilistic — model อาจเพิกเฉย | Deterministic — ระบบบังคับใช้ |
+| **ประเภทการรับประกัน** | "น่าจะทำตาม" | "ไม่สามารถผลิต" |
+| **รูปแบบความล้มเหลว** | เงียบ (model เพิกเฉยคำสั่ง) | ชัดเจน (ระบบ block และ log) |
+| **ความตรวจสอบได้** | ไม่มีในตัว | ทุกการ block มี log พร้อมเหตุผล |
+| **Multi-model** | แต่ละ model ต้องการ prompts ของตัวเอง | One constraint set, ทุก model |
+
+Prompt engineering พูดว่า: "กรุณาอย่าทำ X"
+Constitutional AI พูดว่า: "ไม่สามารถทำ X ได้ Blocked. Logged."
+
+---
+
+## ทำไม Prompt Engineering ถึงล้มเหลวในระดับใหญ่
+
+### ปัญหา 1: Prompt Injection
+ผู้ใช้สามารถรวมคำสั่งในคำถามของพวกเขาที่ override system prompt ของคุณได้ ถ้า AI assistant ของคุณถูกสั่งในระดับ system prompt ว่า "ห้ามเปิดเผยข้อมูลลูกค้า" ผู้ใช้ที่มีเจตนาไม่ดีสามารถเขียนคำถามที่ override คำสั่งนี้ผ่าน input ที่เลือกอย่างระมัดระวัง
+
+Constitutional AI แก้ไขปัญหานี้ผ่าน JITNA's Normalizer — input ทั้งหมดจะถูก validate และ normalize ก่อนที่ LLM ใดจะเห็นมัน แม้ว่าผู้ใช้จะส่ง prompt injection attempt JITNA packet ที่ normalized ที่ถูกนำเสนอต่อ model ได้ถูกตัด instruction-override attempts ออกแล้ว
+
+### ปัญหา 2: Context Length Limits
+เมื่อการสนทนายาวขึ้น คำสั่งใน system prompt ที่เก่ากว่าจะสูญเสียอิทธิพลเมื่อเทียบกับ context ที่ล่าสุด model ที่ปฏิบัติตาม "ตอบเป็นภาษาอังกฤษเท่านั้น" อย่างถูกต้องตั้งแต่ต้นของการสนทนาอาจเปลี่ยนไปใช้ภาษาอื่นในรอบที่ 50
+
+Constitutional AI แก้ไขปัญหานี้ผ่านการประเมิน FDIA ต่อ packet ทุก JITNA packet จะถูก validate อย่างอิสระกับ constitutional constraints — ไม่มี "context dilution" เพราะ constraints ถูกนำไปใช้ที่ระดับ packet ไม่ได้ฝังอยู่ใน conversation history
+
+### ปัญหา 3: Multi-Model Inconsistency
+ถ้าคุณ deploy AI models หลายตัว (เพื่อ optimize ต้นทุน หรือเพราะงานต่างๆ ต้องการ models ต่างกัน) แต่ละ model จะตีความ prompt ของคุณต่างกัน สิ่งที่ Claude ทำตาม Gemini อาจตีความต่างกัน และ GPT-4 อาจเพิกเฉยโดยสิ้นเชิง
+
+Constitutional AI แก้ไขปัญหานี้ผ่านสมการ FDIA พารามิเตอร์ D, I, A เดียวกันใช้กับทุก 7 HexaCore models constraint อยู่ในระบบ — ไม่ใช่ใน interpretation ของ prompt ของ model
+
+### ปัญหา 4: ไม่มี Audit Trail
+เมื่อ AI ที่ใช้ prompt engineering ผลิต output ที่ผิดพลาดหรือเป็นอันตราย คุณมักไม่มีบันทึกว่าทำไม เป็นเพราะ prompt? version ของ model? context? ข้อมูลที่ inject เข้าไป?
+
+Constitutional AI แก้ไขปัญหานี้ผ่าน RCTDB: ทุก output มี audit trail ที่สมบูรณ์ — FDIA scores, model chain, ผลลัพธ์ SignedAI consensus และ JITNA packet log
+
+---
+
+## จุดที่ Prompt Engineering ยังเพิ่มคุณค่า
+
+Constitutional AI ไม่ใช่การแทนที่ prompts ที่ออกแบบมาดี ทั้งสองทำงานที่ชั้นที่แตกต่างกัน:
+
+| ชั้น | เครื่องมือ | วัตถุประสงค์ |
+|---|---|---|
+| **System constraints** | Constitutional AI (FDIA + SignedAI) | ป้องกัน outputs ที่ไม่ปลอดภัย/ไม่ได้รับอนุญาต |
+| **Task instructions** | Prompt engineering | นำ model ไปสู่รูปแบบและสไตล์ที่ต้องการ |
+| **Knowledge grounding** | RAG / Codex Genome | ให้ context ที่ถูกต้องสำหรับคำถามเฉพาะ |
+
+Prompt engineering กำหนด **วิธีที่** model ควรตอบสนองภายในพื้นที่ที่ constitutional constraints กำหนดว่าปลอดภัย Constitutional AI กำหนด **สิ่งที่** ระบบอนุญาต ทั้งสองจำเป็น
+
+---
+
+## Verification ใน RCT Ecosystem
+
+RCT Ecosystem implement verification สามระดับ:
+
+### 1. Input Verification (FDIA Gate)
+ก่อนการเรียก LLM ใดๆ: data quality (D), intent classification (I) และ authorization (A) จะถูกประเมิน ถ้า A = 0 จะไม่มีการผลิต output Period
+
+### 2. Process Verification (SignedAI Consensus)
+ระหว่างการคำนวณ: สำหรับ queries ระดับ Tier 4 ขึ้นไป models หลายตัวจะประมวลผล query อย่างอิสระ ต้องมีความเห็นตรงกันก่อนจะดำเนินต่อ
+
+### 3. Output Verification (Determinism Check)
+หลังการคำนวณ: สำหรับ outputs ที่สำคัญ SHA-256 hash จะถูก verify ข้าม runs หลายครั้ง inputs เดียวกันต้องผลิต outputs เดียวกัน — ไม่ใช่แค่ประมาณ แต่เหมือนกันทุกประการ
+
+การ verification สามระดับนี้คือเหตุผลที่ RCT Ecosystem บรรลุ **hallucination 0.3%** ขณะที่ระบบ single-model ที่ใช้ prompt engineering โดยทั่วไปบรรลุ 3–15%
+
+---
+
+## สรุป
+
+Prompt engineering คือเครื่องมือ Constitutional AI คือสถาปัตยกรรม
+
+คุณต้องการทั้งสอง:
+- **Prompt engineering** สำหรับคุณภาพงานภายในขอบเขตที่ปลอดภัย
+- **Constitutional AI verification** สำหรับการรับประกันความปลอดภัยที่แน่นอน
+
+สำหรับ enterprise AI ที่ reliability, compliance และ auditability เป็น requirements — ไม่ใช่แค่ preferences — การรับประกันแบบ deterministic ของ constitutional verification ไม่ใช่ตัวเลือก แต่คือรากฐาน
+
+---
+
+*บทความนี้เขียนโดย อิทธิฤทธิ์ แซ่โง้ว (Ittirit Saengow) ผู้ก่อตั้งและนักพัฒนาเพียงคนเดียวของ RCT Labs*

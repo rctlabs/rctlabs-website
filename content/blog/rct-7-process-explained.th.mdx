@@ -1,0 +1,210 @@
+---
+title: "กระบวนการ RCT-7: คู่มือครอบคลุมเรื่อง Reverse Component Thinking"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2025-01-25"
+lastReviewed: "2026-05-06"
+category: "research"
+excerpt: "RCT-7 คือกระบวนการปรับปรุงต่อเนื่อง 7 ขั้นตอนที่เป็นหัวใจสำคัญของ Reverse Component Thinking คู่มือนี้อธิบายแต่ละขั้นตอนโดยละเอียด — ตั้งแต่การแยกย่อยจนถึงการตรวจสอบแบบ constitutional — และวิธีที่ RCT-7 สร้างการปรับปรุงคุณภาพอย่างเป็นระบบทั่วทั้งแพลตฟอร์ม AI"
+tags: ["RCT-7", "Process", "Reverse Component Thinking", "Methodology", "Constitutional AI", "RCT Labs"]
+readTime: 9
+references:
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://www.iso.org/standard/81230.html"
+  - "https://arxiv.org/abs/2310.06775"
+---
+
+# กระบวนการ RCT-7: คู่มือครอบคลุมเรื่อง Reverse Component Thinking
+
+ระบบ AI ที่ซับซ้อนทุกระบบในที่สุดต้องเผชิญกับวิกฤติเดียวกัน: มันเติบโตจนไม่มีใครเข้าใจมันได้อย่างสมบูรณ์ Features ต่างๆ โต้ตอบกันในรูปแบบที่ไม่คาดคิด Error แพร่กระจายผ่านเส้นทางที่มองไม่เห็น คุณภาพเสื่อมลง และไม่มีใครรู้แน่ว่าที่ไหนหรือทำไม
+
+ฉันสร้าง **กระบวนการ RCT-7** เพื่อแก้ปัญหานี้อย่างถาวร
+
+RCT ย่อมาจาก **Reverse Component Thinking** — ระเบียบวิธีสำหรับการแยกย่อยระบบใดก็ตามให้เป็นชิ้นส่วนที่เล็กที่สุดที่ verify ได้ แล้วสร้างใหม่ด้วยการรับประกันแบบ constitutional ในทุกชั้น เลข "7" ใน RCT-7 หมายถึงเจ็ดขั้นตอนเฉพาะที่ประกอบเป็นวงจรต่อเนื่องของการวิเคราะห์ การสร้าง การตรวจสอบ และการปรับปรุง
+
+บทความนี้อธิบายแต่ละขั้นตอน ว่าทำไมลำดับถึงสำคัญ และ RCT-7 ขับเคลื่อน RCT Ecosystem ทั้งหมดได้อย่างไร — รวมถึงสมการ FDIA โปรโตคอล JITNA และสถาปัตยกรรม 62 microservices
+
+---
+
+## ปรัชญา: คิดย้อนกลับ
+
+แนวทางวิศวกรรมส่วนใหญ่ทำงาน **ไปข้างหน้า**: กำหนด requirements ออกแบบโซลูชัน สร้างมัน ทดสอบมัน
+
+Reverse Component Thinking ทำงาน **ย้อนกลับ**: เริ่มจากผลลัพธ์ที่ต้องการ (F ในสมการ FDIA) แล้วแยกย่อยย้อนกลับเพื่อหา component เล็กที่สุดที่ต้องเป็นจริงเพื่อให้ผลลัพธ์นั้นเกิดขึ้น
+
+การกลับด้านนี้ไม่ใช่เพียงกลอุบาย มันเปลี่ยนสิ่งที่คุณสร้าง:
+
+| การคิดไปข้างหน้า | Reverse Component Thinking |
+|---|---|
+| "เราควรเพิ่ม features อะไร?" | "อะไรต้องเป็นจริงเพื่อให้ output นี้ถูกต้อง?" |
+| สร้าง features แล้วค่อย test | กำหนดเงื่อนไขการตรวจสอบ แล้วสร้างเพื่อตอบสนองมัน |
+| คุณภาพวัดหลังการสร้าง | คุณภาพถูกออกแบบเข้าไปในทุก component |
+| พบ errors ใน testing | ป้องกัน errors ด้วยโครงสร้าง |
+
+---
+
+## เจ็ดขั้นตอน
+
+### ขั้นที่ 1: แยกย่อย (Decompose)
+
+**เป้าหมาย:** แบ่งระบบเป้าหมายออกเป็น component ที่เล็กที่สุดที่ verify ได้แบบอิสระ
+
+ทุก output ที่ซับซ้อนประกอบด้วย sub-outputs ที่ง่ายกว่า การวินิจฉัยทางการแพทย์ประกอบด้วยการวิเคราะห์อาการ การค้นหาความรู้ การวินิจฉัยเชิงอนุพันธ์ และการให้คะแนนความเชื่อมั่น รายงานองค์กรประกอบด้วยการดึงข้อมูล การรวมข้อมูล การจัดรูปแบบ และการตรวจสอบ
+
+ในขั้นที่ 1 คุณแยกย่อยซ้ำๆ จนกว่าแต่ละ component จะตอบสนองเกณฑ์สองข้อ:
+- **ทดสอบได้อย่างอิสระ:** component นี้สามารถ verify ได้แบบ isolation หรือไม่?
+- **ความรับผิดชอบเดียว:** component นี้ทำสิ่งเดียวเท่านั้นหรือไม่?
+
+**ตัวอย่างใน RCT Ecosystem:** สมการ FDIA F = (D^I) × A ถูกแยกย่อยเป็น: Data Quality Scorer (D), Intent Classifier (I), Architect Gate (A) และ FDIA Calculator (F) แต่ละตัวเป็น module แยกกันพร้อม test suite ของตัวเอง
+
+### ขั้นที่ 2: ย้อนแผนที่ Dependencies (Reverse-Map Dependencies)
+
+**เป้าหมาย:** สำหรับแต่ละ component ระบุสิ่งที่มันพึ่งพาและสิ่งที่พึ่งพามัน
+
+นี่คือจุดที่การคิดแบบ "reverse" กลายเป็นสิ่งสำคัญ แทนที่จะถามว่า "component นี้ต้องการอะไร?" คุณถามว่า "อะไรจะพังถ้า component นี้ล้มเหลว?"
+
+ผลลัพธ์ของขั้นที่ 2 คือ **dependency graph** ที่แสดง:
+- Upstream dependencies (สิ่งที่ป้อนเข้า component นี้)
+- Downstream consumers (สิ่งที่ใช้ output ของ component นี้)
+- Failure blast radius (จำนวน component ที่ได้รับผลกระทบจากความล้มเหลวที่นี่)
+
+Component ที่มี blast radius ขนาดใหญ่จะได้รับ reliability requirements ที่สูงกว่าและการป้องกัน circuit breaker
+
+### ขั้นที่ 3: กำหนด Constitutional Constraints
+
+**เป้าหมาย:** สำหรับแต่ละ component กำหนด invariants ที่ต้องเป็นจริงเสมอ
+
+สิ่งเหล่านี้ไม่ใช่เป้าหมายคุณภาพแบบ "nice to have" แต่เป็น **constitutional constraints** — เงื่อนไขที่ถ้าถูกละเมิดหมายความว่าระบบมีปัญหาพื้นฐาน
+
+ตัวอย่างจาก RCT Ecosystem:
+- **FDIA Constraint:** เมื่อ A = 0, F ต้องเท่ากับ 0 เสมอ ไม่มีข้อยกเว้น
+- **SignedAI Constraint:** Tier 6 consensus ต้องการความเห็นตรงกันจากอย่างน้อย 4 จาก 6 model
+- **JITNA Constraint:** ทุก packet ต้องมี Ed25519 signature ที่ถูกต้อง
+- **RCTDB Constraint:** ไม่มี record ใดที่สามารถแก้ไขได้โดยไม่สร้าง version ใหม่ (append-only)
+
+Constitutional constraints คือรากฐานของความน่าเชื่อถือ ถ้า constraint ใดๆ ได้รับการพิสูจน์ว่าใช้ได้ภายใต้ทุกเงื่อนไข ผู้ใช้สามารถไว้วางใจในคุณสมบัตินั้นๆ ของระบบได้ — แม้ว่าพวกเขาจะไม่เข้าใจ implementation ทั้งหมด
+
+### ขั้นที่ 4: สร้างพร้อมการตรวจสอบ (Build with Verification)
+
+**เป้าหมาย:** Implement แต่ละ component โดยมี verification logic ฝังอยู่ภายใน ไม่ใช่เพิ่มทีหลัง
+
+ใน development แบบดั้งเดิม คุณเขียน code ก่อนแล้วค่อย test ทีหลัง ใน RCT-7 การ test เป็นส่วนหนึ่งของ component ทุก module export ทั้ง functionality และ verification contract ของมัน
+
+RCT Ecosystem implement สิ่งนี้ผ่าน **8-Level Test Pyramid:**
+
+| ระดับ | ประเภท | จำนวน | วัตถุประสงค์ |
+|---|---|---|---|
+| L1 | Unit | 1,343 | ความถูกต้องของ function แต่ละตัว |
+| L2 | Integration | 34 | การโต้ตอบระหว่าง module |
+| L3 | Service | 1,889 | พฤติกรรม microservice (62 services) |
+| L4 | Contract | - | ความสอดคล้องกับ API contract |
+| L5 | Performance | - | Latency และ throughput |
+| L6 | Security | OWASP A01-A10 | การสแกนช่องโหว่ |
+| L7 | Chaos | Circuit breaker | การกู้คืนจากความล้มเหลว |
+| L8 | Property | Hypothesis | การตรวจสอบคุณสมบัติทางคณิตศาสตร์ |
+
+**การทดสอบที่ verify แล้วทั้งหมด:** 4,849 ผ่าน, 0 ล้มเหลว, 0 errors (v5.4.5)
+
+### ขั้นที่ 5: ประกอบด้วย Consensus (Assemble with Consensus)
+
+**เป้าหมาย:** รวม component ที่ verify แล้วและตรวจสอบว่าการประกอบตอบสนอง constitutional constraints ทั้งหมด
+
+Component แต่ละตัวอาจถูกต้องในแบบ isolation แต่ล้มเหลวเมื่อรวมกัน ขั้นที่ 5 จับความล้มเหลวของ integration เหล่านี้ผ่าน **SignedAI consensus verification**
+
+สำหรับการประกอบที่สำคัญ ระบบใช้ multi-model consensus:
+- **Tier S:** Single model (เร็ว ถูก)
+- **Tier 4:** 4 models ต้องการ 75% agreement / 3/4 (มาตรฐาน)
+- **Tier 6:** 6 models ต้องการ 67% agreement (production)
+- **Tier 8:** 8 models ต้องการ 75% agreement (critical)
+
+ความสมดุลทางภูมิรัฐศาสตร์ของ HexaCore system (3 Western + 3 Eastern + 1 Regional Thai) ทำให้มั่นใจว่าอคติทางวัฒนธรรมหรือการฝึกอบรมจากแหล่งเดียวจะไม่ครอบงำ consensus
+
+### ขั้นที่ 6: ตรวจสอบด้วย Memory (Monitor with Memory)
+
+**เป้าหมาย:** บันทึกพฤติกรรมของระบบอย่างต่อเนื่องและตรวจจับการเบี่ยงเบนจาก constitutional constraints
+
+RCT Ecosystem ใช้ RCTDB — universal memory schema 8 มิติ — เพื่อบันทึก:
+- ทุกการประเมิน FDIA (คะแนน D, I, A)
+- ทุก JITNA transaction (packets, negotiations, outcomes)
+- ทุกผลลัพธ์ SignedAI consensus
+- ทุกการเปลี่ยนแปลง state ของ Delta Engine
+
+Delta Engine เก็บเฉพาะ state *changes* (ไม่ใช่ full state) ทำให้ได้ **compression 74%** ซึ่งหมายความว่าระบบสามารถรักษา audit trail ที่สมบูรณ์ด้วยต้นทุน storage เพียง 26%
+
+เมื่อ constitutional constraint ถูกละเมิด ระบบการตรวจสอบจะ:
+1. Flag การละเมิดทันที
+2. ย้อนรอยสาเหตุกลับไปยัง component ต้นทาง
+3. กระตุ้น Architect Gate (A → 0) ถ้าการละเมิดนั้นวิกฤต
+4. บันทึก incident เพื่อตรวจจับรูปแบบในอนาคต
+
+### ขั้นที่ 7: วิวัฒนาการ (Evolve)
+
+**เป้าหมาย:** ใช้หลักฐานที่สะสมมาเพื่อปรับปรุง components, constraints และรูปแบบการประกอบ
+
+ขั้นที่ 7 ปิดวงจร ระบบเรียนรู้จาก:
+- **Warm recall patterns:** คำถามที่ถามบ่อยกลายเป็นการตอบสนองทันที (<50ms)
+- **Failure analysis:** Component ที่ล้มเหลวบ่อยจะได้รับการออกแบบใหม่ ไม่ใช่แค่ patch
+- **Cost optimization:** ระบบย้ายงานไปยัง model ที่ถูกกว่าสำหรับรูปแบบที่พิสูจน์แล้วว่าเสถียร
+- **Constraint refinement:** Constitutional constraints ถูกทำให้เข้มงวดขึ้นเมื่อระบบรวบรวมหลักฐานเพิ่มเติม
+
+Intent Loop Engine implement วิวัฒนาการนี้โดยอัตโนมัติ:
+```
+Cold Start (3–5s) → สะสมการใช้งาน → Warm Recall (<50ms) → ต้นทุนเข้าใกล้ $0 สำหรับรูปแบบที่ซ้ำ
+```
+
+นี่คือคุณสมบัติสำคัญที่ทำให้ RCT Ecosystem **self-improving:** มันฉลาดขึ้น เร็วขึ้น และถูกลงทุกครั้งที่ถูกใช้
+
+---
+
+## RCT-7 ในฐานะ Genome
+
+ใน 7 Genome System ของ RCT Ecosystem, RCT-7 คือ **genome ที่เจ็ด** — **Continuous Improvement Genome** มันรับผิดชอบในการทำให้ระบบทั้งหมดวิวัฒนาการและปรับปรุงตามเวลา แทนที่จะเสื่อมลง
+
+7 Genomes:
+1. Architect Genome — DNA ของผู้สร้าง
+2. ARTENT Genome — ปัญญาการสร้าง
+3. JITNA Genome — ชั้น Protocol
+4. Codex Genome — คลังความรู้
+5. SignedAI Genome — ชั้นการตรวจสอบ
+6. RCT-KnowledgeVault Genome — สถาปัตยกรรม Memory
+7. **RCT-7 Genome — การปรับปรุงต่อเนื่อง** ← *บทความนี้*
+
+---
+
+## คำถามที่พบบ่อย
+
+### RCT ย่อมาจากอะไร?
+RCT ย่อมาจาก **Reverse Component Thinking** — ระเบียบวิธีสำหรับการแยกย่อยระบบเป็นชิ้นส่วนที่ verify ได้และสร้างใหม่ด้วยการรับประกันแบบ constitutional
+
+### RCT-7 ใช้ได้เฉพาะกับระบบ AI เท่านั้นหรือไม่?
+ไม่ กระบวนการ 7 ขั้นตอนสามารถนำไปใช้กับระบบที่ซับซ้อนใดๆ (ซอฟต์แวร์ กระบวนการขององค์กร ระเบียบวิธีวิจัย) อย่างไรก็ตาม มันถูกออกแบบมาโดยเฉพาะสำหรับระบบ AI ที่คุณภาพ output เป็นแบบ probabilistic และตรวจสอบได้ยาก
+
+### วงจร RCT-7 หนึ่งรอบใช้เวลานานแค่ไหน?
+ขึ้นอยู่กับ scope สำหรับ component เดียว วงจรสามารถเสร็จได้ในไม่กี่ชั่วโมง สำหรับการออกแบบแพลตฟอร์มใหม่ทั้งหมด วงจรอาจใช้เวลาหลายสัปดาห์ สิ่งสำคัญคือวงจรนั้น **ต่อเนื่อง** — ขั้นที่ 7 นำกลับเข้าสู่ขั้นที่ 1 โดยตรง
+
+### RCT-7 เกี่ยวข้องกับ FDIA อย่างไร?
+FDIA คือ **ผลลัพธ์** ของกระบวนการ RCT-7 สมการ FDIA ถูกสร้างขึ้นโดยการนำขั้นที่ 1 มาใช้ (แยกย่อยคุณภาพเป็น D, I, A, F) และขั้นที่ 3 (กำหนด constitutional constraints เช่น A=0 → F=0)
+
+### ใครสร้าง RCT-7?
+RCT-7 ถูกคิดค้นและพัฒนาโดย **อิทธิฤทธิ์ แซ่โง้ว** (Ittirit Saengow) ในฐานะระเบียบวิธีหลักของโครงการ RCT Ecosystem
+
+---
+
+## สรุป
+
+กระบวนการ RCT-7 เปลี่ยน AI development จากศิลปะให้กลายเป็นวิศวกรรมศาสตร์:
+
+1. **Decompose** — แบ่งย่อยจนทุกส่วนทดสอบได้
+2. **Reverse-Map** — เข้าใจ blast radius ของความล้มเหลว
+3. **Define Constraints** — กำหนดการรับประกันแบบ constitutional
+4. **Build with Verification** — Tests ถูกสร้างในตัว ไม่ใช่ add-on (4,849 tests, 0 failures)
+5. **Assemble with Consensus** — การตรวจสอบ multi-model (SignedAI Tiers)
+6. **Monitor with Memory** — Delta Engine, compression 74%, audit trail สมบูรณ์
+7. **Evolve** — Self-improving: cold start → warm recall, cost → $0 สำหรับรูปแบบที่ซ้ำ
+
+วงจรเจ็ดขั้นตอนนี้คือเหตุผลที่ RCT Ecosystem บรรลุ **hallucination เพียง 0.3%** (เทียบกับ 12–15% ของอุตสาหกรรม), **uptime 99.98%** และ **FDIA accuracy 0.92** — สร้างโดยคนเพียงคนเดียวในกรุงเทพฯ ประเทศไทย
+
+---
+
+*บทความนี้เขียนโดย อิทธิฤทธิ์ แซ่โง้ว (Ittirit Saengow) ผู้ก่อตั้งและนักพัฒนาเพียงคนเดียวของ RCT Labs RCT-7 เป็นส่วนหนึ่งของ RCT (Reverse Component Thinking) Ecosystem — ระบบปฏิบัติการ AI แบบ constitutional ที่สร้างขึ้นอย่างอิสระในกรุงเทพฯ ประเทศไทย*
