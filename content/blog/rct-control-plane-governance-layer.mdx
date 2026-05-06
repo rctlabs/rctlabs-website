@@ -1,0 +1,194 @@
+---
+title: "RCT Control Plane: The Governance Layer That Manages Every AI Decision"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-14"
+lastReviewed: "2026-05-06"
+category: "research"
+excerpt: "Every enterprise AI deployment has the same hidden problem: who controls which AI can do what, under which conditions, with which data, and with what level of authority? The RCT Control Plane is the answer — a constitutional governance layer that sits above every LLM and enforces policy, routing, authorization, and audit at the system level."
+tags: ["RCT Control Plane", "AI Governance", "Enterprise AI", "Constitutional AI", "FDIA", "JITNA", "Authorization", "AI Architecture", "RCT Platform"]
+readTime: 12
+references:
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://owasp.org/www-project-ai-security-and-privacy-guide/"
+  - "https://arxiv.org/abs/2212.08073"
+  - "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback"
+  - "https://rctlabs.github.io/rct-platform/"
+  - "https://rctlabs.co/en/core-systems"
+  - "https://rctlabs.co/en/algorithms"
+---
+
+# RCT Control Plane: The Governance Layer That Manages Every AI Decision
+
+In traditional enterprise software, the question "who is allowed to do what?" is answered by an access control layer — a system that sits between users and resources, evaluating every request against a policy before allowing it to proceed. Without this layer, every application must implement its own access control independently, inconsistently, and incompletely.
+
+Enterprise AI has the same problem. Every AI agent, every LLM call, every tool invocation in a complex AI system raises a governance question: **Is this action authorized? By whom? Under what conditions? With what data?** Most enterprise AI deployments answer this question differently in every component, using different prompts, different filters, different models. The result is inconsistent enforcement, zero auditability, and governance that fails at exactly the moment it matters most.
+
+The **RCT Control Plane** solves this problem by implementing a single, constitutional governance layer that sits above every LLM and every agent in the RCT Ecosystem. It evaluates every action request against a unified policy before anything executes. It logs every decision. It blocks anything unauthorized. It routes to the appropriate model tier based on risk and capability. And it does all of this transparently, deterministically, and without depending on the probabilistic behavior of any individual model.
+
+---
+
+## What a Control Plane Actually Does
+
+The term "control plane" comes from networking. In a network, the **data plane** moves packets from place to place. The **control plane** decides where packets should go — it maintains routing tables, enforces policies, and handles failures. Without a control plane, a network is just wires and switches with no coordination.
+
+AI systems have extensive data planes — LLMs, vector stores, tool APIs, agents. What almost none of them have is a control plane.
+
+The RCT Control Plane performs five functions that an AI data plane cannot perform on its own:
+
+### 1. Authorization (Who Can Do What)
+
+Every request entering the RCT Ecosystem is evaluated against an authorization policy before any LLM sees it. The Architect Gate (the A component of the FDIA equation) determines whether the requesting entity has authorization to perform the requested action with the specified data.
+
+Authorization in the RCT Control Plane is **not prompt-based**. It is not enforced by telling the model "don't reveal PII." It is enforced at the system level: if authorization is denied (A = 0), the mathematical result of FDIA is zero. No output is produced. No LLM call is made. The request is blocked, logged, and the requesting entity receives an explicit rejection — not a softened refusal from the model.
+
+This distinction is critical for enterprise compliance. A prompt-based refusal can be overridden. An architectural block cannot.
+
+### 2. Routing (Which Model for Which Task)
+
+Not every AI task should go to the same model. Routing in the RCT Control Plane is based on three factors:
+
+- **Task complexity:** Simple classification tasks route to fast, cheap Tier S models. Complex multi-step reasoning routes to Tier 4 or Tier 6 consensus chains.
+- **Risk level:** High-stakes outputs (medical, financial, legal) route to higher consensus tiers automatically, regardless of who makes the request.
+- **Cost optimization:** As the Delta Engine accumulates warm recall patterns for a query type, routing progressively shifts toward cheaper model tiers. A query that cost $0.08 on day one may cost $0.0003 on day 90 — because the warm recall result replaces most of the LLM computation.
+
+This routing logic is enforced by the Control Plane, not left to individual agents or callers to manage.
+
+### 3. Policy Enforcement (Constitutional Constraints)
+
+The Control Plane maintains a **constitutional policy set** — a collection of invariants that must hold for every output in the system. These policies are not suggestions; they are structural constraints.
+
+Examples of constitutional policies in the RCT Ecosystem:
+
+- **Data sovereignty policy:** Thai PII data can only be processed by models hosted in authorized jurisdictions. The Control Plane enforces this by rejecting JITNA packets that route Thai PII to non-compliant endpoints.
+- **Consensus threshold policy:** Outputs that will be shown to external users must pass Tier 4 consensus (75% agreement from 4 models) before leaving the system.
+- **Audit requirement policy:** All Tier 6+ outputs generate a signed audit record in RCTDB before being delivered.
+- **PDPA compliance policy:** Any request involving personal data automatically triggers intent classification for data minimization — the system only permits use of the minimum data necessary for the stated intent.
+
+Policy enforcement is stateless at the request level and stateful at the system level: each request is evaluated independently, but the audit trail accumulates across all requests.
+
+### 4. Monitoring (Real-Time Constitutional Health)
+
+The Control Plane provides a real-time view of constitutional health across the entire AI system. Unlike traditional application monitoring (which measures throughput and latency), the RCT Control Plane monitors:
+
+- **FDIA score distribution:** Are D scores degrading (data quality problems)? Are I scores clustering low (ambiguous intents)? Are A scores generating unexpected blocks (authorization anomalies)?
+- **Consensus rate:** What percentage of Tier 4+ requests are achieving consensus on the first attempt? A declining consensus rate is an early signal of model drift or capability degradation.
+- **Circuit breaker state:** How many fault isolation circuit breakers are open right now? Which AI components are in degraded mode?
+- **Warm recall ratio:** What fraction of requests are being served from warm recall vs cold LLM calls? A declining warm recall ratio may indicate prompt drift or context decay.
+
+These metrics are stored in RCTDB and surfaced through the Control Plane monitoring interface. They provide governance signal that is invisible to any traditional AI observability tool.
+
+### 5. Audit Trail (Full Constitutional Accountability)
+
+For every request processed by the Control Plane, the following is recorded in RCTDB:
+
+```
+{
+  request_id: "jitna-packet-hash",
+  timestamp: "ISO-8601",
+  requesting_entity: "agent-id or user-id",
+  action_requested: "structured intent",
+  fdia_scores: { D: 0.87, I: 0.91, A: 1 },
+  authorization_result: "granted",
+  routing_decision: "tier_4_consensus",
+  models_used: ["gemini-2.0", "claude-3.5", "gpt-4o", "llama-3.3"],
+  consensus_result: { agreement: 0.82, tier: 4 },
+  output_hash: "sha256-of-output",
+  circuit_breaker_state: "all_closed",
+  warm_recall: false
+}
+```
+
+This record cannot be modified after creation (RCTDB append-only constraint). It provides a complete, tamper-resistant audit trail that satisfies enterprise compliance requirements for AI governance documentation.
+
+---
+
+## The Control Plane in the 10-Layer Architecture
+
+The RCT Ecosystem is organized as a 10-layer architecture. The Control Plane is not a single layer — it is a **cross-cutting concern** that spans layers 3 through 8:
+
+| Layer | Name | Control Plane Function |
+|---|---|---|
+| L1 | JITNA Transport | Packet signing and validation |
+| L2 | Intent Normalization | Input sanitization, injection prevention |
+| **L3** | **FDIA Evaluation** | **Authorization gate (A component)** |
+| **L4** | **Routing Engine** | **Model tier selection** |
+| **L5** | **SignedAI Consensus** | **Multi-model verification** |
+| **L6** | **Circuit Breaker** | **Fault isolation and fallback** |
+| **L7** | **Delta Engine** | **Warm recall and cost optimization** |
+| **L8** | **RCTDB Audit** | **Constitutional audit record** |
+| L9 | Output Assembly | Response formatting |
+| L10 | Delivery | Client response |
+
+The data flows down through all 10 layers. The Control Plane enforces policy at every layer from L3 to L8. A request that fails at L3 (authorization denied) never reaches L4. A request that trips a circuit breaker at L6 automatically routes to the fault isolation fallback chain without any application-level intervention.
+
+---
+
+## How the Control Plane Enables Enterprise AI at Scale
+
+### Without the Control Plane
+
+An enterprise deploying AI without a Control Plane faces the following:
+
+- Each AI application implements its own authorization logic — inconsistently
+- Each model has different behavior for the same policy (GPT-4 interprets "never reveal PII" differently from Claude)
+- There is no unified audit trail — compliance documentation requires manual aggregation from multiple systems
+- Routing decisions are made by individual developers, not by policy — leading to cost overruns and capability mismatches
+- When a model degrades, there is no automatic fallback — users experience silent quality degradation
+
+### With the Control Plane
+
+- Authorization is enforced architecturally — once, consistently, everywhere
+- Policy is expressed as constitutional constraints — not as prompts in individual applications
+- Every AI decision has a tamper-resistant audit record
+- Routing is automatic, policy-driven, and cost-optimizing
+- Circuit breakers protect against cascading failure automatically
+
+The RCT Control Plane converts enterprise AI from a collection of independently deployed models into a **governed, auditable, self-healing system**.
+
+---
+
+## Implementation: What RFC Specs Govern the Control Plane
+
+The RCT Control Plane is specified across five RFC documents in the rct-platform codebase:
+
+| RFC | Title | Control Plane Component |
+|---|---|---|
+| RFC-001 | JITNA v2.0 Protocol | Transport and packet format |
+| RFC-002 | FDIA Evaluation Engine | Authorization gate |
+| RFC-003 | SignedAI Consensus Protocol | Multi-model verification |
+| RFC-005 | Delta Engine Specification | Warm recall and cost optimization |
+| RFC-006 | Fault Isolation Architecture | Circuit breaker and fallback |
+
+Each RFC is publicly available in the rct-platform GitHub repository with full specification, implementation constraints, and test coverage requirements.
+
+---
+
+## Frequently Asked Questions
+
+### Is the Control Plane a separate service, or is it embedded in the platform?
+The Control Plane is **embedded** — it is the FDIA evaluation + JITNA routing + SignedAI consensus chain operating as a unified policy enforcement point. There is no separate "control plane service" to deploy. Every JITNA packet automatically passes through Control Plane evaluation.
+
+### Does the Control Plane add latency?
+Yes, but minimally. FDIA evaluation adds approximately 8–12ms per request. For cold LLM calls that already take 2–8 seconds, this is less than 1% overhead. For warm recall requests (<50ms), the Control Plane is the dominant cost — but warm recall requests are 26–40x cheaper than cold calls, so the trade-off is strongly positive.
+
+### Can I customize policies without modifying the platform?
+Yes. The constitutional policy set is declarative — policies are expressed as structured rules, not code. You can add, modify, or remove policies through the configuration layer without rebuilding the platform.
+
+### How does the Control Plane handle multi-tenant deployments?
+Each tenant receives an isolated policy context. Authorization policies, data sovereignty constraints, and audit trails are tenant-scoped. One tenant's constitutional policy set cannot affect another tenant's request processing.
+
+---
+
+## Summary
+
+The RCT Control Plane answers the question that every enterprise AI deployment must eventually answer: **How do you govern AI decisions at scale, consistently, with full accountability?**
+
+The answer is not better prompts. It is not more careful model selection. It is a **constitutional governance layer** that enforces policy architecturally, routes intelligently, audits completely, and heals automatically.
+
+Every component in the RCT Ecosystem — FDIA, JITNA, SignedAI, Delta Engine, Circuit Breaker, RCTDB — is a component of the Control Plane. Together, they implement the only thing that makes enterprise AI trustworthy at scale: governance that cannot be bypassed, cannot be inconsistent, and cannot be undocumented.
+
+---
+
+*This article was written by Ittirit Saengow, founder and sole developer of RCT Labs. The RCT Control Plane is part of the RCT (Reverse Component Thinking) Ecosystem — a constitutional AI operating system built independently in Bangkok, Thailand.*

@@ -1,0 +1,194 @@
+---
+title: "RCT Control Plane: ชั้น Governance ที่ควบคุมทุกการตัดสินใจของ AI"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-14"
+lastReviewed: "2026-05-06"
+category: "research"
+excerpt: "การ deploy enterprise AI ทุกระบบมีปัญหาซ่อนอยู่เดิมเสมอ: ใครควบคุมว่า AI ตัวไหนทำอะไรได้บ้าง ภายใต้เงื่อนไขใด กับข้อมูลชุดใด และมีอำนาจระดับใด? RCT Control Plane คือคำตอบ — ชั้น constitutional governance ที่นั่งอยู่เหนือ LLM ทุกตัว และบังคับ policy, routing, authorization, และ audit ในระดับระบบ"
+tags: ["RCT Control Plane", "AI Governance", "Enterprise AI", "Constitutional AI", "FDIA", "JITNA", "Authorization", "AI Architecture", "RCT Platform"]
+readTime: 12
+references:
+  - "https://www.nist.gov/artificial-intelligence"
+  - "https://owasp.org/www-project-ai-security-and-privacy-guide/"
+  - "https://arxiv.org/abs/2212.08073"
+  - "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback"
+  - "https://rctlabs.github.io/rct-platform/"
+  - "https://rctlabs.co/th/core-systems"
+  - "https://rctlabs.co/th/algorithms"
+---
+
+# RCT Control Plane: ชั้น Governance ที่ควบคุมทุกการตัดสินใจของ AI
+
+ในซอฟต์แวร์ enterprise แบบดั้งเดิม คำถาม "ใครอนุญาตให้ทำอะไรได้บ้าง?" ถูกตอบโดย access control layer — ระบบที่นั่งระหว่าง user กับ resource โดยประเมินทุก request กับ policy ก่อนจะอนุญาตให้ดำเนินการ หากไม่มีชั้นนี้ แต่ละแอปพลิเคชันต้องสร้าง access control ของตัวเองอย่างอิสระ ไม่สม่ำเสมอ และไม่สมบูรณ์
+
+Enterprise AI มีปัญหาเดียวกัน ทุก AI agent ทุก LLM call ทุก tool invocation ใน AI system ที่ซับซ้อน ล้วนก่อให้เกิดคำถามด้าน governance: **action นี้ได้รับอนุญาตหรือไม่? โดยใคร? ภายใต้เงื่อนไขใด? กับข้อมูลชุดใด?** การ deploy enterprise AI ส่วนใหญ่ตอบคำถามนี้แตกต่างกันในทุก component ใช้ prompt ต่างกัน filter ต่างกัน model ต่างกัน ผลลัพธ์คือการบังคับใช้ที่ไม่สม่ำเสมอ ไม่มี auditability และ governance ที่ล้มเหลวในจังหวะที่สำคัญที่สุด
+
+**RCT Control Plane** แก้ปัญหานี้โดยสร้าง constitutional governance layer เดียวที่นั่งเหนือ LLM และ agent ทุกตัวใน RCT Ecosystem ระบบจะประเมินทุก action request กับ unified policy ก่อนจะมีอะไร execute เลย บันทึกทุกการตัดสินใจ บล็อกทุกสิ่งที่ไม่ได้รับอนุญาต และ route ไปยัง model tier ที่เหมาะสมตามความเสี่ยงและความสามารถ ทั้งหมดนี้ทำแบบ transparent, deterministic และไม่พึ่งพาพฤติกรรม probabilistic ของ model ตัวใดตัวหนึ่ง
+
+---
+
+## Control Plane ทำงานอะไรจริงๆ
+
+คำว่า "control plane" มาจากวงการ networking ในเครือข่าย **data plane** เคลื่อนย้าย packet จากที่หนึ่งไปอีกที่หนึ่ง **control plane** ตัดสินใจว่า packet ควรไปที่ไหน — รักษา routing table บังคับ policy และจัดการ failure หากไม่มี control plane เครือข่ายก็แค่สายและ switch ที่ไม่มีการประสานงาน
+
+AI system มี data plane ครบ — LLM, vector store, tool API, agent แต่แทบไม่มีระบบใดที่มี control plane
+
+RCT Control Plane ทำหน้าที่ห้าประการที่ AI data plane ไม่สามารถทำได้เอง:
+
+### 1. Authorization — ใครทำอะไรได้บ้าง
+
+ทุก request ที่เข้า RCT Ecosystem จะถูกประเมินกับ authorization policy ก่อนที่ LLM จะเห็นมัน Architect Gate (component A ในสมการ FDIA) ตัดสินใจว่า requesting entity มีอำนาจทำ action ที่ขอกับข้อมูลที่ระบุหรือไม่
+
+Authorization ใน RCT Control Plane **ไม่ใช่ prompt-based** ไม่ได้บังคับโดยการบอก model ว่า "อย่าเปิดเผย PII" แต่บังคับในระดับระบบ: หาก authorization ถูกปฏิเสธ (A = 0) ผลทางคณิตศาสตร์ของ FDIA เท่ากับศูนย์ ไม่มี output เกิดขึ้น ไม่มี LLM call เกิดขึ้น request ถูกบล็อก บันทึก และ requesting entity ได้รับการปฏิเสธอย่างชัดเจน — ไม่ใช่การปฏิเสธแบบอ่อนโยนจาก model
+
+ความแตกต่างนี้สำคัญมากสำหรับ enterprise compliance การปฏิเสธผ่าน prompt สามารถ override ได้ การบล็อกในระดับ architecture ไม่สามารถทำได้
+
+### 2. Routing — Model ไหนสำหรับงานไหน
+
+ไม่ใช่ทุก AI task ควรไปยัง model เดียวกัน Routing ใน RCT Control Plane ขึ้นอยู่กับสามปัจจัย:
+
+- **ความซับซ้อนของงาน:** งาน classification ง่ายๆ route ไปยัง Tier S model ที่เร็วและถูก งาน multi-step reasoning ซับซ้อน route ไปยัง Tier 4 หรือ Tier 6 consensus chain
+- **ระดับความเสี่ยง:** output ที่มีความเสี่ยงสูง (การแพทย์ การเงิน กฎหมาย) route ไปยัง consensus tier สูงกว่าโดยอัตโนมัติ โดยไม่คำนึงว่าใครขอ
+- **การ optimize ค่าใช้จ่าย:** เมื่อ Delta Engine สะสม warm recall pattern สำหรับ query type การ routing จะเปลี่ยนไปยัง model tier ที่ถูกกว่าอย่างต่อเนื่อง query ที่มีราคา $0.08 ในวันแรกอาจมีราคา $0.0003 ในวันที่ 90 — เพราะ warm recall result แทนที่ LLM computation ส่วนใหญ่
+
+logic ของ routing นี้ถูกบังคับโดย Control Plane ไม่ปล่อยให้ agent หรือ caller จัดการเอง
+
+### 3. Policy Enforcement — Constitutional Constraints
+
+Control Plane รักษา **constitutional policy set** — กลุ่ม invariant ที่ต้องเป็นจริงสำหรับทุก output ในระบบ policy เหล่านี้ไม่ใช่คำแนะนำ แต่เป็น structural constraint
+
+ตัวอย่าง constitutional policy ใน RCT Ecosystem:
+
+- **Data sovereignty policy:** ข้อมูล PII ของคนไทยสามารถประมวลผลได้เฉพาะกับ model ที่ host ใน jurisdiction ที่ได้รับอนุญาต Control Plane บังคับสิ่งนี้โดยปฏิเสธ JITNA packet ที่ route PII ของคนไทยไปยัง endpoint ที่ไม่ comply
+- **Consensus threshold policy:** Output ที่จะแสดงให้ external user เห็นต้องผ่าน Tier 4 consensus (agreement 75% จาก 4 model) ก่อนออกจากระบบ
+- **Audit requirement policy:** Output ทุก Tier 6+ สร้าง signed audit record ใน RCTDB ก่อน deliver
+- **PDPA compliance policy:** Request ใดๆ ที่เกี่ยวข้องกับข้อมูลส่วนบุคคลจะ trigger intent classification สำหรับ data minimization อัตโนมัติ — ระบบจะอนุญาตเฉพาะข้อมูลขั้นต่ำที่จำเป็นสำหรับ intent ที่ระบุ
+
+การบังคับ policy เป็น stateless ในระดับ request และ stateful ในระดับระบบ: แต่ละ request ถูกประเมินอย่างอิสระ แต่ audit trail สะสมในทุก request
+
+### 4. Monitoring — Constitutional Health แบบ Real-time
+
+Control Plane ให้ real-time view ของ constitutional health ทั่วทั้ง AI system ไม่เหมือน traditional application monitoring (ที่วัด throughput และ latency) RCT Control Plane monitor:
+
+- **FDIA score distribution:** D score กำลัง degrade หรือไม่ (data quality problem)? I score cluster ต่ำหรือไม่ (ambiguous intent)? A score สร้าง unexpected block หรือไม่ (authorization anomaly)?
+- **Consensus rate:** request Tier 4+ กี่ % ที่ achieve consensus ในครั้งแรก? อัตรา consensus ที่ลดลงเป็น early signal ของ model drift หรือ capability degradation
+- **Circuit breaker state:** ตอนนี้ fault isolation circuit breaker กี่ตัวที่เปิดอยู่? AI component ไหนอยู่ใน degraded mode?
+- **Warm recall ratio:** request กี่ % ที่ serve จาก warm recall vs cold LLM call? อัตรา warm recall ที่ลดลงอาจบ่งชี้ prompt drift หรือ context decay
+
+metric เหล่านี้ถูกเก็บใน RCTDB และแสดงผ่าน Control Plane monitoring interface สิ่งเหล่านี้ให้ governance signal ที่มองไม่เห็นใน traditional AI observability tool ใดๆ
+
+### 5. Audit Trail — Constitutional Accountability เต็มรูปแบบ
+
+สำหรับทุก request ที่ Control Plane ประมวลผล สิ่งต่อไปนี้ถูกบันทึกใน RCTDB:
+
+```
+{
+  request_id: "jitna-packet-hash",
+  timestamp: "ISO-8601",
+  requesting_entity: "agent-id or user-id",
+  action_requested: "structured intent",
+  fdia_scores: { D: 0.87, I: 0.91, A: 1 },
+  authorization_result: "granted",
+  routing_decision: "tier_4_consensus",
+  models_used: ["gemini-2.0", "claude-3.5", "gpt-4o", "llama-3.3"],
+  consensus_result: { agreement: 0.82, tier: 4 },
+  output_hash: "sha256-of-output",
+  circuit_breaker_state: "all_closed",
+  warm_recall: false
+}
+```
+
+record นี้ไม่สามารถแก้ไขได้หลังสร้าง (RCTDB append-only constraint) มัน provide complete, tamper-resistant audit trail ที่ satisfy enterprise compliance requirements สำหรับเอกสาร AI governance
+
+---
+
+## Control Plane ใน 10-Layer Architecture
+
+RCT Ecosystem จัดระเบียบเป็น 10-layer architecture Control Plane ไม่ใช่ layer เดียว — มันเป็น **cross-cutting concern** ที่ครอบ layer 3 ถึง 8:
+
+| Layer | ชื่อ | หน้าที่ Control Plane |
+|---|---|---|
+| L1 | JITNA Transport | Packet signing และ validation |
+| L2 | Intent Normalization | Input sanitization, injection prevention |
+| **L3** | **FDIA Evaluation** | **Authorization gate (component A)** |
+| **L4** | **Routing Engine** | **Model tier selection** |
+| **L5** | **SignedAI Consensus** | **Multi-model verification** |
+| **L6** | **Circuit Breaker** | **Fault isolation และ fallback** |
+| **L7** | **Delta Engine** | **Warm recall และ cost optimization** |
+| **L8** | **RCTDB Audit** | **Constitutional audit record** |
+| L9 | Output Assembly | Response formatting |
+| L10 | Delivery | Client response |
+
+ข้อมูลไหลลงผ่าน 10 layer ทั้งหมด Control Plane บังคับ policy ในทุก layer จาก L3 ถึง L8 request ที่ fail ที่ L3 (authorization denied) จะไม่ถึง L4 request ที่ trip circuit breaker ที่ L6 จะ route ไปยัง fault isolation fallback chain โดยอัตโนมัติโดยไม่มีการ intervene ในระดับ application
+
+---
+
+## Control Plane ช่วยให้ Enterprise AI Scale ได้อย่างไร
+
+### โดยไม่มี Control Plane
+
+enterprise ที่ deploy AI โดยไม่มี Control Plane เผชิญกับ:
+
+- แต่ละ AI application สร้าง authorization logic ของตัวเอง — ไม่สม่ำเสมอ
+- แต่ละ model มีพฤติกรรมต่างกันสำหรับ policy เดียวกัน (GPT-4 ตีความ "ห้ามเปิดเผย PII" ต่างจาก Claude)
+- ไม่มี unified audit trail — เอกสาร compliance ต้องรวบรวมด้วยมือจากหลายระบบ
+- routing decision ถูกตัดสินใจโดย developer แต่ละคน ไม่ใช่โดย policy — ทำให้เกิด cost overrun และ capability mismatch
+- เมื่อ model degrade ไม่มี automatic fallback — user ประสบกับ silent quality degradation
+
+### กับ Control Plane
+
+- Authorization บังคับในระดับ architecture — ครั้งเดียว สม่ำเสมอ ทุกที่
+- Policy แสดงเป็น constitutional constraint — ไม่ใช่ prompt ในแต่ละ application
+- ทุกการตัดสินใจ AI มี tamper-resistant audit record
+- Routing อัตโนมัติ ขับเคลื่อนด้วย policy และ optimize ค่าใช้จ่าย
+- Circuit breaker ป้องกัน cascading failure โดยอัตโนมัติ
+
+RCT Control Plane แปลง enterprise AI จากกลุ่ม model ที่ deploy อย่างอิสระเป็น **governed, auditable, self-healing system**
+
+---
+
+## Implementation: RFC Specs ไหนควบคุม Control Plane
+
+RCT Control Plane ถูกระบุใน RFC document ห้าฉบับใน rct-platform codebase:
+
+| RFC | ชื่อ | Control Plane Component |
+|---|---|---|
+| RFC-001 | JITNA v2.0 Protocol | Transport และ packet format |
+| RFC-002 | FDIA Evaluation Engine | Authorization gate |
+| RFC-003 | SignedAI Consensus Protocol | Multi-model verification |
+| RFC-005 | Delta Engine Specification | Warm recall และ cost optimization |
+| RFC-006 | Fault Isolation Architecture | Circuit breaker และ fallback |
+
+RFC แต่ละฉบับมีให้อ่านสาธารณะใน rct-platform GitHub repository พร้อม specification เต็ม, implementation constraint, และ test coverage requirement
+
+---
+
+## คำถามที่พบบ่อย
+
+### Control Plane เป็น service แยกต่างหาก หรือ embed อยู่ใน platform?
+Control Plane **ถูก embed** — มันคือ FDIA evaluation + JITNA routing + SignedAI consensus chain ที่ทำงานเป็น unified policy enforcement point ไม่มี "control plane service" แยกต่างหากที่ต้อง deploy ทุก JITNA packet ผ่าน Control Plane evaluation โดยอัตโนมัติ
+
+### Control Plane เพิ่ม latency หรือไม่?
+ใช่ แต่น้อยมาก FDIA evaluation เพิ่มประมาณ 8–12ms ต่อ request สำหรับ cold LLM call ที่ใช้เวลา 2–8 วินาทีอยู่แล้ว นี่คือ overhead น้อยกว่า 1% สำหรับ warm recall request (<50ms) Control Plane เป็น dominant cost — แต่ warm recall request ถูกกว่า cold call 26–40 เท่า ดังนั้น trade-off จึงให้ผลบวกอย่างชัดเจน
+
+### ฉัน customize policy ได้โดยไม่ต้องแก้ไข platform หรือไม่?
+ได้ constitutional policy set เป็น declarative — policy แสดงเป็น structured rule ไม่ใช่ code คุณสามารถเพิ่ม แก้ไข หรือลบ policy ผ่าน configuration layer โดยไม่ต้อง rebuild platform
+
+### Control Plane จัดการ multi-tenant deployment อย่างไร?
+แต่ละ tenant ได้รับ isolated policy context authorization policy, data sovereignty constraint, และ audit trail เป็น tenant-scoped policy set ของ tenant หนึ่งไม่สามารถกระทบ request processing ของอีก tenant
+
+---
+
+## สรุป
+
+RCT Control Plane ตอบคำถามที่ enterprise AI deployment ทุกรายต้องตอบในที่สุด: **คุณ govern AI decision ในระดับ scale ได้อย่างไร สม่ำเสมอ พร้อม accountability เต็มรูปแบบ?**
+
+คำตอบไม่ใช่ prompt ที่ดีกว่า ไม่ใช่การเลือก model อย่างระมัดระวังกว่า แต่เป็น **constitutional governance layer** ที่บังคับ policy ในระดับ architecture route อย่างชาญฉลาด audit อย่างครบถ้วน และ heal อย่างอัตโนมัติ
+
+ทุก component ใน RCT Ecosystem — FDIA, JITNA, SignedAI, Delta Engine, Circuit Breaker, RCTDB — ล้วนเป็น component ของ Control Plane ร่วมกัน พวกมัน implement สิ่งเดียวที่ทำให้ enterprise AI น่าเชื่อถือในระดับ scale: governance ที่ bypass ไม่ได้ ไม่สม่ำเสมอไม่ได้ และ undocument ไม่ได้
+
+---
+
+*บทความนี้เขียนโดย Ittirit Saengow ผู้ก่อตั้งและนักพัฒนาแต่ผู้เดียวของ RCT Labs RCT Control Plane เป็นส่วนหนึ่งของ RCT (Reverse Component Thinking) Ecosystem — constitutional AI operating system ที่สร้างขึ้นอย่างอิสระในกรุงเทพมหานคร ประเทศไทย*
