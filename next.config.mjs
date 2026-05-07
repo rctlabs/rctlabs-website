@@ -22,6 +22,7 @@ const nextConfig = {
   compress: true,
   experimental: {
     optimizeCss: true,
+    cssChunking: true,
     // Disable client-side Router Cache for dynamically rendered pages (pages that
     // use headers(), cookies(), etc.). This ensures locale-switching via
     // /en/* ↔ /th/* always triggers a fresh RSC fetch — not a cached payload.
