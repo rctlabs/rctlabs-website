@@ -40,7 +40,6 @@ interface ChatMessage {
   source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch" | "rate_limit"
   model_used?: string
   tokens_used?: number
-  signedai_score?: number  // Real SignedAI verification score 0.0-1.0
   isStreaming?: boolean
   isAuthError?: boolean
   isError?: boolean        // G9: marks a failed message that can be retried
@@ -48,6 +47,7 @@ interface ChatMessage {
   mode?: AnalysisMode      // G5: which mode produced this message
   page_links?: Array<{ label: string; url: string; section?: string }>
   external_links?: Array<{ label: string; url: string }>
+  signedai_score?: number
   metadata?: {
     intent?: string
     keywords?: string[]
@@ -325,11 +325,9 @@ export function FloatingAI() {
                       suggestions: Array.isArray(event.suggestions) ? (event.suggestions as string[]) : [],
                       suggestions_th: Array.isArray(event.suggestions_th) ? (event.suggestions_th as string[]) : [],
                       source: (event.source as ChatMessage["source"]) ?? "knowledge_base",
-                      model_used: typeof event.model === "string" ? event.model : undefined,
-                      tokens_used: typeof event.tokens_used === "number" ? event.tokens_used : undefined,
-                      signedai_score: typeof event.signedai_score === "number" ? event.signedai_score : undefined,
                       page_links: Array.isArray(event.page_links) ? (event.page_links as ChatMessage["page_links"]) : [],
                       external_links: Array.isArray(event.external_links) ? (event.external_links as ChatMessage["external_links"]) : [],
+                      signedai_score: typeof event.signedai_score === "number" ? event.signedai_score : undefined,
                     }
                   }
                 } else {
@@ -922,6 +920,11 @@ export function FloatingAI() {
                         <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border/50">
                           <CheckCircle className="w-3 h-3 text-green-400" />
                           <span className="text-xs font-mono text-green-400">SignedAI Verified</span>
+                          {msg.signedai_score !== undefined && (
+                            <span className={`text-xs font-mono ml-1 ${msg.signedai_score >= 0.8 ? "text-green-400" : msg.signedai_score >= 0.5 ? "text-yellow-400" : "text-red-400"}`}>
+                              {(msg.signedai_score * 100).toFixed(0)}%
+                            </span>
+                          )}
                         </div>
                       )}
 
@@ -993,21 +996,6 @@ export function FloatingAI() {
                       )}
                       {msg.source === "llm" && msg.model_used && (
                         <span className="text-xs text-muted-foreground/60 ml-1">({msg.model_used})</span>
-                      )}
-                      {/* SignedAI real verification score */}
-                      {msg.signedai_score != null && msg.signedai_score > 0 && (
-                        <span
-                          className={`text-xs ml-1 font-medium ${
-                            msg.signedai_score >= 0.8
-                              ? "text-green-400"
-                              : msg.signedai_score >= 0.5
-                                ? "text-yellow-400"
-                                : "text-red-400"
-                          }`}
-                          title={`SignedAI Verification Score: ${(msg.signedai_score * 100).toFixed(0)}%`}
-                        >
-                          ✓ {(msg.signedai_score * 100).toFixed(0)}%
-                        </span>
                       )}
                       {/* G9: retry button for error messages */}
                       {msg.isError && msg.retryQuery && (
