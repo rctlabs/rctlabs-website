@@ -1,0 +1,184 @@
+---
+title: "Knowledge Vault (Vault-1068): The Static Knowledge Layer in the RCT Ecosystem"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-16"
+lastReviewed: "2026-05-12"
+category: "engineering"
+excerpt: "Dynamic AI memory gets most of the attention, but enterprise AI deployments fail most often on static knowledge — facts that don't change, rules that must always apply, and institutional knowledge that needs to be consistent across all agents. Vault-1068 is the RCT Ecosystem's answer: a constitutional access-controlled static knowledge layer."
+tags: ["Knowledge Vault", "Vault-1068", "Static Knowledge", "Constitutional AI", "Enterprise AI", "RCTDB", "Genome System", "AI Architecture"]
+readTime: 10
+references:
+  - "https://rctlabs.github.io/rct-platform/architecture/"
+  - "https://rctlabs.co/en/genome/vault"
+  - "https://arxiv.org/abs/2312.10997"
+  - "https://www.nist.gov/artificial-intelligence"
+---
+
+# Knowledge Vault (Vault-1068): The Static Knowledge Layer in the RCT Ecosystem
+
+In enterprise AI discussions, the focus is almost always on the wrong kind of memory. Researchers and engineers invest heavily in making AI systems remember *dynamic* context — conversation history, user preferences, session state. These are important. But the failures that cause the most expensive enterprise AI incidents are usually not dynamic memory failures.
+
+They are *static knowledge* failures.
+
+An AI agent that consistently applies the wrong version of a regulatory rule. A system that gives different answers to the same compliance question depending on which conversation thread triggered it. A customer-facing agent that quotes an outdated product specification because no one explicitly told it the spec had changed. A multi-agent pipeline where Agent A and Agent B are operating from different versions of the same institutional policy document.
+
+These failures share a common root: there is no authoritative, access-controlled, version-tracked layer for knowledge that is supposed to be constant.
+
+**Vault-1068** is that layer in the RCT Ecosystem.
+
+---
+
+## What the Vault Is (and Is Not)
+
+Vault-1068 is not a RAG (Retrieval-Augmented Generation) system. It does not retrieve documents and stuff them into a prompt context window. It is also not a vector database — it does not find "semantically similar" documents. Semantic similarity is useful for finding related information; it is a liability when you need exact facts.
+
+Vault-1068 is a **constitutional static knowledge store** with three defining properties:
+
+**1. Deterministic Access, Not Probabilistic Retrieval**
+When an agent queries the Vault for a specific fact — the current PDPA penalty tier for Tier-2 violations, the maximum allowed dosing threshold for a specific compound, the exact wording of a constitutional prohibition — it receives the exact stored value, not a semantically similar approximation. There is no hallucination surface at the retrieval layer because there is no generation at the retrieval layer.
+
+**2. Constitutional Access Control**
+Knowledge in the Vault is tagged with access rules derived from G6 (Vault Genome) and G1 (Architect's Genome). An agent with a medical domain configuration can access the medical knowledge segment. An agent processing a legal query can access the legal knowledge segment. An agent without appropriate constitutional authorization cannot access knowledge it is not cleared for — and the access denial is logged for audit.
+
+**3. Version-Tracked Consistency**
+Every knowledge item in Vault-1068 has a version, a `valid_from` timestamp, and an optional `expires_at`. When regulatory rules change (e.g., PDPA Amendment 2567 supersedes PDPA B.E.2562), the old knowledge does not disappear — it is archived with its validity period — and the new version becomes the authoritative answer for queries submitted after `valid_from`. Agents never silently operate on stale knowledge because they cannot access knowledge outside its validity window.
+
+---
+
+## Vault-1068 in the 7 Genome Architecture
+
+Vault-1068 is the operational implementation of **G6 (Vault Genome)**. In the genome architecture:
+
+- G1 (Architect's Genome) defines *what knowledge domains exist* and *what constitutional rules apply*
+- G6 (Vault Genome) enforces *who can access what knowledge* and *what prohibitions override any retrieval*
+- Vault-1068 is the *actual data store* where the knowledge lives
+
+The separation matters. G6 contains the constitutional logic for sovereignty and access control. Vault-1068 contains the knowledge itself. G6 without a Vault is a policy document; a Vault without G6 is a database with no enforcement mechanism.
+
+When an agent queries Vault-1068:
+```
+Agent → G3 (JITNA routing) → G6 (access check) → Vault-1068 (retrieval) → Agent
+```
+
+If G6's access check fails (wrong domain, prohibited combination, expired authorization), the query never reaches Vault-1068. The agent receives a structured denial response — not a hallucinated answer.
+
+---
+
+## The 8-Dimensional Knowledge Schema
+
+All knowledge stored in Vault-1068 is indexed across the same 8 dimensions used by the RCTDB (dynamic memory layer), ensuring that static and dynamic knowledge can be queried with the same interface:
+
+| Dimension | What it captures for static knowledge |
+|---|---|
+| **Intent** | What queries this knowledge answers |
+| **Domain** | Which field (medical, legal, compliance, technical) |
+| **Context** | Under what conditions this knowledge applies |
+| **Authority** | Which authoritative source originated this knowledge |
+| **Confidence** | Certainty level (1.0 for verified regulatory text; lower for derived interpretations) |
+| **Temporal** | Validity window (valid_from, expires_at) |
+| **Access Level** | Constitutional authorization required to retrieve |
+| **Provenance** | Who submitted this knowledge, when, and under what review process |
+
+The 8-dimensional indexing means that a single knowledge item can be retrieved via multiple access patterns — by domain, by intent type, by validity date, or by access level — without requiring separate indexes for each.
+
+---
+
+## What Goes in the Vault (and What Doesn't)
+
+**Goes in Vault-1068:**
+- Regulatory text and legal provisions (with version tracking)
+- Constitutional prohibitions (A=0 rules derived from G1)
+- Product specifications and technical standards
+- Organizational policies and approval workflows
+- Verified domain taxonomies (e.g., ICD-10 codes, ISIC industry classifications)
+- Compliance checklists and certification requirements
+
+**Does NOT go in Vault-1068:**
+- User conversation context (→ RCTDB via G4/ARTENT)
+- Dynamic market data or real-time feeds (→ specialized adapters)
+- Model weights or configurations (→ G3/JITNA routing layer)
+- Unverified or draft knowledge (→ staging environment, not production Vault)
+
+The distinction is important: Vault-1068 stores what is *known to be true and authorized*. Dynamic memory (RCTDB) stores what *was said or observed*. Mixing these creates exactly the class of failure Vault-1068 is designed to prevent — an agent that "remembers" a user saying something treating it as an authoritative fact.
+
+---
+
+## Practical Operations: Knowledge Lifecycle
+
+### Ingestion
+
+New knowledge enters Vault-1068 through a structured review workflow:
+
+1. **Submission** — Knowledge item submitted with domain tag, authority source, and proposed validity window
+2. **Review gate** — Constitutional review: does this knowledge conflict with any G1 prohibition? Does it require elevated access classification?
+3. **Staging** — Item available in the staging Vault for testing against existing agent configurations
+4. **Promotion** — After testing, item promoted to production Vault with a confirmed `valid_from` timestamp
+
+This workflow ensures that no knowledge enters the production Vault without explicit review — preventing the "someone added a wrong fact and all agents started using it" failure mode.
+
+### Expiration and Archival
+
+When knowledge expires (e.g., a regulatory rule is superseded):
+- The item's status changes to `ARCHIVED`
+- It remains queryable for audit purposes (e.g., "what did the system believe about this rule on date X?")
+- Agents querying the live Vault no longer receive it
+- G6 logs a `KNOWLEDGE_EXPIRY` event to the audit trail
+
+### Versioning
+
+When knowledge is updated rather than replaced:
+- The new version receives a new `valid_from` timestamp
+- The old version's `expires_at` is set to match the new version's `valid_from`
+- Both versions are retained in the archive
+- Queries specify either "current" (default) or a specific date (for historical audit)
+
+---
+
+## Access Control: Constitutional vs. Role-Based
+
+Vault-1068 implements two layers of access control:
+
+**Constitutional Access Control (G6):** Absolute. Certain knowledge combinations cannot be retrieved by certain agent configurations regardless of role. If G1 contains a constitutional prohibition against an agent with a "customer service" role accessing detailed pharmaceutical dosing data without a medical domain override, this prohibition cannot be bypassed by any role assignment. It is enforced at the genome expression level.
+
+**Role-Based Access Control:** Standard. Domain tags, clearance levels, and organizational unit assignments determine which knowledge segments each agent class can access. Configurable per deployment.
+
+The key difference: constitutional access control cannot be reconfigured at runtime. Role-based access control can be. This distinction exists because some access prohibitions are safety constraints — they must hold even during a system reconfiguration, even if an administrator mistakenly grants elevated access, even if an agent escalates its own permissions through an unexpected path.
+
+---
+
+## How Vault-1068 Prevents the Most Common Enterprise AI Failures
+
+**Failure: Two agents give different answers to the same compliance question**
+Resolution: Both agents query Vault-1068 for the authoritative answer. There is only one version of regulatory truth in the system.
+
+**Failure: Agent uses outdated regulatory interpretation**
+Resolution: The outdated interpretation is archived with its validity window. The agent cannot retrieve it for queries submitted after its `expires_at`.
+
+**Failure: Agent confidently states a fact that is the organization's internal policy, treating it as universal law**
+Resolution: Organizational policies and universal regulations are tagged with different `authority` and `access_level` values. G6 ensures organizational policies are only surfaced to agents with organizational context, not in responses to general users.
+
+**Failure: Sensitive knowledge leaks across domain boundaries**
+Resolution: Constitutional access control prevents agents without domain authorization from retrieving out-of-scope knowledge, regardless of how the query is phrased.
+
+---
+
+## Integration with the Broader RCT Ecosystem
+
+Vault-1068 is one of the static-knowledge anchors that the dynamic system (RCTDB + Delta Engine) operates against. The combined architecture:
+
+- **Vault-1068** answers "what is definitively true"
+- **RCTDB** answers "what has been observed and learned"
+- **Delta Engine** answers "what changed recently and what is the most efficient path to recall"
+
+An agent that needs to answer a compliance question uses all three:
+1. Vault-1068 retrieves the authoritative regulatory rule
+2. RCTDB retrieves the organization's historical compliance decisions for context
+3. Delta Engine determines whether a warm-recall answer exists or a full LLM call is required
+
+Neither Vault-1068 nor RCTDB alone is sufficient. The regulatory rule without organizational context is incomplete. The organizational context without the authoritative rule is potentially wrong. The combination, mediated by FDIA scoring and G6 constitutional enforcement, produces answers that are both accurate and contextually appropriate.
+
+---
+
+*Related articles: [7 Genome System](/en/blog/rct-7-genome-system) · [RCTDB 8-Dimensional Memory](/en/blog/rctdb-8-dimensional-memory-schema) · [Delta Engine 74% Compression](/en/blog/delta-engine-74-percent-compression) · [Specialist Studio](/en/blog/specialist-studio-explained)*

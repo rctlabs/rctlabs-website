@@ -1,0 +1,230 @@
+---
+title: "The RCT 7 Genome System: How Every Module Interconnects"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-13"
+lastReviewed: "2026-05-12"
+category: "engineering"
+excerpt: "Most AI systems are a collection of loosely coupled components. The RCT 7 Genome System is different — it is a closed biological loop where each genome feeds the next, the last feeds the first, and the system never stops evolving. This article explains how G1 through G7 interconnect and why the circular architecture matters."
+tags: ["7 Genome System", "AI Architecture", "RCT Platform", "HexaCore", "JITNA", "SignedAI", "ArtentAI", "Intent OS"]
+readTime: 11
+references:
+  - "https://rctlabs.github.io/rct-platform/architecture/"
+  - "https://rctlabs.co/en/genome"
+  - "https://rctlabs.co/en/algorithms"
+  - "https://arxiv.org/abs/2210.03629"
+  - "https://www.nist.gov/artificial-intelligence"
+---
+
+# The RCT 7 Genome System: How Every Module Interconnects
+
+Most AI infrastructure is assembled rather than designed. A retrieval component here, a prompt template there, a model router bolted on when the original architecture started showing latency problems. The result is a system whose components know nothing about each other — they share a message bus, but they do not share understanding.
+
+The RCT **7 Genome System** is a different design philosophy. It is built on a biological metaphor: just as DNA does not contain isolated instructions for individual proteins but a complete, self-referencing blueprint for an organism, the 7 Genome System contains a complete, circular architecture for an intelligent AI operating system — where each genome both depends on and informs the others.
+
+This article explains each of the seven genomes, how they interconnect, and why the circular feedback loop is what makes the architecture qualitatively different from modular AI frameworks.
+
+---
+
+## The Fundamental Design Constraint
+
+Before examining each genome, it is important to understand the design constraint the architecture satisfies.
+
+A modular AI system can add capability by adding modules. But adding modules without a shared information schema creates a proliferation of interfaces — N modules require O(N²) integration surfaces to fully connect. At enterprise scale, this becomes unmanageable: systems have hundreds of services, and each new capability requires negotiating yet another integration contract.
+
+The 7 Genome System solves this through a different approach: **shared genome expression**. Every genome in the system understands the same data primitives (FDIA score, intent vector, RCTDB memory state) because they all express from the same foundational blueprint (G1). Adding a new capability does not require a new interface contract — it requires expressing a new genome within an already-understood schema.
+
+The practical consequence: the 7 genomes have a total of 7 integration surfaces (each genome connects to the loop), not 21.
+
+---
+
+## The Seven Genomes: Full Specification
+
+### G1 — Architect's Genome: The Blueprint
+
+**Role:** Master knowledge scaffold. Defines every domain, concept, relationship, and constraint that the system can understand. All other genomes derive their operational schema from G1.
+
+**What it contains:**
+- Domain ontology: the complete map of concepts the system can reason about
+- Relationship graph: how concepts connect and influence each other
+- Constitutional constraints: what the system is unconditionally prohibited from doing (A=0 rules)
+- Foundational FDIA equation parameters: the base thresholds for D, I, and A across domains
+
+**Why it comes first:** G1 does not process queries — it defines what processing *means* in this system. Without G1, G2 through G7 would each develop their own internal vocabularies, producing the semantic drift that causes multi-agent coordination failures.
+
+**Interconnection:** G1 provides the schema that G2's algorithms operate on, the constitutional constraints that G6 enforces, and the performance baselines that G7 uses to evaluate improvement.
+
+---
+
+### G2 — RCT Codex Genome: The Algorithm Library
+
+**Role:** The living knowledge base of Reverse Component Thinking methodology. Encodes the 41 proprietary algorithms and the FDIA equation itself.
+
+**What it contains:**
+- 41 algorithms spanning all 10 architecture layers
+- FDIA equation (`F = D^I × A`) as a computable function, not a metaphor
+- Decision trees for algorithm selection based on task type
+- Reasoning framework for complex multi-step problem decomposition
+
+**Why the algorithms are in a genome rather than a library:** Traditional algorithm libraries are static. The Codex Genome is dynamic — G7's self-improvement signals (performance data from real operations) feed back into G2, updating which algorithms are preferred for which task profiles. The library learns which of the 41 algorithms actually perform well in production, not just in theory.
+
+**Interconnection:** G3 (JITNA) queries G2 to determine which algorithm to apply to each incoming query. G7 sends performance feedback to G2 to update algorithm preference weights.
+
+---
+
+### G3 — JITNA Genome: The Routing Intelligence
+
+**Role:** Just-in-Time Neural Architecture — the dynamic routing engine that selects the optimal LLM, algorithm tier, and processing path for every query in real time.
+
+**What it does:**
+- Classifies incoming intent using the 6-field canonical language (I/D/Δ/A/R/M)
+- Selects from the HexaCore 7-model roster (3 Western + 3 Eastern + 1 Thai regional)
+- Determines processing tier: cache hit (Tier 1, <50ms) → single model (Tier 2) → consensus (Tier 4/6/8)
+- Balances speed, accuracy, and cost based on real-time system state
+
+**The routing decision is not static configuration.** JITNA evaluates each query against current system load, model availability, Delta Engine cache state, and the query's FDIA intent classification. Two identical queries submitted an hour apart may be routed differently if system conditions have changed.
+
+**Interconnection:** G3 receives domain context from G1 to understand what kind of query it is routing. It queries G2 for algorithm preferences. It passes routed queries to G4 (intent execution) and G5 (if consensus is required).
+
+---
+
+### G4 — ARTENT Genome: The Personal Agent OS
+
+**Role:** The execution and memory genome. Runs the actual AI interactions, manages cross-session memory, and powers the L1–L5 intelligence ladder.
+
+**What it contains:**
+- **Intent Omnibox:** classifies any input (voice, text, structured data, image description) into the system's intent schema
+- **Memory Timeline:** RCTDB-backed persistent memory across sessions — the user's context does not reset between interactions
+- **Sovereignty Vault:** user-owned memory encryption and selective disclosure controls
+- **L1–L5 Intelligence Ladder:** escalation from simple lookup (L1) through creative synthesis (L3) to autonomous multi-step planning (L5)
+
+**Why the memory layer is part of a genome, not a database service:** A database service stores and retrieves. The ARTENT Genome *understands* what is stored — it maintains the semantic relationships between stored context items, enabling warm recall that is contextually relevant, not just chronologically recent.
+
+**Interconnection:** G4 receives routing instructions from G3, stores outcomes to RCTDB (which feeds G7's improvement loop), and passes high-stakes outputs to G5 for consensus verification when the FDIA score indicates verification is required.
+
+---
+
+### G5 — SignedAI Genome: The Attestation Layer
+
+**Role:** Multi-model attestation and consensus genome. Orchestrates the 6-stage SignedAI pipeline for verification of high-stakes outputs.
+
+**The 6-stage pipeline:**
+```
+INTAKE → ROUTER → SIGNERS → ATTESTATION → CONSENSUS → REPORT
+```
+
+- **INTAKE:** Receives the candidate output from G4 and the query's FDIA verification tier
+- **ROUTER:** Assembles the appropriate model panel (1 model for TIER_S, 4 for TIER_4, 6 for TIER_6, 8 for TIER_8)
+- **SIGNERS:** Each model independently evaluates the candidate output
+- **ATTESTATION:** Each model produces a cryptographic signature (Ed25519) on its evaluation
+- **CONSENSUS:** Checks if the agreement threshold is met (50%/67%/75%/100% by tier)
+- **REPORT:** Releases verified output or escalates if consensus is not reached
+
+**Why Ed25519 signatures:** A multi-model consensus without cryptographic attestation is just an average — any post-hoc modification of the output cannot be detected. Ed25519 signatures create an immutable audit trail: the output that was agreed upon, the models that signed it, and the moment of consensus are permanently verifiable.
+
+**Cost structure by tier:**
+- TIER_S: ~$0.10 per verification
+- TIER_4 (50% consensus, 4 models): ~$0.80
+- TIER_6 (67% consensus, 6 models): ~$2.00  
+- TIER_8 (75% consensus, 8 models): ~$5.00
+
+**Interconnection:** G5 receives verification requests from G4, queries G1 for constitutional constraints to check against, and reports verified outputs back to G4 for delivery. All verification events are logged to RCTDB (G4's memory layer) for G7's audit trail.
+
+---
+
+### G6 — Vault Genome: The Sovereignty Layer
+
+**Role:** Data protection, constitutional constraint enforcement, and audit trail management across all 8 RCTDB dimensions.
+
+**What it enforces:**
+- **Constitutional prohibitions:** When A=0 in the FDIA equation, output is unconditionally blocked regardless of D, I, or model confidence. This is a mathematical hard gate, not a preference
+- **User memory sovereignty:** Users own their stored context in RCTDB — selective disclosure means users can grant or revoke system access to their memory at any time
+- **Cross-domain contamination prevention:** G6 ensures that sensitive context from one domain (e.g., medical) does not bleed into queries in another domain (e.g., legal) without explicit user authorization
+- **Audit trail integrity:** All constitutional decisions (why an output was blocked, what rule triggered) are logged with timestamps and rule references
+
+**Why sovereignty is a genome, not a service:** A sovereignty service can be bypassed by routes that don't call it. A sovereignty genome is expressed at the foundational schema level — constitutional constraints are baked into G1's ontology, meaning no genome can generate an output that violates A=0 without explicitly recognizing and reporting the violation.
+
+**Interconnection:** G6 receives constitutional context from G1, monitors all G4/G5 outputs for constitutional compliance, and provides the audit trail that G7 uses to assess system integrity over time.
+
+---
+
+### G7 — RCT-7 Genome: The Mental OS and Self-Evolution Engine
+
+**Role:** The executive genome. Runs the system-level IntentLoop, feeds performance signals back to earlier genomes, and drives continuous improvement.
+
+**The 7-state IntentLoop:**
+```
+IDLE → RECEIVE → PARSE → ROUTE → EXECUTE → VERIFY → ADAPT
+```
+
+- **IDLE:** System at rest, monitoring for intent signals
+- **RECEIVE:** Intent signal received and logged to RCTDB
+- **PARSE:** G1/G2 parse the intent into the system's canonical schema
+- **ROUTE:** G3 selects optimal processing path
+- **EXECUTE:** G4 processes the query
+- **VERIFY:** G5/G6 verify the output if required by FDIA tier
+- **ADAPT:** Performance data from this loop iteration feeds back to G1, G2, G3 — updating domain understanding, algorithm weights, and routing preferences
+
+**The ADAPT step is what makes this an OS, not a framework.** Traditional AI frameworks produce outputs. G7 ensures that every output — successful or failed — generates a learning signal that updates the system's future behavior. The Ecosystem never processes the same query in exactly the same way twice, because every completed loop has updated at least one genome's state.
+
+**Interconnection:** G7 receives performance data from every other genome, synthesizes improvement signals, and distributes updates back to G1 (domain understanding), G2 (algorithm preferences), and G3 (routing optimization).
+
+---
+
+## The Circular Loop: Why Biological Metaphors Are Accurate
+
+The 7 genomes do not form a pipeline — they form a loop. The complete cycle:
+
+```
+G1 (Blueprint)
+   ↓ schema
+G2 (Algorithms) ← performance feedback ←──────────────────────────┐
+   ↓ algorithm selection                                            │
+G3 (Routing) ← routing optimization ←──────────────────────────── │
+   ↓ routed query                                                   │
+G4 (Execution) → memory stored in RCTDB                            │
+   ↓ high-stakes outputs                                            │
+G5 (Attestation) → cryptographic audit trail                       │
+   ↓ compliance monitoring                                          │
+G6 (Vault) → audit trail integrity                                  │
+   ↓ all performance data                                           │
+G7 (Self-Evolution) ───────────────────────────────────────────────┘
+```
+
+In a biological organism, DNA is not read once at birth — it is continuously read, expressed, and modified by the organism's environment and history. The 7 Genome System has the same property: G1's blueprint is continuously updated by G7's performance observations. A system that processed 10,000 queries has a subtly different G1 than a system that processed zero — it has learned which domains are most frequently queried, which constitutional rules are most often tested, and which FDIA thresholds produce the best quality/cost tradeoff in practice.
+
+This is not fine-tuning. No model weights are changed. The improvement happens at the configuration layer — the genome expression — which is why it can happen continuously, in production, without downtime or retraining.
+
+---
+
+## Practical Consequences for Enterprise Deployment
+
+**For teams evaluating the 7 Genome System against modular alternatives:**
+
+| Property | Modular Architecture | 7 Genome System |
+|---|---|---|
+| Component integration | O(N²) interface surfaces | 7 loop connections |
+| Performance improvement | Manual tuning required | Continuous via G7 ADAPT |
+| Constitutional compliance | Policy service (can be bypassed) | Genome-level (schema-enforced) |
+| New capability addition | New module + new interfaces | New genome expression within shared schema |
+| Audit trail | Optional logging service | G6 sovereignty genome (always active) |
+| Memory across sessions | External database service | G4 ARTENT with semantic understanding |
+
+**The 7 Genome System is not faster to deploy for a single use case than a simple API chain.** For one-off tasks, an LLM API call is faster to set up. The advantage of the genome architecture emerges at scale — when the system is handling diverse query types, needs to maintain context across thousands of user sessions, must enforce constitutional constraints across all domains simultaneously, and needs to improve over time without manual intervention.
+
+---
+
+## Connection to the Broader RCT Architecture
+
+The 7 Genome System is not the full [RCT Platform architecture](/en/genome) — it is the biological metaphor that explains how the platform's components relate to each other. The actual implementation runs on:
+
+- The [FDIA equation](/en/blog/fdia-equation-explained) as the foundational scoring function across all genomes
+- The [JITNA Protocol](/en/blog/jitna-language-release) as the inter-genome communication standard
+- The [SignedAI consensus layer](/en/blog/signedai-multi-llm-consensus-explained) as G5's implementation
+- The [Delta Engine](/en/blog/delta-engine-74-percent-compression) as G4's memory compression mechanism
+- The [Specialist Studio](/en/blog/specialist-studio-explained) as the domain-specific expression of G1 + G2 + G3 + G6
+
+---
+
+*Related articles: [FDIA Equation Explained](/en/blog/fdia-equation-explained) · [SignedAI Multi-LLM Consensus](/en/blog/signedai-multi-llm-consensus-explained) · [Delta Engine 74% Compression](/en/blog/delta-engine-74-percent-compression) · [Specialist Studio](/en/blog/specialist-studio-explained)*

@@ -160,6 +160,20 @@ const glossaryTerms = [
     entityHref: "/en/blog/intent-farming-grow-ai-context",
   },
   {
+    term: "Genome System",
+    termTh: "Genome System (ระบบ 7 Genome)",
+    definition: "The biological metaphor describing how the RCT Ecosystem's seven core modules (G1–G7) form a closed, circular architecture. Each genome expresses from a shared foundational blueprint (G1), meaning all modules operate on the same data primitives (FDIA score, intent vector, RCTDB memory state). The circular loop — G1 Architect → G2 Codex → G3 JITNA → G4 ARTENT → G5 SignedAI → G6 Vault → G7 RCT-7 → back to G1 — means performance signals from each completed operation feed back to improve the system's future routing, algorithm selection, and domain understanding continuously.",
+    definitionTh: "Metaphor ทางชีวภาพที่อธิบายวิธีที่ 7 Module หลักของ RCT Ecosystem (G1–G7) ก่อตัวเป็น Architecture แบบวงกลมปิด แต่ละ Genome แสดงออกจาก Blueprint พื้นฐานร่วมกัน (G1) หมายความว่า Module ทั้งหมดทำงานบน Data Primitives เดียวกัน (FDIA Score, Intent Vector, RCTDB Memory State) Loop แบบวงกลม — G1 → G2 → G3 → G4 → G5 → G6 → G7 → กลับ G1 — หมายความว่าสัญญาณ Performance จากการดำเนินงานแต่ละครั้งป้อนกลับเพื่อปรับปรุง Routing, การเลือก Algorithm และความเข้าใจ Domain ในอนาคตอย่างต่อเนื่อง",
+    entityHref: "/en/blog/rct-7-genome-system",
+  },
+  {
+    term: "Runtime Policy Enforcement",
+    termTh: "Runtime Policy Enforcement (การบังคับใช้นโยบาย ณ Runtime)",
+    definition: "Constitutional constraints applied at query execution time, not at configuration time. Unlike role-based access control (which can be reconfigured by an administrator), Runtime Policy Enforcement in the RCT Control Plane's 15-module DSL enforces A=0 constitutional prohibitions at the genome expression level — meaning no routing path, no model call, and no privileged escalation can produce an output that violates a constitutional rule. This is distinct from preference-based guardrails, which can be overridden by sufficiently confident model outputs.",
+    definitionTh: "ข้อจำกัด Constitutional ที่บังคับใช้ ณ เวลา Execute Query ไม่ใช่เวลา Configuration ต่างจาก Role-based Access Control (ที่ผู้ดูแลระบบสามารถกำหนดค่าใหม่ได้) Runtime Policy Enforcement ใน RCT Control Plane DSL 15 โมดูล บังคับใช้ Constitutional Prohibitions A=0 ที่ระดับ Genome Expression — หมายความว่าไม่มีเส้นทาง Routing ไม่มีการเรียกโมเดล และไม่มีการยกระดับสิทธิ์ใดที่สร้าง Output ที่ละเมิดกฎ Constitutional ได้ สิ่งนี้แตกต่างจาก Guardrails แบบ Preference ที่สามารถถูก Override โดย Output ของโมเดลที่มีความมั่นใจเพียงพอ",
+    entityHref: "/en/blog/rct-7-genome-system",
+  },
+  {
     term: "Prompt Injection",
     termTh: "Prompt Injection (การฉีดคำสั่ง)",
     definition: "A security attack where malicious text in user input attempts to override the system's intended behavior. RCT's JITNA Normalizer automatically strips known injection patterns on every request before LLM processing.",

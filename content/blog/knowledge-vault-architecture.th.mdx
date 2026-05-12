@@ -1,0 +1,149 @@
+---
+title: "Knowledge Vault (Vault-1068): ชั้น Static Knowledge ใน RCT Ecosystem"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-16"
+lastReviewed: "2026-05-12"
+category: "engineering"
+excerpt: "Dynamic AI Memory ได้รับความสนใจมากที่สุด แต่การ Deploy AI ระดับองค์กรล้มเหลวบ่อยที่สุดกับ Static Knowledge — ข้อเท็จจริงที่ไม่เปลี่ยนแปลง กฎที่ต้องใช้เสมอ และความรู้องค์กรที่ต้องสอดคล้องกันข้าม Agent ทุกตัว Vault-1068 คือคำตอบของ RCT Ecosystem"
+tags: ["Knowledge Vault", "Vault-1068", "Static Knowledge", "Constitutional AI", "Enterprise AI", "RCTDB", "Genome System", "AI Architecture"]
+readTime: 10
+references:
+  - "https://rctlabs.github.io/rct-platform/architecture/"
+  - "https://rctlabs.co/th/genome/vault"
+---
+
+# Knowledge Vault (Vault-1068): ชั้น Static Knowledge ใน RCT Ecosystem
+
+ในการพูดถึง AI ระดับองค์กร ความสนใจมักอยู่กับ Memory ผิดประเภท นักวิจัยและวิศวกรลงทุนหนักเพื่อทำให้ระบบ AI จดจำ Context แบบ *Dynamic* — ประวัติการสนทนา ความชอบของผู้ใช้ สถานะเซสชัน สิ่งเหล่านี้สำคัญ แต่ความล้มเหลวที่ก่อให้เกิดค่าใช้จ่ายสูงสุดในเหตุการณ์ AI ระดับองค์กรมักไม่ใช่ความล้มเหลวของ Dynamic Memory
+
+แต่เป็นความล้มเหลวของ *Static Knowledge*
+
+AI Agent ที่ใช้กฎระเบียบเวอร์ชันผิดอย่างสม่ำเสมอ ระบบที่ให้คำตอบต่างกันสำหรับคำถาม Compliance เดียวกันขึ้นอยู่กับว่า Thread การสนทนาใดที่ Trigger มัน Agent ที่ขายสินค้าที่หน้าลูกค้าโดยอ้างอิงข้อกำหนดสินค้าที่ล้าสมัย Multi-agent Pipeline ที่ Agent A และ Agent B ทำงานจากเวอร์ชันต่างกันของเอกสารนโยบายองค์กรเดียวกัน
+
+ความล้มเหลวเหล่านี้มีรากเดียวกัน: ไม่มีชั้น Authoritative ที่ควบคุมการเข้าถึงและติดตามเวอร์ชันสำหรับความรู้ที่ควรจะคงที่
+
+**Vault-1068** คือชั้นนั้นใน RCT Ecosystem
+
+---
+
+## Vault คืออะไร (และไม่ใช่อะไร)
+
+Vault-1068 ไม่ใช่ระบบ RAG (Retrieval-Augmented Generation) มันไม่ได้ดึงเอกสารและยัดเข้า Context Window ของ Prompt และไม่ใช่ Vector Database — มันไม่หาเอกสาร "ที่คล้ายกันในเชิงความหมาย" ความคล้ายคลึงเชิงความหมายมีประโยชน์ในการหาข้อมูลที่เกี่ยวข้อง แต่เป็นความเสี่ยงเมื่อคุณต้องการข้อเท็จจริงที่แน่นอน
+
+Vault-1068 คือ **Constitutional Static Knowledge Store** ที่มีคุณสมบัติสามประการ:
+
+**1. การเข้าถึงแบบ Deterministic ไม่ใช่ Probabilistic Retrieval**
+เมื่อ Agent Query Vault สำหรับข้อเท็จจริงเฉพาะ — ระดับโทษ PDPA ปัจจุบัน เกณฑ์การให้ยาสูงสุดที่อนุญาต ถ้อยคำที่แน่นอนของ Constitutional Prohibition — มันได้รับค่าที่เก็บไว้ที่แน่นอน ไม่ใช่การประมาณที่คล้ายกันในเชิงความหมาย ไม่มีพื้นผิว Hallucination ที่ชั้น Retrieval เพราะไม่มีการสร้างที่ชั้น Retrieval
+
+**2. Constitutional Access Control**
+ความรู้ใน Vault ถูก Tag ด้วยกฎการเข้าถึงที่ได้มาจาก G6 (Vault Genome) และ G1 (Architect's Genome) Agent ที่มี Domain Configuration การแพทย์สามารถเข้าถึง Segment ความรู้การแพทย์ Agent ที่ประมวลผล Query ทางกฎหมายสามารถเข้าถึง Segment ความรู้กฎหมาย Agent ที่ไม่มีการอนุญาต Constitutional ที่เหมาะสมไม่สามารถเข้าถึงความรู้ที่ไม่ได้รับอนุญาต และการปฏิเสธการเข้าถึงถูก Log สำหรับการ Audit
+
+**3. Version-Tracked Consistency**
+ทุกรายการความรู้ใน Vault-1068 มีเวอร์ชัน, Timestamp `valid_from` และ `expires_at` ที่ Optional เมื่อกฎระเบียบเปลี่ยนแปลง (เช่น PDPA ฉบับแก้ไข) ความรู้เก่าไม่หายไป — มันถูก Archive พร้อมช่วงความถูกต้อง — และเวอร์ชันใหม่กลายเป็นคำตอบ Authoritative สำหรับ Query หลัง `valid_from` Agent ไม่เคยทำงานบน Static Knowledge ที่ล้าสมัยโดยไม่รู้ตัว
+
+---
+
+## Vault-1068 ใน 7 Genome Architecture
+
+Vault-1068 คือการใช้งานจริงของ **G6 (Vault Genome)** ใน Genome Architecture:
+
+- G1 (Architect's Genome) กำหนด *ว่ามี Domain Knowledge ใดบ้าง* และ *กฎ Constitutional ใดที่ใช้บังคับ*
+- G6 (Vault Genome) บังคับใช้ *ว่าใครสามารถเข้าถึงความรู้ใด* และ *Prohibition ใดที่ Override Retrieval ใดๆ*
+- Vault-1068 คือ *Data Store จริง* ที่ความรู้อาศัยอยู่
+
+เมื่อ Agent Query Vault-1068:
+```
+Agent → G3 (JITNA routing) → G6 (access check) → Vault-1068 (retrieval) → Agent
+```
+
+หาก Access Check ของ G6 ล้มเหลว (Wrong Domain, ชุดค่าผสมที่ห้าม, การอนุญาตที่หมดอายุ) Query จะไม่ถึง Vault-1068 เลย Agent ได้รับการตอบสนองการปฏิเสธที่มีโครงสร้าง — ไม่ใช่คำตอบ Hallucinate
+
+---
+
+## Schema ความรู้ 8 มิติ
+
+ความรู้ทั้งหมดที่เก็บใน Vault-1068 ถูก Index ใน 8 มิติเดียวกับที่ใช้โดย RCTDB (Dynamic Memory Layer):
+
+| มิติ | สิ่งที่ Capture สำหรับ Static Knowledge |
+|---|---|
+| **Intent** | Query ใดที่ความรู้นี้ตอบ |
+| **Domain** | สาขาใด (การแพทย์ กฎหมาย Compliance เทคนิค) |
+| **Context** | ภายใต้เงื่อนไขใดที่ความรู้นี้ใช้ |
+| **Authority** | แหล่ง Authoritative ใดที่เป็นต้นกำเนิดความรู้นี้ |
+| **Confidence** | ระดับความแน่ใจ (1.0 สำหรับข้อความกฎหมายที่ Verify แล้ว) |
+| **Temporal** | ช่วงความถูกต้อง (valid_from, expires_at) |
+| **Access Level** | การอนุญาต Constitutional ที่จำเป็นในการดึงข้อมูล |
+| **Provenance** | ใครส่งความรู้นี้ เมื่อไร และภายใต้กระบวนการ Review ใด |
+
+---
+
+## อะไรเข้า Vault (และอะไรไม่เข้า)
+
+**เข้า Vault-1068:**
+- ข้อความกฎหมายและบทบัญญัติกฎหมาย (พร้อม Version Tracking)
+- Constitutional Prohibitions (กฎ A=0 ที่มาจาก G1)
+- ข้อกำหนดสินค้าและมาตรฐานทางเทคนิค
+- นโยบายองค์กรและ Workflow การอนุมัติ
+- Taxonomy Domain ที่ Verify แล้ว (เช่น ICD-10, ISIC)
+- Checklist Compliance และข้อกำหนดการรับรอง
+
+**ไม่เข้า Vault-1068:**
+- Context การสนทนาของผู้ใช้ (→ RCTDB ผ่าน G4/ARTENT)
+- ข้อมูลตลาด Dynamic หรือ Feed แบบ Real-time (→ Adapter เฉพาะทาง)
+- Config ของ Model (→ G3/JITNA Routing Layer)
+- ความรู้ที่ยังไม่ Verify หรือเป็น Draft (→ Staging Environment)
+
+---
+
+## Lifecycle ความรู้ในทางปฏิบัติ
+
+### Ingestion
+
+ความรู้ใหม่เข้า Vault-1068 ผ่าน Workflow Review ที่มีโครงสร้าง:
+
+1. **Submission** — ส่ง Knowledge Item พร้อม Domain Tag, แหล่ง Authority และ Validity Window ที่เสนอ
+2. **Review Gate** — Constitutional Review: ความรู้นี้ขัดแย้งกับ Prohibition ของ G1 หรือไม่?
+3. **Staging** — Item พร้อมใช้ใน Staging Vault สำหรับการทดสอบ
+4. **Promotion** — หลังทดสอบ Item ถูก Promote ไป Production Vault พร้อม Timestamp `valid_from` ที่ยืนยันแล้ว
+
+### Expiration และ Archival
+
+เมื่อความรู้หมดอายุ:
+- Status ของ Item เปลี่ยนเป็น `ARCHIVED`
+- ยังคง Query ได้สำหรับวัตถุประสงค์ Audit
+- Agent ที่ Query Live Vault ไม่ได้รับมันอีกต่อไป
+- G6 Log เหตุการณ์ `KNOWLEDGE_EXPIRY` ไปยัง Audit Trail
+
+---
+
+## การป้องกันความล้มเหลว AI ระดับองค์กรที่พบบ่อยที่สุด
+
+**ความล้มเหลว: Agent สองตัวให้คำตอบต่างกันสำหรับคำถาม Compliance เดียวกัน**
+การแก้ไข: ทั้งสอง Agent Query Vault-1068 สำหรับคำตอบ Authoritative มีเพียงเวอร์ชันเดียวของความจริงกฎระเบียบในระบบ
+
+**ความล้มเหลว: Agent ใช้การตีความกฎระเบียบที่ล้าสมัย**
+การแก้ไข: การตีความเก่าถูก Archive พร้อมช่วงความถูกต้อง Agent ไม่สามารถดึงข้อมูลมันสำหรับ Query หลัง `expires_at`
+
+**ความล้มเหลว: ความรู้ที่ละเอียดอ่อนรั่วไหลข้าม Domain Boundaries**
+การแก้ไข: Constitutional Access Control ป้องกัน Agent ที่ไม่มีการอนุญาต Domain จากการดึงความรู้นอก Scope โดยไม่คำนึงถึงวิธีที่ Query ถูก Phrase
+
+---
+
+## การรวมกับ RCT Ecosystem ที่กว้างขึ้น
+
+Vault-1068 คือหนึ่งในจุดยึด Static Knowledge ที่ระบบ Dynamic (RCTDB + Delta Engine) ทำงานบนนั้น Architecture รวม:
+
+- **Vault-1068** ตอบ "อะไรที่เป็นความจริงอย่างแน่ชัด"
+- **RCTDB** ตอบ "อะไรที่ถูกสังเกตและเรียนรู้"
+- **Delta Engine** ตอบ "อะไรที่เปลี่ยนแปลงเมื่อเร็วๆ นี้และเส้นทางที่มีประสิทธิภาพที่สุดสู่การ Recall คืออะไร"
+
+Agent ที่ต้องตอบคำถาม Compliance ใช้ทั้งสาม:
+1. Vault-1068 ดึงกฎระเบียบ Authoritative
+2. RCTDB ดึงการตัดสินใจ Compliance ในอดีตขององค์กรสำหรับ Context
+3. Delta Engine กำหนดว่ามีคำตอบ Warm-recall อยู่หรือต้องการการเรียก LLM แบบเต็ม
+
+---
+
+*บทความที่เกี่ยวข้อง: [ระบบ 7 Genome](/th/blog/rct-7-genome-system) · [Delta Engine 74%](/th/blog/delta-engine-74-percent-compression) · [Specialist Studio](/th/blog/specialist-studio-explained)*

@@ -1,0 +1,196 @@
+---
+title: "สร้างระบบ AI Trading ระดับ Institutional บน RCT Platform"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-17"
+lastReviewed: "2026-05-12"
+category: "engineering"
+excerpt: "Blueprint สถาปัตยกรรมสำหรับการนำ FDIA, SignedAI และ Delta Engine ของ rct-platform ไปใช้กับ Institutional Trading บทความนี้ Map IntentLoop 7 สถานะเข้ากับ Trading Pipeline แบบสมบูรณ์ — ตั้งแต่การรับข้อมูลผ่านการกรองความเสี่ยงหลายโมเดลและการ Log ผลลัพธ์การเทรดลง RCTDB"
+tags: ["Algorithmic Trading", "AI Trading", "FDIA", "SignedAI", "Delta Engine", "HexaCore", "Intent Loop", "Fintech AI", "rct-platform"]
+readTime: 14
+references:
+  - "https://github.com/rctlabs/rct-platform"
+  - "https://rctlabs.github.io/rct-platform/examples/"
+---
+
+# สร้างระบบ AI Trading ระดับ Institutional บน RCT Platform
+
+**สิ่งสำคัญก่อนเริ่ม:** บทความนี้คือ Blueprint สถาปัตยกรรม `rct-platform` v1.0.2a0 เป็น Developer SDK — ให้ Building Blocks ด้าน Algorithm (FDIA Scoring, SignedAI Consensus, Delta Engine Compression, JITNA Routing) มันไม่ใช่ระบบ Trading ที่พร้อมใช้งาน Production Deployment จากสถาปัตยกรรมนี้ต้องการ Component เพิ่มเติม — อธิบายอย่างชัดเจนในส่วน [Extensions ที่ต้องสร้าง](#สิ่งที่ต้องสร้าง)
+
+นอกจากนี้ไม่ใช่คำแนะนำทางการเงิน Pattern ที่อธิบายเป็น Engineering Patterns สำหรับสร้างระบบ AI แบบ Deterministic และ Auditable ในโดเมนการเงิน
+
+---
+
+## ปัญหาจริง: AI Hallucination ในการตัดสินใจเทรด
+
+ความเสี่ยงที่ร้ายแรงที่สุดใน AI-assisted Trading ไม่ใช่ Latency และไม่ใช่ความซับซ้อนในการรวมระบบ แต่คือคุณสมบัติที่ LLM ทุกตัวมีร่วมกัน: **Hallucination** — การสร้าง Output ที่มั่นใจ สอดคล้อง และผิดอย่างสมบูรณ์
+
+ใน Trading การวิเคราะห์ที่ Hallucinate ดูเหมือนการวิเคราะห์ที่ถูกต้อง โมเดลที่ระบุอย่างมั่นใจว่า "Supply Chain ของบริษัท X ไม่ได้รับผลกระทบจากการรบกวนการขนส่งในช่องแคบไต้หวัน" ในขณะที่ได้รับผลกระทบอย่างรุนแรง จะก่อให้เกิดการขาดทุนเท่าเดิมกับนักวิเคราะห์มนุษย์ที่ทำผิดพลาดเดียวกัน — ยกเว้นว่า AI จะทำสิ่งนี้ที่ 1,000 Query ต่อวินาที ใน 50 Sector พร้อมกัน
+
+เครื่องมือ AI Trading มาตรฐานแก้ปัญหานี้ด้วยการเพิ่มโมเดลมากขึ้นใน Committee แต่การเพิ่มโมเดลใน Committee ของโมเดลที่ Hallucinate ไม่ได้ลด Hallucination อย่างเป็นระบบ — มันเฉลี่ย Hallucination Output ดูราบเรียบและมั่นใจมากขึ้น ไม่ได้ถูกต้องมากขึ้น
+
+**RCT Platform แก้ปัญหาแตกต่างออกไป:** ผ่าน *Constitutional Scoring* (FDIA) ที่ประเมินว่าการตัดสินใจสอดคล้องกับ World-state Constraints ที่กำหนดหรือไม่ และผ่าน *Cryptographic Consensus* (SignedAI) ที่ต้องการ Threshold ของโมเดลอิสระเห็นด้วยทั้งการวิเคราะห์และความสอดคล้องกับ Constraints เหล่านั้น — และ Sign ข้อตกลงด้วย Ed25519 เพื่อให้การตัดสินใจ Audit ได้ถาวร
+
+---
+
+## สถาปัตยกรรม: IntentLoop Map สู่ Trading
+
+พื้นฐานของ RCT Platform คือ [7-state IntentLoop](/th/blog/rct-7-genome-system) จาก RCT-7 Genome ในบริบท Trading แต่ละสถานะ Map กับ Trading Pipeline Stage ที่แตกต่างกัน:
+
+```
+RECEIVED     → Data Ingestion
+MEMORY_CHECK → Memory Delta Engine (Warm Recall)
+VALIDATED    → FDIA Scorer (Constitutional Validation)
+COMPUTING    → Multi-model Analysis (LLM Ensemble)
+VERIFYING    → SignedAI Risk Gatekeeper
+COMMITTING   → RCTDB Trade Outcome Logging
+(ADAPT)      → G7 Performance Feedback
+```
+
+### Stage 1: RECEIVED — Data Ingestion
+
+Loop เริ่มต้นเมื่อ Tradeable Signal มาถึง ในระบบ News-driven Trading นี่คือการรวมกันของ:
+- News Wire Events (รายงานกำไร การตัดสินใจของหน่วยงานกำกับดูแล การรบกวน Supply Chain)
+- ข้อมูล Real-time Price ผ่าน WebSocket Connection
+
+Signal เข้าระบบในฐานะ Raw Event พร้อม Timestamp, Source และ Headline ที่ Extract ณ จุดนี้ยังไม่มีการวิเคราะห์ — มีเพียงการรับและการจำแนกเบื้องต้น
+
+### Stage 2: MEMORY_CHECK — Delta Engine Warm Recall
+
+ก่อนเรียก LLM ใดๆ ระบบ Query Delta Engine สำหรับการวิเคราะห์ที่มีอยู่เกี่ยวกับ Signal Type นี้:
+- มีการวิเคราะห์บริษัท/Sector/ประเภทเหตุการณ์นี้เมื่อเร็วๆ นี้หรือไม่?
+- ผลลัพธ์ของการตัดสินใจที่ผ่าน FDIA Validation ก่อนหน้าใน Domain นี้คืออะไร?
+- สถานะ Portfolio ปัจจุบันเป็นอย่างไร? (Position, Exposure, Liquidity)
+
+Delta Engine บีบอัด Market State ให้เหลือ ~26% ของขนาดเดิมขณะรักษา Semantic Warmth หากมี Warm-recall Match เกิน Threshold ที่กำหนด ระบบสามารถข้ามการวิเคราะห์ LLM แบบเต็มสำหรับ Signal ที่ไม่ใหม่
+
+### Stage 3: VALIDATED — FDIA Constitutional Scoring
+
+**นี่คือตัวสร้างความแตกต่างที่สำคัญ** ก่อนการวิเคราะห์หลายโมเดล Signal ที่เข้ามาถูก Score ตามสมการ FDIA:
+
+```
+F = D^I × A
+```
+
+โดยที่:
+- **D** (Desirability) = การกระทำตาม Signal นี้สอดคล้องกับ Investment Mandate ของ Portfolio มากน้อยแค่ไหน?
+- **I** (Intent) = การจำแนก Intent ของ Signal คืออะไร? `ACCUMULATE` / `PROTECT` / `DISCOVER`
+- **A** (Authorization) = สถานะ Portfolio ปัจจุบันอนุญาตให้กระทำตาม Signal ประเภทนี้และขนาดนี้หรือไม่?
+
+FDIA Scorer เป็น **Pure Function** — Deterministic, Traceable และ Backtestable ได้อย่างสมบูรณ์
+
+หาก `A=0` — เช่นหากกฎ Portfolio ห้ามการเพิ่ม Allocation Semiconductor เกิน 30% และ Allocation ปัจจุบันอยู่ที่ 28% แล้ว — Scorer จะคืนค่า `F=0` โดยไม่คำนึงถึงคุณภาพของ Signal นี่คือ Constitutional Kill Switch: ไม่มีการวิเคราะห์ LLM ใดๆ ไม่ว่าจะมั่นใจแค่ไหน สามารถ Override `A=0` ได้
+
+**นี่คือข้อได้เปรียบของ Backtestability** เพราะ FDIA Scorer เป็น Pure Function ที่ไม่มีการเรียก LLM คุณสามารถ Replay ทุกการตัดสินใจในอดีตด้วย Input เดิมและได้ F Score เดิม การตัดสินใจไม่ใช่ "โมเดลคิดว่า..." — แต่เป็นการคำนวณที่ Reproduce ได้ทางคณิตศาสตร์พร้อม Audit Trace เต็มรูปแบบ
+
+### Stage 4: COMPUTING — Multi-model Analysis
+
+สำหรับ Signal ที่ผ่าน FDIA Validation (F ≥ Threshold) ระบบส่งไปยัง Multi-model Analysis Ensemble [JITNA Routing Genome](/th/blog/rct-7-genome-system) เลือก Analyst Panel ที่เหมาะสมตาม Signal Type:
+
+**สำหรับเหตุการณ์ Geopolitical Supply Chain:**
+- Technology Sector AI (Western Models: GPT-4o, Claude, Gemini)
+- Supply Chain Impact AI (Eastern Models: Qwen, DeepSeek)
+- Macro AI (Regional Model: Typhoon-2 สำหรับบริบทตลาด ASEAN)
+
+Sector Balance ไม่ใช่เรื่องสุ่ม — มันคือ Geopolitical Balance โดยการออกแบบ การรบกวน Supply Chain ใน APAC มีความหมายต่างกันขึ้นอยู่กับว่าอ่านจากมุมมองนักวิเคราะห์การเงิน Western หรือ Context การดำเนินงาน APAC
+
+### Stage 5: VERIFYING — SignedAI Risk Gating
+
+Output การวิเคราะห์หลายโมเดลไม่ได้ส่งไปยัง Trading Decision Layer โดยตรง แต่ผ่าน [SignedAI Verification Pipeline](/th/blog/signedai-multi-llm-consensus-explained):
+
+**การกำหนด Risk Tier (ผ่าน FDIA F Score):**
+
+| F Score | ระดับความเสี่ยง | SignedAI Tier | Consensus ที่ต้องการ |
+|---|---|---|---|
+| 0.90–1.00 | ความเสี่ยงต่ำ | TIER_S | การยืนยันโมเดลเดี่ยว |
+| 0.75–0.89 | ความเสี่ยงปานกลาง | TIER_4 | 50% Consensus (2 จาก 4) |
+| 0.60–0.74 | ความเสี่ยงสูง | TIER_6 | 67% Consensus (4 จาก 6) |
+| < 0.60 | ความเสี่ยงสูงมาก | TIER_8 หรือ Block | 75% Consensus หรือ FDIA Reject |
+
+สำหรับ Signal ที่มีความเสี่ยงสูง (TIER_6, 67% Consensus) โมเดล 6 ตัวประเมินการวิเคราะห์การเทรดอย่างอิสระ แต่ละโมเดลที่เห็นด้วยสร้าง Ed25519 Signature SignedAI Consensus Layer ตรวจสอบว่ามี Signature 4 จาก 6 ก่อนปล่อย Output
+
+**Cryptographic Signature มีความสำคัญ** หากการเทรดสร้างการขาดทุนและองค์กรต้องการ Audit การตัดสินใจ — สำหรับ Compliance, Risk Management, Regulatory Review — Signed Consensus Output ให้บันทึกที่เปลี่ยนแปลงไม่ได้: โมเดลใดประเมินการเทรด แต่ละโมเดลสรุปอย่างไร Consensus ถึงหรือไม่ Timestamp ใด และ FDIA Score เป็นเท่าไรเมื่อตัดสินใจ
+
+### Stage 6: COMMITTING — RCTDB Trade Outcome Logging
+
+หลัง Consensus ถึงหรือการเทรดถูกบล็อก ผลลัพธ์ถูก Log ลง RCTDB เป็น Loop Intent Memory:
+
+```python
+outcome = {
+    "loop_id": signal.timestamp,
+    "fdia_score": result.f_score,
+    "signedai_tier": "TIER_6",
+    "consensus_reached": True,
+    "models_agreed": ["claude", "gpt4o", "qwen", "deepseek"],
+    "action": "REDUCE_EXPOSURE",
+    "action_size_pct": 0.06,
+    "post_trade_f_score": 0.88,
+    "trade_pnl_t1": None,   # ใส่หลัง Settlement
+    "loop_duration_ms": 1247
+}
+```
+
+การ Log ไม่ใช่แค่สำหรับ Audit — มันป้อน G7 ADAPT Cycle ระบบเรียนรู้ว่าชุดค่าผสมของ (F Score, Signal Type, Sector, Market Condition) ใดที่สร้างผลลัพธ์ดีหรือแย่
+
+---
+
+## ข้อได้เปรียบของ Just-In-Time Processing
+
+หนึ่งใน Performance Properties ที่สำคัญในระดับ Institutional: **Standby Mode**
+
+ระบบ AI Trading แบบดั้งเดิม Always-on — Push ข้อมูลทั้งหมดที่เข้ามาผ่านการวิเคราะห์ LLM ต่อเนื่อง ที่ $0.10–$5.00 ต่อการเรียก LLM และข่าวหลายพันรายการต่อวัน ก่อให้เกิดต้นทุน Inference ที่สำคัญ
+
+Architecture IntentLoop ทำงานใน Standby Mode สำหรับ Signal ที่มีผลกระทบต่ำ Delta Engine Warm Recall รันก่อน หาก Signal คล้ายกับ Signal ที่ประมวลผลเมื่อเร็วๆ นี้อย่างมาก ระบบสามารถตอบสนองโดยไม่ต้องการการเรียก LLM แบบเต็ม
+
+ในทางปฏิบัติ 70–80% ของ Signal ปกติถูกประมวลผลโดยไม่มีการวิเคราะห์ LLM แบบเต็ม การเรียก LLM สงวนไว้สำหรับ Signal ใหม่จริงๆ
+
+---
+
+## สิ่งที่ต้องสร้าง
+
+`rct-platform` v1.0.2a0 ให้ Algorithm Core Production Trading Deployment ต้องการ 3 Component เพิ่มเติม:
+
+### 1. Market Data Adapters
+
+Platform ไม่รวม Exchange Connectivity ต้องสร้าง WebSocket Connection ไปยัง Data Sources ของคุณ (Interactive Brokers, Alpaca, Binance)
+
+### 2. Financial Intent Dictionary
+
+JITNA's 6-field Intent Schema ต้องการ Domain-specific Vocabulary สำหรับ Financial Events:
+
+```python
+FINANCIAL_INTENTS = {
+    "EARNINGS_BEAT": {"default_i": 0.85, "default_d": 0.7},
+    "EARNINGS_MISS": {"default_i": 0.75, "default_d": 0.3},
+    "SUPPLY_CHAIN_DISRUPTION": {"default_i": 0.9, "default_d": 0.2},
+    "REGULATORY_ACTION": {"default_i": 0.95, "default_d": 0.1},
+    # ... 40+ categories
+}
+```
+
+### 3. Position Sizing Algorithm
+
+FDIA สร้าง Signal Quality Score วิธีที่ Score นั้นแปลเป็น Position Sizing เป็นการตัดสินใจแยกต่างหาก แนวทางทั่วไปคือ Kelly Criterion Variant ที่ถ่วงน้ำหนักด้วย FDIA F Score:
+
+```python
+def compute_position_size(f_score, kelly_fraction, available_capital):
+    return f_score * (kelly_fraction * 0.5) * available_capital
+```
+
+---
+
+## คุณสมบัติ Audit และ Compliance
+
+สำหรับ Deployment ระดับ Institutional ที่อยู่ภายใต้การกำกับดูแล (MiFID II, SEC, SET, CFTC) สถาปัตยกรรมสร้าง Audit Artifacts โดยอัตโนมัติ:
+
+1. **FDIA Decision Trace** — สำหรับทุกการตัดสินใจเทรด: D Score, I Classification, A Status, F Score ที่ได้, Constitutional Rule ที่ใช้
+2. **SignedAI Consensus Record** — Multi-model Agreement ที่ Ed25519-signed, Timestamped พร้อม Identity ของโมเดล
+3. **Delta Engine Recall Log** — การตัดสินใจก่อนหน้าใดที่แจ้งข้อมูล Warm Recall
+4. **RCTDB Outcome Log** — Post-trade Performance, Loop Duration, G7 Adaptation Signals
+
+Artifacts เหล่านี้รวมกันตอบคำถามด้านกฎระเบียบ: "ในวันที่ X ระบบของคุณตัดสินใจลด Semiconductor Exposure 6% แสดงให้เราเห็นว่าการตัดสินใจนั้นเกิดขึ้นอย่างไร" คำตอบไม่ใช่ "AI แนะนำ" — แต่เป็น Decision Trace ที่ Reproduce ได้และ Verify ทางคณิตศาสตร์
+
+---
+
+*บทความที่เกี่ยวข้อง: [ระบบ 7 Genome](/th/blog/rct-7-genome-system) · [สมการ FDIA](/th/blog/fdia-equation-explained) · [SignedAI Multi-LLM Consensus](/th/blog/signedai-multi-llm-consensus-explained) · [Delta Engine 74%](/th/blog/delta-engine-74-percent-compression) · [Roadmap RCT Platform](/th/blog/rct-platform-roadmap-preview)*

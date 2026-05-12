@@ -1,0 +1,160 @@
+---
+title: "Roadmap RCT Platform: จาก Public Alpha สู่ ASEAN Expansion"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-20"
+lastReviewed: "2026-05-12"
+category: "engineering"
+excerpt: "rct-platform v1.0.2a0 เปิดตัวแล้ว บทความนี้สรุปสิ่งที่ Ship แล้ว สิ่งที่กำลังดำเนินการ และแผนสำหรับ v1.0.3a0, v1.0.0 Stable, v1.1.0 Observability และ v1.2.0 ASEAN Expansion — รวมถึงสิ่งที่เราไม่ได้สร้างใน Open-source Tier อย่างชัดเจน"
+tags: ["RCT Platform", "Platform Roadmap", "Open Source", "FDIA", "SignedAI", "JITNA", "ASEAN AI", "rct-platform"]
+readTime: 9
+references:
+  - "https://github.com/rctlabs/rct-platform"
+  - "https://rctlabs.github.io/rct-platform/"
+  - "https://rctlabs.co/th/architecture"
+---
+
+# Roadmap RCT Platform: จาก Public Alpha สู่ ASEAN Expansion
+
+`rct-platform` v1.0.2a0 (Public Alpha) เปิดตัวในเดือนเมษายน 2026 บทความนี้คือสรุปทางเทคนิคของสิ่งที่ Ship แล้ว สิ่งที่กำลังดำเนินการอยู่ และแผนการพัฒนาจนถึงปี 2027 — พร้อมขอบเขตที่ชัดเจนสำหรับ Open-source Tier
+
+หากต้องการ Roadmap Document ดิบ สามารถดูได้ที่ [ROADMAP.md](https://github.com/rctlabs/rct-platform/blob/main/ROADMAP.md) ใน Repository
+
+---
+
+## สิ่งที่ Ship แล้ว: v1.0.2a0 Public Alpha (เมษายน 2026)
+
+การเปิดตัวในเดือนเมษายนเป็นครั้งแรกที่ RCT Platform SDK พร้อมสาธารณะ "Public Alpha" ในบริบทนี้หมายถึง: Algorithm หลักมีความเสถียรและทดสอบแล้ว แต่ API Surface ยังไม่ถือว่าเสถียรสำหรับ Production Dependencies โดยไม่ Pin เวอร์ชันที่แน่นอน
+
+**โมดูล SDK หลัก (พฤติกรรมเสถียร, Alpha API):**
+
+| Module | Path | สิ่งที่ให้ |
+|---|---|---|
+| FDIA Scorer | `core/fdia/` | Constitutional Scoring: `F = D^I × A`, Pure-function, ไม่มีการเรียกภายนอก |
+| SignedAI Registry | `signedai/` | HexaCore 7-model Registry, Consensus TIER_S/4/6/8, Ed25519 Attestation |
+| Delta Engine | `core/delta_engine/` | State Compression, Warm Recall, อัตราการบีบอัด 74% |
+| JITNA Protocol | `rct_control_plane/jitna_protocol.py` | การใช้งาน RFC-001, Intent Schema 6 ฟิลด์ |
+| Regional Language Adapter | `adapters/` | คู่ภาษา 8 คู่ในภูมิภาค ASEAN |
+| Control Plane DSL | `rct_control_plane/` | 15 โมดูล, `rct` CLI Entry Point |
+
+**Benchmark คุณภาพ ณ การเปิดตัว:**
+- 1,193 Tests ผ่าน, 0 Skip, Coverage 94%
+- Bandit Security Scan: 0 HIGH Severity
+- CI/CD: GitHub Actions บนทุก Push
+- Whitepaper: 450+ หน้า, สองภาษา EN/TH, CITATION.cff
+
+---
+
+## กำลังดำเนินการ: v1.0.3a0 Playground (พฤษภาคม 2026)
+
+Milestone v1.0.3a0 เป็น Usability Release ที่มีเป้าหมายเดียว: **ประสบการณ์ครั้งแรกที่ไม่มีอุปสรรค** ผู้ใช้ใหม่ควรสามารถ Run FDIA, SignedAI และ Delta Engine โดยไม่ต้อง Clone Repository หรือ Install อะไรใน Local
+
+**เสร็จแล้ว:**
+- `notebooks/rct_playground.ipynb` — Colab Notebook ที่ Run ได้พร้อม Demo FDIA, SignedAI และ Delta Engine
+- `benchmark/run_benchmark.py` — CLI Runner สำหรับ Benchmark ที่ Reproduce ได้
+- Badge Quick-launch สำหรับ Binder / Colab / Codespaces ใน README
+- Hypothesis Property-based Tests — การรับประกันความถูกต้องทางคณิตศาสตร์
+
+**เหลืออยู่สำหรับ v1.0.3a0:**
+- `docs/benchmark/hallucination-methodology.md` — Dataset 100-prompt สาธารณะและคำอธิบาย Methodology
+- การเปิดใช้งาน GitHub Discussions — หมวด Q&A, RFC Discussion, Show & Tell
+- เอกสาร API Stability Guarantees สำหรับ `core/fdia`, `signedai/core`, `core/delta_engine`
+
+---
+
+## v1.0.0 Stable — PyPI Release (Q3 2026)
+
+Milestone v1.0.0 เป็นการเปลี่ยนผ่านจาก "Public Alpha ที่ต้อง Pin เวอร์ชัน" เป็น "Production-ready Dependency พร้อม Stability Guarantees"
+
+**ความหมายของ Stability ในทางปฏิบัติ:**
+- `pip install rct-platform` ทำงานได้จาก PyPI โดยไม่ต้อง Clone
+- Semantic Versioning Guarantee: ไม่มี Breaking Change โดยไม่มี Major Version Bump
+- Pre-built Wheels สำหรับ Python 3.10, 3.11, 3.12
+- Type Stubs สมบูรณ์ (`py.typed` marker + `__init__.pyi`)
+- GitHub Release พร้อม Signed Artifacts
+- เอกสาร API Reference สมบูรณ์ใน `docs/api/`
+- External Reproduction ของ Hallucination Benchmark โดย Community
+
+**สิ่งที่ไม่เปลี่ยนแปลงที่ v1.0.0:** Algorithm พื้นฐาน FDIA, SignedAI, Delta Engine และ JITNA มีความเสถียรแล้วใน Alpha — v1.0.0 เกี่ยวกับ API Contract, Packaging และ Documentation ไม่ใช่การเปลี่ยนวิธีที่ Algorithm ทำงาน
+
+---
+
+## v1.1.0 — Observability และ Integrations (Q4 2026)
+
+นี่คือ Release ที่เปลี่ยน `rct-platform` จาก "SDK ที่ใช้ในโค้ด" เป็น "Infrastructure ที่รันควบคู่กับระบบของคุณ"
+
+**Observability Stack:**
+- Prometheus `/metrics` Endpoint, Live ใน `rct serve`
+- Grafana Dashboard Template — Panel ที่สร้างไว้ล่วงหน้าสำหรับ FDIA Score Distribution, SignedAI Consensus Latency, Delta Engine Compression Ratios, JITNA Routing Decisions
+- `docker-compose.monitoring.yml` — Prometheus + Grafana Local Stack
+- OpenTelemetry Trace Exporter สำหรับ Distributed Tracing
+
+**Third-party Integration Adapters:**
+- n8n Integration Adapter — นำความสามารถ RCT Platform เข้า n8n Automation Workflows
+- Home Assistant Integration Adapter — AI Reasoning ใน Local สำหรับ Home Automation
+- Obsidian Plugin — Knowledge Graph สู่ JITNA Intent Tagging
+
+**Protocol Update:**
+- JITNA Protocol v2.1 Draft — Bidirectional Agent Negotiation RFC-001 ปัจจุบันเป็นทิศทางเดียว v2.1 เพิ่ม Negotiation แบบสองทิศทาง: Agent สามารถเสนอการตีความทางเลือกของ Intent และ Negotiate กับ Routing Layer ก่อน Execute นี่คือรากฐานสำหรับ Multi-agent Collaboration
+
+---
+
+## v1.2.0 — ASEAN Expansion (2027)
+
+Target ปี 2027 แก้ช่องว่างระหว่างความสามารถด้านภาษาภูมิภาค (8 คู่ ASEAN ใน v1.0.2a0) และการ Align ระเบียบ ASEAN อย่างเต็มรูปแบบ
+
+**Language Expansion:**
+- Adapter สำหรับ VN (เวียดนาม), ID (อินโดนีเซีย), MY (มาเลเซีย) เพิ่มจาก 8 เป็น 11 คู่ภาษา ASEAN
+- ไม่ใช่เพียงการแปล — แต่ละ Adapter รวม Domain-specific Intent Vocabulary และการปรับ JITNA Routing สำหรับรูปแบบการสื่อสารระดับภูมิภาค
+
+**Compliance Modules:**
+- โมดูล PDPA (ไทย) พร้อม Audit Evidence Export — Export ที่มีโครงสร้างของการตัดสินใจบังคับใช้ Constitutional
+- PIPL (จีน) Adapter สำหรับ Model Slot E3 ใน HexaCore Roster
+- การ Align กับ ASEAN AI Governance Checklist
+
+**Community Infrastructure:**
+- RCT Platform Certification Program (Community-driven)
+- JITNA Protocol RFC-002 — มาตรฐาน Cross-platform Agent Identity
+
+---
+
+## สิ่งที่เราไม่ได้สร้าง (Open Source Tier)
+
+| ไม่รวมใน Open Source | ที่อยู่ |
+|---|---|
+| Microservice Stack แบบ Production เต็มรูปแบบ (62 Services) | Enterprise Tier — [rctlabs.co](https://rctlabs.co) |
+| Genome Creator Profile API | Enterprise Proprietary |
+| Hosted Inference Engine | Hardware/Cost ไม่อยู่ใน OSS Scope |
+| Hosted API / SaaS Endpoint | รันที่ rctlabs.co — Enterprise Licensing |
+| Vault-1068 Production Deployment แบบ Managed | Enterprise |
+
+Open-source Tier คือ **Developer SDK** — Building Blocks ของ Algorithm ระบบ Production เต็มรูปแบบอยู่ที่ rctlabs.co
+
+---
+
+## วิธีกำหนดทิศทาง Roadmap
+
+- **GitHub Discussions** — หลังเปิดใช้งานหลัง v1.0.3a0 นี่คือช่องทางหลักสำหรับ Q&A, RFC Discussion และ Show & Tell
+- **GitHub Issues** — Bug, Feature ที่หายไปและช่องว่าง Documentation
+- **Issue Upvotes** — Issue ที่มี Engagement สูงเลื่อนขึ้น Priority
+- **Enterprise Timeline Requests** — ติดต่อ [founder@rctlabs.co](mailto:founder@rctlabs.co)
+
+---
+
+## เริ่มต้นวันนี้
+
+```bash
+git clone https://github.com/rctlabs/rct-platform.git
+cd rct-platform
+pip install -e ".[dev]"
+pytest  # 1,193 Tests ควรผ่าน
+```
+
+หรือเปิด Colab Notebook โดยตรงเพื่อสำรวจ FDIA, SignedAI และ Delta Engine โดยไม่ต้อง Install:
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rctlabs/rct-platform/blob/main/notebooks/rct_playground.ipynb)
+
+---
+
+*บทความที่เกี่ยวข้อง: [ระบบ 7 Genome](/th/blog/rct-7-genome-system) · [สมการ FDIA](/th/blog/fdia-equation-explained) · [SignedAI Multi-LLM Consensus](/th/blog/signedai-multi-llm-consensus-explained) · [Delta Engine 74%](/th/blog/delta-engine-74-percent-compression)*

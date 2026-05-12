@@ -1,0 +1,286 @@
+---
+title: "Building an Institutional-Grade AI Trading System on the RCT Platform"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-17"
+lastReviewed: "2026-05-12"
+category: "engineering"
+excerpt: "An architectural blueprint for applying rct-platform's FDIA, SignedAI, and Delta Engine to institutional trading. This article maps the 7-state IntentLoop to a complete news-driven trading pipeline — from data ingestion through multi-model risk gating and RCTDB trade outcome logging."
+tags: ["Algorithmic Trading", "AI Trading", "FDIA", "SignedAI", "Delta Engine", "HexaCore", "Intent Loop", "Fintech AI", "rct-platform"]
+readTime: 14
+references:
+  - "https://github.com/rctlabs/rct-platform"
+  - "https://rctlabs.github.io/rct-platform/examples/"
+  - "https://arxiv.org/abs/2305.14325"
+  - "https://www.cfa.org/en/research-and-policy-advocacy/ai-in-investment-management"
+---
+
+# Building an Institutional-Grade AI Trading System on the RCT Platform
+
+**Important framing before we begin:** This article is an architectural blueprint. `rct-platform` v1.0.2a0 is a developer SDK — it provides the algorithmic building blocks (FDIA scoring, SignedAI consensus, Delta Engine compression, JITNA routing). It is not a production-ready trading system. A working trading deployment based on this architecture requires additional extensions — described explicitly in the [Extensions Required](#what-you-need-to-build) section.
+
+This is also not financial advice. The patterns described here are engineering patterns for building deterministic, auditable AI systems in the financial domain.
+
+---
+
+## The Real Problem: AI Hallucination in Trading Decisions
+
+The catastrophic risk in AI-assisted trading is not latency and it is not integration complexity. It is a property shared by every large language model: **hallucination** — generating confident, coherent, completely wrong outputs.
+
+In trading, hallucinated analysis looks like legitimate analysis. A model that confidently states "Company X supply chain is unaffected by the Taiwan Strait shipping disruption" when it is in fact severely affected will cause the same trading loss as a human analyst who made the same mistake — except the AI will make it at 1,000 queries per second, across 50 sectors simultaneously, with no sleep degradation.
+
+Standard AI trading tools address this by adding more models to the committee. But adding more models to a committee of hallucinating models does not systematically reduce hallucination — it averages hallucinations. The output is smoother and more confident, not more correct.
+
+**The RCT Platform addresses this differently:** through *constitutional scoring* (FDIA) that evaluates whether a decision is consistent with defined world-state constraints, and through *cryptographic consensus* (SignedAI) that requires a threshold of independent models to agree on both the analysis and its consistency with those constraints — and signs the agreement with Ed25519 so the decision is permanently auditable.
+
+---
+
+## The Architecture: IntentLoop Mapped to Trading
+
+The foundation of the RCT Platform is the [7-state IntentLoop](/en/blog/rct-7-genome-system) from the RCT-7 Genome. In a trading context, each state maps to a distinct trading pipeline stage:
+
+```
+RECEIVED     → Data Ingestion
+MEMORY_CHECK → Memory Delta Engine (warm recall)
+VALIDATED    → FDIA Scorer (constitutional validation)
+COMPUTING    → Multi-model Analysis (LLM ensemble)
+VERIFYING    → SignedAI Risk Gatekeeper
+COMMITTING   → RCTDB Trade Outcome Logging
+(ADAPT)      → G7 Performance Feedback
+```
+
+### Stage 1: RECEIVED — Data Ingestion
+
+The loop begins when a tradeable signal arrives. In a news-driven trading system, this is a combination of:
+- News wire events (earnings releases, regulatory decisions, supply chain disruptions, geopolitical developments)
+- Real-time price data via WebSocket connection to the exchange
+
+The signal enters the system as a raw event with a timestamp, a source, and an extracted headline. At this stage, no analysis has occurred — only receipt and initial classification.
+
+```python
+from rct_control_plane.jitna_protocol import IntentSignal
+
+signal = IntentSignal(
+    source="news_wire",
+    raw_content="[HEADLINE] Taiwan Strait shipping disruption — 23% of TSMC shipments affected",
+    timestamp="2026-05-17T09:31:00Z",
+    domain="equity_technology"
+)
+```
+
+### Stage 2: MEMORY_CHECK — Delta Engine Warm Recall
+
+Before calling any LLM, the system queries the Delta Engine for existing analysis related to this signal type:
+
+- Has this company / sector / event type been analyzed recently?
+- What was the outcome of previous FDIA-validated decisions in this domain?
+- What is the current portfolio state? (positions, exposure, available liquidity)
+
+The Delta Engine compresses market state to ~26% of its original size while maintaining semantic warmth — the ability to retrieve contextually relevant prior decisions without sequential scanning. If a warm-recall match exists above the configured threshold, the system can skip the full LLM analysis for non-novel signals, reducing per-decision cost by orders of magnitude.
+
+```python
+from core.delta_engine import DeltaEngine
+
+engine = DeltaEngine()
+cached_context = engine.warm_recall(
+    domain="equity_technology",
+    intent_class="supply_chain_disruption",
+    entity="TSMC"
+)
+# Returns: prior analysis, FDIA score history, previous decisions
+```
+
+### Stage 3: VALIDATED — FDIA Constitutional Scoring
+
+**This is the critical differentiator.** Before multi-model analysis, the incoming signal is scored against the FDIA equation:
+
+```
+F = D^I × A
+```
+
+Where:
+- **D** (Desirability) = How aligned is acting on this signal with the portfolio's investment mandate?
+- **I** (Intent) = What is the signal's intent classification? `ACCUMULATE` / `PROTECT` / `DISCOVER`
+- **A** (Authorization) = Does the current portfolio state authorize acting on a signal of this type and magnitude?
+
+The FDIA scorer is a **pure function** — deterministic, traceable, and fully backtestable:
+
+```python
+from core.fdia import FDIAScorer
+
+scorer = FDIAScorer(
+    world_resources={
+        "available_liquidity": 0.18,       # 18% of NAV available
+        "current_sector_exposure": {
+            "semiconductor": 0.24,          # 24% current allocation
+        },
+        "max_sector_allocation": 0.30       # Constitutional limit: 30%
+    },
+    intent_classification="PROTECT",       # Signal type: protect existing exposure
+    action_threshold=0.80                  # Minimum F score to act
+)
+
+result = scorer.evaluate(signal)
+# Returns: F score, D component, I component, A component, reasoning trace
+```
+
+If `A=0` — for example, if portfolio rules prohibit increasing semiconductor allocation beyond 30%, and current allocation is already 28% — the scorer returns `F=0` regardless of the quality of the signal. This is the constitutional kill switch: no LLM analysis, no matter how confident, can override `A=0`.
+
+**This is the backtestability advantage.** Because the FDIA scorer is a pure function with no LLM calls, you can replay every historical decision with the exact same inputs and get the exact same F score. The decision is not a "the model thought..." — it is a mathematically reproducible calculation with full audit trace.
+
+### Stage 4: COMPUTING — Multi-Model Analysis
+
+For signals that pass FDIA validation (F ≥ threshold), the system dispatches to a multi-model analysis ensemble. The [JITNA routing genome](/en/blog/rct-7-genome-system) selects the optimal analyst panel based on signal type:
+
+**For a geopolitical supply chain event:**
+- Technology sector AI (Western models: GPT-4o, Claude, Gemini for English-language tech analyst reports)
+- Supply chain impact AI (Eastern models: Qwen, DeepSeek for APAC supplier relationship context)
+- Macro AI (regional model: Typhoon-2 for Thai/ASEAN market context)
+
+Each analyst independently evaluates: *Given this signal, what is the expected impact on the relevant positions? What is the confidence interval? What secondary effects should be considered?*
+
+The sector balance is not arbitrary — it is geopolitical balance by design. A supply chain disruption in APAC has different implications depending on whether you are reading it from a Western financial analyst perspective vs. an APAC operational context. The HexaCore multi-regional model roster is specifically assembled to prevent single-region analytical bias.
+
+### Stage 5: VERIFYING — SignedAI Risk Gating
+
+The multi-model analysis outputs are not delivered directly to the trading decision layer. They pass through the [SignedAI verification pipeline](/en/blog/signedai-multi-llm-consensus-explained):
+
+```
+INTAKE → ROUTER → SIGNERS → ATTESTATION → CONSENSUS → REPORT
+```
+
+**Risk tier assignment (via FDIA F score):**
+
+| F Score | Risk Level | SignedAI Tier | Consensus Required |
+|---|---|---|---|
+| 0.90–1.00 | Low risk | TIER_S | Single model confirmation |
+| 0.75–0.89 | Medium risk | TIER_4 | 50% consensus (2 of 4 models) |
+| 0.60–0.74 | High risk | TIER_6 | 67% consensus (4 of 6 models) |
+| < 0.60 | Very high risk | TIER_8 or block | 75% consensus or FDIA reject |
+
+For a high-risk signal (TIER_6, 67% consensus required), six models independently evaluate the trading analysis. Each model that agrees produces an Ed25519 signature. The SignedAI consensus layer checks whether 4 of 6 signatures have been produced before releasing the output.
+
+**The cryptographic signature matters.** If a trade produces a loss and the organization needs to audit the decision — for compliance, for risk management, for regulatory review — the signed consensus output provides an immutable record: exactly which models evaluated the trade, what each model concluded, whether consensus was reached, at what timestamp, and what the FDIA score was at the time of decision. This is not a log that someone can edit retroactively. It is a signed attestation.
+
+### Stage 6: COMMITTING — RCTDB Trade Outcome Logging
+
+After consensus is reached (or the trade is blocked), the outcome is logged to RCTDB as a Loop Intent Memory:
+
+```python
+# Logged in RCTDB for G7 ADAPT cycle
+outcome = {
+    "loop_id": signal.timestamp,
+    "fdia_score": result.f_score,
+    "signedai_tier": "TIER_6",
+    "consensus_reached": True,
+    "models_agreed": ["claude", "gpt4o", "qwen", "deepseek"],
+    "action": "REDUCE_EXPOSURE",
+    "action_size_pct": 0.06,
+    "post_trade_f_score": 0.88,      # Updated F score after action
+    "trade_pnl_t1": None,            # Populated after settlement
+    "loop_duration_ms": 1247
+}
+```
+
+The logging is not just for audit — it feeds the G7 ADAPT cycle. Over time, the system learns which combinations of (F score, signal type, sector, market condition) produce good outcomes vs. poor outcomes, and adjusts the weighting on the FDIA components accordingly.
+
+---
+
+## The Just-In-Time Processing Advantage
+
+One performance property of this architecture that matters at institutional scale: **standby mode**.
+
+Traditional AI trading systems are always-on — they continuously push all incoming data through LLM analysis. At $0.10–$5.00 per LLM call and thousands of news events per day, this produces significant inference cost.
+
+The IntentLoop architecture operates in standby mode for low-impact signals. The Delta Engine warm recall runs first. If the signal is highly similar to a recently processed signal with a warm recall match above threshold, the system can respond without a full LLM call — using the compressed memory of the prior analysis instead.
+
+Full multi-model LLM analysis is triggered only when:
+- No warm recall match exists (novel signal)
+- Signal impact score exceeds the configured novelty threshold
+- The signal involves a constitutional domain (positions near allocation limits, high-value trades requiring TIER_6 gating)
+
+In practice, this means 70–80% of routine signals (confirmation of known trends, incremental news on existing positions) are processed without full LLM analysis. LLM calls are reserved for genuinely novel signals where human-equivalent judgment is actually needed.
+
+---
+
+## What You Need to Build
+
+`rct-platform` v1.0.2a0 provides the algorithmic core. A production trading deployment requires three additional components:
+
+### 1. Market Data Adapters
+
+The platform does not include exchange connectivity. You need to build WebSocket connections to your data sources:
+
+```python
+# Example adapter interface (not included in rct-platform)
+class MarketDataAdapter:
+    def stream_news(self) -> AsyncIterator[NewsEvent]: ...
+    def stream_prices(self, symbols: list[str]) -> AsyncIterator[PriceEvent]: ...
+    def submit_order(self, order: OrderRequest) -> OrderResponse: ...
+```
+
+Tested adapters exist for Interactive Brokers (via ib_insync), Alpaca (via alpaca-py), and Binance. These are not included in the open-source tier due to exchange licensing requirements.
+
+### 2. Financial Intent Dictionary
+
+JITNA's 6-field intent schema (`I/D/Δ/A/R/M`) needs a domain-specific vocabulary for financial events. The current `rct-platform` includes a general intent schema. A financial deployment needs:
+
+```python
+# Financial intent classification (extend JITNA vocabulary)
+FINANCIAL_INTENTS = {
+    "EARNINGS_BEAT": {"default_i": 0.85, "default_d": 0.7},
+    "EARNINGS_MISS": {"default_i": 0.75, "default_d": 0.3},
+    "ANALYST_UPGRADE": {"default_i": 0.6, "default_d": 0.65},
+    "ANALYST_DOWNGRADE": {"default_i": 0.6, "default_d": 0.35},
+    "SUPPLY_CHAIN_DISRUPTION": {"default_i": 0.9, "default_d": 0.2},
+    "REGULATORY_ACTION": {"default_i": 0.95, "default_d": 0.1},
+    # ... 40+ categories
+}
+```
+
+### 3. Position Sizing Algorithm
+
+FDIA produces a signal quality score. How that score translates to position sizing is a separate decision that `rct-platform` does not prescribe. A common approach is a Kelly Criterion variant weighted by the FDIA F score:
+
+```python
+def compute_position_size(f_score: float, kelly_fraction: float, 
+                           available_capital: float) -> float:
+    """
+    Position size = f_score × kelly_fraction × available_capital
+    Conservative version: f_score × 0.5 × kelly × capital
+    """
+    return f_score * (kelly_fraction * 0.5) * available_capital
+```
+
+This is a building block — the actual position sizing in a production system incorporates portfolio-level VaR constraints, liquidity adjustments, and correlation management beyond what a single formula captures.
+
+---
+
+## Audit and Compliance Properties
+
+For institutional deployments subject to regulatory oversight (MiFID II, SEC, SET, CFTC), the architecture produces the following audit artifacts automatically:
+
+1. **FDIA decision trace** — for every trade decision: D score, I classification, A status, resulting F score, constitutional rule applied
+2. **SignedAI consensus record** — Ed25519-signed multi-model agreement, timestamped, with model identities
+3. **Delta Engine recall log** — which prior decisions informed warm recall, at what compression ratio
+4. **RCTDB outcome log** — post-trade performance, loop duration, G7 adaptation signals
+
+These artifacts together answer the regulatory question: "On date X, your system made a decision to reduce semiconductor exposure by 6%. Show us exactly how that decision was made." The answer is not "the AI recommended it" — it is a reproducible, mathematically-verified decision trace.
+
+---
+
+## Distribution and Community
+
+This architectural pattern is designed to be shared with the quantitative trading and algorithmic trading community:
+
+- [GitHub: rct-platform](https://github.com/rctlabs/rct-platform) — the SDK, examples, and benchmark
+- [rctlabs.github.io/rct-platform/examples/](https://rctlabs.github.io/rct-platform/examples/) — full documentation
+- Community discussion: Reddit r/algotrading, r/quant, QuantConnect community
+- Academic citation: see CITATION.cff in the repository
+
+If you are building a trading system on this architecture and encounter integration questions, open a GitHub Discussion once Discussions are enabled in the v1.0.3a0 release (May 2026).
+
+---
+
+*Related articles: [7 Genome System Architecture](/en/blog/rct-7-genome-system) · [FDIA Equation Explained](/en/blog/fdia-equation-explained) · [SignedAI Multi-LLM Consensus](/en/blog/signedai-multi-llm-consensus-explained) · [Delta Engine 74% Compression](/en/blog/delta-engine-74-percent-compression) · [RCT Platform Roadmap](/en/blog/rct-platform-roadmap-preview)*

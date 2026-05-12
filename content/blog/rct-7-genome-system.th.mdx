@@ -1,0 +1,197 @@
+---
+title: "ระบบ 7 Genome: วิธีที่ทุก Module เชื่อมต่อกัน"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-13"
+lastReviewed: "2026-05-12"
+category: "engineering"
+excerpt: "ระบบ AI ส่วนใหญ่เป็นเพียง Components ที่ประกอบเข้าด้วยกัน ระบบ 7 Genome ของ RCT แตกต่างออกไป — เป็น Loop ทางชีวภาพแบบปิดที่แต่ละ Genome ป้อนข้อมูลให้ตัวถัดไป ตัวสุดท้ายป้อนข้อมูลให้ตัวแรก และระบบไม่หยุดวิวัฒนาการ"
+tags: ["7 Genome System", "AI Architecture", "RCT Platform", "HexaCore", "JITNA", "SignedAI", "ArtentAI", "Intent OS"]
+readTime: 11
+references:
+  - "https://rctlabs.github.io/rct-platform/architecture/"
+  - "https://rctlabs.co/th/genome"
+  - "https://rctlabs.co/th/algorithms"
+---
+
+# ระบบ 7 Genome: วิธีที่ทุก Module เชื่อมต่อกัน
+
+โครงสร้าง AI ส่วนใหญ่ถูกประกอบขึ้น ไม่ใช่ออกแบบ มี Retrieval Component ที่นี่ Template Prompt ที่นั้น Model Router ที่ติดตั้งเพิ่มทีหลังเมื่อสถาปัตยกรรมเดิมเริ่มแสดงปัญหาความล่าช้า ผลลัพธ์คือระบบที่ Components ไม่รู้จักกัน — พวกมันแชร์ Message Bus แต่ไม่ได้แชร์ความเข้าใจ
+
+**ระบบ 7 Genome ของ RCT** คือปรัชญาการออกแบบที่แตกต่าง สร้างบนอุปมาทางชีวภาพ: เช่นเดียวกับที่ DNA ไม่ได้มีคำสั่งแยกสำหรับโปรตีนแต่ละตัว แต่มี Blueprint แบบสมบูรณ์ที่อ้างอิงตัวเองสำหรับสิ่งมีชีวิต ระบบ 7 Genome มี Architecture แบบวงกลมสมบูรณ์สำหรับระบบปฏิบัติการ AI อัจฉริยะ — ที่แต่ละ Genome ทั้งพึ่งพาและแจ้งข้อมูลให้อีก Genome อื่น
+
+บทความนี้อธิบาย Genome ทั้งเจ็ด วิธีที่พวกมันเชื่อมต่อกัน และเหตุใด Feedback Loop แบบวงกลมจึงทำให้ Architecture นี้แตกต่างเชิงคุณภาพจาก AI Frameworks แบบโมดูลาร์
+
+---
+
+## ข้อจำกัดการออกแบบขั้นพื้นฐาน
+
+ก่อนตรวจสอบแต่ละ Genome สิ่งสำคัญคือต้องเข้าใจข้อจำกัดการออกแบบที่ Architecture นี้ตอบสนอง
+
+ระบบ AI แบบโมดูลาร์สามารถเพิ่มความสามารถโดยเพิ่ม Module แต่การเพิ่ม Module โดยไม่มี Schema ข้อมูลร่วมกันสร้างการแพร่กระจายของ Interface — N Module ต้องการ O(N²) พื้นผิวการรวมระบบเพื่อเชื่อมต่อกันอย่างสมบูรณ์ ในระดับองค์กร สิ่งนี้จัดการได้ยาก: ระบบมี Service หลายร้อยรายการ และแต่ละความสามารถใหม่ต้องเจรจา Interface Contract ใหม่อีกครั้ง
+
+ระบบ 7 Genome แก้ปัญหานี้ด้วยแนวทางที่แตกต่าง: **Shared Genome Expression** ทุก Genome ในระบบเข้าใจ Data Primitives เดียวกัน (FDIA Score, Intent Vector, สถานะ Memory RCTDB) เพราะทุก Genome แสดงออกจาก Blueprint พื้นฐานเดียวกัน (G1) การเพิ่มความสามารถใหม่ไม่ต้องการ Interface Contract ใหม่ — แต่ต้องการการแสดงออก Genome ใหม่ภายใน Schema ที่เข้าใจแล้ว
+
+ผลลัพธ์ในทางปฏิบัติ: 7 Genome มีพื้นผิวการรวมระบบรวม 7 จุด (แต่ละ Genome เชื่อมต่อกับ Loop) ไม่ใช่ 21
+
+---
+
+## ทั้งเจ็ด Genome: ข้อกำหนดฉบับสมบูรณ์
+
+### G1 — Architect's Genome: Blueprint
+
+**บทบาท:** Knowledge Scaffold หลัก กำหนดทุก Domain, Concept, ความสัมพันธ์ และข้อจำกัดที่ระบบสามารถเข้าใจได้ Genome อื่นทั้งหมดได้รับ Schema การทำงานจาก G1
+
+**สิ่งที่ประกอบด้วย:**
+- Domain Ontology: แผนที่สมบูรณ์ของ Concept ที่ระบบสามารถ Reason เกี่ยวกับได้
+- Relationship Graph: วิธีที่ Concept เชื่อมต่อและมีอิทธิพลต่อกัน
+- Constitutional Constraints: สิ่งที่ระบบไม่มีเงื่อนไขห้ามทำ (กฎ A=0)
+- พารามิเตอร์สมการ FDIA พื้นฐาน: Threshold ฐานสำหรับ D, I และ A ข้าม Domain ต่างๆ
+
+**เหตุใดจึงมาก่อน:** G1 ไม่ประมวลผล Query — มันกำหนดว่าการประมวลผลหมายความว่าอะไรในระบบนี้ หากไม่มี G1 G2 ถึง G7 แต่ละตัวจะพัฒนา Vocabulary ภายในของตัวเอง ก่อให้เกิด Semantic Drift ที่ทำให้เกิดความล้มเหลวในการประสานงาน Multi-Agent
+
+**การเชื่อมต่อ:** G1 ให้ Schema ที่ Algorithm ของ G2 ทำงานบนนั้น, Constitutional Constraints ที่ G6 บังคับใช้ และ Performance Baselines ที่ G7 ใช้ประเมินการปรับปรุง
+
+---
+
+### G2 — RCT Codex Genome: ห้องสมุด Algorithm
+
+**บทบาท:** ฐานความรู้ที่มีชีวิตของวิธีการ Reverse Component Thinking เข้ารหัส 41 Algorithm และสมการ FDIA เอง
+
+**สิ่งที่ประกอบด้วย:**
+- 41 Algorithm ครอบคลุม 10 Architecture Layer ทั้งหมด
+- สมการ FDIA (`F = D^I × A`) เป็นฟังก์ชันที่คำนวณได้ ไม่ใช่แค่ Metaphor
+- Decision Trees สำหรับการเลือก Algorithm ตามประเภท Task
+- Reasoning Framework สำหรับการแก้ปัญหา Multi-step ที่ซับซ้อน
+
+**เหตุใด Algorithm จึงอยู่ใน Genome ไม่ใช่ Library:** Library Algorithm แบบดั้งเดิมเป็น Static Codex Genome เป็น Dynamic — สัญญาณการปรับปรุงตัวเอง (ข้อมูล Performance จากการดำเนินงานจริง) ของ G7 ป้อนกลับเข้า G2 อัปเดตว่า Algorithm ใดเป็นที่ต้องการสำหรับ Profile Task ใด Library เรียนรู้ว่า Algorithm ใดใน 41 ตัวทำงานได้ดีในการผลิตจริง ไม่ใช่แค่ในทฤษฎี
+
+---
+
+### G3 — JITNA Genome: Routing Intelligence
+
+**บทบาท:** Just-in-Time Neural Architecture — Routing Engine แบบ Dynamic ที่เลือก LLM, Algorithm Tier และเส้นทางประมวลผลที่เหมาะสมที่สุดสำหรับทุก Query แบบ Real-time
+
+**สิ่งที่ทำ:**
+- จำแนก Intent ที่เข้ามาโดยใช้ภาษา Canonical 6 ฟิลด์ (I/D/Δ/A/R/M)
+- เลือกจาก HexaCore Roster 7 โมเดล (Western 3 + Eastern 3 + ภาษาไทยระดับภูมิภาค 1)
+- กำหนด Processing Tier: Cache Hit (Tier 1, <50ms) → โมเดลเดี่ยว (Tier 2) → Consensus (Tier 4/6/8)
+- สมดุลความเร็ว ความแม่นยำ และต้นทุนตามสถานะระบบ Real-time
+
+**การตัดสินใจ Routing ไม่ใช่ Configuration แบบ Static** JITNA ประเมินแต่ละ Query เทียบกับโหลดระบบปัจจุบัน ความพร้อมใช้งานของโมเดล สถานะ Cache ของ Delta Engine และการจำแนก Intent FDIA ของ Query Query ที่เหมือนกันสองรายการที่ส่งห่างกันหนึ่งชั่วโมงอาจถูก Route แตกต่างกันหากสภาพระบบเปลี่ยนแปลง
+
+---
+
+### G4 — ARTENT Genome: Personal Agent OS
+
+**บทบาท:** Genome การ Execute และ Memory รัน AI Interaction จริง จัดการ Memory ข้ามเซสชัน และขับเคลื่อน L1–L5 Intelligence Ladder
+
+**สิ่งที่ประกอบด้วย:**
+- **Intent Omnibox:** จำแนก Input ใดก็ได้ (เสียง ข้อความ ข้อมูล Structured คำอธิบายรูปภาพ) เป็น Intent Schema ของระบบ
+- **Memory Timeline:** Memory ถาวรที่รองรับ RCTDB ข้ามเซสชัน — Context ของผู้ใช้ไม่ Reset ระหว่าง Interaction
+- **Sovereignty Vault:** การเข้ารหัส Memory ที่ผู้ใช้เป็นเจ้าของและการควบคุม Selective Disclosure
+- **L1–L5 Intelligence Ladder:** การยกระดับจาก Lookup ง่ายๆ (L1) ผ่านการสังเคราะห์สร้างสรรค์ (L3) ไปจนถึงการวางแผน Multi-step อัตโนมัติ (L5)
+
+---
+
+### G5 — SignedAI Genome: Attestation Layer
+
+**บทบาท:** Genome การรับรองและ Consensus หลายโมเดล ประสาน SignedAI Pipeline 6 ขั้นตอน
+
+**Pipeline 6 ขั้นตอน:**
+```
+INTAKE → ROUTER → SIGNERS → ATTESTATION → CONSENSUS → REPORT
+```
+
+- **INTAKE:** รับ Output ผู้สมัครจาก G4 และ FDIA Verification Tier ของ Query
+- **ROUTER:** รวบรวม Panel โมเดลที่เหมาะสม (1 โมเดลสำหรับ TIER_S, 4 สำหรับ TIER_4, 6 สำหรับ TIER_6, 8 สำหรับ TIER_8)
+- **SIGNERS:** แต่ละโมเดลประเมิน Output ผู้สมัครอย่างอิสระ
+- **ATTESTATION:** แต่ละโมเดลสร้าง Cryptographic Signature (Ed25519) บน Evaluation ของตน
+- **CONSENSUS:** ตรวจสอบว่าถึง Threshold ข้อตกลงหรือยัง (50%/67%/75%/100% ตาม Tier)
+- **REPORT:** ปล่อย Output ที่ Verify แล้วหรือยกระดับหาก Consensus ไม่ถึง
+
+**โครงสร้างต้นทุนตาม Tier:**
+- TIER_S: ~$0.10 ต่อการยืนยัน
+- TIER_4 (50% Consensus, 4 โมเดล): ~$0.80
+- TIER_6 (67% Consensus, 6 โมเดล): ~$2.00
+- TIER_8 (75% Consensus, 8 โมเดล): ~$5.00
+
+---
+
+### G6 — Vault Genome: Sovereignty Layer
+
+**บทบาท:** การปกป้องข้อมูล การบังคับใช้ Constitutional Constraint และการจัดการ Audit Trail ใน 8 มิติ RCTDB
+
+**สิ่งที่บังคับใช้:**
+- **Constitutional Prohibitions:** เมื่อ A=0 ใน FDIA Equation Output ถูกบล็อกโดยไม่มีเงื่อนไขโดยไม่คำนึงถึง D, I หรือ Confidence ของโมเดล นี่คือ Hard Gate ทางคณิตศาสตร์ ไม่ใช่ Preference
+- **User Memory Sovereignty:** ผู้ใช้เป็นเจ้าของ Context ที่เก็บไว้ใน RCTDB — Selective Disclosure หมายความว่าผู้ใช้สามารถให้หรือเพิกถอนการเข้าถึง Memory ของระบบได้ทุกเวลา
+- **Cross-Domain Contamination Prevention:** G6 ให้แน่ใจว่า Context ที่ละเอียดอ่อนจาก Domain หนึ่ง (เช่น การแพทย์) ไม่รั่วไหลเข้า Query ใน Domain อื่น (เช่น กฎหมาย) โดยไม่ได้รับอนุญาตจากผู้ใช้อย่างชัดเจน
+- **Audit Trail Integrity:** การตัดสินใจทาง Constitutional ทั้งหมด (ทำไม Output ถูกบล็อก กฎใดที่ Trigger) ถูก Log พร้อม Timestamp และการอ้างอิงกฎ
+
+---
+
+### G7 — RCT-7 Genome: Mental OS และ Self-Evolution Engine
+
+**บทบาท:** Executive Genome รัน System-level IntentLoop ป้อนสัญญาณ Performance กลับไปยัง Genome ก่อนหน้า และขับเคลื่อนการปรับปรุงต่อเนื่อง
+
+**IntentLoop 7 สถานะ:**
+```
+IDLE → RECEIVE → PARSE → ROUTE → EXECUTE → VERIFY → ADAPT
+```
+
+- **IDLE:** ระบบพักผ่อน ตรวจสอบสัญญาณ Intent
+- **RECEIVE:** สัญญาณ Intent ได้รับและ Log ลง RCTDB
+- **PARSE:** G1/G2 Parse Intent เป็น Schema Canonical ของระบบ
+- **ROUTE:** G3 เลือกเส้นทางประมวลผลที่เหมาะสม
+- **EXECUTE:** G4 ประมวลผล Query
+- **VERIFY:** G5/G6 Verify Output หากจำเป็นตาม FDIA Tier
+- **ADAPT:** ข้อมูล Performance จาก Loop Iteration นี้ป้อนกลับไป G1, G2, G3 — อัปเดตความเข้าใจ Domain, น้ำหนัก Algorithm และ Routing Optimization
+
+**ขั้น ADAPT คือสิ่งที่ทำให้นี่เป็น OS ไม่ใช่ Framework** Framework AI แบบดั้งเดิมสร้าง Output G7 ทำให้ทุก Output — สำเร็จหรือล้มเหลว — สร้างสัญญาณการเรียนรู้ที่อัปเดตพฤติกรรมในอนาคตของระบบ Ecosystem ไม่เคย Process Query เดียวกันในวิธีเดิมทุกครั้ง เพราะทุก Loop ที่สำเร็จได้อัปเดตสถานะของ Genome อย่างน้อยหนึ่งตัว
+
+---
+
+## Loop แบบวงกลม: เหตุใด Metaphor ทางชีวภาพถึงแม่นยำ
+
+7 Genome ไม่ก่อตัว Pipeline — แต่ก่อตัวเป็น Loop วงจรสมบูรณ์:
+
+```
+G1 (Blueprint)
+   ↓ schema
+G2 (Algorithms) ← performance feedback ←──────────────────┐
+   ↓ algorithm selection                                    │
+G3 (Routing) ← routing optimization ←─────────────────── │
+   ↓ routed query                                           │
+G4 (Execution) → memory stored in RCTDB                    │
+   ↓ high-stakes outputs                                    │
+G5 (Attestation) → cryptographic audit trail               │
+   ↓ compliance monitoring                                  │
+G6 (Vault) → audit trail integrity                          │
+   ↓ all performance data                                   │
+G7 (Self-Evolution) ────────────────────────────────────────┘
+```
+
+ในสิ่งมีชีวิต DNA ไม่ได้ถูกอ่านเพียงครั้งเดียวเมื่อแรกเกิด — มันถูกอ่าน แสดงออก และแก้ไขอย่างต่อเนื่องโดยสภาพแวดล้อมและประวัติของสิ่งมีชีวิต ระบบ 7 Genome มีคุณสมบัติเดียวกัน: Blueprint ของ G1 ถูกอัปเดตอย่างต่อเนื่องโดยการสังเกต Performance ของ G7
+
+---
+
+## ผลลัพธ์ในทางปฏิบัติสำหรับการ Deploy ระดับองค์กร
+
+| คุณสมบัติ | Architecture แบบโมดูลาร์ | ระบบ 7 Genome |
+|---|---|---|
+| การรวม Component | O(N²) พื้นผิว Interface | 7 การเชื่อมต่อ Loop |
+| การปรับปรุง Performance | ต้องปรับแต่งด้วยตนเอง | ต่อเนื่องผ่าน G7 ADAPT |
+| Constitutional Compliance | Policy Service (สามารถ Bypass ได้) | ระดับ Genome (บังคับใช้ Schema) |
+| Audit Trail | Optional Logging Service | G6 Sovereignty Genome (ทำงานเสมอ) |
+| Memory ข้ามเซสชัน | External Database Service | G4 ARTENT พร้อม Semantic Understanding |
+
+ระบบ 7 Genome เชื่อมต่อกับ RCT Architecture ที่กว้างขึ้นผ่าน:
+- [สมการ FDIA](/th/blog/fdia-equation-explained) เป็นฟังก์ชัน Scoring พื้นฐาน
+- [JITNA Protocol](/th/blog/jitna-language-release) เป็นมาตรฐาน Inter-genome Communication
+- [SignedAI Consensus Layer](/th/blog/signedai-multi-llm-consensus-explained) เป็นการใช้งาน G5
+- [Specialist Studio](/th/blog/specialist-studio-explained) เป็นการแสดงออกเฉพาะ Domain ของ G1+G2+G3+G6
+
+---
+
+*บทความที่เกี่ยวข้อง: [สมการ FDIA](/th/blog/fdia-equation-explained) · [SignedAI Multi-LLM Consensus](/th/blog/signedai-multi-llm-consensus-explained) · [Delta Engine 74%](/th/blog/delta-engine-74-percent-compression) · [Specialist Studio](/th/blog/specialist-studio-explained)*

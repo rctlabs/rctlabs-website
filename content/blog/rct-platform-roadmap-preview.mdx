@@ -1,0 +1,170 @@
+---
+title: "RCT Platform Roadmap: From Public Alpha to ASEAN Expansion"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-20"
+lastReviewed: "2026-05-12"
+category: "engineering"
+excerpt: "rct-platform v1.0.2a0 is live. Here is what was shipped, what is in progress, and what is coming in v1.0.3a0, v1.0.0 stable, v1.1.0 Observability, and v1.2.0 ASEAN Expansion — and what we are explicitly not building in the open-source tier."
+tags: ["RCT Platform", "Platform Roadmap", "Open Source", "FDIA", "SignedAI", "JITNA", "ASEAN AI", "rct-platform"]
+readTime: 9
+references:
+  - "https://github.com/rctlabs/rct-platform"
+  - "https://rctlabs.github.io/rct-platform/"
+  - "https://rctlabs.co/en/architecture"
+---
+
+# RCT Platform Roadmap: From Public Alpha to ASEAN Expansion
+
+`rct-platform` v1.0.2a0 (Public Alpha) launched in April 2026. This article is a technical summary of what shipped, what is currently being completed, and what the planned trajectory looks like through 2027 — with explicit scope boundaries for the open-source tier.
+
+If you want the raw roadmap document, it lives at [ROADMAP.md](https://github.com/rctlabs/rct-platform/blob/main/ROADMAP.md) in the repository.
+
+---
+
+## What Shipped: v1.0.2a0 Public Alpha (April 2026)
+
+The April release was the first public availability of the RCT Platform SDK. What "public alpha" means in this context: the core algorithms are stable and tested; the API surface is not yet considered stable for production dependencies without pinning the exact version.
+
+**Core SDK modules (stable behavior, alpha API):**
+
+| Module | Path | What it provides |
+|---|---|---|
+| FDIA Scorer | `core/fdia/` | Constitutional scoring: `F = D^I × A`, pure-function implementation, no external calls |
+| SignedAI Registry | `signedai/` | HexaCore 7-model registry, TIER_S/4/6/8 consensus, Ed25519 attestation |
+| Delta Engine | `core/delta_engine/` | State compression, warm recall, 74% compression rate on typical agent context |
+| JITNA Protocol | `rct_control_plane/jitna_protocol.py` | RFC-001 implementation, 6-field intent schema, multi-agent routing |
+| Regional Language Adapter | `adapters/` | 8 ASEAN language pairs |
+| Control Plane DSL | `rct_control_plane/` | 15 modules, `rct` CLI entry point |
+
+**Reference microservices (5):** intent-loop, analysearch, vector-search, crystallizer, gateway-api. These are reference implementations — they show how to compose the SDK modules into a service, not production-ready deployments.
+
+**Quality benchmarks at release:**
+- 1,193 tests passed, 0 skipped, 94% coverage
+- Bandit security scan: 0 HIGH severity findings
+- CI/CD: GitHub Actions with ci.yml + security-scan.yml on every push
+- Whitepaper: 450+ pages, bilingual EN/TH, CITATION.cff for academic attribution
+
+---
+
+## Currently In Progress: v1.0.3a0 Playground (May 2026)
+
+The v1.0.3a0 milestone is a usability release with one goal: **zero-friction first experience**. A new user should be able to run FDIA, SignedAI, and Delta Engine without cloning the repository or installing anything locally.
+
+**Already completed:**
+- `notebooks/rct_playground.ipynb` — runnable Colab notebook with live FDIA, SignedAI, and Delta Engine demonstrations
+- `benchmark/run_benchmark.py` — unified benchmark runner CLI for reproducible performance testing
+- Binder / Colab / Codespaces quick-launch badges in README
+- Hypothesis property-based tests — mathematical correctness guarantees for FDIA, Delta Engine, SignedAI
+
+**Remaining for v1.0.3a0:**
+- `docs/benchmark/hallucination-methodology.md` — the 100-prompt public dataset and methodology description (enables external reproduction)
+- GitHub Discussions activation in the GitHub UI — Q&A, RFC Discussion, Show & Tell categories
+- API stability guarantees documentation for `core/fdia`, `signedai/core`, `core/delta_engine`
+
+---
+
+## v1.0.0 Stable — PyPI Release (Q3 2026)
+
+The v1.0.0 milestone marks the transition from "public alpha with pinned version required" to "production-ready dependency with stability guarantees."
+
+**What stability means in practice:**
+- `pip install rct-platform` works from PyPI without cloning or building locally
+- Semantic versioning guarantee: no breaking changes without a major version bump
+- Pre-built wheels for Python 3.10, 3.11, 3.12
+- Complete type stubs (`py.typed` marker + full `__init__.pyi`)
+- GitHub Release with signed artifacts for supply-chain verification
+- Full API reference documentation in `docs/api/`
+- Community-verified external reproduction of the hallucination benchmark
+
+**What does not change at v1.0.0:** the underlying algorithms. FDIA, SignedAI, Delta Engine, and JITNA behaviors are already stable in the alpha — v1.0.0 is about the API contract, packaging, and documentation, not about changing how the algorithms work.
+
+---
+
+## v1.1.0 — Observability and Integrations (Q4 2026)
+
+This is the release that moves `rct-platform` from "SDK you use in your code" to "infrastructure you run alongside your systems."
+
+**Observability stack:**
+- Prometheus `/metrics` endpoint, live in `rct serve`
+- Grafana dashboard template (`docs/assets/grafana-dashboard.json`) — pre-built panels for FDIA score distribution, SignedAI consensus latency, Delta Engine compression ratios, JITNA routing decisions
+- `docker-compose.monitoring.yml` — Prometheus + Grafana local stack, one command to run the full observability setup locally
+- OpenTelemetry trace exporter for distributed tracing in multi-service deployments
+
+**Third-party integration adapters:**
+- n8n integration adapter — bring RCT Platform capabilities into n8n automation workflows
+- Home Assistant integration adapter — local AI reasoning for home automation
+- Obsidian plugin — knowledge graph to JITNA intent tagging (the platform becomes your knowledge OS, not just a code library)
+
+**Protocol update:**
+- JITNA Protocol v2.1 draft — bidirectional agent negotiation. The current RFC-001 is one-directional (request → route → execute). v2.1 adds bidirectional negotiation: agents can propose alternative interpretations of their intent and negotiate with the routing layer before committing to an execution path. This is the foundation for multi-agent collaboration rather than just multi-agent parallel execution.
+
+---
+
+## v1.2.0 — ASEAN Expansion (2027)
+
+The 2027 release target addresses the gap between the platform's regional language capabilities (8 ASEAN pairs in v1.0.2a0) and full ASEAN regulatory alignment.
+
+**Language expansion:**
+- VN (Vietnamese), ID (Indonesian), MY (Malay) adapter additions, bringing the total from 8 to 11 ASEAN language pairs
+- These are not translations — each adapter includes region-specific intent vocabulary and JITNA routing adjustments for regional communication styles
+
+**Regulatory compliance modules:**
+- PDPA (Thailand) compliance module with audit evidence export — structured export of constitutional enforcement decisions for PDPA compliance reporting
+- PIPL (China) adapter for E3 model slot in the HexaCore roster
+- ASEAN AI Governance checklist alignment
+
+**Community infrastructure:**
+- RCT Platform certification program (community-driven) — a framework for organizations to certify that their deployment meets specific constitutional compliance standards
+- JITNA Protocol RFC-002 — cross-platform agent identity standard. This addresses the problem that arises when multiple organizations deploy `rct-platform` instances and need their agents to communicate across organizational boundaries without sharing their underlying knowledge stores
+
+---
+
+## What We Are Not Building (Open Source Tier)
+
+This section sets explicit expectations:
+
+| Not in scope for open source | Where it exists |
+|---|---|
+| Full production microservice stack (62 services) | Enterprise tier — [rctlabs.co](https://rctlabs.co) |
+| Genome Creator Profile API | Enterprise proprietary |
+| Hosted inference engine | Hardware/cost constraints outside OSS scope |
+| Hosted API / SaaS endpoint | Runs at rctlabs.co — enterprise licensing |
+| Full Vault-1068 production deployment | Enterprise — requires organizational knowledge governance |
+
+The open-source tier is a **developer SDK** — the algorithmic building blocks. The full production system (62 microservices, genome creator profiles, hosted inference, Vault-1068 as a managed service) is the enterprise platform at rctlabs.co.
+
+This distinction is not about withholding capability — it is about honesty regarding what an SDK can reasonably provide vs. what requires operational infrastructure, organizational governance, and SLA commitments.
+
+---
+
+## How to Shape the Roadmap
+
+- **GitHub Discussions** — once enabled after v1.0.3a0, this is the primary channel for Q&A, RFC Discussion, and Show & Tell. The three categories are structured to capture different kinds of community input.
+- **GitHub Issues** — bugs, specific missing features, and documentation gaps
+- **Issue upvotes** — high-engagement issues move up priority. If a feature matters to you, finding the existing issue and reacting to it is more useful than creating a duplicate.
+- **Enterprise timeline requests** — if your organization needs a specific feature by a specific date, contact [founder@rctlabs.co](mailto:founder@rctlabs.co). Enterprise commitments can accelerate specific items.
+
+One explicit note on timeline realism: v1.0.3a0 is a May 2026 target with most items already shipped. v1.0.0 stable is a Q3 2026 target — the PyPI packaging and API stability documentation are well-understood work items. v1.1.0 (Q4 2026) and v1.2.0 (2027) are planned with less certainty — community input and enterprise commitments will influence prioritization within those milestones.
+
+---
+
+## Where to Start Today
+
+If you want to use `rct-platform` now:
+
+```bash
+git clone https://github.com/rctlabs/rct-platform.git
+cd rct-platform
+pip install -e ".[dev]"
+pytest  # 1,193 tests should pass
+```
+
+Or open the Colab notebook directly for a no-install exploration of FDIA, SignedAI, and Delta Engine:
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rctlabs/rct-platform/blob/main/notebooks/rct_playground.ipynb)
+
+---
+
+*Related articles: [7 Genome System Architecture](/en/blog/rct-7-genome-system) · [FDIA Equation Explained](/en/blog/fdia-equation-explained) · [SignedAI Multi-LLM Consensus](/en/blog/signedai-multi-llm-consensus-explained) · [Delta Engine 74% Compression](/en/blog/delta-engine-74-percent-compression)*
