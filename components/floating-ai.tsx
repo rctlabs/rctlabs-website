@@ -19,6 +19,8 @@ import {
   Maximize2,
   CheckCircle,
   BrainCircuit,
+  Copy,
+  Check,
 } from "lucide-react"
 import { getSupabaseBrowserClient } from "@/lib/auth/browser-client"
 // Chat is proxied through /api/chat (server-side route) to hide backend credentials
@@ -39,9 +41,10 @@ interface ChatMessage {
   suggestions?: string[]
   suggestions_th?: string[]
   feedback?: "up" | "down" | null
-  source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch" | "rate_limit"
+  source?: "knowledge_base" | "llm" | "hybrid" | "cache" | "fallback" | "analysearch" | "rate_limit" | "intent_loop_cache"
   model_used?: string
   tokens_used?: number
+  graphrag_hits?: number
   isStreaming?: boolean
   isAuthError?: boolean
   isError?: boolean        // G9: marks a failed message that can be retried
@@ -184,6 +187,8 @@ export function FloatingAI() {
   const [analysisResult, setAnalysisResult] = useState<Record<string, unknown> | null>(null)
   // S3.2: Track which message IDs have the JITNA trace panel expanded
   const [expandedTraces, setExpandedTraces] = useState<Set<string>>(new Set())
+  // D-copy: Track which message was just copied (for checkmark flash)
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   /* Auto-scroll on new messages */
   useEffect(() => {
@@ -207,6 +212,18 @@ export function FloatingAI() {
     vv.addEventListener("resize", onResize)
     return () => vv.removeEventListener("resize", onResize)
   }, [isOpen])
+
+  /* D-kbd: Ctrl+Shift+A → toggle FloatingAI widget */
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === "A") {
+        e.preventDefault()
+        setIsOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [])
 
   /* Build conversation_history from last 6 messages for API context.
      Filters out empty streaming placeholders to avoid polluting history. */
@@ -343,6 +360,7 @@ export function FloatingAI() {
                       rct7_steps: event.rct7_steps && typeof event.rct7_steps === "object"
                         ? (event.rct7_steps as ChatMessage["rct7_steps"])
                         : undefined,
+                      graphrag_hits: typeof event.graphrag_hits === "number" ? event.graphrag_hits : undefined,
                     }
                   }
                 } else {
@@ -621,7 +639,7 @@ export function FloatingAI() {
         </span>
       )
     }
-    if (msg.source === "cache") {
+    if (msg.source === "cache" || msg.source === "intent_loop_cache") {
       return (
         <span className="text-cyan-400" title="Cached response (instant)">
           ⚡
@@ -940,6 +958,12 @@ export function FloatingAI() {
                               {(msg.signedai_score * 100).toFixed(0)}%
                             </span>
                           )}
+                          {/* B2: GraphRAG Knowledge Graph indicator */}
+                          {msg.graphrag_hits !== undefined && msg.graphrag_hits > 0 && (
+                            <span className="text-xs text-blue-400 ml-1" title={`${msg.graphrag_hits} related nodes from Knowledge Graph`}>
+                              🕸️ Graph×{msg.graphrag_hits}
+                            </span>
+                          )}
                         </div>
                       )}
 
@@ -1034,6 +1058,24 @@ export function FloatingAI() {
                       >
                         <ThumbsDown className="w-3 h-3" />
                       </button>
+                      {/* D-copy: Copy message content to clipboard */}
+                      {!msg.isStreaming && msg.content && (
+                        <button
+                          onClick={() => {
+                            void navigator.clipboard.writeText(msg.content).then(() => {
+                              setCopiedId(msg.id)
+                              setTimeout(() => setCopiedId(null), 2000)
+                            })
+                          }}
+                          className="p-0.5 rounded text-muted-foreground/40 hover:text-muted-foreground"
+                          title="Copy message"
+                        >
+                          {copiedId === msg.id
+                            ? <Check className="w-3 h-3 text-green-400" />
+                            : <Copy className="w-3 h-3" />
+                          }
+                        </button>
+                      )}
                       {/* G5: mode badge */}
                       {msg.mode && msg.mode !== "chat" && (
                         <span className="text-xs text-muted-foreground/60 ml-1" title={`Answered in ${msg.mode} mode`}>
