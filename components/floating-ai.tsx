@@ -14,9 +14,11 @@ import {
   ThumbsUp,
   ThumbsDown,
   ChevronRight,
+  ChevronDown,
   Minimize2,
   Maximize2,
   CheckCircle,
+  BrainCircuit,
 } from "lucide-react"
 import { getSupabaseBrowserClient } from "@/lib/auth/browser-client"
 // Chat is proxied through /api/chat (server-side route) to hide backend credentials
@@ -48,6 +50,14 @@ interface ChatMessage {
   page_links?: Array<{ label: string; url: string; section?: string }>
   external_links?: Array<{ label: string; url: string }>
   signedai_score?: number
+  rct7_steps?: {
+    tier: number
+    steps_run: string[]
+    trace: Record<string, string>
+    elapsed_ms: number
+    quality_score: number
+    mode: "heuristic" | "llm"
+  }
   metadata?: {
     intent?: string
     keywords?: string[]
@@ -172,6 +182,8 @@ export function FloatingAI() {
   const [analysisMode, setAnalysisMode] = useState<AnalysisMode>("chat")
   // P8 — analysisResult is now read + used for metadata display
   const [analysisResult, setAnalysisResult] = useState<Record<string, unknown> | null>(null)
+  // S3.2: Track which message IDs have the JITNA trace panel expanded
+  const [expandedTraces, setExpandedTraces] = useState<Set<string>>(new Set())
 
   /* Auto-scroll on new messages */
   useEffect(() => {
@@ -328,6 +340,9 @@ export function FloatingAI() {
                       page_links: Array.isArray(event.page_links) ? (event.page_links as ChatMessage["page_links"]) : [],
                       external_links: Array.isArray(event.external_links) ? (event.external_links as ChatMessage["external_links"]) : [],
                       signedai_score: typeof event.signedai_score === "number" ? event.signedai_score : undefined,
+                      rct7_steps: event.rct7_steps && typeof event.rct7_steps === "object"
+                        ? (event.rct7_steps as ChatMessage["rct7_steps"])
+                        : undefined,
                     }
                   }
                 } else {
@@ -924,6 +939,40 @@ export function FloatingAI() {
                             <span className={`text-xs font-mono ml-1 ${msg.signedai_score >= 0.8 ? "text-green-400" : msg.signedai_score >= 0.5 ? "text-yellow-400" : "text-red-400"}`}>
                               {(msg.signedai_score * 100).toFixed(0)}%
                             </span>
+                          )}
+                        </div>
+                      )}
+
+                      {/* S3.2: RCT7 JITNA Reasoning Trace (collapsible) */}
+                      {msg.role === "assistant" && msg.rct7_steps && (
+                        <div className="mt-2 pt-2 border-t border-border/50">
+                          <button
+                            onClick={() => setExpandedTraces((prev) => {
+                              const next = new Set(prev)
+                              next.has(msg.id) ? next.delete(msg.id) : next.add(msg.id)
+                              return next
+                            })}
+                            className="flex items-center gap-1.5 text-xs text-muted-foreground/60 hover:text-warm-amber transition-colors"
+                          >
+                            <BrainCircuit className="w-3 h-3" />
+                            <span>RCT7 Reasoning — Tier {msg.rct7_steps.tier} ({msg.rct7_steps.steps_run.length} steps, {msg.rct7_steps.mode})</span>
+                            {expandedTraces.has(msg.id)
+                              ? <ChevronDown className="w-3 h-3" />
+                              : <ChevronRight className="w-3 h-3" />
+                            }
+                          </button>
+                          {expandedTraces.has(msg.id) && (
+                            <div className="mt-2 space-y-1.5 text-xs font-mono bg-muted/20 rounded-md p-2 border border-border/40">
+                              {msg.rct7_steps.steps_run.map((step) => (
+                                <div key={step} className="flex gap-2">
+                                  <span className="text-warm-amber shrink-0 uppercase">[{step}]</span>
+                                  <span className="text-muted-foreground leading-relaxed">{msg.rct7_steps!.trace[step]}</span>
+                                </div>
+                              ))}
+                              <div className="text-muted-foreground/40 text-right mt-1">
+                                quality: {(msg.rct7_steps.quality_score * 100).toFixed(0)}% · {msg.rct7_steps.elapsed_ms}ms
+                              </div>
+                            </div>
                           )}
                         </div>
                       )}
