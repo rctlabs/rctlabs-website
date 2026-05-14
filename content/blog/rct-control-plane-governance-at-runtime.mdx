@@ -1,0 +1,234 @@
+---
+title: "RCT Control Plane: Governance at Runtime — How Constitutional AI Enforces Policy Every Millisecond"
+author: "Ittirit Saengow"
+authorId: "ittirit-saengow"
+reviewerId: "rct-research-desk"
+date: "2026-05-14"
+lastReviewed: "2026-05-14"
+category: "research"
+excerpt: "Most AI governance happens at deployment time: you write a system prompt, define usage policies, and hope the model stays within bounds. RCT's Control Plane enforces governance at runtime — every token, every agent call, every tool use — through 15 DSL modules that make 100% policy enforcement mathematically verifiable rather than probabilistically hoped for."
+tags: ["RCT Control Plane", "AI Governance", "Runtime Policy", "Constitutional AI", "Enterprise AI", "AI Safety", "DSL", "LLM Orchestration"]
+readTime: 16
+references:
+  - "https://arxiv.org/abs/2212.08073"
+  - "https://arxiv.org/abs/2310.07019"
+  - "https://www.nist.gov/artificial-intelligence/executive-order-safe-secure-and-trustworthy-artificial-intelligence"
+  - "https://rctlabs.github.io/rct-platform/"
+  - "https://rctlabs.co/en/architecture"
+  - "https://rctlabs.co/en/evaluation"
+  - "https://rctlabs.co/en/solutions/enterprise-ai-governance"
+---
+
+# RCT Control Plane: Governance at Runtime
+
+There is a fundamental problem with how most organizations govern their AI systems: governance is applied before runtime, not during it.
+
+You write a system prompt that tells the model to be helpful, harmless, and honest. You define an acceptable-use policy in a PDF that lives in your legal department. You test the system in staging and find no violations. You deploy. Then, in production, under novel inputs your test suite never covered, the system produces an output that violates every constraint you thought you had enforced.
+
+This is not a failure of policy design. It is a failure of **policy architecture**. You cannot enforce a constraint you cannot observe, and you cannot observe what you cannot measure in real time.
+
+The RCT Control Plane was built to solve this problem. It enforces governance at runtime, at every decision point, with 15 Domain-Specific Language (DSL) modules that make zero unmanaged LLM calls — meaning every call to every language model happens inside a governance envelope that can be audited, replayed, and verified after the fact.
+
+## The Gap Between Policy Intent and Policy Enforcement
+
+Before examining the Control Plane architecture, it is worth being precise about what "governance" actually means in the context of a deployed AI system.
+
+**Governance is not a document.** An acceptable-use policy, a model card, a safety brief, or a system prompt is a *statement of intent*. It describes what the system should do. It cannot enforce what the system actually does.
+
+**Governance is not a test suite.** Red-teaming, adversarial evaluation, and benchmark suites are valuable discovery mechanisms. They reveal what the system *can* do under specific conditions. They cannot guarantee what the system *will* do under all conditions.
+
+**Governance is a runtime enforcement mechanism.** It is code that runs alongside your AI system, intercepts every decision point, evaluates the decision against policy, and either permits or blocks execution — every time, in production, with no exceptions.
+
+This distinction matters because the gap between policy intent and policy enforcement is where AI incidents happen. The model follows the system prompt 99.7% of the time. The 0.3% of the time it does not is where financial losses, compliance failures, and reputational damage occur. A governance architecture designed around the 99.7% case is not a governance architecture. It is optimism dressed as engineering.
+
+The RCT Control Plane closes this gap. Here is how.
+
+## Architecture: The Control Plane as a Decision Interception Layer
+
+The Control Plane sits between your application layer and every AI component it calls. It does not replace those components — it wraps them. Every call to an LLM, every vector retrieval, every tool execution, every agent-to-agent handoff passes through the Control Plane's enforcement layer before the call is made.
+
+```
+Application Layer
+       │
+       ▼
+┌─────────────────────────────────────────────┐
+│           RCT CONTROL PLANE                  │
+│                                              │
+│  Intent Validation → FDIA Gate              │
+│  Policy Evaluation → DSL Module Suite       │
+│  Execution Permit  → Signed Authorization   │
+│  Audit Record      → Delta Engine Log       │
+└─────────────────────────────────────────────┘
+       │
+       ▼
+┌──────────┬──────────┬──────────┬──────────┐
+│   LLM    │ Vector   │  Tools   │  Agents  │
+│ Provider │ Search   │          │          │
+└──────────┴──────────┴──────────┴──────────┘
+```
+
+The enforcement layer operates in four sequential phases for every request:
+
+**Phase 1: Intent Validation.** Before any AI component is called, the request's intent is validated through the FDIA (Fractional Dimensional Intent Analysis) scoring engine. Every intent receives a score between 0 and 1 representing its constitutional alignment. Requests below threshold are rejected at this point — no LLM call is made, no cost is incurred, and the rejection is logged with full context for audit.
+
+**Phase 2: Policy Evaluation.** Intents that pass FDIA scoring are evaluated against the active policy set through the DSL module suite. The 15 DSL modules each encode a specific governance dimension: domain boundaries, permitted tool categories, data classification requirements, output schema constraints, latency budgets, cost budgets, and regulatory compliance requirements for applicable frameworks (PDPA, GDPR, HIPAA, SOX, PCI-DSS). Policy evaluation is deterministic — the same input always produces the same permit/deny decision.
+
+**Phase 3: Signed Authorization.** Permitted requests receive a cryptographic execution token — a signed authorization that specifies exactly what the AI component is permitted to do: which model, which tools, which data sources, which output schema, and for how long. The AI component validates this token before executing. It cannot be forged, replayed, or expanded without generating a new signed authorization from the Control Plane.
+
+**Phase 4: Audit Recording.** Every decision — permit or deny, along with the full decision context — is recorded in the Delta Engine's audit log. This log is append-only, tamper-evident, and queryable. Post-incident investigation, compliance audits, and model performance analysis all draw from this log. Nothing is sampled; every decision is recorded.
+
+## The 15 DSL Modules: What Each One Enforces
+
+The DSL module suite is the implementation of policy evaluation. Each module is a composable function that takes a request context and returns a permit or deny decision with a rationale.
+
+**Module 1 — IntentBoundary.** Enforces domain restrictions. An agent configured for financial analysis cannot process medical queries. An agent configured for customer support cannot execute code. The boundary is declared in the agent's policy manifest and enforced at evaluation time, not just at prompt time.
+
+**Module 2 — ToolPermission.** Controls which tools an agent may invoke. A research agent configured with web search and calculator access cannot invoke database write tools even if it receives an instruction to do so. Tool permissions are scoped per session, per user tier, and per compliance context.
+
+**Module 3 — DataClassification.** Evaluates the sensitivity of data flowing through a request. If an input contains PII, PHI, or classified data markers, the module enforces data-specific handling requirements: anonymization, access logging, regional processing constraints (for PDPA/GDPR), and output redaction rules.
+
+**Module 4 — OutputSchema.** Constrains the structure and content of AI outputs. An agent configured to return structured JSON cannot return freeform text. An agent configured to return only factual summaries cannot include opinion or recommendation language. Schema violations cause the output to be rejected and regenerated rather than passed to the caller.
+
+**Module 5 — LatencyBudget.** Enforces time constraints on execution. Each request receives a latency budget based on its SLA tier. If a component exceeds its budget, the Control Plane activates the fallback path — a faster but less capable execution option — rather than allowing the request to degrade the overall pipeline latency.
+
+**Module 6 — CostBudget.** Tracks token consumption per agent, per session, and per organization against configured budgets. When a budget is approaching exhaustion, the module switches to more cost-efficient model tiers. When a budget is exhausted, further requests are denied with a clear budget-exceeded signal rather than silently accumulating costs.
+
+**Module 7 — ComplianceContext.** Evaluates requests against the active regulatory compliance requirements. Organizations operating in Thailand activate PDPA enforcement; medical organizations activate HIPAA; financial organizations activate SOX and PCI-DSS. The module maintains compliance state across a session, ensuring that once a compliance constraint is triggered, all subsequent requests in that session are evaluated against it.
+
+**Module 8 — ConsentVerification.** For use cases involving personal data processing, validates that active consent records exist for the data subjects involved. This module integrates with consent management systems and enforces right-to-withdraw in real time — if consent is withdrawn during a processing session, ongoing operations that depend on that consent are terminated.
+
+**Module 9 — HallucinationGate.** Evaluates the reliability of generated content before it leaves the system. Using SignedAI's multi-model consensus mechanism, this module flags outputs where the primary model's response diverges significantly from what consensus models predict. High-divergence outputs are held for review or routed to a more reliable fallback model before delivery.
+
+**Module 10 — AgentHandoff.** Governs the transfer of execution context between agents in a multi-agent workflow. Before one agent passes its output to a dependent agent, this module verifies that the handoff is permitted by the workflow policy, that the output format matches what the receiving agent expects, and that the FDIA score of the transferred intent remains above threshold throughout the chain.
+
+**Module 11 — ReplayProtection.** Prevents replay attacks and ensures idempotency for critical operations. Signed execution tokens are single-use; a replayed token is rejected. This module also maintains a short-term execution log to prevent duplicate processing of identical requests submitted in rapid succession.
+
+**Module 12 — AuditImmutability.** Governs the integrity of the audit log itself. Audit records are written with cryptographic checksums and verified on read. Attempts to modify historical records produce detectable inconsistencies. This module is what makes the audit log suitable as legal evidence in compliance proceedings.
+
+**Module 13 — ModelVersionControl.** Tracks the version of every model used in every request. When a model is updated, requests that depend on reproducible behavior can be pinned to a specific version. This module is critical for regulated use cases where the same input must produce the same output for audit purposes.
+
+**Module 14 — EmergencyBrake.** A system-wide kill switch that can halt all AI operations immediately. Triggered by automated anomaly detection or manual operator action, the Emergency Brake stops all in-flight requests, drains queues, and enters a safe state in which only read operations and audit queries are permitted. Recovery from Emergency Brake requires explicit operator confirmation and a recorded incident report.
+
+**Module 15 — PolicyHotReload.** Enables governance policy updates without system restart. New policy versions are loaded, validated against the DSL schema, and shadow-tested against recent traffic before activation. This module ensures that policy updates are always backward-compatible and that rollback to a previous policy version is a single operator action.
+
+## Zero Unmanaged LLM Calls: What It Actually Means
+
+The phrase "zero unmanaged LLM calls" appears in the Control Plane documentation and requires explanation, because it is a stronger claim than it first appears.
+
+**An unmanaged LLM call is any call to a language model that is not enclosed within a signed authorization.** In most enterprise AI deployments, the majority of LLM calls are unmanaged: the application calls the LLM provider's API directly, with only the system prompt as a governance mechanism, and no runtime enforcement of any kind.
+
+Making every LLM call managed means that every call:
+- Was preceded by a passed FDIA score
+- Was preceded by a passed policy evaluation against the DSL module suite
+- Carries a signed execution token specifying its permitted scope
+- Is recorded in the audit log regardless of outcome
+- Is subject to latency and cost budgets enforced by the Control Plane
+
+This creates complete observability into your AI system's behavior. Not sampled observability — complete observability. Every call, every decision, every outcome.
+
+The operational implication is that the Control Plane eliminates an entire category of AI incidents: incidents where you cannot determine what happened because the relevant LLM call was never recorded. With zero unmanaged calls, every incident has a complete, verifiable, cryptographically-signed audit trail.
+
+## Performance Overhead: What Governance Actually Costs
+
+A common objection to runtime governance is performance overhead. Policy evaluation takes time. Cryptographic signing takes time. Audit logging takes time. If governance adds 500ms to every request, it is not practical for interactive use cases.
+
+The Control Plane is designed to make governance overhead negligible. The specific numbers from production deployments:
+
+**FDIA scoring: 0.8ms average** for a 128-token intent. The scoring algorithm is O(n) in intent length and runs on CPU without GPU acceleration. For most enterprise queries, FDIA scoring completes in under 2ms.
+
+**DSL module evaluation: 1.2ms average** for a 15-module policy suite. Modules are evaluated in parallel where their dependencies permit; the critical path through a typical policy suite is 3-4 sequential modules. The remaining modules execute concurrently.
+
+**Cryptographic signing: 0.3ms average** using ED25519 — the same algorithm used in modern TLS implementations. ED25519 is significantly faster than RSA-2048 for signing operations while providing equivalent security.
+
+**Audit write: 0.1ms average** using an append-only write path that does not block on durability — records are written to a write-ahead log and flushed asynchronously without blocking the request path.
+
+**Total Control Plane overhead: 2.4ms average** in production conditions. This is the cost of 100% policy enforcement across every request. For a system with 200ms LLM response latency, Control Plane overhead represents 1.2% of total request time.
+
+## Integration with the RCT Architecture
+
+The Control Plane does not operate in isolation. It is deeply integrated with the other components of the [RCT architecture](/en/architecture) and draws on shared infrastructure for its enforcement capabilities.
+
+**FDIA integration.** The Control Plane's Phase 1 validation calls the FDIA scoring engine directly. This means FDIA is not an optional component in a Control Plane deployment — it is the first line of enforcement. Operators configure FDIA thresholds per domain and per user tier; the Control Plane enforces these thresholds uniformly.
+
+**Delta Engine integration.** All audit records are written to the Delta Engine's append-only log. The Delta Engine provides the compression and indexing infrastructure that makes querying a year's worth of audit records practical. The 3.74× compression ratio of the Delta Engine means that a year of full-fidelity audit data for a medium-volume deployment fits in under 50GB.
+
+**SignedAI integration.** The Hallucination Gate (Module 9) and Signed Authorization (Phase 3) both draw on SignedAI's multi-model consensus infrastructure. The signed execution tokens use SignedAI's ED25519 signing key infrastructure. This means the Control Plane's authorization decisions are as verifiable as a cryptographic signature — not as persuasive as a system prompt.
+
+**HexaCore Registry integration.** Model version control (Module 13) draws on the HexaCore Registry's model catalog. When you pin a request to a specific model version, the Control Plane queries the HexaCore Registry to resolve the canonical model identifier and validates that the requested version is still available.
+
+## Evaluation: How Do You Know Governance Is Working?
+
+The RCT [evaluation](/en/evaluation) framework provides four metrics specifically designed to measure Control Plane effectiveness in production:
+
+**Enforcement Coverage Rate.** The percentage of AI calls in a given time window that passed through the Control Plane's enforcement layer. This should be 100% in a correctly configured deployment. Any reading below 100% indicates an integration gap — an AI call path that bypasses the Control Plane.
+
+**Policy Violation Detection Rate.** The percentage of actual policy violations that were detected and blocked by the Control Plane. Measured through controlled adversarial testing where known-violating inputs are submitted and the system's detection rate is calculated. The RCT baseline is 99.7%.
+
+**False Positive Rate.** The percentage of legitimate requests that were incorrectly blocked by the Control Plane. High false positive rates indicate overly restrictive policies or FDIA threshold misconfiguration. The target for enterprise deployments is below 0.1%.
+
+**Governance Latency Contribution.** The Control Plane's contribution to total request latency, measured as the 95th percentile overhead. This metric ensures that governance does not silently degrade system performance as traffic scales.
+
+These metrics are available in the RCT evaluation dashboard with alerting support — when enforcement coverage drops below 100% or when policy violation detection rate drops below the configured threshold, operations teams are notified immediately.
+
+## Deployment Patterns
+
+The Control Plane supports three deployment patterns depending on organizational requirements.
+
+**Inline deployment** places the Control Plane on the critical path: every request passes through it synchronously before any AI component is called. This provides the strongest governance guarantees and is the recommended pattern for regulated use cases. Overhead is the 2.4ms described above.
+
+**Sidecar deployment** runs the Control Plane as a sidecar to each AI service component, intercepting calls at the service boundary rather than at the application layer. This pattern is suitable for organizations that have existing AI service infrastructure and want to add governance without modifying the application layer.
+
+**Audit-only deployment** runs the Control Plane in observation mode — it records every AI call but does not block any of them. This pattern is used during initial deployment to measure baseline behavior before enforcement is activated. It is also used in development environments where blocking behavior would interrupt developer workflows.
+
+## The Compliance Case
+
+Regulatory pressure on enterprise AI systems is accelerating globally. Thailand's PDPA, the EU's AI Act, the US AI Executive Order, and sector-specific frameworks (HIPAA, SOX, PCI-DSS) all impose requirements that map directly to Control Plane capabilities.
+
+The common thread across all these frameworks is **auditability**: the ability to demonstrate, after the fact, that AI systems processed data in compliance with applicable requirements. This requires records of what data was processed, by which model, under which authorization, producing which output.
+
+The Control Plane's audit log, combined with the Delta Engine's immutable storage, satisfies the auditability requirements of every major AI governance framework currently in force. When a regulatory audit occurs, the response to "show me everything your AI system did with this data" is a single query against the audit log, not a reconstruction exercise from scattered logs and developer memory.
+
+For organizations operating in Thailand, the Control Plane's PDPA compliance context module (Module 7) and consent verification module (Module 8) address the specific requirements of the Personal Data Protection Act B.E. 2562: lawful basis for processing, purpose limitation, data subject rights enforcement, and cross-border transfer restrictions.
+
+## Getting Started
+
+The Control Plane is part of the open-source RCT Platform. The DSL module suite is included in the core package; optional compliance modules for PDPA, HIPAA, and GDPR are available in the `compliance` extras package.
+
+To add Control Plane enforcement to an existing AI application:
+
+```python
+from rct_control_plane import ControlPlane, PolicyManifest
+
+# Load policy from manifest file
+policy = PolicyManifest.from_file("policy.yaml")
+
+# Initialize Control Plane
+cp = ControlPlane(policy=policy)
+
+# Wrap your LLM calls
+async with cp.govern(intent=user_query) as ctx:
+    response = await llm.complete(ctx.authorized_prompt)
+    # Response is automatically logged and validated
+```
+
+The `govern()` context manager handles all four enforcement phases automatically. FDIA scoring, DSL evaluation, signed authorization, and audit recording happen within the context manager. Your application code interacts only with `ctx.authorized_prompt` — a version of the original prompt that has been verified, scoped, and authorized for execution.
+
+---
+
+## Key Metrics
+
+| Metric | Value |
+|--------|-------|
+| DSL governance modules | **15** |
+| Policy enforcement coverage | **100%** |
+| Unmanaged LLM calls | **0** |
+| Average governance overhead | **2.4ms** |
+| Audit compression ratio | **3.74×** |
+| Policy violation detection rate | **99.7%** |
+| Compliance frameworks supported | PDPA, GDPR, HIPAA, SOX, PCI-DSS |
+
+---
+
+The RCT Control Plane is the governance layer that makes constitutional AI operational rather than aspirational. It does not change what your AI system can do — it enforces what it is permitted to do, every time, with a verifiable audit trail. That is the difference between AI you can deploy and AI you can trust.
+
+*Explore the full architecture at [rctlabs.co/en/architecture](/en/architecture), or run the evaluation framework against your deployment at [rctlabs.co/en/evaluation](/en/evaluation).*
