@@ -74,7 +74,7 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
       { label: isTh ? "การเชื่อมต่อ" : "Integration", href: "/integration" },
       { label: isTh ? "งานวิจัย" : "Research", href: "/research" },
       { label: isTh ? "บันทึกการเปลี่ยนแปลง" : "Changelog", href: "/changelog", badge: "NEW" as const },
-      { label: isTh ? "Interactive Architecture Guide" : "Interactive Architecture Guide", href: "https://notebooklm.google.com/notebook/094c48f4-0f95-4c59-9962-55ef8a7e3199?authuser=1", external: true, badge: "NEW" as const },
+      { label: isTh ? "NotebookLM Architecture Guide" : "NotebookLM Architecture Guide", href: "https://notebooklm.google.com/notebook/094c48f4-0f95-4c59-9962-55ef8a7e3199?authuser=1", external: true, badge: "NEW" as const },
     ],
     [isTh ? "บริษัท" : "Company"]: [
       { label: isTh ? "เกี่ยวกับเรา" : "About Us", href: "/about" },
@@ -213,9 +213,14 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                                 href={link.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs sm:text-sm py-1 inline-block transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
+                                className="inline-flex items-center gap-1.5 py-1 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                               >
                                 {link.label}
+                                {"badge" in link && link.badge ? (
+                                  <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#7A5910] dark:text-warm-amber">
+                                    {link.badge}
+                                  </span>
+                                ) : null}
                               </a>
                             ) : (
                               <Link
@@ -249,9 +254,14 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs sm:text-sm py-1 inline-block transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
+                            className="inline-flex items-center gap-1.5 py-1 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                           >
                             {link.label}
+                            {"badge" in link && link.badge ? (
+                              <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#7A5910] dark:text-warm-amber">
+                                {link.badge}
+                              </span>
+                            ) : null}
                           </a>
                         ) : (
                           <Link
