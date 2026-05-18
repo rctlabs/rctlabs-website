@@ -52,14 +52,9 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
     [isTh ? "เทคโนโลยี" : "Technology"]: [
       { label: isTh ? "ระบบหลัก" : "Core Systems", href: "/core-systems" },
       { label: isTh ? "สถาปัตยกรรม" : "Architecture", href: "/architecture" },
-      { label: "7 Genome System", href: "/genome" },
-      { label: "41 Algorithms", href: "/algorithms" },
       { label: "JITNA Protocol", href: "/technology/jitna" },
-      { label: isTh ? "Regional AI" : "Regional AI", href: "/technology/regional-ai" },
       { label: "RCT-7 Mental OS", href: "/technology/rct-7" },
-      { label: isTh ? "RCT-7 Thinking" : "RCT-7 Thinking", href: "/technology/rct-7-thinking" },
       { label: isTh ? "Constitutional AI" : "Constitutional AI", href: "/technology/constitutional-ai" },
-      { label: "Protocols", href: "/protocols" },
       { label: isTh ? "Open SDK (Apache 2.0)" : "Open SDK (Apache 2.0)", href: SOCIAL_LINKS.platformGithub, external: true },
       { label: isTh ? "SDK Documentation" : "SDK Documentation", href: SOCIAL_LINKS.platformDocs, external: true },
     ],
@@ -67,24 +62,35 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
       { label: "Whitepaper", href: "/whitepaper" },
       { label: isTh ? "บทความ" : "Blog", href: "/blog" },
       { label: isTh ? "แผนงาน" : "Roadmap", href: "/roadmap", badge: "NEW" as const },
-      { label: isTh ? "Methodology" : "Methodology", href: "/methodology" },
       { label: isTh ? "Benchmark" : "Benchmark Summary", href: "/benchmark-summary" },
-      { label: isTh ? "Thailand Trust" : "Thailand Trust", href: "/thailand-enterprise-trust" },
-      { label: isTh ? "กรณีศึกษา" : "Use Cases", href: "/use-cases" },
-      { label: isTh ? "การเชื่อมต่อ" : "Integration", href: "/integration" },
       { label: isTh ? "งานวิจัย" : "Research", href: "/research" },
       { label: isTh ? "บันทึกการเปลี่ยนแปลง" : "Changelog", href: "/changelog", badge: "NEW" as const },
-      { label: isTh ? "NotebookLM Architecture Guide" : "NotebookLM Architecture Guide", href: "https://notebooklm.google.com/notebook/094c48f4-0f95-4c59-9962-55ef8a7e3199?authuser=1", external: true, badge: "NEW" as const },
+      {
+        label: isTh ? "NotebookLM Architecture Guide" : "NotebookLM Architecture Guide",
+        href: "https://notebooklm.google.com/notebook/094c48f4-0f95-4c59-9962-55ef8a7e3199?authuser=1",
+        external: true,
+        badge: "NEW" as const,
+        icon: (
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="w-3.5 h-3.5 shrink-0">
+            <rect x="3" y="1" width="10" height="14" rx="1.5" fill="#E8B84B" fillOpacity="0.9" />
+            <rect x="2" y="2.5" width="3" height="11" rx="1" fill="#C4922A" />
+            <path d="M7 5.5h4.5M7 8h4.5M7 10.5h3" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+            <circle cx="13" cy="3" r="2.5" fill="#4285F4" />
+            <path d="M13 1.5v3M11.5 3h3" stroke="white" strokeWidth="0.9" strokeLinecap="round" />
+          </svg>
+        ),
+      },
     ],
     [isTh ? "บริษัท" : "Company"]: [
       { label: isTh ? "เกี่ยวกับเรา" : "About Us", href: "/about" },
       { label: isTh ? "ติดต่อเรา" : "Contact", href: "/contact" },
       { label: "FAQ", href: "/faq" },
+      { label: "__div1__", href: "", divider: true as const },
+      { label: "GitHub (rctlabs)", href: SOCIAL_LINKS.github, external: true },
+      { label: isTh ? "GitHub Discussions" : "GitHub Discussions", href: "https://github.com/orgs/rctlabs/discussions", external: true, badge: "LIVE" as const },
+      { label: "__div2__", href: "", divider: true as const },
       { label: isTh ? "นโยบายความเป็นส่วนตัว" : "Privacy Policy", href: "/privacy" },
       { label: isTh ? "ข้อกำหนด" : "Terms", href: "/terms" },
-      { label: "GitHub (rctlabs)", href: SOCIAL_LINKS.github, external: true },
-      { label: "GitHub (ittirit720)", href: SOCIAL_LINKS.githubPersonal, external: true },
-      { label: isTh ? "โปรไฟล์ผู้ก่อตั้ง" : "Founder Profile", href: SOCIAL_LINKS.biosite, external: true },
     ],
   }
 
@@ -208,13 +214,16 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                       >
                         {links.map((link) => (
                           <li key={link.label}>
-                            {"external" in link && link.external ? (
+                            {"divider" in link && link.divider ? (
+                              <div className="border-t border-warm-light-gray/40 dark:border-[#2A2A2A] my-1.5" />
+                            ) : "external" in link && link.external ? (
                               <a
                                 href={link.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1.5 py-1 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                               >
+                                {"icon" in link && link.icon ? link.icon : null}
                                 {link.label}
                                 {"badge" in link && link.badge ? (
                                   <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#7A5910] dark:text-warm-amber">
@@ -249,13 +258,16 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
                   <ul className="space-y-1.5">
                     {links.map((link) => (
                       <li key={link.label}>
-                        {"external" in link && link.external ? (
+                        {"divider" in link && link.divider ? (
+                          <div className="border-t border-warm-light-gray/40 dark:border-[#2A2A2A] my-1.5" />
+                        ) : "external" in link && link.external ? (
                           <a
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 py-1 text-xs sm:text-sm transition-colors hover:underline underline-offset-2 text-warm-secondary hover:text-warm-charcoal dark:text-[#777] dark:hover:text-[#DDD]"
                           >
+                            {"icon" in link && link.icon ? link.icon : null}
                             {link.label}
                             {"badge" in link && link.badge ? (
                               <span className="inline-flex items-center rounded-full bg-warm-amber/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#7A5910] dark:text-warm-amber">
