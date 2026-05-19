@@ -292,6 +292,24 @@ const resourceItems = {
       th: "สรุป benchmark แบบ public-safe พร้อม caveat และ measurement note",
     },
   },
+  leaderboard: {
+    id: "leaderboard",
+    href: "/benchmark/leaderboard",
+    label: { en: "Industry Leaderboard", th: "Industry Leaderboard" },
+    description: {
+      en: "RCT vs GPT-4 vs Claude-3 — measured FDIA, HaluEval, adversarial benchmark comparison.",
+      th: "RCT vs GPT-4 vs Claude-3 — เปรียบเทียบ FDIA, HaluEval, adversarial ที่วัดจริง",
+    },
+  },
+  deltaTrace: {
+    id: "delta-trace",
+    href: "/docs/delta-trace",
+    label: { en: "Delta Compression", th: "Delta Compression" },
+    description: {
+      en: "Interactive 74% memory compression visualizer — drag the slider to replay agent states.",
+      th: "Visualizer บีบอัด memory 74% แบบ interactive — ลาก slider เพื่อ replay agent states",
+    },
+  },
   thailandTrust: {
     id: "thailand-enterprise-trust",
     href: "/thailand-enterprise-trust",
@@ -486,7 +504,7 @@ export const navigationGroups: NavGroup[] = [
       {
         header: { en: "Learn & Validate", th: "เรียนรู้ & ตรวจสอบ" },
         style: "secondary",
-        items: [resourceItems.blog, resourceItems.glossary, resourceItems.methodology, resourceItems.benchmarkSummary],
+        items: [resourceItems.blog, resourceItems.glossary, resourceItems.methodology, resourceItems.benchmarkSummary, resourceItems.leaderboard],
       },
       {
         header: { en: "Evaluate", th: "ประเมิน" },
@@ -496,7 +514,7 @@ export const navigationGroups: NavGroup[] = [
       {
         header: { en: "Build & Track", th: "สร้าง & ติดตาม" },
         style: "secondary",
-        items: [resourceItems.docs, resourceItems.integration, resourceItems.roadmap, resourceItems.changelog],
+        items: [resourceItems.docs, resourceItems.deltaTrace, resourceItems.integration, resourceItems.roadmap, resourceItems.changelog],
       },
     ],
     summary: {
