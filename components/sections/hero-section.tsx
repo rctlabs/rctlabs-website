@@ -53,6 +53,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
           "โครงการสถาปัตยกรรม AI ระดับองค์กรที่สร้างบนโมเดล 10 ชั้น กรอบอัลกอริทึม 41 รายการ 7 Genome Subsystems สมการ FDIA และ JITNA Protocol",
         ctaExplore: "สำรวจสถาปัตยกรรม",
         ctaDemo: "ดู Live Demo",
+        ctaEarlyAccess: "เข้าร่วม Early Access",
         statAlgorithms: "Algorithms",
         statLayers: "Layers",
         statGenomes: "Genomes",
@@ -68,6 +69,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
           "Enterprise AI architecture program built around a 10-layer model, a 41-algorithm framework, 7 Genome subsystems, the FDIA equation, and the JITNA Protocol.",
         ctaExplore: "Explore Architecture",
         ctaDemo: "View Live Demo",
+        ctaEarlyAccess: "Join Early Access",
         statAlgorithms: "Algorithms",
         statLayers: "Layers",
         statGenomes: "Genomes",
@@ -191,6 +193,22 @@ export default function HeroSection({ locale }: HeroSectionProps) {
                 }`}
                 >
                   {copy.ctaDemo}
+                </Link>
+              </div>
+              <div>
+                <Link
+                  href={`${localePrefix}/community/members`}
+                  className={`inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-xl border transition-[background-color,border-color] duration-200 ${
+                    isDark
+                      ? "text-warm-amber border-warm-amber/25 hover:bg-warm-amber/10 hover:border-warm-amber/40"
+                      : "text-[#8B5E10] border-warm-amber/40 hover:bg-warm-amber/8 hover:border-warm-amber/60"
+                  }`}
+                >
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  </span>
+                  {copy.ctaEarlyAccess}
                 </Link>
               </div>
             </div>
