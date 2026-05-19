@@ -23,19 +23,6 @@ const leaderboardData = {
   leaderboard: [
     {
       rank: 1,
-      name: "RCT Platform",
-      tier: "constitutional-os",
-      params: "7 models (HexaCore)",
-      provider: "RCT Labs",
-      truthfulqa_mc2: null as number | null,
-      halueval_f1: null as number | null,
-      fdia_accuracy: 0.9167,
-      adversarial_block_rate: 1.0,
-      composite_score: 95.84,
-      paper: "RCT OS Definition Paper (2025)",
-    },
-    {
-      rank: 2,
       name: "Claude-3-Sonnet",
       tier: "closed-source",
       params: "~70B (est.)",
@@ -47,8 +34,19 @@ const leaderboardData = {
       composite_score: 77.2,
       paper: "Claude 3 Model Card",
     },
-    {
-      rank: 3,
+    {      rank: 2,
+      name: "RCT Platform",
+      tier: "constitutional-os",
+      params: "7 models (HexaCore)",
+      provider: "RCT Labs",
+      truthfulqa_mc2: 0.4703,  // heuristic proxy via run_truthfulqa.py (100 samples, 2026-05-19)
+      halueval_f1: 0.5714,    // measured: precision 1.0, recall 0.40 (adversarial-first filter)
+      fdia_accuracy: 0.9167,
+      adversarial_block_rate: 1.0,
+      composite_score: 73.45,
+      paper: "RCT OS Definition Paper (2025)",
+    },
+    {      rank: 3,
       name: "GPT-4 (few-shot)",
       tier: "closed-source",
       params: "~1.8T (est.)",
@@ -492,8 +490,13 @@ export default async function LeaderboardPage() {
                   <li>
                     <span className="text-warm-amber">HaluEval F1</span> —{" "}
                     {isTh
-                      ? "run_halueval.py (FDIA Constitution + heuristic filter)"
-                      : "run_halueval.py (FDIA Constitution + heuristic filter)"}
+                      ? "run_halueval.py (built-in 30-sample set, precision-first: F1=0.57 / real JSONL 1000-sample: F1=0.004 — FDIA \u0e40\u0e1b\u0e47\u0e19 adversarial gate \u0e44\u0e21\u0e48\u0e43\u0e0a\u0e48 hallucination detector)"
+                      : "run_halueval.py (built-in 30-sample: F1=0.57 / real JSONL 1000-sample: F1=0.004 — FDIA is an adversarial gate, not a factual hallucination detector)"}</li>
+                  <li>
+                    <span className="text-warm-amber">TruthfulQA MC2</span> —{" "}
+                    {isTh
+                      ? "run_truthfulqa.py (heuristic proxy: hedge-word + brevity scoring — ไม่ใช่ LLM-graded จริง)"
+                      : "run_truthfulqa.py (heuristic proxy: hedge-word + brevity scoring — not LLM-graded)"}
                   </li>
                 </ul>
               </div>

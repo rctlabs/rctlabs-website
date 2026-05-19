@@ -118,8 +118,8 @@ function formatBytes(bytes: number): string {
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null
   return (
-    <div className="bg-[#1e293b] border border-[#334155] rounded-lg p-3 text-xs font-mono shadow-xl">
-      <div className="text-[#94a3b8] mb-2">Tick {label}</div>
+    <div className="bg-card border border-border rounded-lg p-3 text-xs font-mono shadow-xl">
+      <div className="text-muted-foreground mb-2">Tick {label}</div>
       {payload.map((entry: any) => (
         <div key={entry.dataKey} className="flex justify-between gap-4" style={{ color: entry.color }}>
           <span>{entry.name}</span>
@@ -194,17 +194,17 @@ export function CompressionChart({
         ].map((stat) => (
           <div
             key={stat.label}
-            className="bg-[#1e293b] border border-[#334155] rounded-lg p-4 text-center"
+            className="bg-card border border-border rounded-lg p-4 text-center"
           >
             <div className={`text-xl font-bold font-mono ${stat.color}`}>{stat.value}</div>
-            <div className="text-[#64748b] text-xs mt-1">{stat.label}</div>
+            <div className="text-muted-foreground text-xs mt-1">{stat.label}</div>
           </div>
         ))}
       </div>
 
       {/* Bar Chart: Memory Usage */}
-      <div className="bg-[#1e293b] border border-[#334155] rounded-xl p-5">
-        <h3 className="text-xs font-mono text-[#94a3b8] uppercase tracking-widest mb-4">
+      <div className="bg-card border border-border rounded-xl p-5">
+        <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-4">
           Cumulative Memory Usage Over Time
         </h3>
         <ResponsiveContainer width="100%" height={220}>
@@ -248,8 +248,8 @@ export function CompressionChart({
       </div>
 
       {/* Line Chart: Compression ratio */}
-      <div className="bg-[#1e293b] border border-[#334155] rounded-xl p-5">
-        <h3 className="text-xs font-mono text-[#94a3b8] uppercase tracking-widest mb-4">
+      <div className="bg-card border border-border rounded-xl p-5">
+        <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-4">
           Compression Ratio % Over Ticks
         </h3>
         <ResponsiveContainer width="100%" height={160}>
@@ -273,13 +273,13 @@ export function CompressionChart({
             <Tooltip
               formatter={(v: number) => [`${v}%`, "Compression"]}
               contentStyle={{
-                background: "#1e293b",
-                border: "1px solid #334155",
+                background: "var(--card)",
+                border: "1px solid var(--border)",
                 borderRadius: "8px",
                 fontFamily: "monospace",
                 fontSize: "11px",
               }}
-              labelStyle={{ color: "#94a3b8" }}
+              labelStyle={{ color: "var(--muted-foreground)" }}
             />
             <ReferenceLine
               y={74}
@@ -301,8 +301,8 @@ export function CompressionChart({
       </div>
 
       {/* Rollback Timeline Slider */}
-      <div className="bg-[#1e293b] border border-[#334155] rounded-xl p-5">
-        <h3 className="text-xs font-mono text-[#94a3b8] uppercase tracking-widest mb-4">
+      <div className="bg-card border border-border rounded-xl p-5">
+        <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-4">
           ⏮ Rollback Timeline — reconstruct any agent state at any past tick
         </h3>
         <div className="mb-4">

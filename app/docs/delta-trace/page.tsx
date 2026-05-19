@@ -96,23 +96,29 @@ export default async function DeltaTracePage() {
       />
       <Navbar />
 
-      <main className="min-h-screen bg-dark-deep pt-20 pb-16">
+      <main className="min-h-screen bg-background pt-20 pb-16">
         {/* Hero */}
         <section className="px-6 py-16 max-w-6xl mx-auto">
-          <div className="mb-3 flex items-center gap-2">
-            <span className="text-xs font-mono text-warm-amber border border-warm-amber/30 bg-warm-amber/10 px-2 py-0.5 rounded-full uppercase tracking-widest">
+          {/* Breadcrumb / Section label */}
+          <div className="mb-4 flex items-center gap-2 text-xs font-mono text-muted-foreground">
+            <span>Docs</span>
+            <span className="opacity-40">/</span>
+            <span className="text-warm-amber">Delta Engine</span>
+          </div>
+          <div className="mb-3">
+            <span className="inline-flex items-center gap-1.5 text-xs font-mono text-warm-amber border border-warm-amber/30 bg-warm-amber/8 px-3 py-1 rounded-full uppercase tracking-widest">
               Delta Engine
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-warm-cream mb-4 leading-tight">
-            Memory Compression Trace
-            <span className="block text-warm-amber font-mono text-xl mt-1">
-              Δ = store only what changed
-            </span>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2 leading-tight">
+            {isTh ? "Memory Compression Trace" : "Memory Compression Trace"}
           </h1>
-          <p className="text-warm-sand/80 text-lg max-w-2xl mb-8">
+          <p className="text-warm-amber font-mono text-xl font-semibold mb-4">
+            Δ = store only what changed
+          </p>
+          <p className="text-muted-foreground text-lg max-w-2xl mb-8 leading-relaxed">
             {isTh
-              ? "RCT Delta Engine เก็บเฉพาะ state ที่เปลี่ยนแปลงใน simulation แต่ละ tick แทนที่จะเก็บ full snapshot — ลดขนาดหน่วยความจำลง 74% และยังสามารถ replay กลับไปทุก tick ได้ใน &lt;1ms"
+              ? "RCT Delta Engine เก็บเฉพาะ state ที่เปลี่ยนแปลงใน simulation แต่ละ tick แทนที่จะเก็บ full snapshot — ลดขนาดหน่วยความจำลง 74% และยังสามารถ replay กลับไปทุก tick ได้ใน <1ms"
               : "Instead of storing a full agent state snapshot every tick, the RCT Delta Engine records only what changed. This achieves 74% memory compression while retaining full rollback capability to any past tick."}
           </p>
 
@@ -156,7 +162,7 @@ export default async function DeltaTracePage() {
               return (
                 <div
                   key={claim.label}
-                  className="bg-dark-surface border border-dark-border rounded-xl p-5"
+                  className="bg-card border border-border rounded-xl p-5 hover:border-warm-amber/30 transition-colors duration-200"
                 >
                   <Icon className="w-5 h-5 mb-3" style={{ color: claim.color }} />
                   <div
@@ -165,10 +171,10 @@ export default async function DeltaTracePage() {
                   >
                     {claim.value}
                   </div>
-                  <div className="text-warm-cream text-sm font-semibold mb-1.5">
+                  <div className="text-foreground text-sm font-semibold mb-1.5">
                     {isTh ? claim.labelTh : claim.label}
                   </div>
-                  <div className="text-warm-sand/70 text-xs leading-relaxed">
+                  <div className="text-muted-foreground text-xs leading-relaxed">
                     {isTh ? claim.descTh : claim.desc}
                   </div>
                 </div>
@@ -180,10 +186,10 @@ export default async function DeltaTracePage() {
         {/* Interactive Chart */}
         <section className="px-6 pb-12 max-w-6xl mx-auto">
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-warm-cream mb-2">
+            <h2 className="text-xl font-bold text-foreground mb-2">
               {isTh ? "การจำลอง: 60 Ticks, 3 Agents" : "Simulation: 60 Ticks, 3 Agents"}
             </h2>
-            <p className="text-warm-sand/70 text-sm max-w-2xl">
+            <p className="text-muted-foreground text-sm max-w-2xl">
               {isTh
                 ? "กราฟด้านล่างสร้างจาก generate_delta_trace.py — เลื่อน slider เพื่อ replay agent state กลับไปทุก tick ที่ผ่านมา"
                 : "Charts below are generated from generate_delta_trace.py — drag the slider to replay any agent's full state at any past tick."}
@@ -194,7 +200,7 @@ export default async function DeltaTracePage() {
 
         {/* How it works */}
         <section className="px-6 pb-12 max-w-6xl mx-auto">
-          <h2 className="text-xl font-bold text-warm-cream mb-6">
+          <h2 className="text-xl font-bold text-foreground mb-6">
             {isTh ? "วิธีการทำงาน" : "How It Works"}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -229,18 +235,18 @@ export default async function DeltaTracePage() {
             ].map((item) => (
               <div
                 key={item.step}
-                className="bg-dark-surface border border-dark-border rounded-xl p-5"
+                className="bg-card border border-border rounded-xl p-5 hover:border-warm-amber/20 transition-colors duration-200"
               >
                 <div
-                  className="text-xs font-mono font-bold mb-3 opacity-60"
-                  style={{ color: item.color }}
+                  className="text-xs font-mono font-bold mb-3"
+                  style={{ color: item.color, opacity: 0.8 }}
                 >
                   STEP {item.step}
                 </div>
-                <h3 className="text-warm-cream font-semibold mb-2">
+                <h3 className="text-foreground font-semibold mb-2 text-base">
                   {isTh ? item.titleTh : item.title}
                 </h3>
-                <p className="text-warm-sand/70 text-sm mb-4 leading-relaxed">
+                <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
                   {isTh ? item.bodyTh : item.body}
                 </p>
                 <pre className="bg-[#0f172a] border border-[#334155] rounded-lg p-3 text-xs font-mono overflow-x-auto">
@@ -253,10 +259,15 @@ export default async function DeltaTracePage() {
 
         {/* Run It Yourself */}
         <section className="px-6 pb-12 max-w-6xl mx-auto">
-          <div className="bg-dark-surface border border-dark-border rounded-xl p-6">
-            <h2 className="text-lg font-bold text-warm-cream mb-4">
+          <div className="bg-card border border-border rounded-xl p-6">
+            <h2 className="text-lg font-bold text-foreground mb-1">
               {isTh ? "รันด้วยตัวเอง" : "Run It Yourself"}
             </h2>
+            <p className="text-muted-foreground text-sm mb-4">
+              {isTh
+                ? "Clone รีโพ แล้วรัน demo simulation ที่สร้าง trace จริงๆ"
+                : "Clone the repo and run the demo simulation that generates a real trace."}
+            </p>
             <pre className="bg-[#0f172a] border border-[#334155] rounded-lg p-4 text-xs font-mono overflow-x-auto text-[#10b981] leading-relaxed">
               {`# Clone and install
 git clone https://github.com/rctlabs/rct-platform.git
