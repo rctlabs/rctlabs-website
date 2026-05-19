@@ -42,6 +42,7 @@ export function getOrganizationSchema(locale: Locale) {
       email: GENERAL_CONTACT_EMAIL,
       availableLanguage: ['en', 'th'],
     },
+    dateModified: '2026-05-19',
   }
 }
 
@@ -134,6 +135,7 @@ export function getWebSiteSchema(locale: Locale) {
       },
       'query-input': 'required name=search_term_string',
     },
+    dateModified: '2026-05-19',
   }
 }
 

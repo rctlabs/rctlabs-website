@@ -132,11 +132,15 @@ export function Footer({ locale: forcedLocale }: FooterProps) {
       ),
     },
     {
-      label: "Bio / Profile",
-      href: SOCIAL_LINKS.biosite,
+      label: "NotebookLM Architecture Guide",
+      href: "https://notebooklm.google.com/notebook/094c48f4-0f95-4c59-9962-55ef8a7e3199?authuser=1",
       icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="w-4 h-4">
+          <rect x="3" y="1" width="10" height="14" rx="1.5" fill="#E8B84B" fillOpacity="0.9" />
+          <rect x="2" y="2.5" width="3" height="11" rx="1" fill="#C4922A" />
+          <path d="M7 5.5h4.5M7 8h4.5M7 10.5h3" stroke="white" strokeWidth="1.2" strokeLinecap="round" />
+          <circle cx="13" cy="3" r="2.5" fill="#4285F4" />
+          <path d="M13 1.5v3M11.5 3h3" stroke="white" strokeWidth="0.9" strokeLinecap="round" />
         </svg>
       ),
     },
